@@ -70,16 +70,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container">
 	<h1>Welcome to CodeIgniter!</h1>
 
-	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
+        <div id="body" style="clear: both; content: ''; display: table;">
+                <div style="float: left; margin-right: 10px;">
+                <?=$tabla?>
+            </div>
+            <div style="float: left; margin-right: 10px;">
+                <?=$r1?>
+            </div>
+            <div style="float: left; margin-right: 10px;">
+                MAD: <?=$mad?><br/>
+                RESULTADO: <?=$mad_d1?><br/>
+                <?=$r2?>
+            </div>
+            <div style="float: left; margin-right: 10px;">
+                RESULTADO: <?=$chi?><br/>
+                <?=$r3?>
+            </div>
+<?php
 
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
-
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
-
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+?>
 	</div>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
