@@ -1,0 +1,14 @@
+#*******************************************************************************
+# Buenas prácticas y consejos en codeigniter
+#-------------------------------------------------------------------------------
+# Vamos a ver un conjunto de consejos y buenas prácticas en codeiniter que por 
+# lo menos yo llevo a cabo en mis proyectos e intento mejorar día a día. Como 
+# podremos ver son cosas sencillas pero necesarias, ya que sin ellas podemos 
+# tener problemas de seguridad y de performance en nuestras aplicaciones, veamos 
+# las que yo personalmente recomiendo llevar a cabo en todos los casos.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://www.uno-de-piera.com/buenas-practicas-y-consejos-en-codeigniter/
+#*******************************************************************************
+
