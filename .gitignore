@@ -24,4 +24,6 @@ application/logs/*
 ### CodeIgniter Patch ###
 #codeigniter 3
 
+archivos/pike-admin-free-2.3.1/*
+
 # End of https://www.gitignore.io/api/codeigniter
