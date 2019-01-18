@@ -1,0 +1,16 @@
+/* 
+Created on : 17/01/2019, 11:07:25 PM
+Author     : kevin
+*/
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+body{
+    background-color: #f0f2eb;
+    background-image: url('/assets/images/auth/head_login.png');
+    background-position: left -2em;
+    background-repeat: no-repeat;
+    font-family: 'Ubuntu', sans-serif !important;
+}
+.card{
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0 5px 20px 0 rgba(170,180,198,.44);
+}

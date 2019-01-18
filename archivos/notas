@@ -12,3 +12,20 @@
 # https://www.uno-de-piera.com/buenas-practicas-y-consejos-en-codeigniter/
 #*******************************************************************************
 
+
+#*******************************************************************************
+# Font Ubuntu
+#*******************************************************************************
+# Embed Font
+# To embed your selected fonts into a webpage, copy this code into the <head> 
+# of your HTML document. 
+#
+# font-family: 'Ubuntu', sans-serif;
+#
+# <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+#
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://fonts.google.com/specimen/Ubuntu?selection.family=Ubuntu
+#*******************************************************************************

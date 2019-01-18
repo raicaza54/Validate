@@ -71,7 +71,7 @@ $config['assets']['path']['less']  = "assets/less/";
 |
 |	Assets output format in html
 */
-$config['assets']['format']['css']   = '<link type="text/css" rel="stylesheet" href="{:url:}" />';
-$config['assets']['format']['js']    = '<script src="{:url:}" type="text/javascript" charset="utf-8"></script>';
-$config['assets']['format']['image'] = '<img src="{:url:}" />';
-$config['assets']['format']['less']  = '<link rel="stylesheet/less" type="text/css" href="{:url:}" />';
+$config['assets']['format']['css']   = '<link type="text/css" rel="stylesheet" href="{:url:}" />'."\n";
+$config['assets']['format']['js']    = '<script src="{:url:}" type="text/javascript" charset="utf-8"></script>'."\n";
+$config['assets']['format']['image'] = '<img src="{:url:}" />'."\n";
+$config['assets']['format']['less']  = '<link rel="stylesheet/less" type="text/css" href="{:url:}" />'."\n";
