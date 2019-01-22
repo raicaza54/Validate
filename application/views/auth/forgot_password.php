@@ -1,15 +1,32 @@
-<h1><?php echo lang('forgot_password_heading');?></h1>
-<p><?php echo sprintf(lang('forgot_password_subheading'), $identity_label);?></p>
-
-<div id="infoMessage"><?php echo $message;?></div>
-
-<?php echo form_open("auth/forgot_password");?>
-
-      <p>
-      	<label for="identity"><?php echo (($type=='email') ? sprintf(lang('forgot_password_email_label'), $identity_label) : sprintf(lang('forgot_password_identity_label'), $identity_label));?></label> <br />
-      	<?php echo form_input($identity);?>
-      </p>
-
-      <p><?php echo form_submit('submit', lang('forgot_password_submit_btn'));?></p>
-
-<?php echo form_close();?>
+<p class="text-white">
+    Bienvenido al sistema<br/>
+    <span style="font-size: 2em;">Auditor Contable</span>
+</p>
+<div class="card">
+    <div class="card-body">
+        <h4 class="text-center"><?= lang('forgot_password_heading'); ?></h4>
+        <p><?= sprintf(lang('forgot_password_subheading'), $identity_label); ?></p>
+        <?php if(strlen($message)): ?>
+        <div id="infoMessage" class="alert alert-secondary"><?= $message; ?></div>
+        <?php endif; ?>
+        <?= form_open("auth/forgot_password"); ?>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+            <?= form_input($identity, NULL, 'class="form-control '.(form_error('identity') ? 'is-invalid':'').'" placeholder="'.((($type == 'email') ? sprintf(lang('forgot_password_email_label'), $identity_label) : sprintf(lang('forgot_password_identity_label'), $identity_label))).'"'); ?>
+            <div class="invalid-feedback">
+              <?= form_error('identity') ?>
+            </div>            
+        </div>
+        <?= form_submit('submit', lang('forgot_password_submit_btn'), 'class="btn btn-primary btn-lg btn-block mb-2"'); ?>
+        <?= form_close(); ?>
+        <div class="text-center">
+            <a href="login">
+                <?= lang('login_btn_login'); ?>
+            </a>                    
+        </div>
+    </div>
+</div>

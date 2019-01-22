@@ -16,9 +16,7 @@ class Auth extends CI_Controller {
         $this->load->database();
         $this->load->library(['ion_auth', 'form_validation']);
         $this->load->helper(['url', 'language']);
-
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
-
         $this->lang->load('auth');
     }
 
@@ -78,7 +76,8 @@ class Auth extends CI_Controller {
         } else {
             // the user is not logging in so display the login page
             // set the flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['message'] = $this->session->flashdata('message');
 
             $this->data['identity'] = [
                 'name'  => 'identity',
@@ -202,7 +201,8 @@ class Auth extends CI_Controller {
             }
 
             // set any errors and display the form
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            //$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['message'] = $this->session->flashdata('message');
             $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'forgot_password', $this->data);
         } else {
             $identity_column = $this->config->item('identity', 'ion_auth');

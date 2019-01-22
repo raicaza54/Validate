@@ -13,6 +13,7 @@
         <?= asset_css('fontawesome/css/brands.min.css') ?>
         <?= asset_css('fontawesome/css/solid.min.css') ?>
         <?= asset_css('auth/estilo.css') ?>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
 
         <title>Auditor</title>

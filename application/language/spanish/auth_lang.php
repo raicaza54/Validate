@@ -24,13 +24,15 @@
 $lang['error_csrf'] = 'Este formulario no pasó nuestras pruebas de seguridad.';
 
 // Login
-$lang['login_heading']         = 'Ingresar';
+$lang['login_heading']         = 'Ingresa con tu cuenta';
 $lang['login_subheading']      = 'Por favor, introduce tu email/usuario y contraseña.';
-$lang['login_identity_label']  = 'Email/Usuario:';
-$lang['login_password_label']  = 'Contraseña:';
-$lang['login_remember_label']  = 'Recuérdame:';
+$lang['login_identity_label']  = 'Email/Usuario';
+$lang['login_password_label']  = 'Contraseña';
+$lang['login_remember_label']  = 'Recuérdame';
 $lang['login_submit_btn']      = 'Ingresar';
 $lang['login_forgot_password'] = '¿Has olvidado tu contraseña?';
+$lang['login_btn_login']       = '¿Intenta ingresar nuevamente?';
+
 
 // Index
 $lang['index_heading']           = 'Usuarios';
@@ -137,7 +139,7 @@ $lang['forgot_password_validation_email_label']  = 'Correo Electrónico';
 $lang['forgot_password_username_identity_label'] = 'Usuario';
 $lang['forgot_password_email_identity_label']    = 'Email';
 $lang['forgot_password_email_not_found']         = 'El correo electrónico no existe.';
-$lang['forgot_password_identity_not_found']         = 'No record of that username address.';
+$lang['forgot_password_identity_not_found']      = 'No record of that username address.';
 
 // Reset Password
 $lang['reset_password_heading']                               = 'Cambiar Contraseña';

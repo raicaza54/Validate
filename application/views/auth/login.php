@@ -1,36 +1,48 @@
 <p class="text-white">
-Bienvenido al sistema<br/>
-<span style="font-size: 2em;">Auditor Contable</span>
+    Bienvenido al sistema<br/>
+    <span style="font-size: 2em;">Auditor Contable</span>
 </p>
 <div class="card">
     <div class="card-body">
-        <h1><?php echo lang('login_heading'); ?></h1>
-        <p><?php echo lang('login_subheading'); ?></p>
-
-        <div id="infoMessage"><?php echo $message; ?></div>
-
-        <?php echo form_open("auth/login"); ?>
-
-        <p>
-            <?php echo lang('login_identity_label', 'identity'); ?>
-            <?php echo form_input($identity); ?>
-        </p>
-
-        <p>
-            <?php echo lang('login_password_label', 'password'); ?>
-            <?php echo form_input($password); ?>
-        </p>
-
-        <p>
-            <?php echo lang('login_remember_label', 'remember'); ?>
-            <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"'); ?>
-        </p>
-
-
-        <p><?php echo form_submit('submit', lang('login_submit_btn')); ?></p>
-
-        <?php echo form_close(); ?>
-
-        <p><a href="forgot_password"><?php echo lang('login_forgot_password'); ?></a></p>
+        <h4 class="text-center"><?= lang('login_heading'); ?></h4>
+        <p><?= lang('login_subheading'); ?></p>
+        <?php if(strlen($message)): ?>
+        <div id="infoMessage" class="alert alert-secondary"><?= $message; ?></div>
+        <?php endif; ?>
+        <?= form_open("auth/login"); ?>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+            <?= form_input($identity, NULL, 'class="form-control '.(form_error('identity') ? 'is-invalid':'').'" placeholder="'.lang('login_identity_label').'" required'); ?>
+            <div class="invalid-feedback">
+              <?= form_error('identity') ?>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fas fa-key"></i>
+                </span>
+            </div>
+            <?= form_input($password, NULL, 'class="form-control '.(form_error('password') ? 'is-invalid':'').'" placeholder="'.lang('login_password_label').'" required'); ?>
+            <div class="invalid-feedback">
+              <?= form_error('password') ?>
+            </div>            
+        </div>
+        <div class="form-group form-check">
+            <?= form_checkbox('remember', '1', FALSE, 'id="remember" class="form-check-input"'); ?>
+            <?= lang('login_remember_label', 'remember', array('class' => 'form-check-label')); ?>
+        </div>        
+        <?= form_submit('submit', lang('login_submit_btn'), 'class="btn btn-primary btn-lg btn-block mb-2"'); ?>
+        <?= form_close(); ?>
+        <div class="text-center">
+            <a href="forgot_password">
+                <i class="fas fa-question-circle"></i>
+                <?= lang('login_forgot_password'); ?>
+            </a>
+        </div>
     </div>
 </div>
