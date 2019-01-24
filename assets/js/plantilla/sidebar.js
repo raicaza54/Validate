@@ -2,7 +2,7 @@ $(document).ready(function () {
     $("#sidebar").mCustomScrollbar({
         theme: "minimal"
     });
-    $('div').popover({trigger:'hover'});
+    $('div').popover({trigger:'hover', delay:1000});
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
     });
@@ -21,15 +21,16 @@ $(document).ready(function () {
     $('#simpleTree').jstree({
         'core': {
             'themes': {
-                'responsive': false
-            }
+                'responsive': false,
+            },
+            'multiple': false
         },
         'types': {
             'default': {
-                'icon': 'fa fa-folder-open'
+                'icon': 'far fa-folder'
             },
             'file': {
-                'icon': 'fa fa-file'
+                'icon': 'far fa-file-excel'
             }
         },
         'plugins': ['types']

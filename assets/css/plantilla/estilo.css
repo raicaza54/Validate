@@ -15,13 +15,19 @@ body{
     padding-top: 12px;
     position: relative;
 }
+.menu-card-icon img[src*='svg']{
+    height: 42px;
+}
+.menu-card img[src*='svg']{
+    height: 14px;
+}
 .menu-card span{
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     font-size: 12px;
     margin: 0px 5px 9px 5px;
     cursor: pointer;
@@ -87,12 +93,12 @@ body{
 .menu-card-icon span{
     font-size: 12px;
     display: table-row;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .wrapper a,
 .wrapper a:hover,
@@ -177,13 +183,13 @@ body{
     padding: 10px;
 }
 
-#sidebar ul li a {
+#sidebar ul:not([class*="jstree"]) li:not([class*="jstree"]) a:not([class*="jstree"]) {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
 
-#sidebar ul li a:hover {
+#sidebar ul:not([class*="jstree"]) li:not([class*="jstree"]) a:hover {
     color: #7386D5;
     background: #414d58;
 }
@@ -206,7 +212,7 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-ul ul a {
+ul:not([class*="jstree"]) ul:not([class*="jstree"]) a:not([class*="jstree"]) {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #414d58;
@@ -216,7 +222,7 @@ ul.CTAs {
     padding: 20px;
 }
 
-ul.CTAs a {
+ul.CTAs a:not([class*="jstree"]) {
     text-align: center;
     font-size: 0.9em !important;
     display: block;
