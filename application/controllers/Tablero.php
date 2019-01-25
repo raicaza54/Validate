@@ -22,6 +22,10 @@ class Tablero extends CI_Controller {
     }
 
     public function index() {
+        for($x=0;$x<300;$x++){
+            $this->data['body'] .= 'Hola mundo ';
+        }
+
         
         $this->load->view("plantilla/plantilla", $this->data);
     }
