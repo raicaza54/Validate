@@ -25,8 +25,6 @@ class Tablero extends CI_Controller {
         for($x=0;$x<300;$x++){
             $this->data['body'] .= 'Hola mundo ';
         }
-
-        
         $this->load->view("plantilla/plantilla", $this->data);
     }
     
@@ -121,7 +119,7 @@ class Tablero extends CI_Controller {
             $total_debito = 0;
             $total_debito_cuenta = 0;
             $debito_porcentaje = 0;
-            foreach ($value as $value_debito) {
+            foreach ($value as $value_debito) { //Debitos
                 if(($value_debito['tipo'] == 1) AND ($value_debito['cuenta'] == $cuenta)){
                     $total_debito_cuenta += $value_debito['valor'];
                 }
@@ -147,10 +145,80 @@ class Tablero extends CI_Controller {
                 $this->table->clear();
             }        
         }
+        
+        $total_credito = 0;
+        $total_credito_cuenta = 0;
+        $credito_porcentaje = 0;
+        foreach ($grupos_clasificado['credito'] as $key_credito => $value){
+            $total_credito = 0;
+            $total_credito_cuenta = 0;
+            $credito_porcentaje = 0;
+            foreach ($value as $value_credito) { //Credito
+                if(($value_credito['tipo'] == 2) AND ($value_credito['cuenta'] == $cuenta)){
+                    $total_credito_cuenta += $value_credito['valor'];
+                }
+                if($value_credito['tipo'] == 2){
+                    $total_credito += $value_credito['valor'];
+                }
+            }
+            $credito_porcentaje = (($total_credito_cuenta/$total_credito)*100);
+            foreach ($value as $key_grupo => $value_credito) {
+                $grupos_clasificado['credito'][$key_credito][$key_grupo]['tb'] = 0;
+                if($value_credito['tipo'] == 1){
+                    $grupos_clasificado['credito'][$key_credito][$key_grupo]['tb'] = ($value_credito['valor']*$credito_porcentaje)/100;
+                }
+            }
+        }
+        $tabla_grupos_clasificados = '';
+        foreach ($grupos_clasificado as $key => $value) {
+            $tabla_grupos_clasificados .= '############# '.strtoupper($key).' #############';
+            foreach ($value as $seguntipo) {
+                $this->table->set_heading('GRUPO','CUENTA','TIPO','VALOR','TB');
+                $tabla_grupos_clasificados .= $this->table->generate($seguntipo).'<br/>';
+                $this->table->clear();
+            }        
+        }
+        //print_r($grupos_clasificado);
+        $spider = array();
+        #Construccion de la araña
+        $spider[$cuenta]['debito'] = array();
+        $total_debito = 0;
+        foreach ($grupos_clasificado['debito'] as $key => $grupos) {
+            foreach ($grupos as $key => $value) {
+                if($value['tb'] > 0){
+                    if(!array_key_exists($value['cuenta'], $spider[$cuenta]['debito'])){
+                        $spider[$cuenta]['debito'][$value['cuenta']]['valor'] = $value['tb'];
+                    }else{
+                        $spider[$cuenta]['debito'][$value['cuenta']]['valor'] += $value['tb'];
+                    }
+                }
+                $total_debito += $value['tb'];
+            }
+        }
+        $total_credito = 0;
+        $spider[$cuenta]['credito'] = array();
+        foreach ($grupos_clasificado['credito'] as $key => $grupos) {
+            foreach ($grupos as $key => $value) {
+                if($value['tb'] > 0){
+                    if(!array_key_exists($value['cuenta'], $spider[$cuenta]['credito'])){
+                        $spider[$cuenta]['credito'][$value['cuenta']]['valor'] = $value['tb'];
+                    }else{
+                        $spider[$cuenta]['credito'][$value['cuenta']]['valor'] += $value['tb'];
+                    }
+                }
+                $total_credito += $value['tb'];
+            }
+        }
+        foreach ($spider[$cuenta]['debito'] as $key => $value) {
+            $spider[$cuenta]['debito'][$key]['porcentaje'] = ($spider[$cuenta]['debito'][$key]['valor']*100)/$total_debito;
+        }
+        foreach ($spider[$cuenta]['credito'] as $key => $value) {
+            $spider[$cuenta]['credito'][$key]['porcentaje'] = ($spider[$cuenta]['credito'][$key]['valor']*100)/$total_credito;
+        }
+        print_r($spider);
         $this->data['body'] = $tabla.'<br/>############# GRUPOS #############'.$tabla_grupos.'<br><br/>############# GRUPOS CLAISIFICADOS #############<br/>'.$tabla_grupos_clasificados.'</pre>';
         
         $this->load->view("plantilla/plantilla", $this->data);
-        //$this->ion_auth->logout();
     }
 
 }
