@@ -160,7 +160,7 @@
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-spider" role="tabpanel" aria-labelledby="nav-spider-tab">
+                <div class="tab-pane fade show active clearfix" id="nav-spider" role="tabpanel" aria-labelledby="nav-spider-tab">
                     <?= $body ?>
                 </div>
                 <div class="tab-pane fade show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">

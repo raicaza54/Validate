@@ -22,13 +22,16 @@ class Tablero extends CI_Controller {
     }
 
     public function index() {
-        for($x=0;$x<300;$x++){
-            $this->data['body'] .= 'Hola mundo ';
-        }
+        $this->data['body'] .= '<br/><br/><a href="'.base_url('tablero/spider/130505').'">130505</a> - '.
+                               '<a href="'.base_url('tablero/spider/135515').'">135515</a> - '.
+                               '<a href="'.base_url('tablero/spider/413595').'">413595</a> - '.
+                               '<a href="'.base_url('tablero/spider/240801').'">240801</a> - '.
+                               '<a href="'.base_url('tablero/spider/135517').'">135517</a> - '.
+                               '<a href="'.base_url('tablero/spider/11100501').'">11100501</a>';
         $this->load->view("plantilla/plantilla", $this->data);
     }
     
-    public function spider() {
+    public function spider($cuenta) {
         $ejemplo = $this->db->get('spider')->result_array();
         $this->load->library('table');
         $template = array(
@@ -77,7 +80,7 @@ class Tablero extends CI_Controller {
             $tabla_grupos .= $this->table->generate($value).'<br/>';
             $this->table->clear();
         }
-        $cuenta = 130505;
+        $cuenta = $cuenta;
         $grupos_clasificado = array(
             'debito'  => array(),
             'credito' => array(),
@@ -215,9 +218,45 @@ class Tablero extends CI_Controller {
         foreach ($spider[$cuenta]['credito'] as $key => $value) {
             $spider[$cuenta]['credito'][$key]['porcentaje'] = ($spider[$cuenta]['credito'][$key]['valor']*100)/$total_credito;
         }
-        print_r($spider);
-        $this->data['body'] = $tabla.'<br/>############# GRUPOS #############'.$tabla_grupos.'<br><br/>############# GRUPOS CLAISIFICADOS #############<br/>'.$tabla_grupos_clasificados.'</pre>';
+        //$this->data['body'] = $tabla.'<br/>############# GRUPOS #############'.$tabla_grupos.'<br><br/>############# GRUPOS CLAISIFICADOS #############<br/>'.$tabla_grupos_clasificados.'</pre>';
         
+        $c = 0; $l = 0;
+        if(count($spider[$cuenta]['debito']) >= count($spider[$cuenta]['credito'])){
+            $c = count($spider[$cuenta]['debito']);
+        }else{
+            $c = count($spider[$cuenta]['credito']);
+        }
+        $lineas = '';
+        $t = 15;
+        $x = 0;
+        $hsvg = (($c*60)-30)/2;
+        foreach ($spider[$cuenta]['debito'] as $key => $value) {
+            $this->data['body'] .= '<div class="spd-debito"  style="top: '.($x*60).'px;">'.$t.'<div style="float: right">$'.number_format($value['valor'],0,',','.').'</div></div>';
+            $lineas .=  '<line x1="150" y1="'.$t.'" x2="302" y2="'.$hsvg.'" style="stroke:#000; stroke-width:1"></line>';
+            $t += 60;
+            $x++;
+        }
+        $t = 15;
+        $x = 0;
+        foreach ($spider[$cuenta]['credito'] as $key => $value) {
+            $this->data['body'] .= '<div class="spd-credito" style="top: '.($x*60).'px;">'.$key.'<div style="float: right">$'.number_format($value['valor'],0,',','.').'</div></div>';
+            $lineas .=  '<line x1="452" y1="'.$hsvg.'" x2="604" y2="'.$t.'" style="stroke:#000; stroke-width:1"></line>';
+            $t += 60;
+            $x++;
+        }
+        $this->data['body'] .= '<div class="spd-spider"  style="top: '.((($c*60)/2)-30).'px; text-align: center">'.$cuenta.'</div>';
+        
+        $this->data['body'] .=  '<svg width="754" height="'.(($c*60)-30).'" viewBox="0 0 754 '.(($c*60)-30).'">';
+        $this->data['body'] .= $lineas;
+        $this->data['body'] .=  '</svg>';
+        
+        //$this->data['body'] .= '<pre>'.var_export($spider, TRUE).'</pre>';
+        $this->data['body'] .= '<br/><br/><a href="'.base_url('tablero/spider/130505').'">130505</a> - '.
+                               '<a href="'.base_url('tablero/spider/135515').'">135515</a> - '.
+                               '<a href="'.base_url('tablero/spider/413595').'">413595</a> - '.
+                               '<a href="'.base_url('tablero/spider/240801').'">240801</a> - '.
+                               '<a href="'.base_url('tablero/spider/135517').'">135517</a> - '.
+                               '<a href="'.base_url('tablero/spider/11100501').'">11100501</a>';
         $this->load->view("plantilla/plantilla", $this->data);
     }
 

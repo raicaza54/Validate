@@ -15,6 +15,33 @@ body{
     padding-top: 12px;
     position: relative;
 }
+.tab-pane{
+    position: relative;
+}
+.tab-pane div.spd-credito{
+    top: 0px;
+    right: 0px;
+}
+.tab-pane div.spd-spider{
+    right: calc((754px - 150px) / 2);
+}
+.tab-pane div.spd-debito{
+    top: 0px;
+    left: 0px;
+}
+.tab-pane .spider-linea {
+    width: 153px;
+    background: linear-gradient(to top right, transparent calc(50% - 1px), #aaa, transparent calc(50% + 1px));
+    position: absolute;
+}
+.tab-pane div[class^='spd']{
+    border: 1px solid #777;
+    height: 30px;
+    width: 150px;
+    padding: 5px;
+    font-size: 12px;
+    position: absolute;
+}
 .menu-card-icon img[src*='svg']{
     height: 42px;
 }
