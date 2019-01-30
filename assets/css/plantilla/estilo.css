@@ -15,26 +15,27 @@ body{
     padding-top: 12px;
     position: relative;
 }
-.tab-pane{
+#body-spider{
     position: relative;
+    width: 754px;
 }
-.tab-pane div.spd-credito{
+#body-spider div.spd-credito{
     top: 0px;
     right: 0px;
 }
-.tab-pane div.spd-spider{
+#body-spider div.spd-spider{
     right: calc((754px - 150px) / 2);
 }
-.tab-pane div.spd-debito{
+#body-spider div.spd-debito{
     top: 0px;
     left: 0px;
 }
-.tab-pane .spider-linea {
+#body-spider .spider-linea {
     width: 153px;
     background: linear-gradient(to top right, transparent calc(50% - 1px), #aaa, transparent calc(50% + 1px));
     position: absolute;
 }
-.tab-pane div[class^='spd']{
+#body-spider div[class^='spd']{
     border: 1px solid #777;
     height: 30px;
     width: 150px;

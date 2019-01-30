@@ -13,5 +13,12 @@ $(document).ready(function () {
         },
         bindto: "#CombinationChart"
     });
-    $('#example').DataTable();
+    $('#example').DataTable({
+        paging: true,
+        colReorder: true,
+        fixedHeader: {
+            header: true
+        },
+        select: true
+    });
 });

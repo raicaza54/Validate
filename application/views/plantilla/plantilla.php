@@ -13,7 +13,9 @@
         <!-- Billboard CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/billboard/billboard.min.css') ?>">
         <!-- Datatables CSS -->
-        <script src="<?= base_url('assets/library/datatables/dataTables.bootstrap4.min.css') ?>"></script>        
+        <script src="<?= base_url('assets/library/datatables/datatables.min.css') ?>"></script>
+        <!-- Select-1.2.6 -->
+        <script src="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>"></script>
         <!-- FontAwesome ICON -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <?= asset_css('plantilla/estilo.css') ?>
@@ -161,7 +163,9 @@
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active clearfix" id="nav-spider" role="tabpanel" aria-labelledby="nav-spider-tab">
-                    <?= $body ?>
+                    <div id="body-spider">
+                        <?= $body ?>
+                    </div>
                 </div>
                 <div class="tab-pane fade show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div id="CombinationChart"></div>
@@ -661,6 +665,8 @@
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>"></script>
         <!-- Datatables JS -->
         <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>"></script>
+        <!-- Select-1.2.6 -->
+        <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>"></script>
         <!-- Billboard JS -->
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <script src="<?= base_url('assets/library/billboard/billboard.min.js') ?>"></script>
