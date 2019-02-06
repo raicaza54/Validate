@@ -42,6 +42,7 @@ body{
     padding: 5px;
     font-size: 12px;
     position: absolute;
+    font-stretch: ultra-condensed;
 }
 .menu-card-icon img[src*='svg']{
     height: 42px;
@@ -49,12 +50,13 @@ body{
 .menu-card img[src*='svg']{
     height: 14px;
 }
-.menu-card span{
-    -webkit-touch-callout: none;
+.no-seleccionable {
     -webkit-user-select: none;
-    -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none; 
+}
+.menu-card span{
     user-select: none;
     font-size: 12px;
     margin: 0px 5px 9px 5px;
@@ -337,19 +339,19 @@ a.article:hover {
 }
 
 .propiedades  ul {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 .propiedades  li {
-  padding-left: 1.3em;
+    padding-left: 1.3em;
 }
 .propiedades  li:before {
-  content: "\f1b2"; /* FontAwesome Unicode */
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  display: inline-block;
-  margin-left: -1.3em; /* same as padding-left set on li */
-  width: 1.3em; /* same as padding-left set on li */
+    content: "\f1b2"; /* FontAwesome Unicode */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    display: inline-block;
+    margin-left: -1.3em; /* same as padding-left set on li */
+    width: 1.3em; /* same as padding-left set on li */
 }
 #nav-tab a{
     outline: none;

@@ -65,7 +65,7 @@
                             <ul obj="tree">
                                 <li data-jstree='{"opened":true}' obj="tree">2018
                                     <ul obj="tree">
-                                        <li obj="tree" data-jstree='{"opened":true}'>Enero
+                                        <li obj="tree" data-jstree='{"opened":false}'>Enero
                                             <ul obj="tree">
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
@@ -73,7 +73,7 @@
                                                 <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
                                             </ul>
                                         </li>
-                                        <li obj="tree" data-jstree='{"opened":true}'>Febrero
+                                        <li obj="tree" data-jstree='{"opened":false}'>Febrero
                                             <ul obj="tree">
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
@@ -81,7 +81,7 @@
                                                 <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
                                             </ul>
                                         </li>
-                                        <li obj="tree" data-jstree='{"opened":true}'>Marzo
+                                        <li obj="tree" data-jstree='{"opened":false}'>Marzo
                                             <ul obj="tree">
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
@@ -89,7 +89,7 @@
                                                 <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
                                             </ul>
                                         </li>
-                                        <li obj="tree" data-jstree='{"opened":true}'>Abril
+                                        <li obj="tree" data-jstree='{"opened":false}'>Abril
                                             <ul obj="tree">
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
                                                 <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>

@@ -2,7 +2,7 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
-                <div class="icono" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
+                <div class="icono item-disabled" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <?= asset_image('svg/120-browser-9.svg') ?>
                     <span>Crear</span>
                 </div>
@@ -10,7 +10,7 @@
                     <?= asset_image('svg/125-open-book.svg') ?>
                     <span>Propiedades</span>
                 </div>
-                <div class="icono item-disabled">
+                <div class="icono">
                     <?= asset_image('svg/110-analytics-21.svg') ?>
                     <span>Seleccionar</span>
                 </div>

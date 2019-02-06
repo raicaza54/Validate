@@ -88,5 +88,43 @@
 # Super+Ctrl+Q: Quit recording
 #*******************************************************************************
 
+#*******************************************************************************
+# Añadir jerarquía a nuestras colecciones de datos en PHP. 
+# Creando árboles en PHP
+#*******************************************************************************
+# Es una práctica muy común categorizar nuestros. Hacer que existan 
+# categorías/sub-categorías/sub-sub-categorías sin límite al igual que 
+# directorios o carpetas hay en nuestro ordenador necesitamos tener todo 
+# clasificado. Es decir, queremos introducir jerarquía en nuestros datos, 
+# hacer que unos campos dependan de otros.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://poesiabinaria.net/2015/02/jerarquia-en-arrays-php/
+#*******************************************************************************
+
+#*******************************************************************************
+Estructuras jerárquicas en bases de datos relacionales
+#*******************************************************************************
+# En ocasiones nos hemos encontrado la necesidad de trabajar con alguna 
+# jerarquía de datos, como pueden ser los temas en foros, categorías de 
+# productos en tiendas virtuales, listas de correo, ... y cuando los datos 
+# empiezan a crecer nos vamos dando cuenta que las bases de datos relacionales 
+# pueden no ser las más adecuadas para este fin, puesto que casi siempre nos 
+# obligan a trabajar con recursividad.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# http://www.arumeinformatica.es/blog/estructuras-jerarquicas-de-datos-en-
+# bases-de-datos-relacionales/
+#*******************************************************************************
+
 
 https://datatables.net/examples/styling/bootstrap4
+
+
+
+http://www.guriddo.net/demo/bootstrap/
+
+
+
