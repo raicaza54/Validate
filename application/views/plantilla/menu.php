@@ -3,15 +3,15 @@
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
                 <div class="icono item-disabled" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
-                    <?= asset_image('svg/120-browser-9.svg') ?>
+                    <i class="fas fa-city"></i>
                     <span>Crear</span>
                 </div>
                 <div class="icono">
-                    <?= asset_image('svg/125-open-book.svg') ?>
+                    <i class="far fa-building"></i>
                     <span>Propiedades</span>
                 </div>
                 <div class="icono">
-                    <?= asset_image('svg/110-analytics-21.svg') ?>
+                    <i class="fas fa-building"></i>
                     <span>Seleccionar</span>
                 </div>
                 <div class="titulo">Empresas</div>
@@ -19,11 +19,11 @@
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono">
-                    <?= asset_image('svg/063-server-2.svg') ?>
+                    <i class="fas fa-file-upload"></i>
                     <span>Archivo</span>
                 </div>
                 <div class="icono item-disabled">
-                    <?= asset_image('svg/117-analytics-23.svg') ?>
+                    <i class="fas fa-network-wired"></i>
                     <span>Conexi&oacute;n</span>
                 </div>
                 <div class="titulo">Importar</div>
@@ -31,11 +31,11 @@
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono" data-toggle="popover" data-placement="bottom" data-content="Se exporta la base de datos en un archivo CSV separado por punto y comas (;)">
-                    <?= asset_image('svg/085-txt.svg') ?>
+                    <i class="fas fa-file-csv"></i>
                     <span>CSV</span>
                 </div>
                 <div class="icono item-disabled">
-                    <?= asset_image('svg/075-xls.svg') ?>
+                    <i class="fas fa-file-excel"></i>
                     <span>Excel</span>
                 </div>
                 <div class="titulo">Exportar</div>
@@ -45,7 +45,7 @@
         <div class="tab-pane fade" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
             <div class="menu-card-icon">
                 <div class="icono item-disabled">
-                    <?= asset_image('svg/036-database.svg') ?>
+                    <i class="fas fa-copy"></i>
                     <span>Duplicar</span>
                 </div>
                 <div class="titulo">Datos</div>
@@ -53,11 +53,11 @@
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono item-disabled">
-                    <?= asset_image('svg/001-data-storage.svg') ?>
+                    <i class="fas fa-sort-amount-up"></i>
                     <span>Indice</span>
                 </div>
                 <div class="icono item-disabled">
-                    <?= asset_image('svg/068-server-7.svg') ?>
+                    <i class="fas fa-sort-numeric-down"></i>
                     <span>Ordenar</span>
                 </div>
                 <div class="titulo">Orden</div>
@@ -65,15 +65,15 @@
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono">
-                    <?= asset_image('svg/102-analytics-16.svg') ?>
+                    <i class="fas fa-search"></i>
                     <span>Buscar</span>
                 </div>
                 <div class="icono">
-                    <?= asset_image('svg/044-resume.svg') ?>
+                    <i class="fas fa-arrow-alt-circle-right"></i>
                     <span>Buscar Siguiente</span>
                 </div>
                 <div class="icono">
-                    <?= asset_image('svg/005-algorithm.svg') ?>
+                    <i class="fas fa-eye"></i>
                     <span>Ir a</span>
                 </div>
                 <div class="titulo">B&uacute;squeda</div>
@@ -83,8 +83,8 @@
         <div class="tab-pane fade" id="pills-analisis" role="tabpanel" aria-labelledby="pills-analisis-tab">
             <div class="menu-card-icon">
                 <div class="icono">
-                    <?= asset_image('svg/070-analytics.svg') ?>
-                    <span>Ejecutar</span>
+                    <i class="fas fa-retweet"></i>
+                    <span>Volver a Ejecutar</span>
                 </div>
                 <div class="titulo">Tareas</div>
             </div>
@@ -92,7 +92,7 @@
             <div class="menu-card">
                 <div class="d-flex flex-column">
                     <span>
-                        <i class="fas fa-list-alt"></i> Ley de Benford
+                        <i class="fas fa-chart-bar"></i> Ley de Benford
                     </span>                    
                     <span class="item-disabled">
                         <i class="fas fa-list-alt"></i> Detectar omisiones
@@ -103,7 +103,7 @@
                         <i class="fas fa-list-alt"></i> Clave duplicados
                     </span>
                     <span>
-                        <i class="fas fa-list-alt"></i> Araña
+                        <i class="fas fa-spider"></i> Araña
                     </span>
                 </div>
                 <div class="titulo">Explorar</div>

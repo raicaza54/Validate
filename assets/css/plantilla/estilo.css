@@ -44,17 +44,15 @@ body{
     position: absolute;
     font-stretch: ultra-condensed;
 }
-.menu-card-icon img[src*='svg']{
-    height: 42px;
-}
-.menu-card img[src*='svg']{
-    height: 14px;
-}
 .no-seleccionable {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; 
+}
+.menu-card-icon,
+.menu-card{
+    color: #485668;
 }
 .menu-card span{
     user-select: none;
@@ -86,6 +84,7 @@ body{
 .menu-card div{
     margin-bottom: 7px;
     float: left;
+    padding: 0px 5px;
 }
 .bg-auditor .nav-link{
     outline: none;
@@ -110,6 +109,7 @@ body{
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 7px;
+    padding: 0px 5px;
 }
 .bg-auditor .nav-pills .nav-link.active, 
 .bg-auditor .nav-pills .show > .nav-link{
