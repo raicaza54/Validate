@@ -3,7 +3,7 @@
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
                 <div class="icono item-disabled" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
-                    <i class="fas fa-city"></i>
+                    <i class="far fa-hospital"></i>
                     <span>Crear</span>
                 </div>
                 <div class="icono">
@@ -11,8 +11,8 @@
                     <span>Propiedades</span>
                 </div>
                 <div class="icono">
-                    <i class="fas fa-building"></i>
-                    <span>Seleccionar</span>
+                    <i class="fas fa-city"></i>
+                    <span>Listar</span>
                 </div>
                 <div class="titulo">Empresas</div>
             </div>

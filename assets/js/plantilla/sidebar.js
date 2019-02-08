@@ -2,12 +2,9 @@ $(document).ready(function () {
     $("#sidebar").mCustomScrollbar({
         theme: "minimal"
     });
-    $('a,div').popover({trigger:'hover', delay:500});
+    $('i,a,div').popover({trigger:'hover', delay:500});
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
-    });
-    $("#sidebar").mCustomScrollbar({
-        theme: "minimal"
     });
     $('#sidebarCollapse').on('click', function () {
         // open or close navbar

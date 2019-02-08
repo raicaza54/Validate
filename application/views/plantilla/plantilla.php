@@ -44,6 +44,9 @@
                 </ul>
             </div>
             <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#">
+                    <i class="fas fa-bell" style="margin-top: 6px; margin-right: 10px;"></i>
+                </a>                
                 <span class="navbar-text text-white">
                     Kevin Enriquez
                 </span>
@@ -56,9 +59,14 @@
         <!-- Sidebar -->
         <nav id="sidebar">
             <ul class="list-unstyled components" style="padding-top: 10px;">
-                <p style="margin: 0px; padding: 0px 10px 0px 10px;">
-                    Explorador de archivos
-                </p>
+                <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
+                    <div class="float-left">Explorador de archivos</div>
+                    <div class="float-right" style="margin-right: -3px;">
+                        <i class="btn-icon far fa-plus-square" data-toggle="popover" data-placement="top" data-content="Crear una carpeta"></i>
+                        <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido"></i>
+                        <i class="btn-icon fas fa-info-circle" data-toggle="popover" data-placement="top" data-content="Información de la carpeta"></i>
+                    </div>
+                </div>
                 <div class="card" style="height: calc(100vh - 203px); overflow-y: auto;">
                     <div class="card-body">
                         <div id="simpleTree" obj="tree">
@@ -122,7 +130,7 @@
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
-                            <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 Resultados
                             </button>
                         </h2>
