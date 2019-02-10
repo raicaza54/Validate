@@ -754,7 +754,7 @@ class Auth extends CI_Controller {
      * @return mixed
      */
     public function _render_page($view, $data = NULL, $returnhtml = FALSE) {//I think this makes more sense
-        $viewdata = (empty($data)) ? $this->data : $data;
+        $viewdata  = (empty($data)) ? $this->data : $data;
         $view_html = $this->load->view($view, $viewdata, TRUE);
         $this->load->view('auth/plantilla', array('body' => $view_html));
         // This will return html on 3rd argument being true
