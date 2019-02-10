@@ -22,13 +22,13 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
 
-        <title>Auditor</title>
+        <title>Verify</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg fixed-top bg-auditor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
-                <i class="fas fa-feather-alt" style="color: #FF8104"></i>
-                Auditor
+                <i class="fas fa-check-double" style="color: #729d39"></i>
+                Verify
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="margin-left: 40px;">

@@ -21,8 +21,8 @@ class Migration_Install_ion_auth extends CI_Migration {
         // Table structure for table 'groups'
         $this->dbforge->add_field([
             'id'          => [
-                'type'           => 'MEDIUMINT',
-                'constraint'     => '8',
+                'type'           => 'INT',
+                'constraint'     => '11',
                 'unsigned'       => TRUE,
                 'auto_increment' => TRUE
             ],
@@ -36,7 +36,7 @@ class Migration_Install_ion_auth extends CI_Migration {
             ]
         ]);
         $this->dbforge->add_field("created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");        
+        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table($this->tables['groups']);
 
@@ -59,10 +59,15 @@ class Migration_Install_ion_auth extends CI_Migration {
         // Table structure for table 'users'
         $this->dbforge->add_field([
             'id'                          => [
-                'type'           => 'MEDIUMINT',
-                'constraint'     => '8',
+                'type'           => 'INT',
+                'constraint'     => '11',
                 'unsigned'       => TRUE,
                 'auto_increment' => TRUE
+            ],
+            'fk_jerarquia'                => [
+                'type'       => 'INT',
+                'constraint' => '11',
+                'unsigned'   => TRUE,
             ],
             'ip_address'                  => [
                 'type'       => 'VARCHAR',
@@ -159,24 +164,24 @@ class Migration_Install_ion_auth extends CI_Migration {
             ]
         ]);
         $this->dbforge->add_field("created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");                
+        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table($this->tables['users']);
 
         // Dumping data for table 'users'
         $data = [
             'ip_address'              => '127.0.0.1',
-            'username'                => 'administrator',
+            'username'                => 'kevin.g.enriquez.c',
             'password'                => '$2y$08$200Z6ZZbp3RAEXoaWcMA6uJOFicwNZaqk4oDhqTUiFXFe63MG.Daa',
-            'email'                   => 'admin@admin.com',
+            'email'                   => 'kevin.g.enriquez.c@gmail.com',
             'activation_code'         => '',
             'forgotten_password_code' => NULL,
             'created_on'              => '1268889823',
             'last_login'              => '1268889823',
             'active'                  => '1',
-            'first_name'              => 'Admin',
-            'last_name'               => 'istrator',
-            'company'                 => 'ADMIN',
+            'first_name'              => 'Kevin',
+            'last_name'               => 'Enriquez',
+            'company'                 => 'GEO INFORMATIC SOLUTIONS SAS',
             'phone'                   => '0',
         ];
         $this->db->insert($this->tables['users'], $data);
@@ -188,24 +193,24 @@ class Migration_Install_ion_auth extends CI_Migration {
         // Table structure for table 'users_groups'
         $this->dbforge->add_field([
             'id'       => [
-                'type'           => 'MEDIUMINT',
-                'constraint'     => '8',
+                'type'           => 'INT',
+                'constraint'     => '11',
                 'unsigned'       => TRUE,
                 'auto_increment' => TRUE
             ],
             'user_id'  => [
-                'type'       => 'MEDIUMINT',
-                'constraint' => '8',
+                'type'       => 'INT',
+                'constraint' => '11',
                 'unsigned'   => TRUE
             ],
             'group_id' => [
-                'type'       => 'MEDIUMINT',
-                'constraint' => '8',
+                'type'       => 'INT',
+                'constraint' => '11',
                 'unsigned'   => TRUE
             ]
         ]);
         $this->dbforge->add_field("created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");                
+        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table($this->tables['users_groups']);
 
@@ -229,8 +234,8 @@ class Migration_Install_ion_auth extends CI_Migration {
         // Table structure for table 'login_attempts'
         $this->dbforge->add_field([
             'id'         => [
-                'type'           => 'MEDIUMINT',
-                'constraint'     => '8',
+                'type'           => 'INT',
+                'constraint'     => '11',
                 'unsigned'       => TRUE,
                 'auto_increment' => TRUE
             ],
@@ -251,7 +256,7 @@ class Migration_Install_ion_auth extends CI_Migration {
             ]
         ]);
         $this->dbforge->add_field("created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");                
+        $this->dbforge->add_field("update_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table($this->tables['login_attempts']);
     }

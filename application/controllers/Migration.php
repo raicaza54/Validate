@@ -18,8 +18,8 @@ class Migration extends CI_Controller {
         }
     }
 
-    public function index() {
-        if (!$this->migration->version(1)) {
+    public function index($id) {
+        if (!$this->migration->version($id)) {
             echo $this->migration->error_string()."\n";
             echo "error\n";
         } else {

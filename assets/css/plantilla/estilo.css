@@ -9,6 +9,7 @@ body{
 .menu-auditor{
     top: 50px;
     height: 100px;
+    border-bottom: 1px solid #c6cfd7 !important;
 }
 .menu-card{
     float: left;
@@ -140,7 +141,20 @@ body{
 }
 .bg-auditor .nav-pills .nav-link.active, 
 .bg-auditor .nav-pills .show > .nav-link{
-    background-color: #02366B;
+    background-color: #fff;
+    color: #777 !important;
+}
+#pills-tab li{
+    position: relative;
+}
+#pills-tab li a.active::after {
+    position: absolute;
+    content: " ";
+    background-color: #fff;
+    width: 100%;
+    bottom: -10px;
+    height: 15px;
+    left: 0px;
 }
 .menu-card-icon i{
     font-size: 32px;
@@ -191,7 +205,6 @@ div.navbar *::selection {
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {

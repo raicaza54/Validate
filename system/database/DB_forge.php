@@ -81,6 +81,13 @@ abstract class CI_DB_forge {
 	 */
 	public $db_char_set	= '';
 
+        /**
+         * COMMENT value representation in CREATE/ALTER TABLE statements
+         *
+         * @var    string
+         */
+        protected $_comment = ' COMMENT ';
+        
 	// --------------------------------------------------------------------
 
 	/**
@@ -170,6 +177,29 @@ abstract class CI_DB_forge {
 		log_message('info', 'Database Forge Class Initialized');
 	}
 
+	// --------------------------------------------------------------------
+        
+        /**
+         * Field attribute COMMENT
+         *
+         * @param    array    &$attributes
+         * @param    array    &$field
+         * @return    void
+         */
+        protected function _attr_comment(&$attributes, &$field)
+        {
+            if ($this->_comment === FALSE)
+            {
+                return;
+            }
+
+            if (!empty($attributes['COMMENT']))
+            {    
+                $field['comment'] = $this->_default.$this->db->escape($attributes['COMMENT']);
+            }
+        }
+        
+        
 	// --------------------------------------------------------------------
 
 	/**
@@ -808,6 +838,7 @@ abstract class CI_DB_forge {
 			.$field['default']
 			.$field['null']
 			.$field['auto_increment']
+                        .$field['comment']
 			.$field['unique'];
 	}
 
