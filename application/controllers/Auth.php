@@ -65,6 +65,27 @@ class Auth extends CI_Controller {
             if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
                 //if the login is successful
                 //redirect them back to the home page
+                $this->db->select('
+                    auth__users.id AS users_id,
+                    ip_address,
+                    username,
+                    email,
+                    first_name,
+                    last_name,
+                    clie__clientes.id AS clientes_id,
+                    nombre AS clie_nombre,
+                    identificacion AS clie_identificacion,
+                    direccion AS clie_direccion,
+                    telefonos AS clie_telefonos,
+                    correo AS clie_correo,
+                    sist__jerarquia.nivel AS nivel
+                ');
+                $this->db->from('auth__users');
+                $this->db->join('clie__clientes_users', 'clie__clientes_users.fk_users = auth__users.id');
+                $this->db->join('clie__clientes', 'clie__clientes.id = clie__clientes_users.fk_clientes');
+                $this->db->join('sist__jerarquia', 'sist__jerarquia.id = auth__users.fk_jerarquia');
+                $session_data = $this->db->get()->row_array();
+                $this->session->set_userdata($session_data);
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
                 redirect('/', 'refresh');
             } else {

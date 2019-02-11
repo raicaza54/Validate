@@ -9,8 +9,12 @@
 /**
  * Description of Empresas
  *
- * @author kevin
+ * @author Kevin Enriquez
  */
 class Empresas {
-    //put your code here
+    
+    function __construct() {
+        parent::__construct();
+        //echo $this->input->is_ajax_request();
+    }
 }
