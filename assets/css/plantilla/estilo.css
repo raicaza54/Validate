@@ -5,6 +5,7 @@
 body{
     font-family: 'Ubuntu', sans-serif;
     background-color: #f0f2eb;
+    overflow: hidden;
 }
 .menu-auditor{
     top: 50px;
@@ -189,7 +190,7 @@ div.navbar *::selection {
 }
 .btn-icon{
     cursor: pointer;
-    padding: 2px 5px;
+    padding: 5px 5px;
     border-radius: 3px;
 }
 .wrapper a,
@@ -423,4 +424,9 @@ a.article:hover {
     border-width: 1px;
     border-color: #fff #dee2e6 #dee2e6;
     padding: 20px;
+}
+.selec-empresa{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }

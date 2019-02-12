@@ -11,7 +11,7 @@
         <!-- JSTree CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/jstree/style.css') ?>">
         <!-- Billboard CSS -->
-        <link rel="stylesheet" href="<?= base_url('assets/library/billboard/billboard.min.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/library/billboard/1.7.1/css/billboard.min.css') ?>">
         <!-- Datatables CSS -->
         <script src="<?= base_url('assets/library/datatables/datatables.min.css') ?>"></script>
         <!-- Select-1.2.6 -->
@@ -69,97 +69,21 @@
                 </div>
                 <div class="card" style="height: calc(100vh - 203px); overflow-y: auto;">
                     <div class="card-body">
-                        <div id="simpleTree" obj="tree">
-                            <ul obj="tree">
-                                <li data-jstree='{"opened":true}' obj="tree">2018
-                                    <ul obj="tree">
-                                        <li obj="tree" data-jstree='{"opened":false}'>Enero
-                                            <ul obj="tree">
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXP</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
-                                            </ul>
-                                        </li>
-                                        <li obj="tree" data-jstree='{"opened":false}'>Febrero
-                                            <ul obj="tree">
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXP</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
-                                            </ul>
-                                        </li>
-                                        <li obj="tree" data-jstree='{"opened":false}'>Marzo
-                                            <ul obj="tree">
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXP</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
-                                            </ul>
-                                        </li>
-                                        <li obj="tree" data-jstree='{"opened":false}'>Abril
-                                            <ul obj="tree">
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXP</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li obj="tree" data-jstree='{"opened":true}'>2019
-                                    <ul obj="tree">
-                                        <li obj="tree" data-jstree='{"opened":true}'>Enero
-                                            <ul obj="tree">
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>Balance de pruebas</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXP</li>
-                                                <li obj="tree" data-jstree='{"type":"file"}'>CXC</li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <div class="selec-empresa text-center text-muted small no-seleccionable">
+                            Debe Seleccionar<br/>una empresa
                         </div>
                     </div>
                 </div>
             </ul>
         </nav>
         <nav id="sidebar" class="propiedades">
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Resultados
-                            </button>
-                        </h2>
-                    </div>
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <ul>
-                                <li>Araña</li>
-                                <li>Ley de Benford</li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="card" style="height: calc(100vh - 170px); overflow-y: auto;">
+                <div class="card-body">
+                    <div class="selec-empresa text-center text-muted small no-seleccionable">
+                        Debe Seleccionar<br/>una empresa
+                    </div>                    
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Comentarios
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>            
         </nav>
         <div id="content">
             <nav>
@@ -178,8 +102,8 @@
                 <div class="tab-pane fade show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div id="CombinationChart"></div>
                 </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-<table id="example" class="table table-striped table-bordered" style="width:100%">
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="overflow-y: scroll; height: calc(100vh - 230px);">
+    <table id="example" class="table table-striped table-bordered" style="">
         <thead>
             <tr>
                 <th>Name</th>
@@ -677,8 +601,11 @@
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>"></script>
         <!-- Billboard JS -->
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="<?= base_url('assets/library/billboard/billboard.min.js') ?>"></script>
+        <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>"></script>
+        <!-- knockoutjs JS -->
+        <script src="<?= base_url('assets/library/knockout/3.4.2/knockout.js') ?>"></script>
         <?= asset_js('plantilla/sidebar.js') ?>
         <?= asset_js('script.js') ?>
+        <?= asset_js('app.js') ?>
     </body>
 </html>
