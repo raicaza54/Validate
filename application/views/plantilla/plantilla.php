@@ -55,7 +55,7 @@
                 </a>
             </div>
         </nav>
-        
+        <?php $this->load->view('plantilla/menu'); ?>
         <!-- Sidebar -->
         <nav id="sidebar">
             <ul class="list-unstyled components" style="padding-top: 10px;">
@@ -107,6 +107,7 @@
         <!-- knockoutjs JS -->
         <script src="<?= base_url('assets/library/knockout/3.4.2/knockout.js') ?>"></script>
         <?= asset_js('plantilla/sidebar.js') ?>
+        <?= asset_js('app.js') ?>
         <?=load_assets('js')?>
     </body>
 </html>
