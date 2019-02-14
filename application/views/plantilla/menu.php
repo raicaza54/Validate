@@ -2,15 +2,15 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: PrinCrear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
+                <div class="icono" id="PrinCrear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
                 </div>
-                <div class="icono" data-bind="css: PrinPropiedades">
+                <div class="icono" id="PrinPropiedades">
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
                 </div>
-                <div class="icono" data-bind="css: PrinListar">
+                <div class="icono" id="PrinListar">
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>
@@ -18,11 +18,11 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: PrinArchivo">
+                <div class="icono" id="PrinArchivo">
                     <i class="fas fa-file-upload"></i>
                     <span>Archivo</span>
                 </div>
-                <div class="icono" data-bind="css: PrinConexion">
+                <div class="icono" id="PrinConexion">
                     <i class="fas fa-network-wired"></i>
                     <span>Conexi&oacute;n</span>
                 </div>
@@ -30,11 +30,11 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: PrinCSV" data-toggle="popover" data-placement="bottom" data-content="Se exporta la base de datos en un archivo CSV separado por punto y comas (;)">
+                <div class="icono" id="PrinCSV" data-toggle="popover" data-placement="bottom" data-content="Se exporta la base de datos en un archivo CSV separado por punto y comas (;)">
                     <i class="fas fa-file-csv"></i>
                     <span>CSV</span>
                 </div>
-                <div class="icono" data-bind="css: PrinExcel">
+                <div class="icono" id="PrinExcel">
                     <i class="fas fa-file-excel"></i>
                     <span>Excel</span>
                 </div>
@@ -44,7 +44,7 @@
         </div>
         <div class="tab-pane fade" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: DatoDuplicar">
+                <div class="icono" id="DatoDuplicar">
                     <i class="fas fa-copy"></i>
                     <span>Duplicar</span>
                 </div>
@@ -52,11 +52,11 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: DatoIndices">
+                <div class="icono" id="DatoIndices">
                     <i class="fas fa-sort-amount-up"></i>
                     <span>Indice</span>
                 </div>
-                <div class="icono" data-bind="css: DatoOrdenar">
+                <div class="icono" id="DatoOrdenar">
                     <i class="fas fa-sort-numeric-down"></i>
                     <span>Ordenar</span>
                 </div>
@@ -64,15 +64,15 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: DatoBuscar">
+                <div class="icono" id="DatoBuscar">
                     <i class="fas fa-search"></i>
                     <span>Buscar</span>
                 </div>
-                <div class="icono" data-bind="css: DatoSiguiente">
+                <div class="icono" id="DatoSiguiente">
                     <i class="fas fa-arrow-alt-circle-right"></i>
                     <span>Buscar Siguiente</span>
                 </div>
-                <div class="icono" data-bind="css: DatoIr">
+                <div class="icono" id="DatoIr">
                     <i class="fas fa-eye"></i>
                     <span>Ir a</span>
                 </div>
@@ -82,7 +82,7 @@
         </div>
         <div class="tab-pane fade" id="pills-analisis" role="tabpanel" aria-labelledby="pills-analisis-tab">
             <div class="menu-card-icon">
-                <div class="icono" data-bind="css: AnalEjecutar">
+                <div class="icono" id="AnalEjecutar">
                     <i class="fas fa-retweet"></i>
                     <span>Volver a Ejecutar</span>
                 </div>
@@ -91,18 +91,18 @@
             <div class="menu-separador"></div>
             <div class="menu-card">
                 <div class="d-flex flex-column">
-                    <span data-bind="css: AnalBenford">
+                    <span id="AnalBenford">
                         <i class="fas fa-chart-bar"></i> Ley de Benford
                     </span>                    
-                    <span data-bind="css: AnalOmisiones">
+                    <span id="AnalOmisiones">
                         <i class="fas fa-list-alt"></i> Detectar omisiones
                     </span>
                 </div>
                 <div class="d-flex flex-column">
-                    <span data-bind="css: AnalDuplicados">
+                    <span id="AnalDuplicados">
                         <i class="fas fa-list-alt"></i> Clave duplicados
                     </span>
-                    <span data-bind="css: AnalSpider">
+                    <span id="AnalSpider">
                         <i class="fas fa-spider"></i> Araña
                     </span>
                 </div>

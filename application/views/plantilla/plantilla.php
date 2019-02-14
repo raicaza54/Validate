@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es">
     <head>
+        <!-- STYLESHEET -->
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,15 +14,43 @@
         <!-- Billboard CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/billboard/1.7.1/css/billboard.min.css') ?>">
         <!-- Datatables CSS -->
-        <script src="<?= base_url('assets/library/datatables/datatables.min.css') ?>"></script>
+        <link rel="stylesheet" src="<?= base_url('assets/library/datatables/datatables.min.css') ?>"></link>
         <!-- Select-1.2.6 -->
-        <script src="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>"></script>
+        <link rel="stylesheet" src="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>"></link>
         <!-- FontAwesome ICON -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <?= asset_css('plantilla/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
-        <?=load_assets('css')?>
+        <?= load_assets('css') ?>
+        <!-- JAVASCRIPT -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>
+        <!-- Bootstrap Scroller JS -->
+        <script src="<?= base_url('assets/library/scroller/3.1.5/js/jquery.mCustomScrollbar.concat.min.js') ?>" type="text/javascript"></script>
+        <!-- JSTree JS -->
+        <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
+        <!-- Datatables JS -->
+        <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>" type="text/javascript"></script>
+        <!-- Select-1.2.6 -->
+        <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
+        <!-- Billboard JS -->
+        <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/js/main.js') ?>" type="module"></script>
+        <!-- Optional JavaScript -->        
+        <?= load_assets('js') ?>
+        <script type="text/javascript">
+            $(function ($) {
+                $.ajaxSetup({
+                    data: {
+                        '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>'
+                    }
+                });
+            });
+        </script>
         <title>Verify</title>
     </head>
     <body>
@@ -86,28 +115,7 @@
             </div>            
         </nav>
         <div id="content">
-            <?=$body?>
+            <?= $body ?>
         </div>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>"></script>
-        <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>"></script>
-        <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>"></script>
-        <!-- Bootstrap Scroller JS -->
-        <script src="<?= base_url('assets/library/scroller/3.1.5/js/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
-        <!-- JSTree JS -->
-        <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>"></script>
-        <!-- Datatables JS -->
-        <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>"></script>
-        <!-- Select-1.2.6 -->
-        <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>"></script>
-        <!-- Billboard JS -->
-        <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>"></script>
-        <!-- knockoutjs JS -->
-        <script src="<?= base_url('assets/library/knockout/3.4.2/knockout.js') ?>"></script>
-        <?= asset_js('plantilla/sidebar.js') ?>
-        <?= asset_js('app.js') ?>
-        <?=load_assets('js')?>
     </body>
 </html>

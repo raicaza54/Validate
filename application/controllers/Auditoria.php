@@ -28,7 +28,6 @@ class Auditoria extends CI_Controller {
     }
 
     public function index() {
-        add_asset("js", "empresas/app.js");
         $this->load->view("plantilla/plantilla", $this->data);
     }
 

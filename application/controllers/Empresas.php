@@ -1,18 +1,16 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Description of Empresas
- *
- * @author Kevin Enriquez
+ * @Packager    StraData S.A.S.
+ * @Copyright   StraData S.A.S. - www.stradata.com.co
+ * @Author      Gustavo Adolfo Naranjo - gustavo.naranjo@stradata.com.co
+ * @Description Controlador Generico - Modulo de Registro
+ * @LastUpdate  2018-05-24
  */
 class Empresas extends CI_Controller {
-  
+
     public $response = array(
         "meta"   => array(
             "copyright" => "Verify 2019",
@@ -26,60 +24,57 @@ class Empresas extends CI_Controller {
         ),
         "title"  => "Invalid Attribute",
         "detail" => "",
-        "data"   => array()
-    );    
-    
+        "data"   => array(),
+        "csrf"   => ''
+    );
+
     function __construct() {
         parent::__construct();
-        if (!$this->ion_auth->logged_in()){
-            //redirect('auth/login');
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
         }
         if (!$this->input->is_ajax_request()) {
-            //show_404();
+            show_404();
         }
+        $this->load->model('Empresas_model');
     }
-    
+
     public function datos() {
-        echo "Hola mundo";
-        exit();
         $response = $this->response;
         try {
+            $items = $this->Empresas_model->getAll();
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar como ejemplo", 204);
+                throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = array(
-                'list' => 'Hola mundo'
-            );            
+            $response["data"] = $items;
             throw new Exception("Resultado retornando correctamente", 200);
-        } catch (Exception $ex) {
+        } catch (Exception $exc) {
             $response["status"] = $exc->getCode();
-            $exception = array(
+            $exception          = array(
                 "code"    => $exc->getCode(),
                 "message" => $exc->getMessage(),
             );
             if ($exception["code"] === 200) {
-                $response["title"] = "Procedimiento realizado satisfactoriamente";
+                $response["title"]  = "Procedimiento realizado satisfactoriamente";
                 $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición correcta";
             } elseif ($exception["code"] === 202) {
-                $response["title"] = "Petición Aceptada pero incompleta";
+                $response["title"]  = "Petición Aceptada pero incompleta";
                 $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición Aceptada pero incompleta";
-                log_message("error", $exc->getCode().' - '.$exc->getMessage());
+                log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
             } elseif ($exception["code"] === 500) {
-                $response["title"] = "Error Interno del Servidor";
+                $response["title"]  = "Error Interno del Servidor";
                 $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
-                log_message("error", $exc->getCode().' - '.$exc->getMessage());
+                log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
             } else {
-                $response["title"] = "Error Interno del Servidor";
+                $response["title"]  = "Error Interno del Servidor";
                 $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
-                log_message("error", $exc->getCode().' - '.$exc->getMessage());
+                log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
             }
         }
-        $jsonResponse = json_encode($response);
-        ob_start();
-        echo $jsonResponse;
-        header('Content-Length: ' . ob_get_length());
-        header('Content-type: application/x-json;charset=UTF-8');
-        ob_flush();        
+        $response['csrf'] = $this->security->get_csrf_hash();
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
     }
-    
+
 }
