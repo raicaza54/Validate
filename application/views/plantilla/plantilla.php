@@ -19,10 +19,13 @@
         <link rel="stylesheet" src="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>"></link>
         <!-- FontAwesome ICON -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <!-- Toast -->
+        <link rel="stylesheet" href="<?= base_url('assets/library/toast/css/jquery.toast.min.css') ?>">
         <?= asset_css('plantilla/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
         <?= load_assets('css') ?>
+        
         <!-- JAVASCRIPT -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
@@ -39,6 +42,7 @@
         <!-- Billboard JS -->
         <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/js/main.js') ?>" type="module"></script>
         <!-- Optional JavaScript -->        
         <?= load_assets('js') ?>
@@ -77,7 +81,7 @@
                     <i class="fas fa-bell" style="margin-top: 6px; margin-right: 10px;"></i>
                 </a>                
                 <span class="navbar-text text-white">
-                    Kevin Enriquez
+                    <?= $this->session->first_name . ' ' . $this->session->last_name ?>
                 </span>
                 <a class="nav-item nav-link" href="<?= base_url('auth/logout') ?>">
                     <i class="fas fa-sign-out-alt" style="margin-top: 6px;"></i>
@@ -97,7 +101,7 @@
                     </div>
                 </div>
                 <div class="card" style="height: calc(100vh - 203px); overflow-y: auto;">
-                    <div class="card-body">
+                    <div class="card-body" id="explorador-content">
                         <div class="selec-empresa text-center text-muted small no-seleccionable">
                             Debe Seleccionar<br/>una empresa
                         </div>

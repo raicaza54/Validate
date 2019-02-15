@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg fixed-top menu-auditor">
+    <div id="empresaActiva"></div>
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
@@ -10,7 +11,7 @@
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
                 </div>
-                <div class="icono" id="PrinListar">
+                <div class="icono" id="PrinListar" onclick="EMPRESAS.main.listarEmpresas()">
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>

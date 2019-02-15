@@ -32,22 +32,3 @@ $("#AnalBenford").addClass('');
 $("#AnalOmisiones").addClass('item-disabled');
 $("#AnalDuplicados").addClass('item-disabled');
 $("#AnalSpider").addClass('');
-
-
-//    $('#simpleTree').jstree({
-//        'core': {
-//            'themes': {
-//                'responsive': false,
-//            },
-//            'multiple': false
-//        },
-//        'types': {
-//            'default': {
-//                'icon': 'far fa-folder'
-//            },
-//            'file': {
-//                'icon': 'far fa-file-excel'
-//            }
-//        },
-//        'plugins': ['types']
-//    });

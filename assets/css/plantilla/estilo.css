@@ -425,8 +425,59 @@ a.article:hover {
     border-color: #fff #dee2e6 #dee2e6;
     padding: 20px;
 }
+#nav-tabContent div.scrollTable{
+    overflow-y: auto;
+    height: calc(100vh - 295px);
+}
+.jq-toast-loader{
+    display: none;
+}
 .selec-empresa{
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+.tab-content{
+    font-size: 12px !important;
+}
+#nav-tabContent{
+    border-color: #fff #a7abaf #a7abaf;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    border-color: #a7abaf #a7abaf #fff;
+}
+.nav-tabs {
+    border-bottom: 1px solid #a7abaf;
+}
+.dataTables_filter{
+    white-space: nowrap;
+    text-align: right !important;
+}
+.pagination{
+    -ms-flex-pack: end !important;
+    justify-content: flex-end !important;    
+}
+#table-empresas .custom-control-label{
+    width: 100%;
+    cursor: pointer;
+    padding-top: 3px;
+}
+.tab-content ul.nav{
+    margin-bottom: 10px;
+    background-color: #e8e8e8;
+    border-radius: 3px;
+}
+#empresaActiva label{
+    width: 100%;
+    margin: 0px;
+}
+#empresaActiva{
+    font-size: 12px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100px;
+    width: 500px;
+    padding: 10px;
+    text-align: right;
 }

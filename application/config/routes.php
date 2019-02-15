@@ -54,7 +54,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /* -------------------------------------------------------------------------
  * Empresas
  * ------------------------------------------------------------------------- */
-$route['empresas/v1/datos'] = 'empresas/datos';
+$route['empresas/v1/datos']['get']    = 'empresas/datos';
+$route['empresas/v1/activar']['post'] = 'empresas/activar';
+
+/* -------------------------------------------------------------------------
+ * Explorador
+ * ------------------------------------------------------------------------- */
+$route['explorador/v1/carpetas']['get'] = 'explorador/carpetas';
 
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';

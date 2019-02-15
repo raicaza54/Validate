@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * Empresas Model
+ * Explorador de carpetas Model (arbol-c)
  *
  * Copyright   (c) 2019 Kevin Giovanni Enriquez Cordovez
  *  
@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version    0.0.1
  * @LastUpdate 2018-02-13
  */
-class Empresas_model extends CI_Model {
+class Explorador_model extends CI_Model {
 
     private $pref = 'clie__';
     
@@ -20,14 +20,11 @@ class Empresas_model extends CI_Model {
     }
     
     public function getTodas() {
-        $this->db->select('id, nombre, identificacion');
-        return $this->db->get($this->pref.'empresas')->result_array();
+
     }
     
     public function getId($id) {
-        $this->db->select('id, nombre, identificacion, telefonos, correo, persona, persona_tlfs');
-        $this->db->where('id', $id);
-        return $this->db->get($this->pref.'empresas')->row_array();
+
     }
 
 }
