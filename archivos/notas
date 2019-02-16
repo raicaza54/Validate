@@ -176,3 +176,18 @@
 # https://github.com/kamranahmedse/jquery-toast-plugin
 #*******************************************************************************
 
+#*******************************************************************************
+# Arbol de carpetas (Arbol-C)
+#*******************************************************************************
+# Arbol de archivos en PHP 
+# jsTree is jquery plugin, that provides interactive trees. It is absolutely 
+# free, open source and distributed under the MIT license. jsTree is easily 
+# extendable, themable and configurable, it supports HTML & JSON data sources 
+# and AJAX loading.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://gist.github.com/bran921007/dd458d781ce50e225436
+# https://www.jstree.com/docs/json/
+#*******************************************************************************
+

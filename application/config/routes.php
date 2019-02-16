@@ -62,6 +62,11 @@ $route['empresas/v1/activar']['post'] = 'empresas/activar';
  * ------------------------------------------------------------------------- */
 $route['explorador/v1/carpetas']['get'] = 'explorador/carpetas';
 
+/* -------------------------------------------------------------------------
+ * Archivos
+ * ------------------------------------------------------------------------- */
+$route['archivos/v1/datos']['post'] = 'archivos/datos';
+
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;

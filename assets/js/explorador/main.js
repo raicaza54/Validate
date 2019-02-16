@@ -26,7 +26,7 @@ EXPLORADOR.main = {
             EXPLORADOR.componets.arbol();
             return r;
         }).then(function (r) {
-            EXPLORADOR.componets.arbolPoblar(r);
+            EXPLORADOR.componets.arbolPoblar(r['data']);
         });
     }
 }
@@ -40,20 +40,20 @@ EXPLORADOR.componets = {
         $.toast({
             text: 'Mensaje',
             position: 'bottom-left',
-            stack: false
+            stack: false,
+            allowToastClose: false,
+            loader: false,
         });
     },
     arbolPoblar: function (datos) {
-        $.each(datos['data'], function (key, value) {
-            $('#carpetasTree').append(
-                `<ul obj="tree">`);
-        });
         $('#carpetasTree').jstree({
             'core': {
                 'themes': {
                     'responsive': false,
                 },
-                'multiple': false
+                multiple: false,
+                data: datos,
+                check_callback: true,
             },
             'types': {
                 'default': {
@@ -65,25 +65,8 @@ EXPLORADOR.componets = {
             },
             'plugins': ['types']
         });
-        $('#simpleTree').show();
     },
     arbol: function () {
-        $('#explorador-content').html(`<div id="carpetasTree" obj="tree" style="display: none;"></div>`);
-        /*
-        $('#explorador-content').html(
-            `<div id="simpleTree" obj="tree" style="display: none;">
-                <ul obj="tree">
-                    <li obj="tree" data-jstree='{"opened":false}'>2019
-                        <ul obj="tree">
-                            <li obj="tree" data-jstree='{"opened":false}'>Febrero
-                                <ul obj="tree">
-                                    <li obj="tree" data-jstree='{"type":"file"}'>Movimientos</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>        
-                </ul>
-            </div>`);
-            */
+        $('#explorador-content').html(`<div id="carpetasTree" obj="tree"></div>`);
     }
 }

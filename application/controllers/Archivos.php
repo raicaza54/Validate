@@ -5,10 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
- * @Description Controlador Explorador de carpetas
+ * @Description Controlador Archivos XLS/CSV
  * @LastUpdate  2019-02-14
  */
-class Explorador extends CI_Controller {
+class Archivos extends CI_Controller {
 
     public $response = array(
         "meta"   => array(
@@ -35,18 +35,17 @@ class Explorador extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Explorador_model');
+        $this->load->model('Archivos_model');
     }
 
-    public function carpetas() {
+    public function datos() {
         $response = $this->response;
         try {
-            //$items = $this->Empresas_model->getTodas();
-            $items = [
-                ['id' => "ajson1", 'parent' => "#", 'text' => "2019", 'state' => ['opened' => 'true']],
-                ['id' => "ajson2", 'parent' => "ajson1", 'text' => "Enero", 'state' => ['opened' => 'true']],
-                ['id' => "ajson3", 'parent' => "ajson2", 'text' => "Movimientos", 'type' => 'file']
-            ];
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
+            }            
+            $items = $this->Archivos_model->getDetalleId($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }

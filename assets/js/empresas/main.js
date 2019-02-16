@@ -64,7 +64,9 @@ EMPRESAS.componets = {
         $.toast({
             text: 'Se ha seleccionado la empresa exitosamente, ahora carga o selecciona un archivo',
             position: 'bottom-left',
-            stack: false
+            stack: false,
+            allowToastClose: false,
+            loader: false,
         });
     },
     tablaPoblar: function (datos) {

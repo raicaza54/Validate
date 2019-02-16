@@ -433,9 +433,9 @@ a.article:hover {
     display: none;
 }
 .selec-empresa{
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .tab-content{
     font-size: 12px !important;
@@ -480,4 +480,17 @@ a.article:hover {
     width: 500px;
     padding: 10px;
     text-align: right;
+}
+.jq-toast-single {
+    background-color: #2B2B2B;
+    padding: 15px;
+    font-size: 1rem;
+    border-radius: 3px;
+    line-height: 1.4rem;
+}
+.jq-toast-wrap {
+    width: 400px;
+}
+.table td{
+    white-space: nowrap;
 }

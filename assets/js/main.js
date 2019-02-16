@@ -12,6 +12,7 @@ $(document).ready(function () {
     includeFiles('http://auditoria.local/assets/js/plantilla/sidebar.js');
     includeFiles('http://auditoria.local/assets/js/empresas/main.js');
     includeFiles('http://auditoria.local/assets/js/explorador/main.js');
+    includeFiles('http://auditoria.local/assets/js/archivos/main.js');
 });
 function includeFiles(path) {
     var script = document.createElement('script');
