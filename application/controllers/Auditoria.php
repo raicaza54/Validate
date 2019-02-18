@@ -30,5 +30,12 @@ class Auditoria extends CI_Controller {
     public function index() {
         $this->load->view("plantilla/plantilla", $this->data);
     }
+    
+    public function benford() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        
+    }
 
 }

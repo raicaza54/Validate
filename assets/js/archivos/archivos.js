@@ -9,29 +9,36 @@
  * @LastUpdate 2018-02-13
  */
 var ARCHIVOS = ARCHIVOS || {};
-
+/*
 $(document).on('click', '.jstree-anchor', function(e) {
     var anchorId = $(this).parent().attr('id');
     var clickId = anchorId.substring(anchorId.indexOf('_') + 1, anchorId.length);
-    ARCHIVOS.main.listarDatos();
+    ARCHIVOS.methods.listarDatos();
 });
+*/
 
-ARCHIVOS.main = {
-    cargaDatos: function () {
+$("#explorador-content").on("click",".jstree-clicked", function (e) {
+        var nodeSelect = $(this).jstree('get_selected', true);
+	var node = nodeSelect[0];
+	if(node.type == 'file'){
+		ARCHIVOS.methods.listarDatos(node.id);
+	}
+});
+ARCHIVOS.methods = {
+    cargaDatos: function (id) {
         return $.ajax({
             url: '/archivos/v1/datos',
             type: "POST",
             dataType: 'json',
-            data: {id: 1},
+            data: {id: id},
             success: function (data) {
                 $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
             }
         });
     },
-    listarDatos: function () {
-        var datos = ARCHIVOS.main.cargaDatos();
+    listarDatos: function (id) {
+        var datos = ARCHIVOS.methods.cargaDatos(id);
         datos.then(function (r) {
-            console.log(r);
             ARCHIVOS.componets.tabs();
             return r;
         }).then(function (r) {

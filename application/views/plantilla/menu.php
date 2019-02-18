@@ -92,7 +92,7 @@
             <div class="menu-separador"></div>
             <div class="menu-card">
                 <div class="d-flex flex-column">
-                    <span id="AnalBenford">
+                    <span id="AnalBenford" onclick="BENFORD.methods.parametros();">
                         <i class="fas fa-chart-bar"></i> Ley de Benford
                     </span>                    
                     <span id="AnalOmisiones">

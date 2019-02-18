@@ -25,7 +25,7 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
         <?= load_assets('css') ?>
-        
+
         <!-- JAVASCRIPT -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
@@ -43,7 +43,7 @@
         <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/js/main.js') ?>" type="module"></script>
+        <script src="<?= base_url('assets/js/loader.js') ?>" type="module"></script>
         <!-- Optional JavaScript -->        
         <?= load_assets('js') ?>
         <script type="text/javascript">
@@ -121,5 +121,22 @@
         <div id="content">
             <?= $body ?>
         </div>
+        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ventanaModal">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
     </body>
 </html>

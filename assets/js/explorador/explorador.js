@@ -9,7 +9,7 @@
  * @LastUpdate 2018-02-13
  */
 var EXPLORADOR = EXPLORADOR || {};
-EXPLORADOR.main = {
+EXPLORADOR.methods = {
     cargaCarpetas: function () {
         return $.ajax({
             url: '/explorador/v1/carpetas',
@@ -21,7 +21,7 @@ EXPLORADOR.main = {
         });
     },
     listarCarpetas: function () {
-        var datos = EXPLORADOR.main.cargaCarpetas();
+        var datos = EXPLORADOR.methods.cargaCarpetas();
         datos.then(function (r) {
             EXPLORADOR.componets.arbol();
             return r;

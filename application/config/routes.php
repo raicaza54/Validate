@@ -67,6 +67,11 @@ $route['explorador/v1/carpetas']['get'] = 'explorador/carpetas';
  * ------------------------------------------------------------------------- */
 $route['archivos/v1/datos']['post'] = 'archivos/datos';
 
+/* -------------------------------------------------------------------------
+ * Ley de Benford
+ * ------------------------------------------------------------------------- */
+$route['benford/v1/procesar']['post'] = 'auditoria/benford';
+
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;

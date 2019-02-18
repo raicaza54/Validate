@@ -8,8 +8,27 @@
  * @version    0.0.1
  * @LastUpdate 2018-02-13
  */
-var EMPRESAS = EMPRESAS || {};
-EMPRESAS.main = {
+var BENFORD = BENFORD || {};
+BENFORD.methods = {
+    parametros: function () {
+        GLOBAL.methods.ventana();
+        $('#ventanaModal').on('show.bs.modal', function (event) {
+            var modal = $(this)
+            modal.find('.modal-title').text('Ley de Benford')
+        });
+        $('#ventanaModal').modal('show');
+        /*
+         $('#exampleModalLong').on('show.bs.modal', function (event) {
+         var button = $(event.relatedTarget) // Button that triggered the modal
+         var recipient = button.data('whatever') // Extract info from data-* attributes
+         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+         var modal = $(this)
+         modal.find('.modal-title').text('New message to ' + recipient)
+         modal.find('.modal-body input').val(recipient)
+         })*/
+
+    },
     cargaDatos: function () {
         return $.ajax({
             url: '/empresas/v1/datos',
@@ -20,47 +39,47 @@ EMPRESAS.main = {
             }
         });
     },
-    listarEmpresas: function() {
-        var datos = EMPRESAS.main.cargaDatos();
+    listarEmpresas: function () {
+        var datos = BENFORD.methods.cargaDatos();
         datos.then(function (r) {
-            EMPRESAS.componets.tabs();
+            BENFORD.componets.tabs();
             return r;
         }).then(function (r) {
-            EMPRESAS.componets.tablaPoblar(r);
-        });        
+            BENFORD.componets.tablaPoblar(r);
+        });
     },
-    activarEmpresa: function() {
+    activarEmpresa: function () {
         var id = $('input[name="customRadio"]:checked').val();
-        if($.isNumeric(id)){
+        if ($.isNumeric(id)) {
             $.ajax({
                 url: '/empresas/v1/activar',
                 type: "POST",
                 dataType: 'json',
-                data:{id: id},
+                data: {id: id},
                 success: function (data) {
                     var r = data['data'];
                     $('#empresaActiva').html(
-                    `<label><b>` + r['nombre'] + `</b></label>
+                            `<label><b>` + r['nombre'] + `</b></label>
                     <label>NIT: ` + r['identificacion'] + `</label>
                     <label>Contacto: ` + r['persona'] + `</label>
                     <label>Tlf.: ` + r['persona_tlfs'] + `</label>`);
                     $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
-                    EXPLORADOR.main.listarCarpetas();
-                    EMPRESAS.componets.limpiarContent();
+                    EXPLORADOR.methods.listarCarpetas();
+                    BENFORD.componets.limpiarContent();
                 }
             });
         }
     }
 }
-EMPRESAS.componets = {
-    limpiarContent: function() {
+BENFORD.componets = {
+    limpiarContent: function () {
         $('#content').html(
-            `<div style="height: calc(100vh - 135px);">
+                `<div style="height: calc(100vh - 135px);">
                 <div class="selec-empresa text-center text-muted small no-seleccionable">
                     Debe Seleccionar<br/>un archivo
                 </div>            
             </div>`
-        );
+                );
         $.toast({
             text: 'Se ha seleccionado la empresa exitosamente, ahora carga o selecciona un archivo',
             position: 'bottom-left',
@@ -72,7 +91,7 @@ EMPRESAS.componets = {
     tablaPoblar: function (datos) {
         $.each(datos['data'], function (key, value) {
             $('#table-empresas tbody').append(
-                `<tr>
+                    `<tr>
                     <td>
                         <div class="custom-control custom-radio">
                           <input type="radio" name="customRadio" class="custom-control-input" id="customRadio` + value['id'] + `" value="` + value['id'] + `">
@@ -81,11 +100,11 @@ EMPRESAS.componets = {
                     </td>
                     <td>` + value['identificacion'] + `</td>
                 </tr>`);
-        });        
+        });
     },
     tabs: function () {
         $('#content').html(
-            `<nav>
+                `<nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-empresas-tab" data-toggle="tab" href="#nav-empresas" role="tab" aria-controls="nav-empresas" aria-selected="true">Empresas</a>
                 </div>
@@ -95,7 +114,7 @@ EMPRESAS.componets = {
                     <div id="body-empresas">
                         <ul class="nav">
                             <li class="nav-item">
-                                <a class="nav-link" onclick="EMPRESAS.main.activarEmpresa()" href="#"><i class="far fa-check-square"></i> Seleccionar</a>
+                                <a class="nav-link" onclick="BENFORD.methods.activarEmpresa()" href="#"><i class="far fa-check-square"></i> Seleccionar</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link disabled" href="#"><i class="fas fa-pen"></i> Editar</a>
@@ -121,4 +140,3 @@ EMPRESAS.componets = {
             </div>`);
     }
 }
-EMPRESAS.main.listarEmpresas();

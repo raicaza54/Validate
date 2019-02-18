@@ -43,9 +43,9 @@ class Explorador extends CI_Controller {
         try {
             //$items = $this->Empresas_model->getTodas();
             $items = [
-                ['id' => "ajson1", 'parent' => "#", 'text' => "2019", 'state' => ['opened' => 'true']],
-                ['id' => "ajson2", 'parent' => "ajson1", 'text' => "Enero", 'state' => ['opened' => 'true']],
-                ['id' => "ajson3", 'parent' => "ajson2", 'text' => "Movimientos", 'type' => 'file']
+                ['id' => "10", 'parent' => "#", 'text' => "2019", 'state' => ['opened' => 'true']],
+                ['id' => "20", 'parent' => "10", 'text' => "Enero", 'state' => ['opened' => 'true']],
+                ['id' => "1", 'parent' => "20", 'text' => "Movimientos", 'type' => 'file']
             ];
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
