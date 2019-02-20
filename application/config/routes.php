@@ -70,7 +70,8 @@ $route['archivos/v1/datos']['post'] = 'archivos/datos';
 /* -------------------------------------------------------------------------
  * Ley de Benford
  * ------------------------------------------------------------------------- */
-$route['benford/v1/procesar']['post'] = 'auditoria/benford';
+$route['benford/v1/encabezado']['post'] = 'archivos/encabezado';
+$route['benford/v1/procesar']['post']   = 'auditoria/benford';
 
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';

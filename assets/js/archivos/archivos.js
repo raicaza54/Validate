@@ -9,19 +9,11 @@
  * @LastUpdate 2018-02-13
  */
 var ARCHIVOS = ARCHIVOS || {};
-/*
-$(document).on('click', '.jstree-anchor', function(e) {
-    var anchorId = $(this).parent().attr('id');
-    var clickId = anchorId.substring(anchorId.indexOf('_') + 1, anchorId.length);
-    ARCHIVOS.methods.listarDatos();
-});
-*/
-
 $("#explorador-content").on("click",".jstree-clicked", function (e) {
         var nodeSelect = $(this).jstree('get_selected', true);
 	var node = nodeSelect[0];
 	if(node.type == 'file'){
-		ARCHIVOS.methods.listarDatos(node.id);
+            ARCHIVOS.methods.listarDatos(node.id);
 	}
 });
 ARCHIVOS.methods = {
@@ -37,11 +29,13 @@ ARCHIVOS.methods = {
         });
     },
     listarDatos: function (id) {
+        var idDatos = id;
         var datos = ARCHIVOS.methods.cargaDatos(id);
         datos.then(function (r) {
             ARCHIVOS.componets.tabs();
             return r;
         }).then(function (r) {
+            $('[name="archivoId"]').val(idDatos);
             ARCHIVOS.componets.tablaPoblar(r);
         });
     }
@@ -90,8 +84,9 @@ ARCHIVOS.componets = {
                     <a class="nav-item nav-link active" id="nav-archivo-tab" data-toggle="tab" href="#nav-archivo" role="tab" aria-controls="nav-archivo" aria-selected="true">Archivo</a>
                 </div>
             </nav>
+            <input type="hidden" name="archivoId" value="">
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active clearfix" id="nav-archivo" role="tabpanel" aria-labelledby="nav-spider-tab">
+                <div class="tab-pane fade show active clearfix" id="nav-archivo" role="tabpanel" aria-labelledby="nav-archivo-tab">
                     <div id="body-archivo">
                         <ul class="nav">
                             <li class="nav-item">

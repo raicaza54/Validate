@@ -61,7 +61,7 @@ class Empresas extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, no encontramos la empresa seleccionada", 204);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $item = $this->Empresas_model->getId($post['id']);
             if (!is_array($item)) {

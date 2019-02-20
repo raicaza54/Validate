@@ -16,7 +16,6 @@ GLOBAL.methods = {
 }
 GLOBAL.componets = {
     ventanaModal: function () {
-        $('body').append
-        (``);
+        $('body').append(``);
     }
 }

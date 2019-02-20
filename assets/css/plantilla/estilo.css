@@ -494,3 +494,14 @@ a.article:hover {
 .table td{
     white-space: nowrap;
 }
+.modal-header{
+    background-color: #E8E8E8;
+    padding: 0.5rem 1rem;
+}
+.modal-body{
+    font-size: 14px;
+}
+.modal-header .close{
+    padding: 1.2rem 1rem;
+    outline: none;
+}

@@ -23,6 +23,19 @@ class Archivos_model extends CI_Model {
         return $this->db->get($this->pref.'archivos')->result_array();
     }
     
+    public function getEncabezado($id) {
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'e');
+        $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();
+        $e = [];
+        for ($x = 1; $x <= 20; $x++) {
+            if(trim($encabezado['campo'.$x])){
+                $e[] = $encabezado['campo'.$x];
+            }
+        }
+        return (count($e) <= 0) ? FALSE : $e;
+    }
+    
     public function getDetalleId($id) {
         $this->db->select('campo1, campo2, campo3, campo4, campo5, campo6, campo7, '
                 . 'campo8, campo9, campo10, campo11, campo12, campo13, campo14, campo15');
@@ -31,6 +44,21 @@ class Archivos_model extends CI_Model {
         $this->db->order_by('linea', 'ASC');
         $this->db->order_by('id', 'DESC');
         return $this->db->get($this->pref.'archivos_detalle')->result_array();
+    }
+    
+    public function getDetalleIdBenford($id, $campoAnalizar) {
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'e');
+        $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();        
+        $campo = array_search($campoAnalizar, $encabezado);
+        if($campo !== FALSE){
+            $this->db->select($campo.' AS valor');
+            $this->db->where('fk_archivos', $id);
+            $this->db->where('linea', 'f');
+            return $this->db->get($this->pref.'archivos_detalle')->result_array();
+        }else{
+            return FALSE;
+        }
     }
 
 }

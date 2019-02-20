@@ -66,7 +66,7 @@ $autoload['libraries'] = array(
     'asset',
     'ion_auth',
     'encryption',
-    'lib_gearman',
+    //'lib_gearman',
 );
 
 /*
@@ -102,6 +102,7 @@ $autoload['helper'] = array(
     'asset_helper',
     'url',
     'html',
+    'auditoria_helper',
 );
 
 /*

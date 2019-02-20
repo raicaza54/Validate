@@ -19,12 +19,35 @@ class Auditoria extends CI_Controller {
      * Variable de carga de vista plantilla
      */
     private $data = array('body' => '');
+    
+    public $response = array(
+        "meta"   => array(
+            "copyright" => "Verify 2019",
+            "authors"   => array(
+                "Kevin Enriquez",
+            )
+        ),
+        "status" => "422",
+        "source" => array(
+            "pointer" => ""
+        ),
+        "title"  => "Invalid Attribute",
+        "detail" => "",
+        "data"   => array(),
+        "csrf"   => ''
+    );    
 
     public function __construct() {
         parent::__construct();
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
+        $this->load->library(array(
+            'benford'
+        ));
+        $this->load->model(array(
+            'Archivos_model'
+        ));
     }
 
     public function index() {
@@ -35,7 +58,56 @@ class Auditoria extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $form = unSerializeArray($post['form']);
+            $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
+            if(!is_array($items) || (count($items) <= 0)){
+                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 204);
+            }
+            $this->benford->data = $items;
+            $tabla = $this->benford->benford_d1();
+            if(is_bool($tabla) && $tabla == FALSE){
+                throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 204);
+            }
+            $response["data"] = $tabla;
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $response['csrf'] = $this->security->get_csrf_hash();
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
     }
+    
+    private function tryCatch($exc, $response) {
+        $response["status"] = $exc->getCode();
+        $exception          = array(
+            "code"    => $exc->getCode(),
+            "message" => $exc->getMessage(),
+        );
+        if ($exception["code"] === 200) {
+            $response["title"]  = "Procedimiento realizado satisfactoriamente";
+            $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición correcta";
+        } elseif ($exception["code"] === 202) {
+            $response["title"]  = "Petición Aceptada pero incompleta";
+            $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición Aceptada pero incompleta";
+            log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
+        } elseif ($exception["code"] === 500) {
+            $response["title"]  = "Error Interno del Servidor";
+            $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
+            log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
+        } else {
+            $response["title"]  = "Error Interno del Servidor";
+            $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
+            log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
+        }
+        return $response;
+    }    
 
 }

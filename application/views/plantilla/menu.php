@@ -11,7 +11,7 @@
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
                 </div>
-                <div class="icono" id="PrinListar" onclick="EMPRESAS.main.listarEmpresas()">
+                <div class="icono" id="PrinListar" onclick="EMPRESAS.methods.listarEmpresas()">
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>
