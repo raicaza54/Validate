@@ -9,18 +9,19 @@
  * @LastUpdate 2018-02-13
  */
 var BENFORD = BENFORD || {};
+BENFORD.archivoId = 0;
 BENFORD.methods = {
     parametros: function () {
         var ventana = $('#ventanaModal');
         var idArchivo = $('[name="archivoId"]').val();
         ventana.find('.modal-title').text('Ley de Benford');
         ventana.find('.btn-primary').text('Procesar');
-        ventana.find('.btn-primary').attr('onclick','BENFORD.methods.procesar()');
+        ventana.find('.btn-primary').attr('onclick','BENFORD.methods.procesar(1)');
         BENFORD.componets.bodyModal();
+        BENFORD.archivoId = idArchivo;
         var datos = BENFORD.methods.cargaDatos(idArchivo);
         datos.then(function (data) {
             BENFORD.componets.selectPoblar(data);
-            ventana.find('.modal-body #archivoIdProcesar').val(idArchivo);
         }).then(function () {
             ventana.modal('show');
         });
@@ -36,8 +37,10 @@ BENFORD.methods = {
             }
         });
     },
-    tablaBenford: function() {
+    tablaBenford: function(digito) {
         var form_data = $('#form-benford').serializeArray();
+        form_data.push({ name: "archivoIdProcesar", value: $('[name="archivoId"]').val() });
+        form_data.push({ name: "digito", value: digito });
         return $.ajax({
             url: '/benford/v1/procesar',
             type: "POST",
@@ -51,38 +54,62 @@ BENFORD.methods = {
             }
         });        
     },
-    procesar: function () {
-        var datos = BENFORD.methods.tablaBenford();
-        datos.then(function (data) {
-            $('#ventanaModal').modal('hide');
-            BENFORD.componets.graficaBenford();
-            var data1 = data['data']['grafica']['data1'];
-            var data2 = data['data']['grafica']['data2'];
-            var chart = bb.generate({
-                data: {
-                    xs: {
-                      data1: "x1",
-                      data2: "x2"
-                    },                    
-                    columns: [
-                        ["x1", 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        ["x2", 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        data1,
-                        data2,
-                    ],
-                    type: "bar",
-                    types: {
-                        data1: "bar",
-                        data2: "line",
+    procesar: function (digito) {
+        if (!$('#content').find('div#pills-d' + digito + ' div#BenfordChartd' + digito + '.bb').length ) {
+            var datos = BENFORD.methods.tablaBenford(digito);
+            datos.then(function (data) {
+                $('#ventanaModal').modal('hide');
+                BENFORD.componets.graficaBenford();
+                $('[name="archivoId"]').val(BENFORD.archivoId);
+                var data1 = data['data']['d' + digito]['grafica']['data1'];
+                var data2 = data['data']['d' + digito]['grafica']['data2'];
+                var x1 = data['data']['d' + digito]['x1'];
+                var x2 = data['data']['d' + digito]['x2'];
+                var chart = bb.generate({
+                    data: {
+                        xs: {
+                          data1: "x1",
+                          data2: "x2"
+                        },                    
+                        columns: [
+                            x1,
+                            x2,
+                            data1,
+                            data2,
+                        ],
+                        type: "bar",
+                        types: {
+                            data1: "bar",
+                            data2: "line",
+                        },
+                        names: {
+                          data1: "Recuento",
+                          data2: "Ley de Benford"
+                        },
+                        onclick:function(d) {
+                            alert(JSON.stringify(d));
+                        }
                     },
-                    names: {
-                      data1: "Recuento",
-                      data2: "Ley de Benford"
-                    }                    
-                },
-                bindto: "#BenfordChart"
+                    bindto: "#BenfordChartd" + digito
+                });
+                $.each(data['data']['d' + digito]['tabla'], function (key, value) {
+                    $('#table-benfordD' + digito + ' tbody').append(
+                        `<tr>
+                            <td class="text-right">` + value['numero'] + `</td>
+                            <td class="text-right">` + value['frecuencia'] + `</td>
+                            <td class="text-right">` + value['observado'] + `</td>
+                            <td class="text-right">` + value['benford'] + `</td>
+                            <td class="text-right">` + value['variacion'] + `</td>
+                        </tr>`);
+                });
+                $('p#madD' + digito).html(
+                        `<label class="mb-0">
+                            Desviación Absoluta Media
+                        </label><br/>
+                        EN ESTE CASO NOS DA ` + data['data']['d' + digito]['mad'] + ' QUE VIENDOLO EN LA TABLA ES ' + data['data']['d' + digito]['madDescribe']
+                );
             });            
-        });
+        }
     }
 }
 BENFORD.componets = {
@@ -103,27 +130,92 @@ BENFORD.componets = {
         });
     },
     graficaBenford: function() {
-        $('#content').html(`
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">Ley de Benford</a>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
-                    <div id="body-archivo">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#"><i class="fas fa-star"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#"><i class="fas fa-star"></i></a>
-                            </li>
-                        </ul>
-                        <div class="scrollTable"><div id="BenfordChart"></div></div>
+        if (!$('#content').find('nav#tabs-benford').length ) {
+            $('#content').html(`
+                <nav id="tabs-benford">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">Ley de Benford</a>
                     </div>
-                </div>
-            </div>`);
+                </nav>
+                <input type="hidden" name="archivoId" value="">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
+                        <div id="body-archivo">
+                            <ul class="nav" id="menu-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" onclick="BENFORD.methods.procesar(1)" id="pills-d1-tab" data-toggle="pill" href="#pills-d1" role="tab" aria-controls="pills-d1" aria-selected="true">
+                                        <b class="digito-benford">1</b>23
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="BENFORD.methods.procesar(2)" id="pills-d2-tab" data-toggle="pill" href="#pills-d2" role="tab" aria-controls="pills-d2" aria-selected="true">
+                                        1<b class="digito-benford">2</b>3
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="BENFORD.methods.procesar(12)" id="pills-d12-tab" data-toggle="pill" href="#pills-d12" role="tab" aria-controls="pills-d12" aria-selected="true">
+                                        <b class="digito-benford">12</b>3
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="scrollTable">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-d1" role="tabpanel" aria-labelledby="pills-d1-tab">
+                                        <div id="BenfordChartd1"></div>
+                                        <p id="madD1" class="text-uppercase mt-3"></p>
+                                        <table id="table-benfordD1" class="display table table-bordered table-hover table-sm table-striped mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th>N&uacute;mero</th>
+                                                    <th>Frecuencia</th>
+                                                    <th>Observado</th>
+                                                    <th>Ley de Benford</th>
+                                                    <th>Variaci&oacute;n</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade show" id="pills-d2" role="tabpanel" aria-labelledby="pills-d2-tab">
+                                        <div id="BenfordChartd2"></div>
+                                        <p id="madD2" class="text-uppercase mt-3"></p>
+                                        <table id="table-benfordD2" class="display table table-bordered table-hover table-sm table-striped mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th>N&uacute;mero</th>
+                                                    <th>Frecuencia</th>
+                                                    <th>Observado</th>
+                                                    <th>Ley de Benford</th>
+                                                    <th>Variaci&oacute;n</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade show" id="pills-d12" role="tabpanel" aria-labelledby="pills-d12-tab">
+                                        <div id="BenfordChartd12" class="text-uppercase mt-3"></div>
+                                        <table id="table-benfordD12" class="display table table-bordered table-hover table-sm table-striped mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th>N&uacute;mero</th>
+                                                    <th>Frecuencia</th>
+                                                    <th>Observado</th>
+                                                    <th>Ley de Benford</th>
+                                                    <th>Variaci&oacute;n</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+        }
     },
     selectPoblar: function (datos) {
         $.each(datos['data'], function (key, value) {
@@ -136,7 +228,6 @@ BENFORD.componets = {
     bodyModal: function () {
         $('#ventanaModal .modal-body').html(
             `<form id="form-benford">
-                <input type="hidden" value="" id="archivoIdProcesar" name="archivoIdProcesar">
                 <div class="form-group col-md-12">
                     <label for="campoAnalizar">Campo a analizar:&nbsp;&nbsp;</label>
                     <select id="campoAnalizar" name="campoAnalizar" class="form-control col"></select>

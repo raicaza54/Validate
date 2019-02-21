@@ -65,13 +65,16 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $form = unSerializeArray($post['form']);
+            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form)){
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 204);
+            }
             $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
             if(!is_array($items) || (count($items) <= 0)){
                 throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 204);
             }
             $this->benford->data = $items;
-            $tabla = $this->benford->benford_d1();
-            if(is_bool($tabla) && $tabla == FALSE){
+            $tabla = $this->benford->procesar($form['digito']);
+            if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
                 throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 204);
             }
             $response["data"] = $tabla;

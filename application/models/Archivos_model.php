@@ -49,7 +49,10 @@ class Archivos_model extends CI_Model {
     public function getDetalleIdBenford($id, $campoAnalizar) {
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'e');
-        $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();        
+        $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();
+        if(!is_array($encabezado) || count($encabezado) <= 0){
+            return FALSE;
+        }
         $campo = array_search($campoAnalizar, $encabezado);
         if($campo !== FALSE){
             $this->db->select($campo.' AS valor');
