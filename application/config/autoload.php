@@ -102,6 +102,7 @@ $autoload['helper'] = array(
     'asset_helper',
     'url',
     'html',
+    'form',
     'auditoria_helper',
 );
 

@@ -28,6 +28,29 @@ ARCHIVOS.methods = {
             }
         });
     },
+    filtroDigito: function (id) {
+        var ventana = $('#ventanaModal');
+        var datos = ARCHIVOS.methods.cargaDigito(id['x']);
+        datos.then(function (datos) {
+            ARCHIVOS.componets.digitoModal();
+        }).then(function () {
+            
+        }).then(function () {
+            ventana.modal('show');
+        });
+        
+    },
+    cargaDigito: function(digito) {
+        return $.ajax({
+            url: '/archivos/v1/digito',
+            type: "POST",
+            dataType: 'json',
+            data: {digito: digito},
+            success: function (data) {
+                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+            }
+        });        
+    },
     listarDatos: function (id) {
         var idDatos = id;
         var datos = ARCHIVOS.methods.cargaDatos(id);
@@ -105,5 +128,11 @@ ARCHIVOS.componets = {
                     </div>
                 </div>
             </div>`);
+    },
+    digitoModal: function (id) {
+        $('#ventanaModal .modal-body').html(
+            `<form id="form-benford-digito">
+                Hola mundo `+ id +`
+            </form>`);
     }
 }

@@ -59,6 +59,7 @@ class Auditoria extends CI_Controller {
             show_404();
         }
         $response = $this->response;
+        $formData = [];
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
@@ -77,7 +78,7 @@ class Auditoria extends CI_Controller {
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
                 throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 204);
             }
-            $response["data"] = $tabla;
+            $response["data"] = $tabla + ['form' => $form];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

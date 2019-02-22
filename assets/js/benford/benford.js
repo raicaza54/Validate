@@ -17,7 +17,7 @@ BENFORD.methods = {
         ventana.find('.modal-title').text('Ley de Benford');
         ventana.find('.btn-primary').text('Procesar');
         ventana.find('.btn-primary').attr('onclick','BENFORD.methods.procesar(1)');
-        BENFORD.componets.bodyModal();
+        BENFORD.componets.parametrosModal();
         BENFORD.archivoId = idArchivo;
         var datos = BENFORD.methods.cargaDatos(idArchivo);
         datos.then(function (data) {
@@ -38,8 +38,8 @@ BENFORD.methods = {
         });
     },
     tablaBenford: function(digito) {
-        var form_data = $('#form-benford').serializeArray();
-        form_data.push({ name: "archivoIdProcesar", value: $('[name="archivoId"]').val() });
+        var form_data = $('form#form-benford').serializeArray();
+        form_data.push({ name: "archivoIdProcesar", value: BENFORD.archivoId });
         form_data.push({ name: "digito", value: digito });
         return $.ajax({
             url: '/benford/v1/procesar',
@@ -87,7 +87,7 @@ BENFORD.methods = {
                           data2: "Ley de Benford"
                         },
                         onclick:function(d) {
-                            alert(JSON.stringify(d));
+                            ARCHIVOS.methods.filtroDigito(d);
                         }
                     },
                     bindto: "#BenfordChartd" + digito
@@ -108,7 +108,16 @@ BENFORD.methods = {
                         </label><br/>
                         EN ESTE CASO NOS DA ` + data['data']['d' + digito]['mad'] + ' QUE VIENDOLO EN LA TABLA ES ' + data['data']['d' + digito]['madDescribe']
                 );
-            });            
+                if (!$('#content').find('div#form-benford form input').length) {
+                    $.each(data['data']['form'], function (key, value) {
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: key,
+                            value: value
+                        }).appendTo('div#form-benford form');
+                    });
+                }
+            });
         }
     }
 }
@@ -137,7 +146,7 @@ BENFORD.componets = {
                         <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">Ley de Benford</a>
                     </div>
                 </nav>
-                <input type="hidden" name="archivoId" value="">
+                <div id="form-benford"><form id="form-benford"></form></div>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
                         <div id="body-archivo">
@@ -196,6 +205,7 @@ BENFORD.componets = {
                                     </div>
                                     <div class="tab-pane fade show" id="pills-d12" role="tabpanel" aria-labelledby="pills-d12-tab">
                                         <div id="BenfordChartd12" class="text-uppercase mt-3"></div>
+                                        <p id="madD12" class="text-uppercase mt-3"></p>
                                         <table id="table-benfordD12" class="display table table-bordered table-hover table-sm table-striped mt-4">
                                             <thead>
                                                 <tr>
@@ -225,7 +235,7 @@ BENFORD.componets = {
             }));
         });
     },
-    bodyModal: function () {
+    parametrosModal: function () {
         $('#ventanaModal .modal-body').html(
             `<form id="form-benford">
                 <div class="form-group col-md-12">
