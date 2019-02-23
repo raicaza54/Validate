@@ -425,7 +425,7 @@ a.article:hover {
     border-color: #fff #dee2e6 #dee2e6;
     padding: 20px;
 }
-#nav-tabContent div.scrollTable{
+div.scrollTable{
     overflow-y: auto;
     height: calc(100vh - 295px);
 }

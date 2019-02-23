@@ -36,14 +36,20 @@ class Archivos_model extends CI_Model {
         return (count($e) <= 0) ? FALSE : $e;
     }
     
-    public function getDetalleId($id) {
+    public function getDetalleId($id, $digito = NULL) {
+        $r = FALSE;
         $this->db->select('campo1, campo2, campo3, campo4, campo5, campo6, campo7, '
                 . 'campo8, campo9, campo10, campo11, campo12, campo13, campo14, campo15');
         $this->db->where('fk_archivos', $id);
+        if($digito !== NULL){
+            $this->db->like('campo9', $digito, 'after');
+            $this->db->or_where('linea', 'e');
+        }
         $this->db->limit(500);
         $this->db->order_by('linea', 'ASC');
         $this->db->order_by('id', 'DESC');
-        return $this->db->get($this->pref.'archivos_detalle')->result_array();
+        $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        return $r;
     }
     
     public function getDetalleIdBenford($id, $campoAnalizar) {

@@ -65,7 +65,8 @@ $route['explorador/v1/carpetas']['get'] = 'explorador/carpetas';
 /* -------------------------------------------------------------------------
  * Archivos
  * ------------------------------------------------------------------------- */
-$route['archivos/v1/datos']['post'] = 'archivos/datos';
+$route['archivos/v1/datos']['post']  = 'archivos/datos';
+$route['archivos/v1/digito']['post'] = 'archivos/digito';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford

@@ -15,8 +15,10 @@ BENFORD.methods = {
         var ventana = $('#ventanaModal');
         var idArchivo = $('[name="archivoId"]').val();
         ventana.find('.modal-title').text('Ley de Benford');
+        ventana.find('.btn-primary').show();
         ventana.find('.btn-primary').text('Procesar');
         ventana.find('.btn-primary').attr('onclick','BENFORD.methods.procesar(1)');
+        ventana.find('.btn-secondary').text('Cancelar');
         BENFORD.componets.parametrosModal();
         BENFORD.archivoId = idArchivo;
         var datos = BENFORD.methods.cargaDatos(idArchivo);
@@ -87,7 +89,7 @@ BENFORD.methods = {
                           data2: "Ley de Benford"
                         },
                         onclick:function(d) {
-                            ARCHIVOS.methods.filtroDigito(d);
+                            ARCHIVOS.methods.filtroDigito(d, BENFORD.archivoId);
                         }
                     },
                     bindto: "#BenfordChartd" + digito

@@ -28,24 +28,27 @@ ARCHIVOS.methods = {
             }
         });
     },
-    filtroDigito: function (id) {
+    filtroDigito: function (digito, id) {
         var ventana = $('#ventanaModal');
-        var datos = ARCHIVOS.methods.cargaDigito(id['x']);
+        ventana.find('.modal-title').text('Digito ('+ digito.x +')');
+        ventana.find('.btn-primary').hide();
+        ventana.find('.btn-primary').text('Procesar');
+        ventana.find('.btn-secondary').text('Cerrar');
+        ventana.find('.btn-primary').attr('onclick','');
+        var datos = ARCHIVOS.methods.cargaDigito(digito.x, id);
+        ARCHIVOS.componets.digitoModal();
         datos.then(function (datos) {
-            ARCHIVOS.componets.digitoModal();
-        }).then(function () {
-            
+            ARCHIVOS.componets.digitoPoblar(datos);
         }).then(function () {
             ventana.modal('show');
         });
-        
     },
-    cargaDigito: function(digito) {
+    cargaDigito: function(digito, id) {
         return $.ajax({
             url: '/archivos/v1/digito',
             type: "POST",
             dataType: 'json',
-            data: {digito: digito},
+            data: {id: id, digito: digito},
             success: function (data) {
                 $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
             }
@@ -78,6 +81,26 @@ ARCHIVOS.componets = {
             stack: false,
             allowToastClose: false,
             loader: false,
+        });
+    },
+    digitoPoblar: function(datos) {
+        $.each(datos['data'], function (key, value) {
+            $('#form-benford-digito #table-digito tbody').append(
+                `<tr>
+                    <td>` + value['campo1'] + `</td>
+                    <td>` + value['campo2'] + `</td>
+                    <td>` + value['campo3'] + `</td>
+                    <td>` + value['campo4'] + `</td>
+                    <td>` + value['campo5'] + `</td>
+                    <td>` + value['campo6'] + `</td>
+                    <td>` + value['campo7'] + `</td>
+                    <td>` + value['campo8'] + `</td>
+                    <td>` + value['campo9'] + `</td>
+                    <td>` + value['campo10'] + `</td>
+                    <td>` + value['campo11'] + `</td>
+                    <td>` + value['campo12'] + `</td>
+                    <td>` + value['campo13'] + `</td>
+                </tr>`);
         });
     },
     tablaPoblar: function (datos) {
@@ -120,19 +143,24 @@ ARCHIVOS.componets = {
                             </li>
                         </ul>
                         <div class="scrollTable">
-                        <table id="table-archivo" class="display table table-bordered table-hover table-sm table-striped">
-                            <tbody>
-                            </tbody>
-                        </table>
+                            <table id="table-archivo" class="display table table-bordered table-hover table-sm table-striped">
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>`);
     },
-    digitoModal: function (id) {
+    digitoModal: function () {
         $('#ventanaModal .modal-body').html(
             `<form id="form-benford-digito">
-                Hola mundo `+ id +`
+                <div class="scrollTable">
+                    <table id="table-digito" class="display table table-bordered table-hover table-sm table-striped">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </form>`);
     }
 }

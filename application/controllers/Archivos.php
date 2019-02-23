@@ -81,6 +81,28 @@ class Archivos extends CI_Controller {
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
     }
+    
+    public function digito() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post)){
+                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
+            }            
+            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito']);
+            if (!is_array($items)) {
+                throw new Exception("No existen datos para mostrar", 204);
+            }
+            $response["data"] = $items;
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $response['csrf'] = $this->security->get_csrf_hash();
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
+    }
 
     private function tryCatch($exc, $response) {
         $response["status"] = $exc->getCode();
