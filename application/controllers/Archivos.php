@@ -86,10 +86,10 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post)){
+            if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
-            }            
-            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito']);
+            }
+            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito'], $post['grafica']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }

@@ -28,14 +28,14 @@ ARCHIVOS.methods = {
             }
         });
     },
-    filtroDigito: function (digito, id) {
+    filtroDigito: function (digito, id, grafica) {
         var ventana = $('#ventanaModal');
         ventana.find('.modal-title').text('Digito ('+ digito.x +')');
         ventana.find('.btn-primary').hide();
         ventana.find('.btn-primary').text('Procesar');
         ventana.find('.btn-secondary').text('Cerrar');
         ventana.find('.btn-primary').attr('onclick','');
-        var datos = ARCHIVOS.methods.cargaDigito(digito.x, id);
+        var datos = ARCHIVOS.methods.cargaDigito(digito.x, id, grafica);
         ARCHIVOS.componets.digitoModal();
         datos.then(function (datos) {
             ARCHIVOS.componets.digitoPoblar(datos);
@@ -43,12 +43,12 @@ ARCHIVOS.methods = {
             ventana.modal('show');
         });
     },
-    cargaDigito: function(digito, id) {
+    cargaDigito: function(digito, id, grafica) {
         return $.ajax({
             url: '/archivos/v1/digito',
             type: "POST",
             dataType: 'json',
-            data: {id: id, digito: digito},
+            data: {id: id, digito: digito, grafica: grafica},
             success: function (data) {
                 $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
             }
@@ -75,6 +75,7 @@ ARCHIVOS.componets = {
                 </div>            
             </div>`
                 );
+        /*
         $.toast({
             text: 'Se ha seleccionado la empresa exitosamente, ahora carga o selecciona un archivo',
             position: 'bottom-left',
@@ -82,6 +83,7 @@ ARCHIVOS.componets = {
             allowToastClose: false,
             loader: false,
         });
+        */
     },
     digitoPoblar: function(datos) {
         $.each(datos['data'], function (key, value) {

@@ -61,6 +61,7 @@ EMPRESAS.componets = {
                 </div>            
             </div>`
         );
+        /*
         $.toast({
             text: 'Se ha seleccionado la empresa exitosamente, ahora carga o selecciona un archivo',
             position: 'bottom-left',
@@ -68,6 +69,7 @@ EMPRESAS.componets = {
             allowToastClose: false,
             loader: false,
         });
+        */
     },
     tablaPoblar: function (datos) {
         $.each(datos['data'], function (key, value) {

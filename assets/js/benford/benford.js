@@ -89,7 +89,8 @@ BENFORD.methods = {
                           data2: "Ley de Benford"
                         },
                         onclick:function(d) {
-                            ARCHIVOS.methods.filtroDigito(d, BENFORD.archivoId);
+                            var grafica = $('a.nav-link[id^="bpills-d"].active').data('digito');
+                            ARCHIVOS.methods.filtroDigito(d, BENFORD.archivoId, grafica);
                         }
                     },
                     bindto: "#BenfordChartd" + digito
@@ -154,24 +155,24 @@ BENFORD.componets = {
                         <div id="body-archivo">
                             <ul class="nav" id="menu-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" onclick="BENFORD.methods.procesar(1)" id="pills-d1-tab" data-toggle="pill" href="#pills-d1" role="tab" aria-controls="pills-d1" aria-selected="true">
+                                    <a class="nav-link active" onclick="BENFORD.methods.procesar(1)" id="bpills-d1-tab" data-digito="1" data-toggle="pill" href="#bpills-d1" role="tab" aria-controls="bpills-d1" aria-selected="true">
                                         <b class="digito-benford">1</b>23
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" onclick="BENFORD.methods.procesar(2)" id="pills-d2-tab" data-toggle="pill" href="#pills-d2" role="tab" aria-controls="pills-d2" aria-selected="true">
+                                    <a class="nav-link" onclick="BENFORD.methods.procesar(2)" id="bpills-d2-tab" data-digito="2" data-toggle="pill" href="#bpills-d2" role="tab" aria-controls="bpills-d2" aria-selected="true">
                                         1<b class="digito-benford">2</b>3
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" onclick="BENFORD.methods.procesar(12)" id="pills-d12-tab" data-toggle="pill" href="#pills-d12" role="tab" aria-controls="pills-d12" aria-selected="true">
+                                    <a class="nav-link" onclick="BENFORD.methods.procesar(12)" id="bpills-d12-tab" data-digito="12" data-toggle="pill" href="#bpills-d12" role="tab" aria-controls="bpills-d12" aria-selected="true">
                                         <b class="digito-benford">12</b>3
                                     </a>
                                 </li>
                             </ul>
                             <div class="scrollTable">
                                 <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="pills-d1" role="tabpanel" aria-labelledby="pills-d1-tab">
+                                    <div class="tab-pane fade show active" id="bpills-d1" role="tabpanel" aria-labelledby="bpills-d1-tab">
                                         <div id="BenfordChartd1"></div>
                                         <p id="madD1" class="text-uppercase mt-3"></p>
                                         <table id="table-benfordD1" class="display table table-bordered table-hover table-sm table-striped mt-4">
@@ -188,7 +189,7 @@ BENFORD.componets = {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="tab-pane fade show" id="pills-d2" role="tabpanel" aria-labelledby="pills-d2-tab">
+                                    <div class="tab-pane fade show" id="bpills-d2" role="tabpanel" aria-labelledby="bpills-d2-tab">
                                         <div id="BenfordChartd2"></div>
                                         <p id="madD2" class="text-uppercase mt-3"></p>
                                         <table id="table-benfordD2" class="display table table-bordered table-hover table-sm table-striped mt-4">
@@ -205,7 +206,7 @@ BENFORD.componets = {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="tab-pane fade show" id="pills-d12" role="tabpanel" aria-labelledby="pills-d12-tab">
+                                    <div class="tab-pane fade show" id="bpills-d12" role="tabpanel" aria-labelledby="bpills-d12-tab">
                                         <div id="BenfordChartd12" class="text-uppercase mt-3"></div>
                                         <p id="madD12" class="text-uppercase mt-3"></p>
                                         <table id="table-benfordD12" class="display table table-bordered table-hover table-sm table-striped mt-4">
