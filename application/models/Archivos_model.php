@@ -55,7 +55,6 @@ class Archivos_model extends CI_Model {
         $this->db->order_by('linea', 'ASC');
         $this->db->order_by('id', 'DESC');
         $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
-        debug_file($this->db->last_query());
         return $r;
     }
     
