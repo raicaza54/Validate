@@ -107,8 +107,6 @@ class Tablero extends CI_Controller {
             }
         }
 
-
-
         $total_debito        = 0;
         $total_debito_cuenta = 0;
         $debito_porcentaje   = 0;

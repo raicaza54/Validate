@@ -74,6 +74,12 @@ $route['archivos/v1/digito']['post'] = 'archivos/digito';
 $route['benford/v1/encabezado']['post'] = 'archivos/encabezado';
 $route['benford/v1/procesar']['post']   = 'auditoria/benford';
 
+/* -------------------------------------------------------------------------
+ * La Araña
+ * ------------------------------------------------------------------------- */
+$route['spider/v1/cuentas']['post'] = 'archivos/cuentas';
+$route['spider/v1/procesar']['post']   = 'auditoria/spider';
+
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;

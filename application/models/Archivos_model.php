@@ -36,6 +36,15 @@ class Archivos_model extends CI_Model {
         return (count($e) <= 0) ? FALSE : $e;
     }
     
+    public function getCuentas($id) {
+        $this->db->select('campo1');
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'f');
+        $this->db->group_by('campo1');
+        $cuentas = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        return $cuentas;
+    }
+    
     public function getDetalleId($id, $digito = NULL, $grafica = NULL) {
         $r = FALSE;
         $this->db->select('campo1, campo2, campo3, campo4, campo5, campo6, campo7, '
@@ -56,6 +65,13 @@ class Archivos_model extends CI_Model {
         $this->db->order_by('id', 'DESC');
         $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
         return $r;
+    }
+    
+    public function getDetalleIdSpider($id) {
+        $this->db->select("id AS 'REGISTRO',campo1 AS 'CUENTA',campo2 AS 'CTE',campo3 AS 'FECHA',campo4 AS 'DOC',campo5 AS 'REF',campo6 AS 'NIT',campo7 AS 'DETALLE',campo8 AS 'TIPO',campo9 AS 'VALOR',campo10 AS 'BASE',campo11 AS 'CC',campo12 AS 'TB',campo13 AS 'PL'");
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'f');
+        return $this->db->get($this->pref.'archivos_detalle')->result_array();
     }
     
     public function getDetalleIdBenford($id, $campoAnalizar) {

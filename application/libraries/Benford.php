@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
- * @Description Controlador Archivos XLS/CSV
+ * @Description Libreria analisis de Ley de Benford
  * @LastUpdate  2019-02-14
  */
 class Benford {

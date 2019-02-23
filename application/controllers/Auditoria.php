@@ -43,7 +43,8 @@ class Auditoria extends CI_Controller {
             redirect('auth/login');
         }
         $this->load->library(array(
-            'benford'
+            'benford',
+            'spider'
         ));
         $this->load->model(array(
             'Archivos_model'
@@ -52,6 +53,40 @@ class Auditoria extends CI_Controller {
 
     public function index() {
         $this->load->view("plantilla/plantilla", $this->data);
+    }
+    
+    
+    public function spider() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $this->response;
+        $formData = [];
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $form = unSerializeArray($post['form']);
+            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form)){
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 204);
+            }
+            $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar']);
+            if(!is_array($items) || (count($items) <= 0)){
+                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 204);
+            }            
+            $this->spider->data = $items;
+            $spider = $this->spider->procesar($form['campoSpider']);
+            debug_file($spider);
+            $response["data"] = [];
+            throw new Exception("Resultado retornando correctamente", 200);            
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $response['csrf'] = $this->security->get_csrf_hash();
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
     }
     
     public function benford() {

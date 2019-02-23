@@ -15,6 +15,7 @@ $(document).ready(function () {
     includeFiles('http://auditoria.local/assets/js/explorador/explorador.js');
     includeFiles('http://auditoria.local/assets/js/archivos/archivos.js');
     includeFiles('http://auditoria.local/assets/js/benford/benford.js');
+    includeFiles('http://auditoria.local/assets/js/spider/spider.js');
     $('#content').on('click', '#menu-tab a', function (e) {
         e.preventDefault()
         $(this).tab('show')

@@ -103,7 +103,7 @@
                     <span id="AnalDuplicados">
                         <i class="fas fa-list-alt"></i> Clave duplicados
                     </span>
-                    <span id="AnalSpider">
+                    <span id="AnalSpider" onclick="SPIDER.methods.parametros();">
                         <i class="fas fa-spider"></i> Araña
                     </span>
                 </div>
