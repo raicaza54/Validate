@@ -112,7 +112,11 @@ class Spider {
                     $total_debito += $value_debito['valor'];
                 }
             }
-            $debito_porcentaje = (($total_debito_cuenta / $total_debito) * 100);
+            if($total_debito > 0){
+                $debito_porcentaje = (($total_debito_cuenta / $total_debito) * 100);
+            }else{
+                $debito_porcentaje = 0;
+            }
             foreach ($value as $key_grupo => $value_debito) {
                 $grupos_clasificado['debito'][$key_debito][$key_grupo]['tb'] = 0;
                 if ($value_debito['tipo'] == 2) {
@@ -202,42 +206,56 @@ class Spider {
         }
         //$this->datos['body'] = $tabla.'<br/>############# GRUPOS #############'.$tabla_grupos.'<br><br/>############# GRUPOS CLAISIFICADOS #############<br/>'.$tabla_grupos_clasificados.'</pre>';
 
-        $c = 0;
-        $l = 0;
-        if (count($spider[$cuenta]['debito']) >= count($spider[$cuenta]['credito'])) {
-            $c = count($spider[$cuenta]['debito']);
+        $c  = 0;
+        $my = '';
+        $l  = 0;
+        $debitoCount  = count($spider[$cuenta]['debito']);
+        $creditoCount = count($spider[$cuenta]['credito']);
+        if ($debitoCount >= $creditoCount) {
+            $c = $debitoCount;
+            $my = 'd';
         } else {
-            $c = count($spider[$cuenta]['credito']);
+            $c = $creditoCount;
+            $my = 'c';
         }
         $lineas = '';
-        $t      = 15;
-        $x      = 0;
-        $hsvg   = (($c * 60) - 30) / 2;
+        if($my == 'c'){
+            $x = ($creditoCount/2)-($debitoCount/2);
+        }else{
+            $x = 0;
+        }
+        $t = ($x*45)+15;
+        $hsvg   = (($c * 45) - 30) / 2;
         foreach ($spider[$cuenta]['debito'] as $key => $value) {
-            $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 60) . 'px;"><a data-toggle="popover" data-placement="top" data-html="true" data-content="Nombre de cuenta<br/>Porcentaje: ' . number_format($value['porcentaje'], 2, ',', '.') . '%" href="' . base_url('tablero/spider/'.$key) . '">' . $key . '</a><div style="float: right">$' . number_format($value['valor'], 0, ',', '.') . '</div></div>';
+            $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px;"><a data-toggle="popover" data-placement="top" data-html="true" data-content="Nombre de cuenta<br/>Porcentaje: ' . number_format($value['porcentaje'], 2, ',', '.') . '%" href="' . base_url('tablero/spider/'.$key) . '">' . $key . '</a><div style="float: right">$' . number_format($value['valor'], 0, ',', '.') . '</div></div>';
             $lineas             .= '<line x1="150" y1="' . $t . '" x2="302" y2="' . $hsvg . '" style="stroke:#000; stroke-width:1"></line>';
-            $t                  += 60;
+            $t                  += 45;
             $x++;
         }
         $t = 15;
-        $x = 0;
+        if($my == 'd'){
+            $x = ($debitoCount/2)-($creditoCount/2);
+        }else{
+            $x = 0;
+        }
+        $t = ($x*45)+15;
         foreach ($spider[$cuenta]['credito'] as $key => $value) {
-            $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 60) . 'px;"><a data-toggle="popover" data-placement="top" data-html="true" data-content="Nombre de cuenta<br/>Porcentaje: ' . number_format($value['porcentaje'], 2, ',', '.') . '%" href="' . base_url('tablero/spider/'.$key) . '">' . $key . '</a><div style="float: right">$' . number_format($value['valor'], 0, ',', '.') . '</div></div>';
+            $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><a data-toggle="popover" data-placement="top" data-html="true" data-content="Nombre de cuenta<br/>Porcentaje: ' . number_format($value['porcentaje'], 2, ',', '.') . '%" href="' . base_url('tablero/spider/'.$key) . '">' . $key . '</a><div style="float: right">$' . number_format($value['valor'], 0, ',', '.') . '</div></div>';
             $lineas             .= '<line x1="452" y1="' . $hsvg . '" x2="604" y2="' . $t . '" style="stroke:#000; stroke-width:1"></line>';
-            $t                  += 60;
+            $t                  += 45;
             $x++;
         }
-        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 60) / 2) - 30) . 'px; text-align: center">' . $cuenta . '</div>';
+        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) - 30) . 'px; text-align: center">' . $cuenta . '</div>';
         $this->datos['body'] .= '<svg width="754" height="' . (($c * 60) - 30) . '" viewBox="0 0 754 ' . (($c * 60) - 30) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
         //$this->datos['body'] .= '<pre>'.var_export($spider, TRUE).'</pre>';
-        $this->datos['body'] .= '<br/><br/><a href="' . base_url('tablero/spider/130505') . '">130505</a> - ' .
-                '<a href="' . base_url('tablero/spider/135515') . '">135515</a> - ' .
-                '<a href="' . base_url('tablero/spider/413595') . '">413595</a> - ' .
-                '<a href="' . base_url('tablero/spider/240801') . '">240801</a> - ' .
-                '<a href="' . base_url('tablero/spider/135517') . '">135517</a> - ' .
-                '<a href="' . base_url('tablero/spider/11100501') . '">11100501</a>';
+//        $this->datos['body'] .= '<br/><br/><a href="' . base_url('tablero/spider/130505') . '">130505</a> - ' .
+//                '<a href="' . base_url('tablero/spider/135515') . '">135515</a> - ' .
+//                '<a href="' . base_url('tablero/spider/413595') . '">413595</a> - ' .
+//                '<a href="' . base_url('tablero/spider/240801') . '">240801</a> - ' .
+//                '<a href="' . base_url('tablero/spider/135517') . '">135517</a> - ' .
+//                '<a href="' . base_url('tablero/spider/11100501') . '">11100501</a>';
         //$this->CI->load->view("plantilla/plantilla", $this->datos);
         return $this->datos;
     }

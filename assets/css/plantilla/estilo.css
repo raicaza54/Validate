@@ -514,3 +514,16 @@ div.scrollTable{
 ul.nav .active{
     background-color: #ccc;
 }
+#content.maximizar .scrollTable{
+    height: calc(100vh - 135px);
+}
+#content.maximizar nav{
+    display: none;
+}
+.maximizar {
+    top: 40px !important;
+    left: -10px;
+    width: calc(100% + 20px) !important;
+    height: 100vh;
+    z-index: 2000;
+}

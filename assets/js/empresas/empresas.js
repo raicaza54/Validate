@@ -95,7 +95,7 @@ EMPRESAS.componets = {
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active clearfix" id="nav-empresas" role="tabpanel" aria-labelledby="nav-spider-tab">
                     <div id="body-empresas">
-                        <ul class="nav">
+                        <ul class="nav position-relative">
                             <li class="nav-item">
                                 <a class="nav-link" onclick="EMPRESAS.methods.activarEmpresa()" href="#"><i class="far fa-check-square"></i> Seleccionar</a>
                             </li>
@@ -104,6 +104,12 @@ EMPRESAS.componets = {
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link disabled" href="#"><i class="fas fa-trash"></i> Eliminar</a>
+                            </li>
+                            <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
+                                <a id="requestfullscreen" class="nav-link" href="#!" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</a>
+                            </li>
+                            <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
+                                <a id="exitfullscreen" class="nav-link" href="#" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</a>
                             </li>
                         </ul>
                         <div class="scrollTable">

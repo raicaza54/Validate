@@ -1,50 +1,33 @@
 <!doctype html>
 <html lang="es">
     <head>
-        <!-- STYLESHEET -->
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/bootstrap/4.2.1/css/bootstrap.min.css') ?>">
-        <!-- Bootstrap Scroller CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/scroller/3.1.5/css/jquery.mCustomScrollbar.min.css') ?>">
-        <!-- JSTree CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/jstree/style.css') ?>">
-        <!-- Billboard CSS -->
         <link rel="stylesheet" href="<?= base_url('assets/library/billboard/1.7.1/css/billboard.min.css') ?>">
-        <!-- Datatables CSS -->
         <link rel="stylesheet" src="<?= base_url('assets/library/datatables/datatables.min.css') ?>"></link>
-        <!-- Select-1.2.6 -->
         <link rel="stylesheet" src="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>"></link>
-        <!-- FontAwesome ICON -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-        <!-- Toast -->
         <link rel="stylesheet" href="<?= base_url('assets/library/toast/css/jquery.toast.min.css') ?>">
         <?= asset_css('plantilla/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
         <?= load_assets('css') ?>
 
-        <!-- JAVASCRIPT -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>
-        <!-- Bootstrap Scroller JS -->
         <script src="<?= base_url('assets/library/scroller/3.1.5/js/jquery.mCustomScrollbar.concat.min.js') ?>" type="text/javascript"></script>
-        <!-- JSTree JS -->
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
-        <!-- Datatables JS -->
         <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>" type="text/javascript"></script>
-        <!-- Select-1.2.6 -->
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
-        <!-- Billboard JS -->
         <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/js/loader.js') ?>" type="module"></script>
-        <!-- Optional JavaScript -->        
         <?= load_assets('js') ?>
         <script type="text/javascript">
             $(function ($) {
@@ -60,8 +43,7 @@
     <body>
         <nav class="navbar navbar-expand-lg fixed-top bg-auditor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
-                <i class="fas fa-check-double" style="color: #729d39"></i>
-                Verify
+                <?= asset_image('logo1.png" style="height: 30px;"')?>
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="margin-left: 40px;">

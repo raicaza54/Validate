@@ -57,9 +57,11 @@ SPIDER.methods = {
     },
     procesar: function () {
         var datos = SPIDER.methods.procesarSpider();
+        SPIDER.componets.graficaSpider();
         datos.then(function (data) {
+            console.log(data['data']['body']);
             $('#ventanaModal').modal('hide');
-            SPIDER.componets.graficaSpider();
+            $('#body-spider').html(data['data']['body']);
         });
     }
 }
@@ -85,14 +87,14 @@ SPIDER.componets = {
             $('#content').html(`
                 <nav id="tabs-benford">
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">Ley de Benford</a>
+                        <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">La Araña</a>
                     </div>
                 </nav>
                 <div id="form-benford"><form id="form-benford"></form></div>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
                         <div id="body-archivo">
-                            <ul class="nav" id="menu-tab" role="tablist">
+                            <ul class="nav position-relative" id="menu-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="spills-d1-tab" data-toggle="pill" href="#spills-d1" role="tab" aria-controls="spills-d1" aria-selected="true">
                                         <i class="fas fa-spider" data-original-title="" title=""></i>
@@ -103,11 +105,17 @@ SPIDER.componets = {
                                         <i class="fas fa-spider" data-original-title="" title=""></i>
                                     </a>
                                 </li>
+                                <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
+                                    <a id="requestfullscreen" class="nav-link" href="#!" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</a>
+                                </li>
+                                <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
+                                    <a id="exitfullscreen" class="nav-link" href="#" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</a>
+                                </li>            
                             </ul>
                             <div class="scrollTable">
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade show active" id="spills-d1" role="tabpanel" aria-labelledby="spills-d1-tab">
-                                        Araña
+                                        <div id="body-spider" style="margin: 0 auto;"></div>
                                     </div>
                                     <div class="tab-pane fade show" id="spills-d2" role="tabpanel" aria-labelledby="spills-d2-tab">
                                         Araña

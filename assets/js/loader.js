@@ -20,6 +20,19 @@ $(document).ready(function () {
         e.preventDefault()
         $(this).tab('show')
     });
+//    $('#support').text($.fullscreen.isNativelySupported() ? 'supports' : 'doesn\'t support');
+//    $('#content').on('click','#requestfullscreen', function() {
+//        $('#content').fullscreen();
+//        $('#content').find('li#maximizar').hide();
+//        $('#content').find('li#restaurar').show();
+//        return false;
+//    });
+//    $('#content').on('click','#exitfullscreen', function() {
+//        $.fullscreen.exit();
+//        $('#content').find('li#maximizar').show();
+//        $('#content').find('li#restaurar').hide();        
+//        return false;
+//    });    
 });
 function includeFiles(path) {
     var script = document.createElement('script');

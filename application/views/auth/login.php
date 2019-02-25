@@ -1,6 +1,5 @@
-<p class="text-white">
-    Bienvenido al sistema<br/>
-    <span style="font-size: 2em;">Auditor Contable</span>
+<p class="text-white text-center" style="">
+    <?= asset_image('logo2.png" style="height: 100px;"')?>
 </p>
 <div class="card">
     <div class="card-body">

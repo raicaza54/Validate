@@ -11,8 +11,21 @@
 var GLOBAL = GLOBAL || {};
 GLOBAL.methods = {
     ventana: function () {
-        GLOBAL.componets.ventanaModal();
-    }
+
+    },
+    maximizar: function () {
+        $('#content').addClass('position-absolute');
+        $('#content').addClass('maximizar');
+        $('#content').find('#maximizar').hide();
+        $('#content').find('#restaurar').show();
+    },
+    restaurar: function () {
+        $('#content').addClass('position-relative');
+        $('#content').removeClass('maximizar');
+        $('#content').find('#maximizar').show();
+        $('#content').find('#restaurar').hide();        
+    },
+    
 }
 GLOBAL.componets = {
     ventanaModal: function () {

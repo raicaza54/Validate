@@ -153,7 +153,7 @@ BENFORD.componets = {
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
                         <div id="body-archivo">
-                            <ul class="nav" id="menu-tab" role="tablist">
+                            <ul class="nav position-relative" id="menu-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" onclick="BENFORD.methods.procesar(1)" id="bpills-d1-tab" data-digito="1" data-toggle="pill" href="#bpills-d1" role="tab" aria-controls="bpills-d1" aria-selected="true">
                                         <b class="digito-benford">1</b>23
@@ -169,6 +169,12 @@ BENFORD.componets = {
                                         <b class="digito-benford">12</b>3
                                     </a>
                                 </li>
+                                <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
+                                    <a id="requestfullscreen" class="nav-link" href="#!" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</a>
+                                </li>
+                                <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
+                                    <a id="exitfullscreen" class="nav-link" href="#" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</a>
+                                </li>            
                             </ul>
                             <div class="scrollTable">
                                 <div class="tab-content" id="pills-tabContent">

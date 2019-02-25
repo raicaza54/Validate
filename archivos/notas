@@ -205,3 +205,22 @@
 # https://www.jstree.com/docs/json/
 #*******************************************************************************
 
+#*******************************************************************************
+# Amazon Web Service AWS
+#*******************************************************************************
+# Es una colección de servicios de computación en la nube pública que en 
+# conjunto forman una plataforma de computación en la nube, ofrecidas a través 
+# de Internet por Amazon.com.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://calculator.s3.amazonaws.com/index.html
+# https://aws.amazon.com/es/free/
+# https://letsencrypt.org/
+# https://aws.amazon.com/marketplace/pp/B075K3WXY8?qid=1550963497058&sr=0-1&ref_=srh_res_product_title
+# https://blog.cpanel.com/how-to-build-a-cpanel-hosting-environment-on-amazon-aws/
+# https://github.com/pkhadka56/ansible-install-cpanel-only
+#*******************************************************************************
+
+
+
