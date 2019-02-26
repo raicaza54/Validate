@@ -10,6 +10,7 @@
  */
 var BENFORD = BENFORD || {};
 BENFORD.archivoId = 0;
+BENFORD.chart;
 BENFORD.methods = {
     parametros: function () {
         var ventana = $('#ventanaModal');
@@ -57,7 +58,7 @@ BENFORD.methods = {
         });        
     },
     procesar: function (digito) {
-        if (!$('#content').find('div#pills-d' + digito + ' div#BenfordChartd' + digito + '.bb').length ) {
+        if (!$('#content').find('div#bpills-d' + digito + ' div#BenfordChartd' + digito + '.bb').length ) {
             var datos = BENFORD.methods.tablaBenford(digito);
             datos.then(function (data) {
                 $('#ventanaModal').modal('hide');
@@ -67,7 +68,7 @@ BENFORD.methods = {
                 var data2 = data['data']['d' + digito]['grafica']['data2'];
                 var x1 = data['data']['d' + digito]['x1'];
                 var x2 = data['data']['d' + digito]['x2'];
-                var chart = bb.generate({
+                BENFORD.chart = bb.generate({
                     data: {
                         xs: {
                           data1: "x1",
@@ -87,6 +88,9 @@ BENFORD.methods = {
                         names: {
                           data1: "Recuento",
                           data2: "Ley de Benford"
+                        },
+                        onresize: function() {
+                            console.log('Hola mundo');
                         },
                         onclick:function(d) {
                             var grafica = $('a.nav-link[id^="bpills-d"].active').data('digito');
@@ -170,10 +174,10 @@ BENFORD.componets = {
                                     </a>
                                 </li>
                                 <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
-                                    <a id="requestfullscreen" class="nav-link" href="#!" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</a>
+                                    <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
                                 </li>
                                 <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
-                                    <a id="exitfullscreen" class="nav-link" href="#" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</a>
+                                    <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
                                 </li>            
                             </ul>
                             <div class="scrollTable">

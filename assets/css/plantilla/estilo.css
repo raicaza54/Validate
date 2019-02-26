@@ -525,5 +525,14 @@ ul.nav .active{
     left: -10px;
     width: calc(100% + 20px) !important;
     height: 100vh;
-    z-index: 2000;
+    z-index: 1030;
 }
+#maximizar, #restaurar{
+    color: #007bff;
+    cursor: pointer;
+}
+#maximizar:hover, 
+#restaurar:hover{
+    color: #0056b3;
+}
+

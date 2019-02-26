@@ -15,15 +15,17 @@ GLOBAL.methods = {
     },
     maximizar: function () {
         $('#content').addClass('position-absolute');
-        $('#content').addClass('maximizar');
+        $('#content').addClass('maximizar')
         $('#content').find('#maximizar').hide();
         $('#content').find('#restaurar').show();
+        //BENFORD.chart.resize();
     },
     restaurar: function () {
         $('#content').addClass('position-relative');
         $('#content').removeClass('maximizar');
+        $('#content').find('#restaurar').hide();
         $('#content').find('#maximizar').show();
-        $('#content').find('#restaurar').hide();        
+        //BENFORD.chart.resize();
     },
     
 }

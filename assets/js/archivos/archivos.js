@@ -144,10 +144,10 @@ ARCHIVOS.componets = {
                                 <a class="nav-link disabled" href="#"><i class="fas fa-star"></i></a>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
-                                <a id="requestfullscreen" class="nav-link" href="#!" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</a>
+                                <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
-                                <a id="exitfullscreen" class="nav-link" href="#" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</a>
+                                <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
                             </li>        
                         </ul>
                         <div class="scrollTable">
