@@ -32,3 +32,20 @@ if (!function_exists('unSerializeArray')) {
         return $unSerailize;
     }
 }
+
+if (!function_exists('maSort')) {
+    function maSort($ma = '', $sortkey = '', $sortorder = 1) { // sortorder: 1=asc, 2=desc
+      if ($ma && is_array($ma) && $sortkey) { // confirm inputs
+        foreach ($ma as $k=>$a) $temp["$a[$sortkey]"][$k] = $a; // temp ma with sort value, quotes convert key to string in case numeric float
+        if ($sortorder == 2) { // descending
+          krsort($temp);
+        } else { // ascending
+          ksort($temp);
+        }
+        $newma = array(); // blank output multiarray to add to
+        foreach ($temp as $sma) $newma += $sma; // add sorted arrays to output array
+        unset($ma, $sma, $temp); // release memory
+        return $newma;
+      }
+    }
+}

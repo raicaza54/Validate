@@ -77,7 +77,7 @@ class Auditoria extends CI_Controller {
             }            
             $this->spider->data = $items;
             $spider = $this->spider->procesar($form['campoSpider']);
-            $response["data"] = $spider;
+            $response["data"] = $spider + ['form' => $form];
             throw new Exception("Resultado retornando correctamente", 200);            
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

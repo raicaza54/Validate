@@ -96,12 +96,12 @@
                         <i class="fas fa-chart-bar"></i> Ley de Benford
                     </span>                    
                     <span id="AnalOmisiones">
-                        <i class="fas fa-list-alt"></i> Detectar omisiones
+                        <i class="fas fa-list-alt"></i> Manipulaci&oacute;n
                     </span>
                 </div>
                 <div class="d-flex flex-column">
                     <span id="AnalDuplicados">
-                        <i class="fas fa-list-alt"></i> Clave duplicados
+                        <i class="fas fa-list-alt"></i> Materialidad
                     </span>
                     <span id="AnalSpider" onclick="SPIDER.methods.parametros();">
                         <i class="fas fa-spider"></i> Araña

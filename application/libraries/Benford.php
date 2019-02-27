@@ -261,7 +261,7 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 10; $x <= 99; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_12d[$x])/100;
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_12d[$x]);
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
         $mad = $total_variacion/99;
@@ -312,7 +312,7 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 0; $x <= 9; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_2d[$x])/100;
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_2d[$x]);
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
         $mad = $total_variacion/9;
@@ -363,7 +363,7 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 1; $x <= 9; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_1d[$x])/100;
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_1d[$x]);
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
         $mad = $total_variacion/9;
@@ -405,10 +405,16 @@ class Benford {
     
     private function formatoTabla($r2) {
         array_walk($r2, function (&$value){
+            $e = '';
+            if($value['observado'] > $value['benford']){
+                $e = '+';
+            }elseif($value['observado'] < $value['benford']){
+                $e = '-';
+            }
+            $value['variacion']  = $e.number_format($value['variacion'], 12, ',', '.');
             $value['frecuencia'] = number_format($value['frecuencia'], 0, ',', '.');
             $value['observado']  = number_format($value['observado'], 3, ',', '.') . '%';
             $value['benford']    = number_format($value['benford'], 3, ',', '.') . '%';
-            $value['variacion']  = number_format($value['variacion'], 12, ',', '.');
         });        
         return $r2;
     }

@@ -13,21 +13,25 @@ GLOBAL.methods = {
     ventana: function () {
 
     },
-    maximizar: function () {
-        $('#content').addClass('position-absolute');
-        $('#content').addClass('maximizar')
+    billboard: function () {
+        BENFORD.chart.resize();
+    },
+    maximizar: function (callback) {
+        $('#content').addClass('position-absolute maximizar');
         $('#content').find('#maximizar').hide();
         $('#content').find('#restaurar').show();
-        //BENFORD.chart.resize();
+        if(typeof callback === 'function'){
+            callback();
+        }
     },
-    restaurar: function () {
-        $('#content').addClass('position-relative');
-        $('#content').removeClass('maximizar');
+    restaurar: function (callback) {
+        $('#content').removeClass('position-relative maximizar');
         $('#content').find('#restaurar').hide();
         $('#content').find('#maximizar').show();
-        //BENFORD.chart.resize();
-    },
-    
+        if(typeof callback === 'function'){
+            callback();
+        }
+    }
 }
 GLOBAL.componets = {
     ventanaModal: function () {

@@ -41,7 +41,9 @@ SPIDER.methods = {
     },
     procesarSpider: function() {
         var form_data = $('form#form-spider').serializeArray();
-        form_data.push({ name: "archivoIdProcesar", value: SPIDER.archivoId });
+        if(!$('form#form-spider').find('[name="archivoIdProcesar"]').length){
+            form_data.push({ name: "archivoIdProcesar", value: SPIDER.archivoId });
+        }
         return $.ajax({
             url: '/spider/v1/procesar',
             type: "POST",
@@ -55,13 +57,30 @@ SPIDER.methods = {
             }
         });        
     },
+    procesarClick: function(cuenta) {
+        $('[name="campoSpider"]').val(cuenta);
+        SPIDER.methods.procesar();
+    },
     procesar: function () {
         var datos = SPIDER.methods.procesarSpider();
         SPIDER.componets.graficaSpider();
         datos.then(function (data) {
-            console.log(data['data']['body']);
             $('#ventanaModal').modal('hide');
             $('#body-spider').html(data['data']['body']);
+            $('div#form-spider form input').remove();
+            $('#ventanaModal .modal-body').html('');
+            return data;
+        }).then(function (data) {
+            GLOBAL.methods.maximizar();
+            if (!$('#content').find('div#form-spider form input').length) {
+                $.each(data['data']['form'], function (key, value) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: key,
+                        value: value
+                    }).appendTo('div#form-spider form');
+                });
+            }
         });
     }
 }
@@ -90,7 +109,7 @@ SPIDER.componets = {
                         <a class="nav-item nav-link active" id="nav-benford-tab" data-toggle="tab" href="#nav-benford" role="tab" aria-controls="nav-benford" aria-selected="true">La Araña</a>
                     </div>
                 </nav>
-                <div id="form-benford"><form id="form-benford"></form></div>
+                <div id="form-spider"><form id="form-spider"></form></div>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active clearfix" id="nav-benford" role="tabpanel" aria-labelledby="nav-benford-tab">
                         <div id="body-archivo">

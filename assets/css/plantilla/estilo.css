@@ -19,14 +19,52 @@ body{
 }
 #body-spider{
     position: relative;
-    width: 754px;
+    width: 1000px;
 }
 #body-spider div.spd-credito{
     top: 0px;
     right: 0px;
 }
 #body-spider div.spd-spider{
-    right: calc((754px - 150px) / 2);
+    right: calc((1000px - 250px) / 2);
+}
+#body-spider div.ispd-cuenta:hover{
+    color: #0056b3;
+}
+#body-spider div.ispd-cuenta{
+    color: #007bff;
+    cursor: pointer;
+    position: absolute;
+    border-right: 1px solid #000;
+    padding-right: 5px;
+    width: 63px;
+    top: -1px;
+    bottom: 0px;
+    height: 30px;
+    padding-top: 5px;
+    text-align: right;
+}
+#body-spider div.ispd-dinero {
+    position: absolute;
+    border-right: 1px solid #000;
+    padding-right: 5px;
+    left: 75px;
+    width: 106px;
+    text-align: right;
+    top: -1px;
+    bottom: 0px;
+    height: 30px;
+    padding-top: 5px;
+}
+#body-spider div.ispd-porcentaje {
+    position: absolute;
+    left: 124px;
+    width: 117px;
+    text-align: right;
+}
+#body-spider div.spd-debito,
+#body-spider div.spd-credito{
+    position: relative;
 }
 #body-spider div.spd-debito{
     top: 0px;
@@ -40,9 +78,9 @@ body{
 #body-spider div[class^='spd']{
     border: 1px solid #777;
     height: 30px;
-    width: 150px;
+    width: 250px;
     padding: 5px;
-    font-size: 12px;
+    font-size: 11.5px !important;
     position: absolute;
     font-stretch: ultra-condensed;
 }
@@ -368,7 +406,6 @@ a.article:hover {
     width: calc(100% - 550px);
     padding: 10px;
     min-height: calc(100vh - 150px);
-    transition: all 0.3s;
     position: absolute;
     top: 150px;
     right: 250px;
@@ -525,7 +562,6 @@ ul.nav .active{
     left: -10px;
     width: calc(100% + 20px) !important;
     height: 100vh;
-    z-index: 1030;
 }
 #maximizar, #restaurar{
     color: #007bff;

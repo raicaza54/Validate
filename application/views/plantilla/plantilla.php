@@ -27,6 +27,7 @@
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/cookie/2.2.0/js.cookie.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/js/loader.js') ?>" type="module"></script>
         <?= load_assets('js') ?>
         <script type="text/javascript">
@@ -100,7 +101,7 @@
                 </div>
             </div>            
         </nav>
-        <div id="content">
+        <div id="content" style="z-index: 1030;">
             <?= $body ?>
         </div>
         <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
