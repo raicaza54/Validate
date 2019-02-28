@@ -41,7 +41,7 @@ body{
     top: -1px;
     bottom: 0px;
     height: 30px;
-    padding-top: 5px;
+    padding-top: 7px;
     text-align: right;
 }
 #body-spider div.ispd-dinero {
@@ -54,7 +54,7 @@ body{
     top: -1px;
     bottom: 0px;
     height: 30px;
-    padding-top: 5px;
+    padding-top: 7px;
 }
 #body-spider div.ispd-porcentaje {
     position: absolute;
@@ -519,7 +519,6 @@ div.scrollTable{
     text-align: right;
 }
 .jq-toast-single {
-    background-color: #2B2B2B;
     padding: 15px;
     font-size: 1rem;
     border-radius: 3px;

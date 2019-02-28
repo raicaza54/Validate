@@ -24,7 +24,7 @@ ARCHIVOS.methods = {
             dataType: 'json',
             data: {id: id},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
             }
         });
     },
@@ -50,7 +50,7 @@ ARCHIVOS.methods = {
             dataType: 'json',
             data: {id: id, digito: digito, grafica: grafica},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
             }
         });        
     },

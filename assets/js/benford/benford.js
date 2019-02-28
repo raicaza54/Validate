@@ -36,7 +36,7 @@ BENFORD.methods = {
             dataType: 'json',
             data:{id: id},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
             }
         });
     },
@@ -50,10 +50,10 @@ BENFORD.methods = {
             dataType: 'json',
             data: {form: form_data},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-
+                GLOBAL.methods.secure();
             }
         });        
     },

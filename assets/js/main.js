@@ -10,11 +10,20 @@
  */
 var GLOBAL = GLOBAL || {};
 GLOBAL.methods = {
+    secure: function() {
+        $.ajaxSetup({data: {'A4d6ebb02e86d4': Cookies.get('A4d6ebb02e86d4')}});
+    },
     ventana: function () {
 
     },
     billboard: function () {
         BENFORD.chart.resize();
+    },
+    spider: function() {
+        var outerContent = $('#content').find('.scrollTable');
+        var innerContent = $('#content').find('.scrollTable #body-spider');
+        outerContent.scrollLeft( (innerContent.width() - outerContent.width()) / 2);
+        outerContent.scrollTop( (innerContent.height() - outerContent.height()) / 2);
     },
     maximizar: function (callback) {
         $('#content').addClass('position-absolute maximizar');
@@ -31,7 +40,32 @@ GLOBAL.methods = {
         if(typeof callback === 'function'){
             callback();
         }
-    }
+    },
+    toast: function(mensaje, heading = 'default') {
+        var bgColor = '';
+        switch (heading) {
+            case 'info':
+                bgColor = '#1e88e5';
+                break;
+            case 'success':
+                bgColor = '#43a047';
+                break;
+            case 'error':
+                bgColor = '#e53935';
+                break;
+            default:
+                bgColor = '#444';
+                break;
+        }
+        $.toast({
+            text: mensaje,
+            position: 'bottom-left',
+            stack: false,
+            allowToastClose: false,
+            loader: false,
+            bgColor: bgColor,
+        });        
+    }        
 }
 GLOBAL.componets = {
     ventanaModal: function () {

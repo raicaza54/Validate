@@ -16,7 +16,7 @@ EXPLORADOR.methods = {
             type: "GET",
             dataType: 'json',
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
             }
         });
     },

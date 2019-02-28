@@ -8,6 +8,7 @@
  * @version    0.0.1
  * @LastUpdate 2018-02-13
  */
+$("body").prepend('<div id="preloader">Loading...</div>');    
 $(document).ready(function () {
     includeFiles('http://auditoria.local/assets/js/main.js');
     includeFiles('http://auditoria.local/assets/js/plantilla/sidebar.js');
@@ -32,7 +33,7 @@ $(document).ready(function () {
 //        $('#content').find('li#maximizar').show();
 //        $('#content').find('li#restaurar').hide();        
 //        return false;
-//    });    
+//    });
 });
 function includeFiles(path) {
     var script = document.createElement('script');

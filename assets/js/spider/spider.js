@@ -35,7 +35,10 @@ SPIDER.methods = {
             dataType: 'json',
             data:{id: id},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                GLOBAL.methods.secure();
             }
         });
     },
@@ -47,13 +50,20 @@ SPIDER.methods = {
         return $.ajax({
             url: '/spider/v1/procesar',
             type: "POST",
-            dataType: 'json',
+            dataType: 'json', 
             data: {form: form_data},
             success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                GLOBAL.methods.secure();
+                if (parseInt(data.status) == 200) {
+                    GLOBAL.methods.toast(data.detail);
+                }else{
+                    
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-
+                GLOBAL.methods.secure();
+                console.log(errorThrown);
+                GLOBAL.methods.toast('Ocurrio un error','error');
             }
         });        
     },
@@ -81,6 +91,8 @@ SPIDER.methods = {
                     }).appendTo('div#form-spider form');
                 });
             }
+        }).then(function () {
+            GLOBAL.methods.spider();
         });
     }
 }
@@ -125,10 +137,10 @@ SPIDER.componets = {
                                     </a>
                                 </li>
                                 <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
-                                    <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
+                                    <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar(GLOBAL.methods.spider)"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
                                 </li>
                                 <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
-                                    <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
+                                    <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar(GLOBAL.methods.spider)"><i class="far fa-window-restore"></i> Restaurar</span>
                                 </li>            
                             </ul>
                             <div class="scrollTable">

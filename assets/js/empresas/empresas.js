@@ -15,8 +15,14 @@ EMPRESAS.methods = {
             url: '/empresas/v1/datos',
             type: "GET",
             dataType: 'json',
-            success: function (data) {
-                $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+            beforeSend: function(jqXHR, settings) {
+                
+            },
+            success: function (data, textStatus) {
+                GLOBAL.methods.secure();
+            },
+            error: function (qXHR, textStatus) {
+                GLOBAL.methods.secure();
             }
         });
     },
@@ -44,7 +50,7 @@ EMPRESAS.methods = {
                     <label>NIT: ` + r['identificacion'] + `</label>
                     <label>Contacto: ` + r['persona'] + `</label>
                     <label>Tlf.: ` + r['persona_tlfs'] + `</label>`);
-                    $.ajaxSetup({data: {'A4d6ebb02e86d4': data.csrf}});
+                    GLOBAL.methods.secure();
                     EXPLORADOR.methods.listarCarpetas();
                     EMPRESAS.componets.limpiarContent();
                 }

@@ -23,6 +23,7 @@ class Spider {
     }
     
     public function procesar($cuenta) {
+        try{
         $ejemplo  = $this->data;
         $this->CI->load->library('table');
         $template = array(
@@ -214,9 +215,6 @@ class Spider {
         $l  = 0;
         $spider[$cuenta]['debito']  = maSort($spider[$cuenta]['debito'], 'porcentaje', 2);
         $spider[$cuenta]['credito'] = maSort($spider[$cuenta]['credito'], 'porcentaje', 2);
-        debug_file("####################################################".$cuenta."####################################################");
-        debug_file($spider[$cuenta]['debito']);
-        debug_file($spider[$cuenta]['credito']);
         $debitoCount  = count($spider[$cuenta]['debito']);
         $creditoCount = count($spider[$cuenta]['credito']);
         if ($debitoCount >= $creditoCount) {
@@ -269,10 +267,25 @@ class Spider {
         }
         $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) - 22) . 'px; text-align: center">' . $cuenta . '</div>';
         $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) + 7) . 'px; text-align: center">$' .number_format(abs($total_credito - $total_debito),2,',','.') . '</div>';
-        $this->datos['body'] .= '<svg width="1000" height="' . (($c * 60) - 30) . '" viewBox="0 0 1000 ' . (($c * 60) - 30) . '">';
+        $this->datos['body'] .= '<svg width="1000" height="' . (($c * 45) - 30) . '" viewBox="0 0 1000 ' . (($c * 45) - 30) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
+        } catch (Exception $exc){
+            $this->datos['status'] = $exc->getCode();
+            $exception = array(
+                "code"    => $exc->getCode(),
+                "message" => $exc->getMessage(),
+            );
+            if ($exception["code"] === 200) {
+                $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición correcta";
+            } elseif ($exception["code"] === 202) {
+                $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición Aceptada pero incompleta";
+            } elseif ($exception["code"] === 500) {
+                $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
+            } else{
+                $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
+            }
+        }        
         return $this->datos;
-    }
-    
+    }    
 }
