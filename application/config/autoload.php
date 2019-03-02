@@ -62,6 +62,7 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array(
     'database',
     'email',
+    'arbol',
     'session',
     'asset',
     'ion_auth',
@@ -103,6 +104,10 @@ $autoload['helper'] = array(
     'url',
     'html',
     'form',
+    'array',
+    'download',
+    'number',
+    'string',
     'auditoria_helper',
 );
 

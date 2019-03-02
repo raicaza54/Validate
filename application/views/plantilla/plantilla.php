@@ -60,9 +60,21 @@
                 </ul>
             </div>
             <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Espacio en Disco 200/500Gb 
+                    <div class='progress'>
+                        <div class='progress-bar w-75' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'></div>
+                    </div>
+                    <p style='margin: 10px 0px 0px;'>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis magna id ipsum tempus placerat. Vivamus pulvinar sit amet dui in tristique.
+                    </p>">
+                    <i class="far fa-hdd" style="margin: 6px 3px 0px 3px;"></i>
+                    <div class="progress" style="height: 2px;">
+                        <div class="progress-bar <?= random_element(array('bg-danger','bg-info','bg-warning'))?>" role="progressbar" style="width: <?=rand(10, 80)?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>                    
+                </a>
                 <a class="nav-item nav-link" href="#">
                     <i class="fas fa-bell" style="margin-top: 6px; margin-right: 10px;"></i>
-                </a>                
+                </a>
                 <span class="navbar-text text-white">
                     <?= $this->session->first_name . ' ' . $this->session->last_name ?>
                 </span>

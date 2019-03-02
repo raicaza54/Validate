@@ -38,15 +38,12 @@ class Explorador extends CI_Controller {
         $this->load->model('Explorador_model');
     }
 
+    
+    
     public function carpetas() {
         $response = $this->response;
         try {
-            //$items = $this->Empresas_model->getTodas();
-            $items = [
-                ['id' => "10", 'parent' => "#", 'text' => "2019", 'state' => ['opened' => 'true']],
-                ['id' => "20", 'parent' => "10", 'text' => "Enero", 'state' => ['opened' => 'true']],
-                ['id' => "1", 'parent' => "20", 'text' => "Movimientos", 'type' => 'file']
-            ];
+            $items = $this->arbol->run();
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }

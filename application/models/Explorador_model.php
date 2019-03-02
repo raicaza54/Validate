@@ -20,7 +20,7 @@ class Explorador_model extends CI_Model {
     }
     
     public function getTodas() {
-
+        return $this->db->get($this->pref.'carpetas')->result_array();
     }
     
     public function getId($id) {
