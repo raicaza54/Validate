@@ -115,8 +115,7 @@
 #-------------------------------------------------------------------------------
 # URL's
 #-------------------------------------------------------------------------------
-# http://www.arumeinformatica.es/blog/estructuras-jerarquicas-de-datos-en-
-# bases-de-datos-relacionales/
+# http://www.arumeinformatica.es/blog/estructuras-jerarquicas-de-datos-en-bases-de-datos-relacionales/
 #*******************************************************************************
 
 #*******************************************************************************
@@ -204,6 +203,7 @@
 # https://gist.github.com/bran921007/dd458d781ce50e225436
 # https://www.jstree.com/docs/json/
 # https://www.uno-de-piera.com/esctructura-directorios-tipo-arbol-con-php-y-mysql-recursividad/
+# https://www.phpflow.com/php/create-rename-delete-node-using-jstree-php-mysql/
 #*******************************************************************************
 
 #*******************************************************************************

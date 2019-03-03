@@ -1,7 +1,8 @@
 $("#sidebar").mCustomScrollbar({
     theme: "minimal"
 });
-$('i,a,div').popover({trigger: 'hover', delay: 500});
+$('a').popover();
+$('div').popover({trigger: 'hover', delay: 500});
 $('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
 });

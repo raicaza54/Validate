@@ -15,6 +15,7 @@ BENFORD.methods = {
     parametros: function () {
         var ventana = $('#ventanaModal');
         var idArchivo = $('[name="archivoId"]').val();
+        ventana.find('div.modal-dialog').removeClass('modal-sm').addClass('modal-lg');
         ventana.find('.modal-title').text('Ley de Benford');
         ventana.find('.btn-primary').show();
         ventana.find('.btn-primary').text('Procesar');
@@ -248,11 +249,11 @@ BENFORD.componets = {
     parametrosModal: function () {
         $('#ventanaModal .modal-body').html(
             `<form id="form-benford">
-                <div class="form-group col-md-12">
+                <div class="form-group">
                     <label for="campoAnalizar">Campo a analizar:&nbsp;&nbsp;</label>
                     <select id="campoAnalizar" name="campoAnalizar" class="form-control col"></select>
                 </div>
-                <div class="form-group col-md-12">
+                <div class="form-group">
                     <label>Incluir Valores</label>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="incluirValores" id="incluirValores1" value="positivos" checked>
@@ -267,7 +268,7 @@ BENFORD.componets = {
                         </label>
                     </div>
                 </div>
-                <div class="form-group col-md-12">
+                <div class="form-group">
                     <label for="resultado">Resultado</label>
                     <div id="resultado" class="input-group mb-3">
                         <div class="input-group-prepend">

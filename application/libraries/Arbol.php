@@ -21,16 +21,16 @@ class Arbol {
         $this->CI->load->model('Explorador_model');
     }
 
-//    $items = [
-//        ['id' => "10", 'parent' => "#", 'text' => "2019", 'state' => ['opened' => 'true']],
-//        ['id' => "20", 'parent' => "10", 'text' => "Enero", 'state' => ['opened' => 'true']],
-//        ['id' => "1", 'parent' => "20", 'text' => "Movimientos", 'type' => 'file']
-//    ];
+//$items = [
+//    ['id' => "10", 'parent' => "#", 'text' => "2019", 'type' => 'folder', 'state' => ['opened' => false, 'selected' => false, 'disabled' => false]],
+//    ['id' => "20", 'parent' => "10", 'text' => "Enero", 'type' => 'folder', 'state' => ['opened' => false, 'selected' => false, 'disabled' => false]],
+//    ['id' => "1", 'parent' => "20", 'text' => "Movimientos", 'type' => 'img', 'state' => ['opened' => false, 'selected' => false, 'disabled' => false]]
+//];
     
-    public function run() {
+    public function run($id_empresa) {
         $arbol = [];
         $childs = [];
-        $elements  = $this->get();
+        $elements  = $this->get($id_empresa);
         if(count($elements) > 0){
             $masters   = $elements["masters"];
             $childrens = $elements["childrens"];            
@@ -39,7 +39,12 @@ class Arbol {
                     'id'     => $master["id"],
                     'parent' => '#',
                     'text'   => $master["label"],
-                    'state'  => ['opened' => 'false'],
+                    'type'   => $master["type"],
+                    'state'  => [
+                        'opened'   => boolval($master["opened"]),
+                        'selected' => boolval($master["selected"]),
+                        'disabled' => boolval($master["disabled"]),
+                    ],
                 ];
                 $childs = $this->nested($childrens, $master["id"]);
                 if(count($childs) > 0){
@@ -51,8 +56,8 @@ class Arbol {
         return $arbol;
     }
     
-    private function get() {
-        $query = $this->CI->Explorador_model->getTodas();
+    private function get($id_empresa) {
+        $query = $this->CI->Explorador_model->getFolderEmpresa($id_empresa);
         $this->_elements["masters"] = $this->_elements["childrens"] = array();
         if (count($query) > 0) {
             foreach ($query as $element) {
@@ -76,14 +81,24 @@ class Arbol {
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
                             'text'   => $row['label'],
-                            'state'  => ['opened' => 'false']
+                            'type'   => $row["type"],
+                            'state'  => [
+                                'opened'   => boolval($row["opened"]),
+                                'selected' => boolval($row["selected"]),
+                                'disabled' => boolval($row["disabled"])
+                            ]
                         ];
                     } else {
                         $ramas[] = [                    
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
                             'text'   => $row['label'],
-                            'state'  => ['opened' => 'false']
+                            'type'   => $row["type"],
+                            'state'  => [
+                                'opened'   => boolval($row["opened"]),
+                                'selected' => boolval($row["selected"]),
+                                'disabled' => boolval($row["disabled"])
+                            ]
                         ];
                     }
                     $ramas = array_merge($ramas, $this->nested($rows, $row["id"]));

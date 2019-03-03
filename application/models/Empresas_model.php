@@ -20,7 +20,9 @@ class Empresas_model extends CI_Model {
     }
     
     public function getTodas() {
-        $this->db->select('id, nombre, identificacion');
+        $this->db->select($this->pref.'empresas.id, nombre, identificacion');
+        $this->db->join($this->pref.'auditores_empresas',$this->pref.'auditores_empresas.fk_empresas = '.$this->pref.'empresas.id');
+        $this->db->where($this->pref.'auditores_empresas.fk_auditores',$this->session->userdata('users_id'));
         return $this->db->get($this->pref.'empresas')->result_array();
     }
     

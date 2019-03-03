@@ -60,7 +60,9 @@ $route['empresas/v1/activar']['post'] = 'empresas/activar';
 /* -------------------------------------------------------------------------
  * Explorador
  * ------------------------------------------------------------------------- */
-$route['explorador/v1/carpetas']['get'] = 'explorador/carpetas';
+$route['explorador/v1/carpetas']['post'] = 'explorador/carpetas';
+$route['explorador/v1/crear']['post'] = 'explorador/crear';
+$route['explorador/v1/editar']['post'] = 'explorador/editar';
 
 /* -------------------------------------------------------------------------
  * Archivos

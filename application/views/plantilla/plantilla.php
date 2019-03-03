@@ -39,7 +39,7 @@
                 });
             });
         </script>
-        <title>Verify</title>
+        <title>Validate</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg fixed-top bg-auditor">
@@ -67,13 +67,16 @@
                     <p style='margin: 10px 0px 0px;'>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis magna id ipsum tempus placerat. Vivamus pulvinar sit amet dui in tristique.
                     </p>">
-                    <i class="far fa-hdd" style="margin: 6px 3px 0px 3px;"></i>
+                    <i class="far fa-hdd" style="margin: 6px 5px 0px 5px;"></i>
                     <div class="progress" style="height: 2px;">
                         <div class="progress-bar <?= random_element(array('bg-danger','bg-info','bg-warning'))?>" role="progressbar" style="width: <?=rand(10, 80)?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>                    
                 </a>
                 <a class="nav-item nav-link" href="#">
-                    <i class="fas fa-bell" style="margin-top: 6px; margin-right: 10px;"></i>
+                    <i class="fas fa-bell" style="margin: 6px 5px 0px 5px;"></i>
+                </a>
+                <a class="nav-item nav-link" href="#">
+                    <i class="far fa-question-circle" style="margin: 6px 5px 0px 5px;"></i>
                 </a>
                 <span class="navbar-text text-white">
                     <?= $this->session->first_name . ' ' . $this->session->last_name ?>
@@ -90,9 +93,9 @@
                 <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
                     <div class="float-left">Explorador de archivos</div>
                     <div class="float-right" style="margin-right: -3px;">
-                        <i class="btn-icon far fa-plus-square" data-toggle="popover" data-placement="top" data-content="Crear una carpeta"></i>
-                        <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido"></i>
-                        <i class="btn-icon fas fa-info-circle" data-toggle="popover" data-placement="top" data-content="Información de la carpeta"></i>
+                        <i class="btn-icon far fa-plus-square" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta()"></i>
+                        <i class="btn-icon far fa-edit" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta()"></i>
+                        <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>
                     </div>
                 </div>
                 <div class="card" style="height: calc(100vh - 203px); overflow-y: auto;">

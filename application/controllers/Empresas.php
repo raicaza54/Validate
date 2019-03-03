@@ -50,7 +50,6 @@ class Empresas extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
@@ -63,6 +62,7 @@ class Empresas extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
+            $this->session->set_userdata(['empresaId' => $post['id']]);
             $item = $this->Empresas_model->getId($post['id']);
             if (!is_array($item)) {
                 throw new Exception("No existen datos para mostrar", 204);
@@ -72,7 +72,6 @@ class Empresas extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));

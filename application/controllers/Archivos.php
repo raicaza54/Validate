@@ -54,7 +54,6 @@ class Archivos extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
@@ -76,7 +75,6 @@ class Archivos extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
@@ -98,7 +96,6 @@ class Archivos extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));
@@ -120,7 +117,6 @@ class Archivos extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));        

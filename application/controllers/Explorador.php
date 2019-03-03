@@ -37,13 +37,68 @@ class Explorador extends CI_Controller {
         }
         $this->load->model('Explorador_model');
     }
-
     
+    public function crear() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('parent_id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $insert = $this->Explorador_model->crear([
+                'carpeta'   => $post['carpeta'],
+                'empresaId' => $this->session->userdata('empresaId'),
+                'parent_id' => $post['parent_id'],
+            ]);
+            if($insert === FALSE){
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 204);
+            }
+            $response["data"] = [
+                'id'      => $insert,
+                'carpeta' => $post['carpeta']
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));            
+    }
+    
+    public function editar() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $insert = $this->Explorador_model->editar([
+                'carpeta'   => $post['carpeta'],
+                'id'        => $post['id'],
+                'parent_id' => $post['parent_id'],
+            ]);
+            if($insert === FALSE){
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 204);
+            }            
+            $response["data"] = [];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));            
+    }
     
     public function carpetas() {
         $response = $this->response;
         try {
-            $items = $this->arbol->run();
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }            
+            $items = $this->arbol->run($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
@@ -52,7 +107,6 @@ class Explorador extends CI_Controller {
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $response['csrf'] = $this->security->get_csrf_hash();
         $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($response));

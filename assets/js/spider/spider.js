@@ -14,6 +14,7 @@ SPIDER.methods = {
     parametros: function () {
         var ventana = $('#ventanaModal');
         var idArchivo = $('[name="archivoId"]').val();
+        ventana.find('div.modal-dialog').removeClass('modal-sm').addClass('modal-lg');
         ventana.find('.modal-title').text('La Araña');
         ventana.find('.btn-primary').show();
         ventana.find('.btn-primary').text('Procesar');
@@ -175,7 +176,7 @@ SPIDER.componets = {
                     Phasellus nec dui et ex porta gravida. Suspendisse faucibus lacus id consequat dignissim. 
                     Pellentesque laoreet quam ac felis molestie feugiat.
                 </p>
-                <div class="form-group col-md-12">
+                <div class="form-group">
                     <label for="campoSpider">Cuenta en la Ara&ntilde;a:&nbsp;&nbsp;</label>
                     <select id="campoSpider" name="campoSpider" class="form-control col"></select>
                 </div>

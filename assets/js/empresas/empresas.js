@@ -37,6 +37,7 @@ EMPRESAS.methods = {
     },
     activarEmpresa: function() {
         var id = $('input[name="customRadio"]:checked').val();
+        GLOBAL.empresaId = id;
         if($.isNumeric(id)){
             $.ajax({
                 url: '/empresas/v1/activar',
@@ -51,7 +52,7 @@ EMPRESAS.methods = {
                     <label>Contacto: ` + r['persona'] + `</label>
                     <label>Tlf.: ` + r['persona_tlfs'] + `</label>`);
                     GLOBAL.methods.secure();
-                    EXPLORADOR.methods.listarCarpetas();
+                    EXPLORADOR.methods.listarCarpetas(id);
                     EMPRESAS.componets.limpiarContent();
                 }
             });

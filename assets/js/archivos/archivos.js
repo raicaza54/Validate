@@ -12,7 +12,8 @@ var ARCHIVOS = ARCHIVOS || {};
 $("#explorador-content").on("click",".jstree-clicked", function (e) {
         var nodeSelect = $(this).jstree('get_selected', true);
 	var node = nodeSelect[0];
-	if(node.type == 'file'){
+        GLOBAL.folderId = node.id;
+	if((node.type == 'excel') || (node.type == 'word') || (node.type == 'pdf') || (node.type == 'img')){
             ARCHIVOS.methods.listarDatos(node.id);
 	}
 });

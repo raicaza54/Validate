@@ -10,18 +10,74 @@
  */
 var EXPLORADOR = EXPLORADOR || {};
 EXPLORADOR.methods = {
-    cargaCarpetas: function () {
+    crearCarpeta: function () {
+        var ref = $('#carpetasTree').jstree(true), sel = ref.get_selected();
+        if(!sel.length) { return false; }
+        sel = sel[0];
+        sel = ref.create_node(sel, {"type":"folder"});
+        if(sel) {
+            ref.edit(sel);
+        }        
+    },
+    crearProcesar: function(carpeta, parent) {
         return $.ajax({
-            url: '/explorador/v1/carpetas',
-            type: "GET",
+            url: '/explorador/v1/crear',
+            type: "POST",
             dataType: 'json',
+            data:{
+                carpeta: carpeta, 
+                parent_id: parent
+            },
+            success: function (data) {
+                GLOBAL.methods.secure();
+            }
+        });        
+    },
+    editarCarpeta: function () {
+        var ref = $('#carpetasTree').jstree(true), sel = ref.get_selected();
+        if(!sel.length) { return false; }
+        sel = sel[0];
+        ref.edit(sel);        
+    },
+    editarProcesar: function(carpeta, id, parent) {
+        return $.ajax({
+            url: '/explorador/v1/editar',
+            type: "POST",
+            dataType: 'json',
+            data:{
+                carpeta: carpeta, 
+                id: id,
+                parent_id: parent
+            },
             success: function (data) {
                 GLOBAL.methods.secure();
             }
         });
     },
-    listarCarpetas: function () {
-        var datos = EXPLORADOR.methods.cargaCarpetas();
+    borrarCarpeta: function () {
+        var ventana = $('#ventanaModal');
+        ventana.find('div.modal-dialog').removeClass('modal-lg').addClass('modal-sm');
+        ventana.find('.modal-title').text('Explorador de Carpetas');
+        ventana.find('.btn-primary').show();
+        ventana.find('.btn-primary').text('Eliminar');
+        ventana.find('.btn-primary').attr('onclick','');
+        ventana.find('.btn-secondary').text('Cancelar');
+        EXPLORADOR.componets.exploradorBorrarModal();
+        ventana.modal('show');
+    },
+    cargaCarpetas: function (id) {
+        return $.ajax({
+            url: '/explorador/v1/carpetas',
+            type: "POST",
+            dataType: 'json',
+            data:{id: id},
+            success: function (data) {
+                GLOBAL.methods.secure();
+            }
+        });
+    },
+    listarCarpetas: function (id) {
+        var datos = EXPLORADOR.methods.cargaCarpetas(id);
         datos.then(function (r) {
             EXPLORADOR.componets.arbol();
             return r;
@@ -56,17 +112,36 @@ EXPLORADOR.componets = {
                 check_callback: true,
             },
             'types': {
-                'default': {
-                    'icon': 'far fa-folder'
-                },
-                'file': {
-                    'icon': 'far fa-file-excel'
-                }
+                'default': {'icon': 'far fa-file'},
+                'folder':  {'icon': 'far fa-folder'},
+                'excel':   {'icon': 'far fa-file-excel'},
+                'word':    {'icon': 'far fa-file-word'},
+                'pdf':     {'icon': 'far fa-file-pdf'},
+                'img':     {'icon': 'far fa-file-image'}
             },
-            'plugins': ['types']
+            'plugins': ['types','dnd']
+        }).on('create_node.jstree', function (e, data) {
+            var datos = EXPLORADOR.methods.crearProcesar(data.node.text, data.node.parent);
+            datos.then(function (r) {
+                data.instance.set_id(data.node, r['data']['id']);
+            });
+        }).on('move_node.jstree', function (e, data) {
+            EXPLORADOR.methods.editarProcesar(data.node.text, data.node.id, data.parent);
+        }).on('rename_node.jstree', function (e, data) {
+            EXPLORADOR.methods.editarProcesar(data.node.text, data.node.id, data.node.parent);
         });
     },
     arbol: function () {
         $('#explorador-content').html(`<div id="carpetasTree" obj="tree"></div>`);
-    }
+    },
+    borrarModal: function () {
+        $('#ventanaModal .modal-body').html(
+            `<form id="form-explorador">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed bibendum tellus. 
+                    Vestibulum eu lorem at nisl venenatis dictum nec vel nisi. Aenean fermentum sit amet erat feugiat volutpat. 
+                    Phasellus nec dui et ex porta gravida.
+                </p>
+            </form>`);
+    }    
 }
