@@ -113,10 +113,10 @@ EMPRESAS.componets = {
                                 <a class="nav-link disabled" href="#"><i class="fas fa-trash"></i> Eliminar</a>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
-                                <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
+                                <span id="requestfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
-                                <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
+                                <span id="exitfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
                             </li>
                         </ul>
                         <div class="scrollTable">

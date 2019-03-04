@@ -61,14 +61,15 @@ $route['empresas/v1/activar']['post'] = 'empresas/activar';
  * Explorador
  * ------------------------------------------------------------------------- */
 $route['explorador/v1/carpetas']['post'] = 'explorador/carpetas';
-$route['explorador/v1/crear']['post'] = 'explorador/crear';
-$route['explorador/v1/editar']['post'] = 'explorador/editar';
+$route['explorador/v1/crear']['post']    = 'explorador/crear';
+$route['explorador/v1/editar']['post']   = 'explorador/editar';
 
 /* -------------------------------------------------------------------------
  * Archivos
  * ------------------------------------------------------------------------- */
 $route['archivos/v1/datos']['post']  = 'archivos/datos';
 $route['archivos/v1/digito']['post'] = 'archivos/digito';
+$route['archivos/v1/subir']  = 'archivos/subir';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford
@@ -79,8 +80,8 @@ $route['benford/v1/procesar']['post']   = 'auditoria/benford';
 /* -------------------------------------------------------------------------
  * La Araña
  * ------------------------------------------------------------------------- */
-$route['spider/v1/cuentas']['post'] = 'archivos/cuentas';
-$route['spider/v1/procesar']['post']   = 'auditoria/spider';
+$route['spider/v1/cuentas']['post']  = 'archivos/cuentas';
+$route['spider/v1/procesar']['post'] = 'auditoria/spider';
 
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';

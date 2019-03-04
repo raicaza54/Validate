@@ -474,7 +474,10 @@ div.scrollTable{
     top: 50%;
     transform: translateY(-50%);
 }
-.tab-content{
+div.tab-content ul.nav{
+    font-size: 12px !important;
+}
+div.tab-content:not(.form-content) .scrollTable{
     font-size: 12px !important;
 }
 #nav-tabContent{
@@ -562,11 +565,10 @@ ul.nav .active{
     width: calc(100% + 20px) !important;
     height: 100vh;
 }
-#maximizar, #restaurar{
+.btn-span{
     color: #007bff;
     cursor: pointer;
 }
-#maximizar:hover, 
-#restaurar:hover{
+.btn-span:hover{
     color: #0056b3;
 }

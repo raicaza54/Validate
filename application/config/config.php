@@ -454,7 +454,7 @@ $config['csrf_token_name']   = 'A4d6ebb02e86d4';
 $config['csrf_cookie_name']  = 'A4d6ebb02e86d4';
 $config['csrf_expire']       = 7200;
 $config['csrf_regenerate']   = TRUE;
-$config['csrf_exclude_uris'] = array();
+$config['csrf_exclude_uris'] = array('archivos/v1/subir');
 
 /*
 |--------------------------------------------------------------------------

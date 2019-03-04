@@ -38,6 +38,42 @@ class Archivos extends CI_Controller {
         $this->load->model('Archivos_model');
     }
 
+    public function subir() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            debug_file($post);
+            $this->do_upload();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                //throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $response["data"] = [];
+            throw new Exception("Resultado retornando correctamente", 200);            
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+    }
+    
+    private function do_upload() {
+        $config['upload_path']   = "./assets/upload";
+        $config['allowed_types'] = 'xls|xlsx';
+        $config['encrypt_name']  = TRUE;
+        debug_file('do_upload');
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload("archivo")) {
+            $data = array('upload_data' => $this->upload->data());
+            $title = $this->input->post('title');
+            $image = $data['upload_data']['file_name'];
+            debug_file($image);
+            //$result = $this->upload_model->save_upload($title, $image);
+            //echo json_decode($result);
+        }
+        debug_file($this->upload->display_errors());
+    }
+
     public function datos() {
         $response = $this->response;
         try {

@@ -19,7 +19,7 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" id="mn-archivo">
+                <div class="icono" id="mn-archivo" onclick="ARCHIVOS.methods.cargarArchivo()">
                     <i class="fas fa-file-upload"></i>
                     <span>Archivo</span>
                 </div>

@@ -18,8 +18,11 @@ $(document).ready(function () {
     includeFiles('http://auditoria.local/assets/js/benford/benford.js');
     includeFiles('http://auditoria.local/assets/js/spider/spider.js');
     $('#content').on('click', '#menu-tab a', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
+        e.preventDefault();
+        $(this).tab('show');
+    });
+    $('#content').on('change', 'input[type="file"]', function(){
+        $('#content').find('label[for="archivo"]').text(this.value.split("\\").pop());
     });
 //    $('#support').text($.fullscreen.isNativelySupported() ? 'supports' : 'doesn\'t support');
 //    $('#content').on('click','#requestfullscreen', function() {

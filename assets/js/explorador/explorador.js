@@ -62,7 +62,7 @@ EXPLORADOR.methods = {
         ventana.find('.btn-primary').text('Eliminar');
         ventana.find('.btn-primary').attr('onclick','');
         ventana.find('.btn-secondary').text('Cancelar');
-        EXPLORADOR.componets.exploradorBorrarModal();
+        EXPLORADOR.componets.borrarModal();
         ventana.modal('show');
     },
     cargaCarpetas: function (id) {
@@ -129,6 +129,17 @@ EXPLORADOR.componets = {
             EXPLORADOR.methods.editarProcesar(data.node.text, data.node.id, data.parent);
         }).on('rename_node.jstree', function (e, data) {
             EXPLORADOR.methods.editarProcesar(data.node.text, data.node.id, data.node.parent);
+        }).on('changed.jstree', function (e, data) {
+            var path = data.instance.get_path(data.node,'/');
+            var type = data.node.type;
+            GLOBAL.folderId = data.node.id;
+            GLOBAL.folderPath = path;
+            if($('span#path-archivo').length){
+               $('span#path-archivo').text(path); 
+            }
+            if((type == 'excel') || (type == 'word') || (type == 'pdf') || (type == 'img')){
+                ARCHIVOS.methods.listarDatos(data.node.id);
+            }
         });
     },
     arbol: function () {

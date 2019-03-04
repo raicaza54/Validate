@@ -11,6 +11,7 @@
 var GLOBAL = GLOBAL || {};
 GLOBAL.empresaId = null;
 GLOBAL.folderId = null;
+GLOBAL.folderPath = 'Debe seleccionar un destino';
 GLOBAL.methods = {
     secure: function() {
         $.ajaxSetup({data: {'A4d6ebb02e86d4': Cookies.get('A4d6ebb02e86d4')}});

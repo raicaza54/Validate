@@ -9,14 +9,6 @@
  * @LastUpdate 2018-02-13
  */
 var ARCHIVOS = ARCHIVOS || {};
-$("#explorador-content").on("click",".jstree-clicked", function (e) {
-        var nodeSelect = $(this).jstree('get_selected', true);
-	var node = nodeSelect[0];
-        GLOBAL.folderId = node.id;
-	if((node.type == 'excel') || (node.type == 'word') || (node.type == 'pdf') || (node.type == 'img')){
-            ARCHIVOS.methods.listarDatos(node.id);
-	}
-});
 ARCHIVOS.methods = {
     cargaDatos: function (id) {
         return $.ajax({
@@ -53,7 +45,24 @@ ARCHIVOS.methods = {
             success: function (data) {
                 GLOBAL.methods.secure();
             }
-        });        
+        });
+    },
+    cargarArchivo: function() {
+        ARCHIVOS.componets.archivo(GLOBAL.folderPath);
+    },
+    subirArchivo: function() {
+        var formData = $('#content').find('input[name="archivo"]').val();
+        return $.ajax({
+            url: '/archivos/v1/subir',
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: {archivo: formData},
+            success: function (data) {
+                GLOBAL.methods.secure();
+            }
+        });
     },
     listarDatos: function (id) {
         var idDatos = id;
@@ -126,6 +135,55 @@ ARCHIVOS.componets = {
                 </tr>`);
         });
     },
+    archivo: function (path) {
+        $('#content').html(`
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-subir-tab" data-toggle="tab" href="#nav-subir" role="tab" aria-controls="nav-subir" aria-selected="true">Cargar Archivo</a>
+                </div>
+            </nav>
+            <div class="tab-content form-content" id="nav-tabContent">
+                <div class="tab-pane fade show active clearfix" id="nav-subir" role="tabpanel" aria-labelledby="nav-subir-tab">
+                    <div id="body-subir">
+                        <ul class="nav position-relative">
+                            <li class="nav-item">
+                                <span class="nav-link btn-span" onclick="ARCHIVOS.methods.subirArchivo()"><i class="fas fa-upload"></i> Cargar archivo</i></span>
+                            </li>
+                            <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
+                                <span id="requestfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
+                            </li>
+                            <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
+                                <span id="exitfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
+                            </li>        
+                        </ul>
+                        <div class="scrollTable">
+                            <form enctype="multipart/form-data">
+                                <p>
+                                    Los tipos de archivos permitidos de ofimatica unicamente se permiten los siguientes tipos 
+                                    hojas ed calculo xls, xlsx y ods documentos tales como doc, docx, pdf, odt. Tambien estan permitidas
+                                    las imagenes de tipo jpg, jpeg, bmp y png.
+                                </p>
+                                <p>
+                                    Los archivos no deben superar 20 mb
+                                </p>
+                                <p>
+                                    Directorio destino: <span id="path-archivo">` + path + `</span>
+                                </p>        
+                                <div class="custom-file mb-3">
+                                    <input type="file" class="custom-file-input" id="archivo" name="archivo">
+                                    <label class="custom-file-label" for="archivo">Cargar archivo</label>
+                                </div>
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="encabezado" name="encabezado">
+                                    <label class="form-check-label" for="encabezado">la primera fila contiene los encabezados</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        `);
+    },
     tabs: function () {
         $('#content').html(
                 `<nav>
@@ -145,10 +203,10 @@ ARCHIVOS.componets = {
                                 <a class="nav-link disabled" href="#"><i class="fas fa-star"></i></a>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px;" id="maximizar">
-                                <span id="requestfullscreen" class="nav-link" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
+                                <span id="requestfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.maximizar()"><i class="far fa-window-maximize"></i> Pantalla Completa</span>
                             </li>
                             <li class="nav-item position-absolute" style="right: 0px; display: none;" id="restaurar">
-                                <span id="exitfullscreen" class="nav-link" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
+                                <span id="exitfullscreen" class="nav-link btn-span" onclick="GLOBAL.methods.restaurar()"><i class="far fa-window-restore"></i> Restaurar</span>
                             </li>        
                         </ul>
                         <div class="scrollTable">
