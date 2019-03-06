@@ -31,55 +31,6 @@
 #*******************************************************************************
 
 #*******************************************************************************
-# FLATICON
-#*******************************************************************************
-# Every icon to your taste with the icon editor
-# 
-# It's okay if you don't find your perfect icon — at Flaticon you can edit its 
-# size, position and colors until you find the appropriate style for your 
-# project.
-#
-# Empresas
-# - Crear
-# - Propiedades
-# - Seleccionar
-# 
-# Importar 
-# - Archivo
-# - Conexión
-#  
-# Exportar 
-# - CSV
-# - Excel
-#  
-# Datos 
-# - Duplicar
-#  
-# Orden 
-# - Indice
-# - Ordenar
-#  
-# Búsqueda 
-# - Buscar
-# - Buscar Siguiente
-# - Ir a
-# 
-# Tareas 
-# - Ejecutar
-# 
-# Explorar 
-# - Ley de Benford 
-# - Clave duplicados
-# - Detectar omisiones 
-# - Araña
-#  
-#-------------------------------------------------------------------------------
-# URL's
-#-------------------------------------------------------------------------------
-# https://www.flaticon.com/
-#*******************************************************************************
-
-#*******************************************************************************
 # Kazam Screen Caster
 #*******************************************************************************
 # Super+Ctrl+R: Start recording
@@ -248,7 +199,45 @@
 
 
 
-
+#*******************************************************************************
+# Permisos de carpeta en ubuntu
+#*******************************************************************************
+#
+# Crea un nuevo directorio para tu proyecto en la raíz de apache (o donde te 
+# apetezca si vas a crear un sitio virtual). En mi caso he creado una carpeta 
+# testsite dentro de apache:
+# 
+# $ sudo mkdir /var/www/html/testsite
+# 
+# Cambia el propietario por www-data:
+# 
+# $ sudo chown www-data /var/www/html/testsite/
+# 
+# Cambia el grupo de usuario del directorio:
+# 
+# $ sudo chgrp www-data /var/www/html/testsite/
+# 
+# Configura los permisos adecuados (lectura, escritura y ejecución para usuario 
+# y grupo, sólo lectura y ejecución para el resto):
+# 
+# $ sudo chmod ug+w /var/www/html/testsite/
+# 
+# Asigna el "sticky bit" para el grupo (para que los archivos y directorios 
+# que se creen arrastren la propiedad del grupo www-data):
+# 
+# $ sudo chmod g+s /var/www/html/testsite/
+# 
+# Asigna los permisos por defecto (para que los directorios que se creen 
+# arrastren los mismos permisos):
+# 
+# $ sudo setfacl -d -m g::rwx /var/www/html/testsite/
+# 
+# Ahora agrega tantos usuarios como necesites que puedan acceder en tu servidor 
+# web (en mi caso el usuario victor):
+# 
+# $ sudo usermod -a -G www-data kevin
+#
+#*******************************************************************************
 
 
 

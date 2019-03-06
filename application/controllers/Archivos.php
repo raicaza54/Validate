@@ -1,6 +1,8 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
@@ -38,15 +40,35 @@ class Archivos extends CI_Controller {
         $this->load->model('Archivos_model');
     }
 
+    private function leer_excel($inputFile) {
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFile);
+        //$xls_data = $spreadsheet->getActiveSheet()->toArray(NULL, TRUE, TRUE, TRUE);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $xls_data = [];
+        $x = 0;
+        foreach ($worksheet->getRowIterator() as $row) {
+            $cellIterator = $row->getCellIterator();
+            $cellIterator->setIterateOnlyExistingCells(TRUE);
+            foreach ($cellIterator as $cell) {
+                $xls_data[$x][] = $cell->getValue();
+            }
+            $x++;
+        }
+        debug_file($xls_data);
+    }
+    
     public function subir() {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            debug_file($post);
-            $this->do_upload();
-            if(!is_array($post) || !array_key_exists('id', $post)){
-                //throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            if(!is_array($post) || !array_key_exists('carpeta', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
+            $archivo = $this->do_upload();
+            if(is_bool($archivo) || ($archivo === FALSE)){
+                throw new Exception("Tenemos un problema con el archivo", 204);
+            }
+            $this->leer_excel($archivo);
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);            
         } catch (Exception $exc) {
@@ -58,20 +80,21 @@ class Archivos extends CI_Controller {
     }
     
     private function do_upload() {
-        $config['upload_path']   = "./assets/upload";
-        $config['allowed_types'] = 'xls|xlsx';
-        $config['encrypt_name']  = TRUE;
-        debug_file('do_upload');
+        $r = FALSE;
+        $config['upload_path']   = $this->config->item('path_file');
+        $config['allowed_types'] = $this->config->item('types_file');
+        $config['max_size']      = $this->config->item('size_file');
+        $config['encrypt_name']  = TRUE;        
         $this->load->library('upload', $config);
         if ($this->upload->do_upload("archivo")) {
             $data = array('upload_data' => $this->upload->data());
-            $title = $this->input->post('title');
-            $image = $data['upload_data']['file_name'];
-            debug_file($image);
-            //$result = $this->upload_model->save_upload($title, $image);
-            //echo json_decode($result);
+            $archivo = $data['upload_data']['file_name'];
+            $fullpath = $data['upload_data']['full_path'];
+            return $fullpath;
+        }else{
+            log_message('error', var_export($this->upload->display_errors(), TRUE));
+            return FALSE;
         }
-        debug_file($this->upload->display_errors());
     }
 
     public function datos() {
