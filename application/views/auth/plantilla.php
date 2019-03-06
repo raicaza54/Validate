@@ -16,7 +16,7 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
 
-        <title>Auditor</title>
+        <title>Validate</title>
     </head>
     <body>
         <div class="container">
