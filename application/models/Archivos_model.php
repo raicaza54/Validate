@@ -91,5 +91,9 @@ class Archivos_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function insert_excel($batch) {
+        $this->db->insert_batch($this->pref.'archivos_detalle', $batch);
+    }
 
 }
