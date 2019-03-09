@@ -26,6 +26,7 @@ class Archivos extends CI_Controller {
         "data"   => array(),
         "csrf"   => ''
     );
+    private $id = NULL;
 
     function __construct() {
         parent::__construct();
@@ -38,6 +39,22 @@ class Archivos extends CI_Controller {
         $this->load->model('Archivos_model');
     }
 
+    private function fileType($type, $t) {
+        $fileType = FALSE;
+        switch ($type) {
+            case '.xlsx':
+                $fileType = ($t == 0) ? 'Excel2007' : 'excel';
+                break;
+            case '.xls':
+                $fileType = ($t == 0) ?'Excel5' : 'excel';
+                break;
+            default:
+                return FALSE;
+                break;
+        }
+        return $fileType;
+    }
+    
     /**
      * Tipo de archivo permitidos filtrados por la opcion de carga de 
      * archivos nativa de codeigniter
@@ -50,17 +67,8 @@ class Archivos extends CI_Controller {
         extract($param);
         $this->load->library('phpexcel');
         $this->load->library('PHPExcel/iofactory');        
-        switch ($type) {
-            case '.xlsx':
-                $fileType = 'Excel2007';
-                break;
-            case '.xls':
-                $fileType = 'Excel5';
-                break;
-            default:
-                return FALSE;
-                break;
-        }
+        $fileType = $this->fileType($type, 0);
+        $archivo = FALSE;
         try{
             $objIOReader = new IOFactory();
             $objPHPExcel = $objIOReader->createReader($fileType);
@@ -75,9 +83,14 @@ class Archivos extends CI_Controller {
             $update_user   = $this->session->userdata('users_id');
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
+            $this->id = uniqint();
+            $tipos = [];
+            for ($f = 1; $f <= 20; $f++) {
+                $tipos['campo'.$f] = FALSE;
+            }            
             foreach ($sheet as $value) {
                 $outsheet[$x] = [
-                    'fk_archivos'   => 1,
+                    'fk_archivos'   => $this->id,
                     'linea'         => $linea,
                     'campo1'        => substr($value['A'], 0, 100),
                     'campo2'        => substr($value['B'], 0, 100),
@@ -104,13 +117,38 @@ class Archivos extends CI_Controller {
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie
                 ];
+                if($linea == 'f'){
+                    for ($f = 1; $f <= 20; $f++) {
+                        if(strlen($outsheet[$x]['campo'.$f])){
+                            if(is_int($outsheet[$x]['campo'.$f])){
+                                $tipos['campo'.$f] = TRUE;
+                            }
+                        }
+                    }
+                }
                 $x++;
                 $linea = 'f';
             }
+            debug_file($tipos);
+            $archivo = [
+                'archivo' => [
+                    'id'            => $this->id,
+                    'fk_carpetas'   => $parent_id,
+                    'nombre'        => $filename,
+                    'tipo'          => $type,
+                    'created_user'  => $created_user,
+                    'created_clier' => $created_clier,
+                    'update_user'   => $update_user,
+                    'update_clie'   => $update_clie,
+                    'columnas'      => json_encode($tipos)
+                ],
+                'detalle' => $outsheet
+            ];
+            
         } catch (Exception $ex) {
             return FALSE;
         }
-        return $outsheet;
+        return $archivo;
     }
     
     public function subir() {
@@ -124,12 +162,16 @@ class Archivos extends CI_Controller {
             if(is_bool($archivo) || ($archivo === FALSE)){
                 throw new Exception("Tenemos un problema con el archivo", 204);
             }
-            $xls = $this->leer_excel($archivo);
+            $xls = $this->leer_excel($archivo + ['parent_id' => $post['carpeta']]);
             $xlsdb = $this->Archivos_model->insert_excel($xls);
             if(is_bool($xlsdb) || ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 204);
             }
-            $response["data"] = [];
+            $response["data"] = [
+                'type'     => $this->fileType($archivo['type'], 1),
+                'filename' => $archivo['filename'],
+                'id'       => $this->id,
+            ];
             throw new Exception("Resultado retornando correctamente", 200);            
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -149,12 +191,13 @@ class Archivos extends CI_Controller {
         $this->load->library('upload', $config);
         if ($this->upload->do_upload("archivo")) {
             $data = array('upload_data' => $this->upload->data());
-            $archivo  = $data['upload_data']['file_name'];
+            $archivo  = $data['upload_data']['client_name'];
             $fullpath = $data['upload_data']['full_path'];
             $type     = $data['upload_data']['file_ext'];
             return array(
+                'filename' => $archivo,
                 'fullpath' => $fullpath,
-                'type' => $type,
+                'type'     => $type,
             );
         }else{
             log_message('error', var_export($this->upload->display_errors(), TRUE));

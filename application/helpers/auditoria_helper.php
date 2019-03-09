@@ -49,3 +49,8 @@ if (!function_exists('maSort')) {
       }
     }
 }
+if (!function_exists('uniqint')) {
+    function uniqint(){
+        return hexdec(uniqid());
+    }
+}

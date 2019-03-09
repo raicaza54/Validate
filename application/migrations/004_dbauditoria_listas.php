@@ -105,6 +105,12 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'null'       => TRUE,
                 'default'    => 'xlsx'
             ],
+            'columnas'      => [
+                'type'       => 'VARCHAR',
+                'constraint' => '512',
+                'comment'    => 'Se definen los tipos de datos en las columnas',
+                'null'       => TRUE
+            ],
             'observacion'   => [
                 'type'       => 'VARCHAR',
                 'constraint' => '1024',

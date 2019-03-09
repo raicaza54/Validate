@@ -33,11 +33,12 @@ class Explorador_model extends CI_Model {
             'label'          => $carpeta,
             'have_childrens' => 0,
             'opened'         => 0,
-            'type'           => 'folder',
+            'type'           => $type,
             'created_user'   => $this->session->userdata('users_id'),
             'created_clier'  => $this->session->userdata('clientes_id'),
             'update_user'    => $this->session->userdata('users_id'),
             'update_clie'    => $this->session->userdata('clientes_id'),
+            'archivos_id'    => $archivos_id,
         ];
         if($this->db->insert($this->pref.'carpetas', $data)){
             return $this->db->insert_id();

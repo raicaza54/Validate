@@ -42,20 +42,23 @@ class Explorador extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('parent_id', $post)){
+            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $insert = $this->Explorador_model->crear([
-                'carpeta'   => $post['carpeta'],
-                'empresaId' => $this->session->userdata('empresaId'),
-                'parent_id' => $post['parent_id'],
+                'carpeta'     => $post['carpeta'],
+                'empresaId'   => $this->session->userdata('empresaId'),
+                'parent_id'   => $post['parent_id'],
+                'type'        => $post['type'],
+                'archivos_id' => $post['id']
             ]);
             if($insert === FALSE){
                 throw new Exception("Tenemos un problema, no fue posible crear carpeta", 204);
             }
             $response["data"] = [
                 'id'      => $insert,
-                'carpeta' => $post['carpeta']
+                'carpeta' => $post['carpeta'],
+                'file'    => $post['id'],
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
