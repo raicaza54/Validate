@@ -45,7 +45,11 @@ class Empresas extends CI_Controller {
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = $items;
+            $tabla_count = count($items).' de '.count($items);
+            $response["data"] = [
+                'tabla'       => $items,
+                'tabla_count' => $tabla_count
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

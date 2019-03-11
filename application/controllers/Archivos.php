@@ -48,6 +48,9 @@ class Archivos extends CI_Controller {
             case '.xls':
                 $fileType = ($t == 0) ?'Excel5' : 'excel';
                 break;
+            case '.csv':
+                $fileType = ($t == 0) ?'CSV' : 'csv';
+                break;
             default:
                 return FALSE;
                 break;
@@ -129,7 +132,6 @@ class Archivos extends CI_Controller {
                 $x++;
                 $linea = 'f';
             }
-            debug_file($tipos);
             $archivo = [
                 'archivo' => [
                     'id'            => $this->id,
@@ -213,10 +215,15 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $items = $this->Archivos_model->getDetalleId($post['id']);
+            
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = $items;
+            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id']);
+            $response["data"] = [
+                'tabla'       => $items,
+                'tabla_count' => $tabla_count,
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -272,14 +279,18 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post)){
+            if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post) || !array_key_exists('campoAnalizar', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
             }
-            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito'], $post['grafica']);
+            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = $items;
+            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
+            $response["data"] = [
+                'tabla'       => $items,
+                'tabla_count' => $tabla_count
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

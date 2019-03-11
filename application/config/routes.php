@@ -69,7 +69,7 @@ $route['explorador/v1/editar']['post']   = 'explorador/editar';
  * ------------------------------------------------------------------------- */
 $route['archivos/v1/datos']['post']  = 'archivos/datos';
 $route['archivos/v1/digito']['post'] = 'archivos/digito';
-$route['archivos/v1/subir']  = 'archivos/subir';
+$route['archivos/v1/subir']          = 'archivos/subir';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford

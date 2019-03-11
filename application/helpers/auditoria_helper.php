@@ -54,3 +54,11 @@ if (!function_exists('uniqint')) {
         return hexdec(uniqid());
     }
 }
+function user_id(){
+    $CI = & get_instance();
+    if ($CI->ion_auth->logged_in()) {
+        return $CI->session->userdata('user_id');
+    }else{
+        return FALSE;
+    }
+}
