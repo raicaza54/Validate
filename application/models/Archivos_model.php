@@ -30,35 +30,102 @@ class Archivos_model extends CI_Model {
         $e = [];
         for ($x = 1; $x <= 20; $x++) {
             if(trim($encabezado['campo'.$x])){
-                $e[] = $encabezado['campo'.$x];
+                $e['campo'.$x] = $encabezado['campo'.$x];
             }
         }
         return (count($e) <= 0) ? FALSE : $e;
     }
     
     public function getCuentas($id) {
-        $this->db->select('campo1');
+        $this->db->select('campo2');
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
-        $this->db->group_by('campo1');
+        $this->db->group_by('campo2');
         $cuentas = $this->db->get($this->pref.'archivos_detalle')->result_array();
         return $cuentas;
     }
     
-    public function getDetalleId($id, $digito = NULL, $grafica = NULL) {
+    public function getDetalleCountId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {
         $r = FALSE;
-        $this->db->select('campo1, campo2, campo3, campo4, campo5, campo6, campo7, '
-                . 'campo8, campo9, campo10, campo11, campo12, campo13, campo14, campo15');
+        $this->db->select([
+            'campo1',
+            'campo2',
+            'campo3',
+            'campo4',
+            'campo5',
+            'campo6',
+            'campo7',
+            'campo8',
+            'campo9',
+            'campo10',
+            'campo11',
+            'campo12',
+            'campo13',
+            'campo14',
+            'campo15',
+            'campo16',
+            'campo17',
+            'campo18',
+            'campo19',
+            'campo20',
+        ]);
         $this->db->where('fk_archivos', $id);
         if(($digito !== NULL) && is_numeric($digito) && ($grafica !== NULL) && is_numeric($grafica)){
             if(($grafica == 1) || ($grafica == 12)){
-                $this->db->like('campo9', $digito, 'after');
+                $this->db->like($campoAnalizar, $digito, 'after');
             }elseif($grafica == 2){
-                $this->db->like('SUBSTR(campo9, 1, 2)', $digito, 'before', FALSE);
+                $this->db->like('SUBSTR('.$campoAnalizar.', 2, 1)', $digito, 'before', FALSE);
             }else{
                 return FALSE;
             }
-            $this->db->or_where('linea', 'e');
+            $this->db->or_group_start();
+            $this->db->where('linea', 'e');
+            $this->db->where('fk_archivos', $id);
+            $this->db->group_end();
+        }
+        $this->db->order_by('linea', 'ASC');
+        $this->db->order_by('id', 'DESC');
+        $r = count($this->db->get($this->pref.'archivos_detalle')->result_array()) - 1;
+        return $r;
+    }
+    
+    public function getDetalleId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {
+        $r = FALSE;
+        $this->db->select([
+            'campo1',
+            'campo2',
+            'campo3',
+            'campo4',
+            'campo5',
+            'campo6',
+            'campo7',
+            'campo8',
+            'campo9',
+            'campo10',
+            'campo11',
+            'campo12',
+            'campo13',
+            'campo14',
+            'campo15',
+            'campo16',
+            'campo17',
+            'campo18',
+            'campo19',
+            'campo20',
+        ]);
+        $this->db->where('fk_archivos', $id);
+        if(($digito !== NULL) && is_numeric($digito) && ($grafica !== NULL) && is_numeric($grafica)){
+            if(($grafica == 1) || ($grafica == 12)){
+                $this->db->like($campoAnalizar, $digito, 'after');
+            }elseif($grafica == 2){
+                $this->db->like('SUBSTR('.$campoAnalizar.', 2, 1)', $digito, 'before', FALSE);
+            }else{
+                return FALSE;
+            }
+            $this->db->or_group_start();
+            $this->db->where('linea', 'e');
+            $this->db->where('fk_archivos', $id);
+            $this->db->group_end();
         }
         $this->db->limit(500);
         $this->db->order_by('linea', 'ASC');
@@ -67,14 +134,32 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
+    
+    
     public function getDetalleIdSpider($id) {
-        $this->db->select("id AS 'REGISTRO',campo1 AS 'CUENTA',campo2 AS 'CTE',campo3 AS 'FECHA',campo4 AS 'DOC',campo5 AS 'REF',campo6 AS 'NIT',campo7 AS 'DETALLE',campo8 AS 'TIPO',campo9 AS 'VALOR',campo10 AS 'BASE',campo11 AS 'CC',campo12 AS 'TB',campo13 AS 'PL'");
+        $this->db->select([
+            "campo1  AS 'REGISTRO'",
+            "campo2  AS 'CUENTA'",
+            "campo3  AS 'CTE'",
+            "campo4  AS 'FECHA'",
+            "campo5  AS 'DOC'",
+            "campo6  AS 'REF'",
+            "campo7  AS 'NIT'",
+            "campo8  AS 'DETALLE'",
+            "campo9  AS 'TIPO'",
+            "campo10 AS 'VALOR'",
+            "campo11 AS 'BASE'",
+            "campo12 AS 'CC'",
+            "campo13 AS 'TB'",
+            "campo14 AS 'PL'"
+        ]);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
         return $this->db->get($this->pref.'archivos_detalle')->result_array();
     }
     
     public function getDetalleIdBenford($id, $campoAnalizar) {
+        /*
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'e');
         $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();
@@ -82,8 +167,9 @@ class Archivos_model extends CI_Model {
             return FALSE;
         }
         $campo = array_search($campoAnalizar, $encabezado);
-        if($campo !== FALSE){
-            $this->db->select($campo.' AS valor');
+        */
+        if($campoAnalizar !== FALSE){
+            $this->db->select($campoAnalizar.' AS valor');
             $this->db->where('fk_archivos', $id);
             $this->db->where('linea', 'f');
             return $this->db->get($this->pref.'archivos_detalle')->result_array();
@@ -93,7 +179,8 @@ class Archivos_model extends CI_Model {
     }
     
     public function insert_excel($batch) {
-        $this->db->insert_batch($this->pref.'archivos_detalle', $batch);
+        $this->db->insert($this->pref.'archivos', $batch['archivo']);
+        $this->db->insert_batch($this->pref.'archivos_detalle', $batch['detalle']);
     }
 
 }

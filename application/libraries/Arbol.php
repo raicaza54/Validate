@@ -45,6 +45,9 @@ class Arbol {
                         'selected' => boolval($master["selected"]),
                         'disabled' => boolval($master["disabled"]),
                     ],
+                    'li_attr' => [
+                        'file' => $master["archivos_id"]
+                    ]
                 ];
                 $childs = $this->nested($childrens, $master["id"]);
                 if(count($childs) > 0){
@@ -86,6 +89,9 @@ class Arbol {
                                 'opened'   => boolval($row["opened"]),
                                 'selected' => boolval($row["selected"]),
                                 'disabled' => boolval($row["disabled"])
+                            ],
+                            'li_attr' => [
+                                'file' => $row["archivos_id"]
                             ]
                         ];
                     } else {
@@ -98,6 +104,9 @@ class Arbol {
                                 'opened'   => boolval($row["opened"]),
                                 'selected' => boolval($row["selected"]),
                                 'disabled' => boolval($row["disabled"])
+                            ],
+                            'li_attr' => [
+                                'file' => $row["archivos_id"]
                             ]
                         ];
                     }

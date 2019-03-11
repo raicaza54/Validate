@@ -68,6 +68,7 @@ $autoload['libraries'] = array(
     'ion_auth',
     'encryption',
     //'lib_gearman',
+    'usertracking',
 );
 
 /*

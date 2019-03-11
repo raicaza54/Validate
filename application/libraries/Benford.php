@@ -261,7 +261,7 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 10; $x <= 99; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_12d[$x]);
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_12d[$x])/100;
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
         $mad = $total_variacion/99;
@@ -287,8 +287,8 @@ class Benford {
         }
         $grf = ['data1' => ['data1'], 'data2' => ['data2']];
         foreach ($r2 as $key => $value) {
-            $grf['data1'][] = number_format($value['benford'], 3, '.', '');
-            $grf['data2'][] = number_format($value['observado'], 3, '.', '');
+            $grf['data2'][] = number_format($value['benford'], 3, '.', '');
+            $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
         $r2 = $this->formatoTabla($r2);
         return array(
@@ -312,10 +312,10 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 0; $x <= 9; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_2d[$x]);
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_2d[$x])/100;
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
-        $mad = $total_variacion/9;
+        $mad = $total_variacion/10;
         $mad_d2 = 'N/A';
         foreach ($this->mad_d2 as $value){
             if(($mad > $value['min']) AND ($mad <= $value['max'])){
@@ -338,8 +338,8 @@ class Benford {
         }
         $grf = ['data1' => ['data1'], 'data2' => ['data2']];
         foreach ($r2 as $key => $value) {
-            $grf['data1'][] = number_format($value['benford'], 3, '.', '');
-            $grf['data2'][] = number_format($value['observado'], 3, '.', '');
+            $grf['data2'][] = number_format($value['benford'], 3, '.', '');
+            $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
         $r2 = $this->formatoTabla($r2);
         return array(
@@ -363,7 +363,7 @@ class Benford {
         $total = array_sum(array_column($r2, 'frecuencia'));
         for ($x = 1; $x <= 9; $x++) {
             $r2[$x]['observado'] = ($r2[$x]['frecuencia']*100)/$total;
-            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_1d[$x]);
+            $r2[$x]['variacion'] = abs($r2[$x]['observado'] - $this->benford_1d[$x])/100;
         }
         $total_variacion = array_sum(array_column($r2, 'variacion'));
         $mad = $total_variacion/9;
@@ -389,8 +389,8 @@ class Benford {
         }
         $grf = ['data1' => ['data1'], 'data2' => ['data2']];
         foreach ($r2 as $key => $value) {
-            $grf['data1'][] = number_format($value['benford'], 3, '.', '');
-            $grf['data2'][] = number_format($value['observado'], 3, '.', '');
+            $grf['data2'][] = number_format($value['benford'], 3, '.', '');
+            $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
         $r2 = $this->formatoTabla($r2);
         return array(
