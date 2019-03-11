@@ -29,6 +29,7 @@ archivos/pike-admin-free-2.3.1/*
 # End of https://www.gitignore.io/api/codeigniter
 /public_html/index.php
 /application/config/config.php
+/application/config/validate.php
 
 ### Composer template
 composer.phar
