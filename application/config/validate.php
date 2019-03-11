@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Ruta en el servidor donde seran alojados los archivos de cada usuario
 |
 */
-$config['path_file'] = '/home/archivos/archivos';
+$config['path_file'] = '/home/ubuntu/archivos';
 
 /*
 |--------------------------------------------------------------------------
