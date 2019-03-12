@@ -185,7 +185,6 @@ class Benford {
     
     public function __construct() {
         set_time_limit(0);
-        ini_set('memory_limit', '20000M');        
         $this->CI = & get_instance();
     }
     

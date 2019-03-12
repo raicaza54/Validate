@@ -51,7 +51,6 @@ class Auditoria extends CI_Controller {
             show_404();
         }
         set_time_limit(0);
-        ini_set('memory_limit', '20000M');
         $response = $this->response;
         $formData = [];
         try {
@@ -84,7 +83,6 @@ class Auditoria extends CI_Controller {
             show_404();
         }
         set_time_limit(0);
-        ini_set('memory_limit', '20000M');        
         $response = $this->response;
         $formData = [];
         try {
