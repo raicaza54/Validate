@@ -67,6 +67,8 @@ class Archivos extends CI_Controller {
      * @param type $inputFile path de archivo
      */
     private function leer_excel($param) {
+        set_time_limit(0);
+        ini_set('memory_limit', '20000M');        
         extract($param);
         $this->load->library('phpexcel');
         $this->load->library('PHPExcel/iofactory');        
