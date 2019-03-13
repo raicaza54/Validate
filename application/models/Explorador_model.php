@@ -21,6 +21,7 @@ class Explorador_model extends CI_Model {
     
     public function getFolderEmpresa($id_empresa) {
         $this->db->where('fk_empresas', $id_empresa);
+        $this->db->where('deleted_at', 0);
         return $this->db->get($this->pref.'carpetas')->result_array();
     }
     
@@ -50,10 +51,11 @@ class Explorador_model extends CI_Model {
     public function editar($param) {
         extract($param);
         $data = [
-            'label'          => $carpeta,
-            'parent_id'      => $parent_id,
-            'update_user'    => $this->session->userdata('users_id'),
-            'update_clie'    => $this->session->userdata('clientes_id'),
+            'label'       => $carpeta,
+            'parent_id'   => $parent_id,
+            'deleted_at'  => (($deleted_at == 'true') ? 1 : 0),
+            'update_user' => $this->session->userdata('users_id'),
+            'update_clie' => $this->session->userdata('clientes_id'),
         ];
         return $this->db->update($this->pref.'carpetas', $data, ['id' => $id]);
     }

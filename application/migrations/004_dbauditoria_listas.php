@@ -47,6 +47,12 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'registro hijo',
                 'default'    => 0
             ],
+            'deleted_at'   => [
+                'type'       => 'INT',
+                'constraint' => '1',
+                'comment'    => 'borrado logico',
+                'default'    => 0
+            ],
             'observacion'    => [
                 'type'       => 'VARCHAR',
                 'constraint' => '1024',

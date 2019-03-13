@@ -21,13 +21,19 @@
     <body>
         <div class="container">
             <div class="row justify-content-md-center">
-                <div class="col col-lg-5" style="margin-top: 4em;">
+                <div class="col col-lg-5" style="margin-top: 2.5em;">
                     <?=$body?>
                 </div>
             </div>
         </div>        
-
-
+        <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
+            <span class="navbar-text pull-left">
+                GEO Informatic Solutions S.A.
+            </span>
+            <span class="navbar-text pull-right">
+                2019
+            </span>
+        </nav>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.slim.min.js') ?>"></script>

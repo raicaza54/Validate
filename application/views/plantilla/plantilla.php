@@ -62,12 +62,12 @@
                 </ul>
             </div>
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Espacio en Disco 200/500Gb 
+                <a class="nav-item nav-link" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Espacio en Disco 200 / 500Gb 
                     <div class='progress'>
                         <div class='progress-bar w-75' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'></div>
                     </div>
                     <p style='margin: 10px 0px 0px;'>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis magna id ipsum tempus placerat. Vivamus pulvinar sit amet dui in tristique.
+                        Usted puede solicitar ampliar el espacio seg&oacute;n sus necesidades
                     </p>">
                     <i class="far fa-hdd" style="margin: 6px 5px 0px 5px;"></i>
                     <div class="progress" style="height: 2px;">
