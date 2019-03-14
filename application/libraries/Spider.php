@@ -26,32 +26,33 @@ class Spider {
     public function procesar($cuenta) {
         try{
         $ejemplo  = $this->data;
-        $this->CI->load->library('table');
-        $template = array(
-            'table_open'         => '<table border="1" cellpadding="4" cellspacing="0">',
-            'thead_open'         => '<thead>',
-            'thead_close'        => '</thead>',
-            'heading_row_start'  => '<tr>',
-            'heading_row_end'    => '</tr>',
-            'heading_cell_start' => '<th>',
-            'heading_cell_end'   => '</th>',
-            'tbody_open'         => '<tbody>',
-            'tbody_close'        => '</tbody>',
-            'row_start'          => '<tr>',
-            'row_end'            => '</tr>',
-            'cell_start'         => '<td>',
-            'cell_end'           => '</td>',
-            'row_alt_start'      => '<tr>',
-            'row_alt_end'        => '</tr>',
-            'cell_alt_start'     => '<td>',
-            'cell_alt_end'       => '</td>',
-            'table_close'        => '</table>'
-            );
-
-        $this->CI->table->set_template($template);
-        $this->CI->table->set_heading('REGISTRO', 'CUENTA', 'CTE', 'FECHA', 'DOC', 'REF', 'NIT', 'DETALLE', 'TIPO', 'VALOR', 'BASE', 'CC', 'TB', 'PL');
-        $tabla  = $this->CI->table->generate($ejemplo);
-        $this->CI->table->clear();
+//        $this->CI->load->library('table');
+//        $template = array(
+//            'table_open'         => '<table border="1" cellpadding="4" cellspacing="0">',
+//            'thead_open'         => '<thead>',
+//            'thead_close'        => '</thead>',
+//            'heading_row_start'  => '<tr>',
+//            'heading_row_end'    => '</tr>',
+//            'heading_cell_start' => '<th>',
+//            'heading_cell_end'   => '</th>',
+//            'tbody_open'         => '<tbody>',
+//            'tbody_close'        => '</tbody>',
+//            'row_start'          => '<tr>',
+//            'row_end'            => '</tr>',
+//            'cell_start'         => '<td>',
+//            'cell_end'           => '</td>',
+//            'row_alt_start'      => '<tr>',
+//            'row_alt_end'        => '</tr>',
+//            'cell_alt_start'     => '<td>',
+//            'cell_alt_end'       => '</td>',
+//            'table_close'        => '</table>'
+//            );
+//
+//        $this->CI->table->set_template($template);
+//        $this->CI->table->set_heading('REGISTRO', 'CUENTA', 'CTE', 'FECHA', 'DOC', 'REF', 'NIT', 'DETALLE', 'TIPO', 'VALOR', 'BASE', 'CC', 'TB', 'PL');
+//        $tabla  = $this->CI->table->generate($ejemplo);
+//        $this->CI->table->clear();
+        
         $grupos = array();
         foreach ($ejemplo as $value) {
             $grupos[$value['CTE'] . $value['DOC']][] = array(
@@ -62,11 +63,11 @@ class Spider {
             );
         }
         $tabla_grupos = '';
-        foreach ($grupos as $value) {
-            $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR');
-            $tabla_grupos .= $this->CI->table->generate($value) . '<br/>';
-            $this->CI->table->clear();
-        }
+//        foreach ($grupos as $value) {
+//            $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR');
+//            $tabla_grupos .= $this->CI->table->generate($value) . '<br/>';
+//            $this->CI->table->clear();
+//        }
         $cuenta             = $cuenta;
         $grupos_clasificado = array(
             'debito'  => array(),
@@ -127,15 +128,15 @@ class Spider {
             }
         }
         //print_r($grupos_clasificado['debito']);
-        $tabla_grupos_clasificados = '';
-        foreach ($grupos_clasificado as $key => $value) {
-            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
-            foreach ($value as $seguntipo) {
-                $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR', 'TB');
-                $tabla_grupos_clasificados .= $this->CI->table->generate($seguntipo) . '<br/>';
-                $this->CI->table->clear();
-            }
-        }
+//        $tabla_grupos_clasificados = '';
+//        foreach ($grupos_clasificado as $key => $value) {
+//            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
+//            foreach ($value as $seguntipo) {
+//                $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR', 'TB');
+//                $tabla_grupos_clasificados .= $this->CI->table->generate($seguntipo) . '<br/>';
+//                $this->CI->table->clear();
+//            }
+//        }
 
         $total_credito        = 0;
         $total_credito_cuenta = 0;
@@ -152,7 +153,11 @@ class Spider {
                     $total_credito += $value_credito['valor'];
                 }
             }
-            $credito_porcentaje = (($total_credito_cuenta / $total_credito) * 100);
+            if($total_credito > 0){
+                $credito_porcentaje = (($total_credito_cuenta / $total_credito) * 100);
+            }else{
+                $credito_porcentaje = 0;
+            }
             foreach ($value as $key_grupo => $value_credito) {
                 $grupos_clasificado['credito'][$key_credito][$key_grupo]['tb'] = 0;
                 if ($value_credito['tipo'] == 1) {
@@ -160,15 +165,15 @@ class Spider {
                 }
             }
         }
-        $tabla_grupos_clasificados = '';
-        foreach ($grupos_clasificado as $key => $value) {
-            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
-            foreach ($value as $seguntipo) {
-                $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR', 'TB');
-                $tabla_grupos_clasificados .= $this->CI->table->generate($seguntipo) . '<br/>';
-                $this->CI->table->clear();
-            }
-        }
+//        $tabla_grupos_clasificados = '';
+//        foreach ($grupos_clasificado as $key => $value) {
+//            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
+//            foreach ($value as $seguntipo) {
+//                $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR', 'TB');
+//                $tabla_grupos_clasificados .= $this->CI->table->generate($seguntipo) . '<br/>';
+//                $this->CI->table->clear();
+//            }
+//        }
         //print_r($grupos_clasificado);
         $spider                    = array();
         #Construccion de la araña
@@ -216,8 +221,8 @@ class Spider {
         $l  = 0;
         $spider[$cuenta]['debito']  = maSort($spider[$cuenta]['debito'], 'porcentaje', 2);
         $spider[$cuenta]['credito'] = maSort($spider[$cuenta]['credito'], 'porcentaje', 2);
-        $debitoCount  = count($spider[$cuenta]['debito']);
-        $creditoCount = count($spider[$cuenta]['credito']);
+        $debitoCount  = @count($spider[$cuenta]['debito']);
+        $creditoCount = @count($spider[$cuenta]['credito']);
         if ($debitoCount >= $creditoCount) {
             $c = $debitoCount;
             $my = 'd';
@@ -235,13 +240,15 @@ class Spider {
         $hsvg   = (($c * 45) - 15) / 2;
         $total_porcentaje = 0;
         $total_dinero = 0;
-        foreach ($spider[$cuenta]['debito'] as $key => $value) {
-            $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(\''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-            $lineas             .= '<line x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:1"></line>';
-            $t                  += 45;
-            $x++;
-            $total_porcentaje    += $value['porcentaje'];
-            $total_dinero        += $value['valor'];
+        if(is_array($spider[$cuenta]['debito'])){
+            foreach ($spider[$cuenta]['debito'] as $key => $value) {
+                $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(\''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $lineas             .= '<line x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:1"></line>';
+                $t                  += 45;
+                $x++;
+                $total_porcentaje    += $value['porcentaje'];
+                $total_dinero        += $value['valor'];
+            }
         }
         if($total_dinero > 0){        
             $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Total</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
@@ -254,14 +261,16 @@ class Spider {
         }
         $t = ($x*45)+15;
         $total_porcentaje = 0;
-        $total_dinero = 0;        
-        foreach ($spider[$cuenta]['credito'] as $key => $value) {
-            $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(\''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-            $lineas             .= '<line x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:1"></line>';
-            $t                  += 45;
-            $x++;
-            $total_porcentaje    += $value['porcentaje'];
-            $total_dinero        += $value['valor'];            
+        $total_dinero = 0;
+        if(is_array($spider[$cuenta]['credito'])){
+            foreach ($spider[$cuenta]['credito'] as $key => $value) {
+                $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(\''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $lineas             .= '<line x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:1"></line>';
+                $t                  += 45;
+                $x++;
+                $total_porcentaje    += $value['porcentaje'];
+                $total_dinero        += $value['valor'];            
+            }
         }
         if($total_dinero > 0){
             $this->datos['body'] .= '<div class="spd-credito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Total</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
