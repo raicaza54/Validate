@@ -104,10 +104,17 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'nombre de archivo',
                 'null'       => TRUE
             ],
+            'ext'          => [
+                'type'       => 'VARCHAR',
+                'constraint' => '25',
+                'comment'    => 'extension del archivo',
+                'null'       => TRUE,
+                'default'    => 'xlsx'
+            ],
             'tipo'          => [
                 'type'       => 'VARCHAR',
-                'constraint' => '100',
-                'comment'    => 'tipo de archivo',
+                'constraint' => '25',
+                'comment'    => 'tipo de archivo, mov: movimiento, blp: balance de prueba, cxc: cuentas por cobrar, cxp: cuentas por pagar',
                 'null'       => TRUE,
                 'default'    => 'xlsx'
             ],

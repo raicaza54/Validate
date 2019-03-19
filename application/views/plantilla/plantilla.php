@@ -100,7 +100,7 @@
                         <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>
                     </div>
                 </div>
-                <div class="card" style="height: calc(100vh - 203px); overflow-y: auto;">
+                <div class="card" style="height: calc(100vh - 242px); overflow-y: auto;">
                     <div class="card-body" id="explorador-content">
                         <div class="selec-empresa text-center text-muted small no-seleccionable">
                             Debe Seleccionar<br/>una empresa
@@ -110,7 +110,7 @@
             </ul>
         </nav>
         <nav id="sidebar" class="propiedades">
-            <div class="card" style="height: calc(100vh - 170px); overflow-y: auto;">
+            <div class="card" style="height: calc(100vh - 200px); overflow-y: auto;">
                 <div class="card-body">
                     <div class="selec-empresa text-center text-muted small no-seleccionable">
                         Debe Seleccionar<br/>una empresa
@@ -121,6 +121,14 @@
         <div id="content" style="z-index: 1030;">
             <?= $body ?>
         </div>
+        <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
+            <span class="navbar-text pull-left">
+                GEO Informatic Solutions S.A.
+            </span>
+            <span class="navbar-text pull-right">
+                2019
+            </span>
+        </nav>        
         <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" data-keyboard="false">
                 <div class="modal-content">

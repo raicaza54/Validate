@@ -89,8 +89,9 @@ class Archivos extends CI_Controller {
             $linea = 'e';
             $this->id = uniqint();
             $tipos = [];
+            $num = 0;
             for ($f = 1; $f <= 20; $f++) {
-                $tipos['campo'.$f] = FALSE;
+                $tipos['campo'.$f] = 'string';
             }            
             foreach ($sheet as $value) {
                 $outsheet[$x] = [
@@ -124,8 +125,19 @@ class Archivos extends CI_Controller {
                 if($linea == 'f'){
                     for ($f = 1; $f <= 20; $f++) {
                         if(strlen($outsheet[$x]['campo'.$f])){
-                            if(is_int($outsheet[$x]['campo'.$f])){
-                                $tipos['campo'.$f] = TRUE;
+                            if(is_numeric(trim($outsheet[$x]['campo'.$f]))){
+                                $num = trim($outsheet[$x]['campo'.$f]);
+                                if(($num == 0) && ($f > 1)){
+                                    $tipos['campo'.$f] = $tipos['campo'.($f-1)];
+                                }else{
+                                    if(filter_var($num, FILTER_VALIDATE_INT)){
+                                        $tipos['campo'.$f] = 'int';
+                                    }elseif(filter_var($num, FILTER_VALIDATE_FLOAT|FILTER_VALIDATE_FLOAT)){
+                                        $tipos['campo'.$f] = 'float';
+                                    }else{
+                                        $tipos['campo'.$f] = 'num';
+                                    }                                    
+                                }
                             }
                         }
                     }
@@ -138,7 +150,8 @@ class Archivos extends CI_Controller {
                     'id'            => $this->id,
                     'fk_carpetas'   => $parent_id,
                     'nombre'        => $filename,
-                    'tipo'          => $type,
+                    'ext'           => $type,
+                    'tipo'          => $tipo,
                     'created_user'  => $created_user,
                     'created_clier' => $created_clier,
                     'update_user'   => $update_user,
@@ -147,7 +160,6 @@ class Archivos extends CI_Controller {
                 ],
                 'detalle' => $outsheet
             ];
-            
         } catch (Exception $ex) {
             return FALSE;
         }
@@ -158,14 +170,17 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('carpeta', $post)){
+            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('tipo', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $archivo = $this->do_upload();
             if(is_bool($archivo) || ($archivo === FALSE)){
                 throw new Exception("Tenemos un problema con el archivo", 204);
             }
-            $xls = $this->leer_excel($archivo + ['parent_id' => $post['carpeta']]);
+            $xls = $this->leer_excel($archivo + [
+                'parent_id' => $post['carpeta'],
+                'tipo'      => $post['tipo'],
+            ]);
             $xlsdb = $this->Archivos_model->insert_excel($xls);
             if(is_bool($xlsdb) || ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 204);
