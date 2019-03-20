@@ -34,7 +34,8 @@ class Auditoria extends CI_Controller {
         }
         $this->load->library(array(
             'benford',
-            'spider'
+            'spider',
+            'manipulacion'
         ));
         $this->load->model(array(
             'Archivos_model'
@@ -44,7 +45,6 @@ class Auditoria extends CI_Controller {
     public function index() {
         $this->load->view("plantilla/plantilla", $this->data);
     }
-    
     
     public function spider() {
         if (!$this->input->is_ajax_request()) {
@@ -78,75 +78,26 @@ class Auditoria extends CI_Controller {
                 ->set_output(json_encode($response));        
     }
     
-    function calculos($archivo, $cuenta) {
-        $this->load->library('table');
-        $this->table->clear();
-        $this->db->select('campo1, campo2, ABS(REPLACE(campo6,".","")) as campo6');
-        $this->db->where('archivo_id', $archivo);
-        $this->db->where('campo1', $cuenta);
-        $tabla = $this->db->get('manipulacion')->row_array();
-        $r = $this->table->generate($tabla);
-        return $tabla['campo6'];
-    }
-    
     public function manipulacion() {
-        $r = [];
-        $c = '';
-        //DSRI
-        $r['dsri'][] = $this->calculos(1,1305); //CXC
-        $r['dsri'][] = $this->calculos(2,1305);        
-        $r['dsri'][] = $this->calculos(1,41); //Ventas
-        $r['dsri'][] = $this->calculos(2,41);
-        $dsri = ($r['dsri'][0]/$r['dsri'][2])/($r['dsri'][1]/$r['dsri'][3]);
-        $c .= 'DSRI: '.number_format($dsri,3,',','.').'<br/>';
-
-        //GMI
-        $r['gmi'][] = $this->calculos(1,61); //Costo venta
-        $r['gmi'][] = $this->calculos(2,61);
-        $gmi = (($r['dsri'][3]-$r['gmi'][1])/$r['dsri'][3])/(($r['dsri'][2]-$r['gmi'][0])/$r['dsri'][2]);
-        $c .= 'GMI: '.number_format($gmi,3,',','.').'<br/>';
-
-        //AQI
-        
-        
-        $this->data['body'] = '<div style="overflow-y: scroll; height: 450px">'.$c.'</div>';
-        $this->load->view("plantilla/plantilla", $this->data);      
-        return;
-        
-        $r .= $this->calculos(1,11);
-        $r .= $this->calculos(1,12);
-        $r .= $this->calculos(1,13);
-        $r .= $this->calculos(1,14);
-        
-        $r .= $this->calculos(2,11);
-        $r .= $this->calculos(2,12);
-        $r .= $this->calculos(2,13);
-        $r .= $this->calculos(2,14);
-        
-        $r .= $this->calculos(1,15);
-        $r .= $this->calculos(1,16);
-        $r .= $this->calculos(1,17);
-        $r .= $this->calculos(1,18);
-        $r .= $this->calculos(1,19);
-        
-        $r .= $this->calculos(2,15);
-        $r .= $this->calculos(2,16);
-        $r .= $this->calculos(2,17);
-        $r .= $this->calculos(2,18);
-        $r .= $this->calculos(2,19);
-        
-        $r .= $this->calculos(1,15);
-        $r .= $this->calculos(2,15);
-        
-        $r .= $this->calculos(1,5160);
-        $r .= $this->calculos(1,5260);
-        $r .= $this->calculos(1,7360);
-        $r .= $this->calculos(2,5160);
-        $r .= $this->calculos(2,5260);
-        $r .= $this->calculos(2,7360);
-        
-        $this->data['body'] = '<div style="overflow-y: scroll; height: 450px">'.$r.'</div>';
-        $this->load->view("plantilla/plantilla", $this->data);
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $manipulacion = $this->manipulacion->run($post['balances']);
+            $response["data"] = $manipulacion;
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
     }
     
     public function benford() {

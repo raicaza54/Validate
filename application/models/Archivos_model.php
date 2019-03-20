@@ -134,7 +134,21 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
-    
+    public function getBalenaces($folderId) {
+        $this->db->select([
+            $this->pref.'carpetas.label',
+            $this->pref.'carpetas.type',
+            $this->pref.'archivos.id',
+            $this->pref.'archivos.ext',
+            $this->pref.'archivos.tipo',
+        ]);
+        $this->db->where($this->pref.'archivos.fk_carpetas',$folderId);
+        $this->db->where_in($this->pref.'carpetas.type',['excel','csv']);
+        $this->db->where($this->pref.'archivos.tipo','blp');
+        $this->db->join($this->pref.'archivos',$this->pref.'carpetas.archivos_id = '.$this->pref.'archivos.id', 'inner');
+        $r = $this->db->get($this->pref.'carpetas')->result_array();
+        return $r;
+    }
     
     public function getDetalleIdSpider($id) {
         $this->db->select([
@@ -181,6 +195,18 @@ class Archivos_model extends CI_Model {
     public function insert_excel($batch) {
         $this->db->insert($this->pref.'archivos', $batch['archivo']);
         $this->db->insert_batch($this->pref.'archivos_detalle', $batch['detalle']);
+    }
+    
+    public function getManipulacion($archivo, $cuenta) {
+        $this->db->select('campo1, campo2, ABS(campo6) as campo6');
+        $this->db->where('fk_archivos', $archivo);
+        $this->db->where('campo1', $cuenta);
+        $r = $this->db->get($this->pref.'archivos_detalle')->row_array();
+        if(is_bool($r) && $r === FALSE){
+            return 0;
+        }else{
+            return $r['campo6'];
+        }
     }
 
 }

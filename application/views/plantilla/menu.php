@@ -98,7 +98,7 @@
                     <i class="fas fa-spider"></i>
                     <span>Araña</span>
                 </div>
-                <div class="icono" id="mn-manipulacion">
+                <div class="icono" id="mn-manipulacion" onclick="MANIPULACION.methods.parametros();">
                     <i class="fas fa-user-edit"></i>
                     <span>Manipulaci&oacute;n</span>
                 </div>

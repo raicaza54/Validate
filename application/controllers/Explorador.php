@@ -35,7 +35,33 @@ class Explorador extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Explorador_model');
+        $this->load->model([
+            'Explorador_model',
+            'Archivos_model',
+        ]);
+    }
+    
+    public function balances() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('folderId', $post) || !is_numeric($post['folderId'])){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $balances = $this->Archivos_model->getBalenaces($post['folderId']);
+            if($balances === FALSE){
+                throw new Exception("Tenemos un problema, no pudimos recuperar los balances", 204);
+            }            
+            $response["data"] = [
+                'balances' => $balances
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);            
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
     }
     
     public function crear() {
@@ -66,7 +92,7 @@ class Explorador extends CI_Controller {
         }
         $this->output
                 ->set_content_type('application/json')
-                ->set_output(json_encode($response));            
+                ->set_output(json_encode($response));
     }
     
     public function editar() {

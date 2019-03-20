@@ -83,6 +83,12 @@ $route['benford/v1/procesar']['post']   = 'auditoria/benford';
 $route['spider/v1/cuentas']['post']  = 'archivos/cuentas';
 $route['spider/v1/procesar']['post'] = 'auditoria/spider';
 
+/* -------------------------------------------------------------------------
+ * Manipulacion
+ * ------------------------------------------------------------------------- */
+$route['manipulacion/v1/archivos']['post']  = 'explorador/balances';
+$route['manipulacion/v1/procesar']['post'] = 'auditoria/manipulacion';
+
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;
