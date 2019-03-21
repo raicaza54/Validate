@@ -23,8 +23,7 @@ class Explorador extends CI_Controller {
         ),
         "title"  => "Invalid Attribute",
         "detail" => "",
-        "data"   => array(),
-        "csrf"   => ''
+        "data"   => array()
     );
 
     function __construct() {

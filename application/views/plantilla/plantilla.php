@@ -57,7 +57,7 @@
                         <a class="nav-link" id="pills-datos-tab" data-toggle="pill" href="#pills-datos" role="tab" aria-controls="pills-datos" aria-selected="false">Datos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="pills-analisis-tab" data-toggle="pill" href="#pills-analisis" role="tab" aria-controls="pills-analisis" aria-selected="false">An&aacute;lisis</a>
+                        <a class="nav-link" id="pills-analisis-tab" data-toggle="pill" href="#pills-analisis" role="tab" aria-controls="pills-analisis" aria-selected="false">Analizar</a>
                     </li>
                 </ul>
             </div>
@@ -93,14 +93,14 @@
         <nav id="sidebar">
             <ul class="list-unstyled components" style="padding-top: 10px;">
                 <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
-                    <div class="float-left">Explorador de archivos</div>
-                    <div class="float-right" style="margin-right: -3px;">
+                    <div class="float-left" style="margin-left: 5px;">Explorador de archivos</div>
+                    <div class="float-right" style="margin: 0px;">
                         <i class="btn-icon far fa-plus-square" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta()"></i>
                         <i class="btn-icon far fa-edit" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta()"></i>
                         <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>
                     </div>
                 </div>
-                <div class="card" style="height: calc(100vh - 242px); overflow-y: auto;">
+                <div class="card shadow-sm" style="height: calc(100vh - 238px); overflow-y: auto;">
                     <div class="card-body" id="explorador-content">
                         <div class="selec-empresa text-center text-muted small no-seleccionable">
                             Debe Seleccionar<br/>una empresa
@@ -110,7 +110,7 @@
             </ul>
         </nav>
         <nav id="sidebar" class="propiedades">
-            <div class="card" style="height: calc(100vh - 200px); overflow-y: auto;">
+            <div class="card shadow-sm" style="height: calc(100vh - 202px); overflow-y: auto;">
                 <div class="card-body">
                     <div class="selec-empresa text-center text-muted small no-seleccionable">
                         Debe Seleccionar<br/>una empresa

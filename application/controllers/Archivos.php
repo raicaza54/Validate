@@ -23,8 +23,7 @@ class Archivos extends CI_Controller {
         ),
         "title"  => "Invalid Attribute",
         "detail" => "",
-        "data"   => array(),
-        "csrf"   => ''
+        "data"   => array()
     );
     private $id = NULL;
 

@@ -200,12 +200,13 @@ class Archivos_model extends CI_Model {
     public function getManipulacion($archivo, $cuenta) {
         $this->db->select('campo1, campo2, ABS(campo6) as campo6');
         $this->db->where('fk_archivos', $archivo);
-        $this->db->where('campo1', $cuenta);
-        $r = $this->db->get($this->pref.'archivos_detalle')->row_array();
-        if(is_bool($r) && $r === FALSE){
+        $this->db->where_in('campo1', $cuenta);
+        $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        if ((is_bool($r) && $r === FALSE) || (is_array($r) && (count($r) <= 0))) {
             return 0;
         }else{
-            return $r['campo6'];
+            $sum = array_sum(array_column($r, 'campo6'));
+            return $sum;
         }
     }
 

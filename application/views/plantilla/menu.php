@@ -99,7 +99,7 @@
                     <span>Araña</span>
                 </div>
                 <div class="icono" id="mn-manipulacion" onclick="MANIPULACION.methods.parametros();">
-                    <i class="fas fa-user-edit"></i>
+                    <i class="fas fa-user-secret"></i>
                     <span>Manipulaci&oacute;n</span>
                 </div>
                 <div class="icono" id="mn-materialidad">

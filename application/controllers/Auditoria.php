@@ -23,8 +23,7 @@ class Auditoria extends CI_Controller {
         ),
         "title"  => "Invalid Attribute",
         "detail" => "",
-        "data"   => array(),
-        "csrf"   => ''
+        "data"   => array()
     );    
 
     public function __construct() {

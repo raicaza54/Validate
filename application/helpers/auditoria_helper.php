@@ -11,7 +11,9 @@ if (!defined('BASEPATH'))
 if (!function_exists('debug_file')) {
     function debug_file($r) {
         $file = fopen(APPPATH . "logs/debug-" . date("Y-m-d") . ".php", "a");
-        if (!is_string($r)) {
+        if($r == '-'){
+            $r = '------------------------ '.date("h:i:s a").' ------------------------------';
+        }elseif (!is_string($r)) {
             $r = var_export($r, TRUE);
         }
         fwrite($file, "debug " . date("Y-m-d h:i:s a - ") . $r . PHP_EOL);
