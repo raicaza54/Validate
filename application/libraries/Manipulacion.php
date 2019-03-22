@@ -31,8 +31,13 @@ class Manipulacion {
     }
     
     public function run($balances) {
-        $t  = $balances[0];
-        $t1 = $balances[1];
+        foreach ($balances as $value) {
+            if($value['posicion'] == 't'){
+                $t  = $value['balance'];
+            }elseif($value['posicion'] == 't-1'){
+                $t1 = $value['balance'];
+            }
+        } 
         $this->cuentasValues([
             't'   => $t,
             't1'  => $t1
