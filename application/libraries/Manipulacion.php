@@ -22,6 +22,17 @@ class Manipulacion {
     private $cuentaValue = [];
     
     private $CI;
+    
+    /**
+     * Valores optimos de cada indicador
+     * @var type float
+     */
+    private $DSRI = 0.823;
+    private $GMI  = 0.906;
+    private $AQI  = 0.593;
+    private $SGI  = 0.717;
+    private $DEPI = 0.107;
+    
     public $data = [];
     
     function __construct() {
@@ -42,18 +53,62 @@ class Manipulacion {
             't'   => $t,
             't1'  => $t1
         ]);
-        $dsri  = $this->dsri();
-        $this->cuentaValue['dsri']  = $dsri;
-        $gmi   = $this->gmi();
-        $this->cuentaValue['gmi']   = $gmi;
-        $aqi   = $this->aqi();
-        $this->cuentaValue['aqi']   = $aqi;
-        $sgi   = $this->sgi();
-        $this->cuentaValue['sgi']   = $sgi;
-        $depi  = $this->depi();
-        $this->cuentaValue['depi']  = $depi;
-        $m5ind = $this->m5ind();
-        $this->cuentaValue['m5ind'] = $m5ind;
+        $dsri = $this->dsri();
+        $gmi  = $this->gmi();
+        $aqi  = $this->aqi();
+        $sgi  = $this->sgi();
+        $depi = $this->depi();
+        $c_dsri = $this->DSRI * $dsri;
+        $c_gmi  = $this->GMI  * $gmi;
+        $c_aqi  = $this->AQI  * $aqi;
+        $c_sgi  = $this->SGI  * $sgi;
+        $c_depi = $this->DEPI * $depi;
+        
+        $r_dsri = $this->DSRI - $c_dsri;
+        $r_gmi  = $this->GMI - $c_gmi;
+        $r_aqi  = $this->AQI - $c_aqi;
+        $r_sgi  = $this->SGI - $c_sgi;
+        $r_depi = $this->DEPI - $c_depi;
+
+        $t5ind = $r_dsri + $r_gmi + $r_aqi + $r_sgi + $r_depi;
+
+        $a_dsri = ($r_dsri / $t5ind) * 100;
+        $a_gmi  = ($r_gmi  / $t5ind) * 100;
+        $a_aqi  = ($r_aqi  / $t5ind) * 100;
+        $a_sgi  = ($r_sgi  / $t5ind) * 100;
+        $a_depi = ($r_depi / $t5ind) * 100;
+        
+        $this->cuentaValue['dsri']  = [
+            'manipulacion' => $this->DSRI,
+            'resultado'    => $dsri,
+            'obtenido'     => $c_dsri,
+            'aporte'       => $a_dsri,
+        ];
+        $this->cuentaValue['gmi']   = [
+            'manipulacion' => $this->GMI,
+            'resultado'    => $gmi,
+            'obtenido'     => $c_gmi,
+            'aporte'       => $a_gmi,
+        ];
+        $this->cuentaValue['aqi']   = [
+            'manipulacion' => $this->AQI,
+            'resultado'    => $aqi,
+            'obtenido'     => $c_aqi,
+            'aporte'       => $a_aqi,
+        ];
+        $this->cuentaValue['sgi']   = [
+            'manipulacion' => $this->SGI,
+            'resultado'    => $sgi,
+            'obtenido'     => $c_sgi,
+            'aporte'       => $a_sgi,
+        ];
+        $this->cuentaValue['depi']  = [
+            'manipulacion' => $this->DEPI,
+            'resultado'    => $depi,
+            'obtenido'     => $c_depi,
+            'aporte'       => $a_depi,
+        ];
+        $this->cuentaValue['m5ind'] = $this->m5ind();
         return $this->cuentaValue;
     }
     
@@ -112,7 +167,7 @@ class Manipulacion {
     
     private function m5ind() {
         $c = $this->cuentaValue;
-        $m5ind = -6.065 + 0.823 * $c['dsri'] + 0.906 * $c['gmi'] + 0.593 * $c['aqi'] + 0.717 * $c['sgi'] + 0.107 * $c['depi'];
+        $m5ind = -6.065 + $this->DSRI * $c['dsri']['resultado'] + $this->GMI * $c['gmi']['resultado'] + $this->AQI * $c['aqi']['resultado'] + $this->SGI * $c['sgi']['resultado'] + $this->DEPI * $c['depi']['resultado'];
         return number_format($m5ind,3,'.','');
     }
     
