@@ -91,7 +91,7 @@
         <?php $this->load->view('plantilla/menu'); ?>
         <!-- Sidebar -->
         <nav id="sidebar">
-            <ul class="list-unstyled components" style="padding-top: 10px;">
+            <ul class="list-unstyled components" style="padding-top: 15px;">
                 <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
                     <div class="float-left" style="margin-left: 5px;">Explorador de archivos</div>
                     <div class="float-right" style="margin: 0px;">
@@ -100,7 +100,7 @@
                         <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>
                     </div>
                 </div>
-                <div class="card shadow-sm" style="height: calc(100vh - 238px); overflow-y: auto;">
+                <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">
                     <div class="card-body" id="explorador-content">
                         <div class="selec-empresa text-center text-muted small no-seleccionable">
                             Debe Seleccionar<br/>una empresa
@@ -110,13 +110,22 @@
             </ul>
         </nav>
         <nav id="sidebar" class="propiedades">
-            <div class="card shadow-sm" style="height: calc(100vh - 202px); overflow-y: auto;">
-                <div class="card-body">
-                    <div class="selec-empresa text-center text-muted small no-seleccionable">
-                        Debe Seleccionar<br/>una empresa
+            <ul class="list-unstyled components" style="padding-top: 15px;">
+                <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
+                    <div class="float-left" style="margin-left: 5px;">Resultados</div>
+                    <div class="float-right" style="margin: 0px;">
+                        <i class="btn-icon far fa-edit" data-toggle="popover" data-placement="top" data-content="Renombrar archivo"></i>
+                        <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar un resultado"></i>
                     </div>                    
-                </div>
-            </div>            
+                </div>                
+                <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">
+                    <div class="card-body">
+                        <div class="selec-empresa text-center text-muted small no-seleccionable">
+                            Debe Seleccionar<br/>una empresa
+                        </div>                    
+                    </div>
+                </div>                
+            </ul>
         </nav>
         <div id="content" style="z-index: 1030;">
             <?= $body ?>
