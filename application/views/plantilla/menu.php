@@ -115,7 +115,7 @@
                         <i class="far fa-comment-dots"></i> Dictamen
                     </span>                    
                     <span id="mn-papeles">
-                        <i class="fas fa-mail-bulk"></i> Papeles de Trabajo
+                        <i class="fas fa-mail-bulk"></i> Papeles de Trabajo Certificados
                     </span>
                 </div>
                 <div class="d-flex flex-column">

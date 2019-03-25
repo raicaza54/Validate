@@ -86,7 +86,7 @@ $route['spider/v1/procesar']['post'] = 'auditoria/spider';
 /* -------------------------------------------------------------------------
  * Manipulacion
  * ------------------------------------------------------------------------- */
-$route['manipulacion/v1/archivos']['post']  = 'explorador/balances';
+$route['manipulacion/v1/archivos']['post'] = 'explorador/balances';
 $route['manipulacion/v1/procesar']['post'] = 'auditoria/manipulacion';
 
 $route['default_controller']   = 'auditoria';

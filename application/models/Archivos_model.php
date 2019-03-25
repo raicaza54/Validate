@@ -143,6 +143,7 @@ class Archivos_model extends CI_Model {
             $this->pref.'archivos.tipo',
         ]);
         $this->db->where($this->pref.'archivos.fk_carpetas',$folderId);
+        $this->db->where($this->pref.'carpetas.deleted_at', 0);
         $this->db->where_in($this->pref.'carpetas.type',['excel','csv']);
         $this->db->where($this->pref.'archivos.tipo','blp');
         $this->db->join($this->pref.'archivos',$this->pref.'carpetas.archivos_id = '.$this->pref.'archivos.id', 'inner');
