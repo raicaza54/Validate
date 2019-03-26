@@ -138,8 +138,8 @@ class Spider {
                 }
             }
         }
-        $this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
-        $this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
+        //$this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
+        //$this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
 //        $tabla_grupos_clasificados = '';
 //        foreach ($grupos_clasificado as $key => $value) {
 //            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
