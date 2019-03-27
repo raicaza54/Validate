@@ -267,10 +267,10 @@ class Spider {
                 $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Petición Aceptada pero incompleta";
             } elseif ($exception["code"] === 500) {
                 $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
-            } else{
+            } else {
                 $this->datos["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             }
-        }        
+        }
         return $this->datos;
     }    
     
