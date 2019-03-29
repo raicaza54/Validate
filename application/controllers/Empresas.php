@@ -46,9 +46,9 @@ class Empresas extends CI_Controller {
                 throw new Exception("No existen datos para mostrar", 204);
             }
             $response = [
-                "draw"            => $_POST['draw'],
+                "draw"            => $this->input->post('draw'),
                 "recordsTotal"    => $this->Empresas_model->countAll(),
-                "recordsFiltered" => $this->Empresas_model->countFiltered($_POST),
+                "recordsFiltered" => $this->Empresas_model->countFiltered($this->input->post()),
                 "data"            => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);

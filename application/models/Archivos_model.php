@@ -17,7 +17,94 @@ class Archivos_model extends CI_Model {
     
     function __construct() {
         parent::__construct();
+        // Set table name
+        $this->table         = $this->pref . 'archivos_detalle';
+        // Set orderable column fields
+        $column = [];
+        for ($x = 1; $x <= 20; $x++) {
+            $column[] = 'campo'.$x;
+        }
+        $this->column_order  = $column;
+        // Set searchable column fields
+        $this->column_search = $column;
+        // Set default order
+        $this->order         = [
+            'campo1' => 'asc'
+        ];        
     }
+    
+    /*
+     * Fetch members data from the database
+     * @param $_POST filter data based on the posted parameters
+     */
+    public function getRows($postData) {
+        $this->_get_datatables_query($postData);
+        if ($postData['length'] != -1) {
+            $this->db->limit($postData['length'], $postData['start']);
+        }
+        $this->db->where('fk_archivos', $postData['id']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    /*
+     * Count all records
+     */
+    public function countAll($postData) {
+        $this->db->from($this->table);
+        $this->db->where('fk_archivos', $postData['id']);
+        return $this->db->count_all_results();
+    }
+
+    /*
+     * Count records based on the filter params
+     * @param $_POST filter data based on the posted parameters
+     */
+    public function countFiltered($postData) {
+        $this->_get_datatables_query($postData);
+        $this->db->where('fk_archivos', $postData['id']);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    /*
+     * Perform the SQL queries needed for an server-side processing requested
+     * @param $_POST filter data based on the posted parameters
+     */
+    private function _get_datatables_query($postData) {
+        $this->db->from($this->table);
+        $this->db->where('linea', 'f');
+        $i = 0;
+        // loop searchable columns 
+        foreach ($this->column_search as $item) {
+            // if datatable send POST for search
+            if ($postData['search']['value']) {
+                // first loop
+                if ($i === 0) {
+                    // open bracket
+                    $this->db->group_start();
+                    $this->db->like($item, $postData['search']['value']);
+                } else {
+                    $this->db->or_like($item, $postData['search']['value']);
+                }
+
+                // last loop
+                if (count($this->column_search) - 1 == $i) {
+                    // close bracket
+                    $this->db->group_end();
+                }
+            }
+            $i++;
+        }
+
+        if (isset($postData['order'])) {
+            $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }    
+    
     
     public function getTodas() {
         return $this->db->get($this->pref.'archivos')->result_array();

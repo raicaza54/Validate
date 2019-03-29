@@ -46,6 +46,8 @@ class Empresas_model extends CI_Model {
         if ($postData['length'] != -1) {
             $this->db->limit($postData['length'], $postData['start']);
         }
+        $this->db->join($this->pref . 'auditores_empresas', $this->pref . 'auditores_empresas.fk_empresas = ' . $this->pref . 'empresas.id');
+        $this->db->where($this->pref . 'auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
         $query = $this->db->get();
         return $query->result();
     }
@@ -55,6 +57,8 @@ class Empresas_model extends CI_Model {
      */
     public function countAll() {
         $this->db->from($this->table);
+        $this->db->join($this->pref . 'auditores_empresas', $this->pref . 'auditores_empresas.fk_empresas = ' . $this->pref . 'empresas.id');
+        $this->db->where($this->pref . 'auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
         return $this->db->count_all_results();
     }
 
@@ -64,6 +68,8 @@ class Empresas_model extends CI_Model {
      */
     public function countFiltered($postData) {
         $this->_get_datatables_query($postData);
+        $this->db->join($this->pref . 'auditores_empresas', $this->pref . 'auditores_empresas.fk_empresas = ' . $this->pref . 'empresas.id');
+        $this->db->where($this->pref . 'auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -73,6 +79,7 @@ class Empresas_model extends CI_Model {
      * @param $_POST filter data based on the posted parameters
      */
     private function _get_datatables_query($postData) {
+        $this->db->select($this->pref . 'empresas.id, nombre, identificacion');
         $this->db->from($this->table);
         $i = 0;
         // loop searchable columns 

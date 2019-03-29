@@ -222,6 +222,44 @@ class Archivos extends CI_Controller {
         }
     }
 
+    public function header() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $dataColumns = $this->Archivos_model->getEncabezado($this->input->post('id'));
+            if (!is_array($dataColumns)) {
+                throw new Exception("No existen datos para mostrar", 204);
+            }
+            $columns = [];
+            $columnsDef = [];
+            $x = 0;
+            foreach ($dataColumns as $key => $value) {
+                $x++;
+                $columns[] = [
+                    'title' => $value,
+                    'data'  => $key
+                ];
+                $columnsDef[] = [
+                    'type' => 'html', 
+                    'data'  => $key
+                ];
+            }
+            $response = [
+                "column"    => $columns,
+                "columnDef" => $columnsDef,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
+    }
+    
     public function datos() {
         $response = $this->response;
         try {
@@ -229,15 +267,17 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
-            $items = $this->Archivos_model->getDetalleId($post['id']);
-            
+            $items = $this->Archivos_model->getRows($this->input->post());
+            //$items = $this->Archivos_model->getDetalleId($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id']);
-            $response["data"] = [
-                'tabla'       => $items,
-                'tabla_count' => $tabla_count,
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
+                //"column"         => $this->Archivos_model->getEncabezado($this->input->post('id')),
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
