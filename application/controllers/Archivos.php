@@ -341,10 +341,8 @@ class Archivos extends CI_Controller {
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
             $response["data"] = [
-                'tabla'       => $items,
-                'tabla_count' => $tabla_count
+                'tabla'       => $items
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

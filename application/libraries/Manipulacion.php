@@ -109,6 +109,12 @@ class Manipulacion {
             'aporte'       => $a_depi,
         ];
         $this->cuentaValue['m5ind'] = $this->m5ind();
+        $manipulacion = (($this->cuentaValue['m5ind'] >= -2.22) ? FALSE:TRUE);
+        if($manipulacion == TRUE){
+            $this->cuentaValue['mensaje'] = 'La Manipulación arroja un score de '.number_format($this->cuentaValue['m5ind'],3,',','.').' este resultado es inferior a -2.22 se sugiere menor riesgo de manipulación';
+        }else{
+            $this->cuentaValue['mensaje'] = 'La Manipulaci&oacute;n arroja un score de '.number_format($this->cuentaValue['m5ind'],3,',','.').' este resultado es superior a -2.22 se sugiere mayor riesgo de manipulaci&oacute;n';
+        }
         return $this->cuentaValue;
     }
     

@@ -411,11 +411,11 @@ class Benford {
         array_walk($r2, function (&$value){
             $e = '';
             if($value['observado'] > $value['benford']){
-                $e = '+';
+                $e = '+ ';
             }elseif($value['observado'] < $value['benford']){
-                $e = '-';
+                $e = '- ';
             }
-            $value['variacion']  = $e.number_format($value['variacion'], 12, ',', '.');
+            $value['variacion']  = $e.number_format(($value['variacion']*100), 3, ',', '.').'%';
             $value['frecuencia'] = number_format($value['frecuencia'], 0, ',', '.');
             $value['observado']  = number_format($value['observado'], 3, ',', '.') . '%';
             $value['benford']    = number_format($value['benford'], 3, ',', '.') . '%';

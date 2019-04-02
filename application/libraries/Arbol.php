@@ -46,7 +46,10 @@ class Arbol {
                         'disabled' => boolval($master["disabled"]),
                     ],
                     'li_attr' => [
-                        'file' => $master["archivos_id"]
+                        'file'           => $master["archivos_id"],
+                        'title'          => $master["label"],
+                        'data-toggle'    => "tooltip",
+                        'data-placement' => "top"
                     ]
                 ];
                 $childs = $this->nested($childrens, $master["id"]);
@@ -91,7 +94,10 @@ class Arbol {
                                 'disabled' => boolval($row["disabled"])
                             ],
                             'li_attr' => [
-                                'file' => $row["archivos_id"]
+                                'file'           => $row["archivos_id"],
+                                'title'          => $row["label"],
+                                'data-toggle'    => "tooltip",
+                                'data-placement' => "top"
                             ]
                         ];
                     } else {
@@ -106,7 +112,10 @@ class Arbol {
                                 'disabled' => boolval($row["disabled"])
                             ],
                             'li_attr' => [
-                                'file' => $row["archivos_id"]
+                                'file'           => $row["archivos_id"],
+                                'title'          => $row["label"],
+                                'data-toggle'    => "tooltip",
+                                'data-placement' => "top"
                             ]
                         ];
                     }

@@ -1,7 +1,19 @@
-<nav class="navbar navbar-expand-lg fixed-top menu-auditor shadow-sm">
+<nav id="menu-validate" class="navbar navbar-expand-lg fixed-top menu-auditor shadow-sm">
     <div id="empresaActiva"></div>
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
+            <div class="menu-card-icon">
+                <div class="icono" id="mn-archivos">
+                    <i class="far fa-folder"></i>
+                    <span>Archivos</span>
+                </div>
+                <div class="icono" id="mn-resultados">
+                    <i class="fas fa-mail-bulk"></i>
+                    <span>Resultados</span>
+                </div>
+                <div class="titulo">Explorador</div>
+            </div>
+            <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono" id="mn-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <i class="far fa-hospital"></i>
@@ -115,7 +127,7 @@
                         <i class="far fa-comment-dots"></i> Dictamen
                     </span>                    
                     <span id="mn-papeles">
-                        <i class="fas fa-mail-bulk"></i> Papeles de Trabajo Certificados
+                        <i class="fas fa-mail-bulk"></i> Papeles Certificados
                     </span>
                 </div>
                 <div class="d-flex flex-column">
