@@ -74,6 +74,21 @@ class Archivos_model extends CI_Model {
     private function _get_datatables_query($postData) {
         $this->db->from($this->table);
         $this->db->where('linea', 'f');
+        if(($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
+            if(($postData['grafica'] == 1) || ($postData['grafica'] == 12)){
+                $this->db->like($postData['campoAnalizar'], $postData['digito'], 'after');
+            }elseif($postData['grafica'] == 2){
+                $this->db->like('SUBSTR('.$postData['campoAnalizar'].', 2, 1)', $postData['digito'], 'before', FALSE);
+            }else{
+                return FALSE;
+            }
+            if(is_numeric($postData['min']) && is_numeric($postData['max'])){
+                $this->db->group_start();
+                $this->db->where($postData['campoAnalizar']." >=", $postData['min']);
+                $this->db->where($postData['campoAnalizar']." <=", $postData['max']);
+                $this->db->group_end();
+            }
+        }
         $i = 0;
         // loop searchable columns 
         foreach ($this->column_search as $item) {
@@ -110,7 +125,7 @@ class Archivos_model extends CI_Model {
         return $this->db->get($this->pref.'archivos')->result_array();
     }
     
-    public function getEncabezado($id) {
+    public function getEncabezado($id, $campoAnalizar = NULL) {
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'e');
         $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();
@@ -119,6 +134,9 @@ class Archivos_model extends CI_Model {
             if(trim($encabezado['campo'.$x])){
                 $e['campo'.$x] = $encabezado['campo'.$x];
             }
+        }
+        if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
+            $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
         return (count($e) <= 0) ? FALSE : $e;
     }
@@ -130,50 +148,6 @@ class Archivos_model extends CI_Model {
         $this->db->group_by('campo2');
         $cuentas = $this->db->get($this->pref.'archivos_detalle')->result_array();
         return $cuentas;
-    }
-    
-    public function getDetalleCountId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {
-        $r = FALSE;
-        $this->db->select([
-            'campo1',
-            'campo2',
-            'campo3',
-            'campo4',
-            'campo5',
-            'campo6',
-            'campo7',
-            'campo8',
-            'campo9',
-            'campo10',
-            'campo11',
-            'campo12',
-            'campo13',
-            'campo14',
-            'campo15',
-            'campo16',
-            'campo17',
-            'campo18',
-            'campo19',
-            'campo20',
-        ]);
-        $this->db->where('fk_archivos', $id);
-        if(($digito !== NULL) && is_numeric($digito) && ($grafica !== NULL) && is_numeric($grafica)){
-            if(($grafica == 1) || ($grafica == 12)){
-                $this->db->like($campoAnalizar, $digito, 'after');
-            }elseif($grafica == 2){
-                $this->db->like('SUBSTR('.$campoAnalizar.', 2, 1)', $digito, 'before', FALSE);
-            }else{
-                return FALSE;
-            }
-            $this->db->or_group_start();
-            $this->db->where('linea', 'e');
-            $this->db->where('fk_archivos', $id);
-            $this->db->group_end();
-        }
-        $this->db->order_by('linea', 'ASC');
-        $this->db->order_by('id', 'DESC');
-        $r = count($this->db->get($this->pref.'archivos_detalle')->result_array()) - 1;
-        return $r;
     }
     
     public function getDetalleId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {

@@ -15,6 +15,10 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
+                <div class="icono" id="mn-listar" onclick="EMPRESAS.methods.listarEmpresas()">
+                    <i class="fas fa-city"></i>
+                    <span>Listar</span>
+                </div>                
                 <div class="icono" id="mn-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
@@ -22,10 +26,6 @@
                 <div class="icono" id="mn-propiedades">
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
-                </div>
-                <div class="icono" id="mn-listar" onclick="EMPRESAS.methods.listarEmpresas()">
-                    <i class="fas fa-city"></i>
-                    <span>Listar</span>
                 </div>
                 <div class="titulo">Empresas</div>
             </div>
@@ -117,6 +117,10 @@
                 <div class="icono" id="mn-materialidad">
                     <i class="fas fa-vote-yea"></i>
                     <span>Materialidad</span>
+                </div>
+                <div class="icono" id="mn-listas">
+                    <i class="fas fa-fire"></i>
+                    <span>Listas de Control</span>
                 </div>
                 <div class="titulo">An&aacute;lisis de datos</div>
             </div>

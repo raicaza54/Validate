@@ -297,7 +297,7 @@ class Benford {
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
-            'mad'         => '<b>' . number_format($mad, 12, ',', '.') . '</b>',
+            'mad'         => '<b>' . number_format($mad, 4, ',', '.') . '</b>',
             'madDescribe' => '<b>' . $mad_d12 . '</b>',
             'mad_d12'     => $this->mad_d12
         );
@@ -349,7 +349,7 @@ class Benford {
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
-            'mad'         => '<b>' . number_format($mad, 12, ',', '.') . '</b>',
+            'mad'         => '<b>' . number_format($mad, 4, ',', '.') . '</b>',
             'madDescribe' => '<b>' . $mad_d2 . '</b>',
             'mad_d2'      => $this->mad_d2
         );
@@ -401,7 +401,7 @@ class Benford {
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
-            'mad'         => '<b>' . number_format($mad, 12, ',', '.') . '</b>',
+            'mad'         => '<b>' . number_format($mad, 4, ',', '.') . '</b>',
             'madDescribe' => '<b>' . $mad_d1 . '</b>',
             'mad_d1'      => $this->mad_d1
         );

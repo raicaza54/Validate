@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /* -------------------------------------------------------------------------
  * Empresas
  * ------------------------------------------------------------------------- */
-$route['empresas/v1/datos']['post']    = 'empresas/datos';
+$route['empresas/v1/datos']['post']   = 'empresas/datos';
 $route['empresas/v1/activar']['post'] = 'empresas/activar';
 
 /* -------------------------------------------------------------------------

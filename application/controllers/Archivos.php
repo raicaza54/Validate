@@ -229,7 +229,11 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
-            $dataColumns = $this->Archivos_model->getEncabezado($this->input->post('id'));
+            $campoAnalizar = NULL;
+            if(array_key_exists('campoAnalizar', $post)){
+                $campoAnalizar = $post['campoAnalizar'];
+            }            
+            $dataColumns = $this->Archivos_model->getEncabezado($this->input->post('id'), $campoAnalizar);
             if (!is_array($dataColumns)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
@@ -268,7 +272,6 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
             $items = $this->Archivos_model->getRows($this->input->post());
-            //$items = $this->Archivos_model->getDetalleId($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
@@ -277,7 +280,6 @@ class Archivos extends CI_Controller {
                 "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
                 "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
                 "data"            => $items,
-                //"column"         => $this->Archivos_model->getEncabezado($this->input->post('id')),
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
@@ -294,7 +296,7 @@ class Archivos extends CI_Controller {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
-            }            
+            }
             $items = $this->Archivos_model->getEncabezado($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
@@ -337,12 +339,15 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post) || !array_key_exists('campoAnalizar', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
             }
-            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
+            $items = $this->Archivos_model->getRows($post);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = [
-                'tabla'       => $items
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

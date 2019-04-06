@@ -25,6 +25,7 @@
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/datatables/range_numbers.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/d3.v5.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
