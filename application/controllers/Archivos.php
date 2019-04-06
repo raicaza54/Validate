@@ -222,6 +222,48 @@ class Archivos extends CI_Controller {
         }
     }
 
+    public function header() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $campoAnalizar = NULL;
+            if(array_key_exists('campoAnalizar', $post)){
+                $campoAnalizar = $post['campoAnalizar'];
+            }            
+            $dataColumns = $this->Archivos_model->getEncabezado($this->input->post('id'), $campoAnalizar);
+            if (!is_array($dataColumns)) {
+                throw new Exception("No existen datos para mostrar", 204);
+            }
+            $columns = [];
+            $columnsDef = [];
+            $x = 0;
+            foreach ($dataColumns as $key => $value) {
+                $x++;
+                $columns[] = [
+                    'title' => $value,
+                    'data'  => $key
+                ];
+                $columnsDef[] = [
+                    'type' => 'html', 
+                    'data'  => $key
+                ];
+            }
+            $response = [
+                "column"    => $columns,
+                "columnDef" => $columnsDef,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));        
+    }
+    
     public function datos() {
         $response = $this->response;
         try {
@@ -229,15 +271,15 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
-            $items = $this->Archivos_model->getDetalleId($post['id']);
-            
+            $items = $this->Archivos_model->getRows($this->input->post());
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id']);
-            $response["data"] = [
-                'tabla'       => $items,
-                'tabla_count' => $tabla_count,
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
@@ -254,7 +296,7 @@ class Archivos extends CI_Controller {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
-            }            
+            }
             $items = $this->Archivos_model->getEncabezado($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
@@ -297,14 +339,15 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post) || !array_key_exists('campoAnalizar', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 204);
             }
-            $items = $this->Archivos_model->getDetalleId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
+            $items = $this->Archivos_model->getRows($post);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $tabla_count = '500 de '.$this->Archivos_model->getDetalleCountId($post['id'], $post['digito'], $post['grafica'], $post['campoAnalizar']);
-            $response["data"] = [
-                'tabla'       => $items,
-                'tabla_count' => $tabla_count
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

@@ -1,8 +1,24 @@
-<nav class="navbar navbar-expand-lg fixed-top menu-auditor shadow-sm">
+<nav id="menu-validate" class="navbar navbar-expand-lg fixed-top menu-auditor shadow-sm">
     <div id="empresaActiva"></div>
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
+                <div class="icono" id="mn-archivos">
+                    <i class="far fa-folder"></i>
+                    <span>Archivos</span>
+                </div>
+                <div class="icono" id="mn-resultados">
+                    <i class="fas fa-mail-bulk"></i>
+                    <span>Resultados</span>
+                </div>
+                <div class="titulo">Explorador</div>
+            </div>
+            <div class="menu-separador"></div>
+            <div class="menu-card-icon">
+                <div class="icono" id="mn-listar" onclick="EMPRESAS.methods.listarEmpresas()">
+                    <i class="fas fa-city"></i>
+                    <span>Listar</span>
+                </div>                
                 <div class="icono" id="mn-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
@@ -10,10 +26,6 @@
                 <div class="icono" id="mn-propiedades">
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
-                </div>
-                <div class="icono" id="mn-listar" onclick="EMPRESAS.methods.listarEmpresas()">
-                    <i class="fas fa-city"></i>
-                    <span>Listar</span>
                 </div>
                 <div class="titulo">Empresas</div>
             </div>
@@ -106,6 +118,10 @@
                     <i class="fas fa-vote-yea"></i>
                     <span>Materialidad</span>
                 </div>
+                <div class="icono" id="mn-listas">
+                    <i class="fas fa-fire"></i>
+                    <span>Listas de Control</span>
+                </div>
                 <div class="titulo">An&aacute;lisis de datos</div>
             </div>
             <div class="menu-separador"></div>
@@ -115,7 +131,7 @@
                         <i class="far fa-comment-dots"></i> Dictamen
                     </span>                    
                     <span id="mn-papeles">
-                        <i class="fas fa-mail-bulk"></i> Papeles de Trabajo Certificados
+                        <i class="fas fa-mail-bulk"></i> Papeles Certificados
                     </span>
                 </div>
                 <div class="d-flex flex-column">

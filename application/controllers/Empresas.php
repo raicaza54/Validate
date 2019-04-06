@@ -39,15 +39,17 @@ class Empresas extends CI_Controller {
 
     public function datos() {
         $response = $this->response;
+        $data = $row = array();
         try {
-            $items = $this->Empresas_model->getTodas();
+            $items = $this->Empresas_model->getRows($this->input->post());
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $tabla_count = count($items).' de '.count($items);
-            $response["data"] = [
-                'tabla'       => $items,
-                'tabla_count' => $tabla_count
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Empresas_model->countAll(),
+                "recordsFiltered" => $this->Empresas_model->countFiltered($this->input->post()),
+                "data"            => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

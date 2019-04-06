@@ -25,6 +25,7 @@
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/datatables.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/datatables/range_numbers.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/d3.v5.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
@@ -107,24 +108,6 @@
                         </div>
                     </div>
                 </div>
-            </ul>
-        </nav>
-        <nav id="sidebar" class="propiedades">
-            <ul class="list-unstyled components" style="padding-top: 15px;">
-                <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
-                    <div class="float-left" style="margin-left: 5px;">Resultados</div>
-                    <div class="float-right" style="margin: 0px;">
-                        <i class="btn-icon far fa-edit" data-toggle="popover" data-placement="top" data-content="Renombrar archivo"></i>
-                        <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar un resultado"></i>
-                    </div>                    
-                </div>                
-                <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">
-                    <div class="card-body">
-                        <div class="selec-empresa text-center text-muted small no-seleccionable">
-                            Debe Seleccionar<br/>una empresa
-                        </div>                    
-                    </div>
-                </div>                
             </ul>
         </nav>
         <div id="content" style="z-index: 1030;">
