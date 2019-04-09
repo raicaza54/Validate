@@ -74,7 +74,7 @@ class Archivos_model extends CI_Model {
     private function _get_datatables_query($postData) {
         $this->db->from($this->table);
         $this->db->where('linea', 'f');
-        if(($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
+        if((array_key_exists('digito', $postData)) && ($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
             if(($postData['grafica'] == 1) || ($postData['grafica'] == 12)){
                 $this->db->like($postData['campoAnalizar'], $postData['digito'], 'after');
             }elseif($postData['grafica'] == 2){

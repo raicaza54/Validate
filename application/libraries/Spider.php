@@ -24,6 +24,7 @@ class Spider {
     }
     
     public function procesar($cuenta) {
+        //debug_file("===========================================================================================");
         try{
         $ejemplo  = $this->data;
         $grupos = array();
@@ -60,6 +61,9 @@ class Spider {
                             $grupos_clasificado['debito'][] = $value;
                         }
                     }
+                }
+                $k = 0;
+                foreach ($value as $value_grupo) {
                     if (($value_grupo['cuenta'] == $cuenta) AND ( $value_grupo['tipo'] == 2)) {
                         foreach ($grupos_clasificado['credito'] as $value_credito) {
                             if (in_array($key, array_column($value_credito, 'grupo'))) {
@@ -69,8 +73,8 @@ class Spider {
                         if ($k == 0) {
                             $grupos_clasificado['credito'][] = $value;
                         }
-                    }
-                }
+                    }                
+                }                
             }
         }
         $total_debito        = 0;
@@ -138,6 +142,8 @@ class Spider {
                 }
             }
         }
+        //$this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
+        //$this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
 //        $tabla_grupos_clasificados = '';
 //        foreach ($grupos_clasificado as $key => $value) {
 //            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
@@ -278,14 +284,14 @@ class Spider {
         header("Pragma: no-cache");
         header("Expires: 0");
         $handle = fopen(APPPATH.'logs/'.$archivo.'.csv', 'w');
-        fputcsv($handle, array("grupo", "cuenta", "tipo", "valor"));
+        fputcsv($handle, array("grupo", "cuenta", "tipo", "valor"), ';');
         foreach ($data as $keydat) {
             foreach ($keydat as $key) {
                 $narray = array($key["grupo"], $key["cuenta"], $key["tipo"], $key["valor"]);
-                fputcsv($handle, $narray);
+                fputcsv($handle, $narray, ';');
             }
         }
         fclose($handle);
     }
-
+    
 }
