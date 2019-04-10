@@ -26,11 +26,10 @@
         <script src="<?= base_url('assets/library/datatables/DataTables/datatables.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
-        
+        <script src="<?= base_url('assets/library/datatables/plug-ins/dataTables.scrollResize.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/plug-ins/numeric-comma.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/plug-ins/num-html.js') ?>" type="text/javascript"></script>
-        
-        <script src="<?= base_url('assets/library/datatables/range_numbers.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/datatables/plug-ins/formatted-num.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/d3.v5.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>

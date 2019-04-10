@@ -327,3 +327,14 @@ if (!function_exists('external_less')) {
     }
 
 }
+
+if (!function_exists('money')) {
+
+    function money($value) {
+        if(substr($value,0,2) == '$-'){
+            $value = '-$'.substr($value, 2);
+        }
+        return $value;
+    }
+    
+}

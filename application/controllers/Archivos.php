@@ -241,16 +241,18 @@ class Archivos extends CI_Controller {
             $columnsDef = [];
             $x = 0;
             foreach ($dataColumns as $key => $value) {
-                $x++;
                 $columns[] = [
                     'title' => $value,
                     'data'  => $key
                 ];
-                $columnsDef[] = [
-                    'type' => 'html', 
-                    'data'  => $key
-                ];
+                $x++;
             }
+            
+            $columnsDef[] = [
+                'sType' => "numeric-comma",
+                'targets'   => 9,
+                'className' => "dt-body-right",
+            ];
             $response = [
                 "column"    => $columns,
                 "columnDef" => $columnsDef,

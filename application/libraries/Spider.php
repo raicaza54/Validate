@@ -230,7 +230,7 @@ class Spider {
             }
         }
         if($total_dinero > 0){        
-            $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Total</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
+            $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">D&eacute;bitos</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
         }
         $t = 15;
         if($my == 'd'){
@@ -252,10 +252,10 @@ class Spider {
             }
         }
         if($total_dinero > 0){
-            $this->datos['body'] .= '<div class="spd-credito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Total</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
+            $this->datos['body'] .= '<div class="spd-credito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Cr&eacute;ditos</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
         }
-        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) - 22) . 'px; text-align: center">' . $cuenta . '</div>';
-        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) + 7) . 'px; text-align: center">' .number_format($total_debito - $total_credito,2,',','.') . '</div>';
+        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) - 22) . 'px; text-align: center; background-color: #CDCDCD;"><b>' . $cuenta . '</b></div>';
+        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) + 7) . 'px; text-align: center">'.money('$' .number_format(($total_debito - $total_credito),2,',','.')) . '</div>';
         $this->datos['body'] .= '<svg width="1000" height="' . (($c * 45) - 30) . '" viewBox="0 0 1000 ' . (($c * 45) - 30) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
