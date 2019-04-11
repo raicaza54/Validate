@@ -35,7 +35,7 @@
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/cookie/2.2.0/js.cookie.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/js/loader.js?version=3') ?>" type="module"></script>
+        <script src="<?= base_url('assets/js/loader.js?version=5') ?>" type="module"></script>
         <?= load_assets('js') ?>
         <script type="text/javascript">
             $(function ($) {
