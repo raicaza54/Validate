@@ -15,8 +15,10 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
         <?= load_assets('css') ?>
+        <?php $assets = $this->config->item('assets'); ?>
         <script type="text/javascript">
-            var base_url = '<?= base_url()?>';
+            var base_url = '<?= base_url() ?>';
+            var version = '<?= $assets['version'] ?>';
         </script>
         <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
@@ -35,7 +37,7 @@
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/cookie/2.2.0/js.cookie.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/js/loader.js?version=5') ?>" type="module"></script>
+        <?= asset_js('loader.js') ?>
         <?= load_assets('js') ?>
         <script type="text/javascript">
             $(function ($) {
