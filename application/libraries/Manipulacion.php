@@ -149,6 +149,7 @@ class Manipulacion {
     
     private function gmi() {
         $c = $this->cuentaValue;
+        //debug_file("((".$c['ventas']['t-1']."-".$c['cventas']['t-1'].")/".$c['ventas']['t-1'].") / ((".$c['ventas']['t']."-".$c['cventas']['t'].")/".$c['ventas']['t'].")");
         $gmi = (($c['ventas']['t-1']-$c['cventas']['t-1'])/$c['ventas']['t-1']) / (($c['ventas']['t']-$c['cventas']['t'])/$c['ventas']['t']);
         return number_format($gmi,3,'.','');
     }
