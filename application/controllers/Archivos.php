@@ -57,6 +57,119 @@ class Archivos extends CI_Controller {
         return $fileType;
     }
     
+    
+    private function leer_csv($param) {
+        set_time_limit(0);
+        extract($param);
+        $fileType = $this->fileType($type, 0);
+        $archivo = FALSE;
+        try{
+            $outsheet = []; $x = 0;
+            $created_user  = $this->session->userdata('users_id');
+            $created_clier = $this->session->userdata('clientes_id');
+            $update_user   = $this->session->userdata('users_id');
+            $update_clie   = $this->session->userdata('clientes_id');
+            $linea = 'e';
+            $this->id = uniqint();
+            $tipos = [];
+            $num = 0;
+            for ($f = 1; $f <= 20; $f++) {
+                $tipos['campo'.$f] = 'string';
+                $header[] = 'campo'.$f;
+            }
+            $sheet = $this->csvimport->get_array($fullpath, $header, FALSE, FALSE, ';');
+            $c = 0;
+            foreach ($sheet['line_headers'] as $value) {
+                $c++;
+                $line_headers['campo'.$c] = $value;
+                if($c >= 20){
+                    break;
+                }
+            }
+            if($c < 20){
+                for ($f = $c; $f <= 20; $f++) {
+                    $line_headers['campo'.$f] = '';
+                }                
+            }
+            $sheet = $sheet['result'];
+            array_unshift($sheet, $line_headers);
+            foreach ($sheet as $value) {
+                $outsheet[$x] = [
+                    'fk_archivos'   => $this->id,
+                    'linea'         => $linea,
+                    'campo1'        => substr($value['campo1'],  0, 100),
+                    'campo2'        => substr($value['campo2'],  0, 100),
+                    'campo3'        => substr($value['campo3'],  0, 100),
+                    'campo4'        => substr($value['campo4'],  0, 100),
+                    'campo5'        => substr($value['campo5'],  0, 100),
+                    'campo6'        => substr($value['campo6'],  0, 100),
+                    'campo7'        => substr($value['campo7'],  0, 100),
+                    'campo8'        => substr($value['campo8'],  0, 100),
+                    'campo9'        => substr($value['campo9'],  0, 100),
+                    'campo10'       => substr($value['campo10'], 0, 100),
+                    'campo11'       => substr($value['campo11'], 0, 100),
+                    'campo12'       => substr($value['campo12'], 0, 100),
+                    'campo13'       => substr($value['campo13'], 0, 100),
+                    'campo14'       => substr($value['campo14'], 0, 100),
+                    'campo15'       => substr($value['campo15'], 0, 100),
+                    'campo16'       => substr($value['campo16'], 0, 100),
+                    'campo17'       => substr($value['campo17'], 0, 100),
+                    'campo18'       => substr($value['campo18'], 0, 100),
+                    'campo19'       => substr($value['campo19'], 0, 100),
+                    'campo20'       => substr($value['campo20'], 0, 100),
+                    'created_user'  => $created_user,
+                    'created_clier' => $created_clier,
+                    'update_user'   => $update_user,
+                    'update_clie'   => $update_clie
+                ];
+                /*
+                if($linea == 'f'){
+                    for ($f = 1; $f <= 20; $f++) {
+                        if(strlen($outsheet[$x]['campo'.$f])){
+                            if(is_numeric(trim($outsheet[$x]['campo'.$f]))){
+                                $num = trim($outsheet[$x]['campo'.$f]);
+                                if(($num == 0) && ($f > 1)){
+                                    $tipos['campo'.$f] = $tipos['campo'.($f-1)];
+                                }else{
+                                    if(filter_var($num, FILTER_VALIDATE_INT)){
+                                        $tipos['campo'.$f] = 'int';
+                                    }elseif(filter_var($num, FILTER_VALIDATE_FLOAT|FILTER_VALIDATE_FLOAT)){
+                                        $tipos['campo'.$f] = 'float';
+                                    }else{
+                                        $tipos['campo'.$f] = 'num';
+                                    }                                    
+                                }
+                            }
+                        }
+                    }
+                }
+                */
+                $x++;
+                $linea = 'f';
+            }
+            $archivo = [
+                'archivo' => [
+                    'id'            => $this->id,
+                    'fk_carpetas'   => $parent_id,
+                    'nombre'        => $filename,
+                    'file_name'     => $fullpath,
+                    'ext'           => $type,
+                    'tipo'          => $tipo,
+                    'created_user'  => $created_user,
+                    'created_clier' => $created_clier,
+                    'update_user'   => $update_user,
+                    'update_clie'   => $update_clie,
+                    'columnas'      => json_encode($tipos)
+                ],
+                'detalle' => $outsheet
+            ];
+        } catch (Exception $ex) {
+            return FALSE;
+        }
+        return $archivo;
+    }
+    
+    
     /**
      * Tipo de archivo permitidos filtrados por la opcion de carga de 
      * archivos nativa de codeigniter
@@ -177,10 +290,17 @@ class Archivos extends CI_Controller {
             if(is_bool($archivo) || ($archivo === FALSE)){
                 throw new Exception("Tenemos un problema con el archivo", 204);
             }
-            $xls = $this->leer_excel($archivo + [
-                'parent_id' => $post['carpeta'],
-                'tipo'      => $post['tipo'],
-            ]);
+            if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx')){
+                $xls = $this->leer_excel($archivo + [
+                    'parent_id' => $post['carpeta'],
+                    'tipo'      => $post['tipo'],
+                ]);                
+            }elseif($archivo['type'] == '.csv'){
+                $xls = $this->leer_csv($archivo + [
+                    'parent_id' => $post['carpeta'],
+                    'tipo'      => $post['tipo'],
+                ]);                
+            }
             $xlsdb = $this->Archivos_model->insert_excel($xls);
             if(is_bool($xlsdb) || ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 204);

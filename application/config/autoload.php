@@ -69,6 +69,7 @@ $autoload['libraries'] = array(
     'encryption',
     //'lib_gearman',
     'usertracking',
+    'csvimport',
 );
 
 /*

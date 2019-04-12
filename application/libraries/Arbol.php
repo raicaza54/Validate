@@ -33,7 +33,7 @@ class Arbol {
         $elements  = $this->get($id_empresa);
         if(count($elements) > 0){
             $masters   = $elements["masters"];
-            $childrens = $elements["childrens"];            
+            $childrens = $elements["childrens"];
             foreach($masters as $master){
                 $arbol[] = [
                     'id'     => $master["id"],
