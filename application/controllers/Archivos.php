@@ -149,6 +149,7 @@ class Archivos extends CI_Controller {
                     'id'            => $this->id,
                     'fk_carpetas'   => $parent_id,
                     'nombre'        => $filename,
+                    'file_name'     => $fullpath,
                     'ext'           => $type,
                     'tipo'          => $tipo,
                     'created_user'  => $created_user,

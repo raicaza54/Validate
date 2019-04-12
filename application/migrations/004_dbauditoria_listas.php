@@ -118,6 +118,12 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'null'       => TRUE,
                 'default'    => 'xlsx'
             ],
+            'file_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '50',
+                'comment'    => 'nombre de archivo en directorio config[path_file]',
+                'null'       => TRUE,
+            ],
             'columnas'      => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',

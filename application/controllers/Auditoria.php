@@ -3,6 +3,12 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+/**
+ * @Copyright   GEO INFORMATIC SOLUTIONS SAS
+ * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
+ * @Description Controlador Auditoria
+ * @LastUpdate  2019-02-10
+ */
 class Auditoria extends CI_Controller {
 
     /**

@@ -260,7 +260,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getManipulacion($archivo, $cuenta) {
-        $this->db->select('campo1, campo2, campo6');
+        $this->db->select('campo1, campo2, ABS(campo6) AS campo6');
         $this->db->where('fk_archivos', $archivo);
         $this->db->where_in('campo1', $cuenta);
         $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
