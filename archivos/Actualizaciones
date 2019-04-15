@@ -4,12 +4,16 @@
 
 FECHAS: 14/04/2019
 NUEVAS FUNCIONALIDADES
-✔ No hay cambios
+▪ No hay cambios
 
 ACTUALIZACIÓN
-✔ Es posible crear una carpeta en una empresa nueva o si se han borrado todas.
-✔ Se mantiene el identificador de archivo el cual es necesario al momento de ejecutar varias arañas y graficas de benford, sin que exista la necesidad de abrir el archivo nuevamente.
+▪ Es posible crear una carpeta en una empresa nueva o si se han borrado todas.
+▪ Se mantiene el identificador de archivo el cual es necesario al momento de ejecutar varias arañas y graficas de benford, sin que exista la necesidad de abrir el archivo nuevamente.
 
 CORRECCIONES
-✔ Al mostrar el dialogo de manipulación ocurría que se mostraban archivos de balances que habían sido borrados o estaban en otros directorios.
+▪ Al mostrar el dialogo de manipulación ocurría que se mostraban archivos de balances que habían sido borrados o estaban en otros directorios.
 
+SE ESTA TRABAJANDO
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Columnas con formato de numero en la visualización
+▪ Actualización sin necesidad de Ctrl + Shift + R
