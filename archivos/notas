@@ -244,5 +244,16 @@
 #
 #*******************************************************************************
 
-
-
+#*******************************************************************************
+# LOAD DATA INFILE - MYSQL
+#*******************************************************************************
+# Carga de archivo CSV el cual se debe hacer en un tiempo promesa inferior a 
+# 30 segundos los cuales deben tener una espera agradable
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://dba.stackexchange.com/questions/69700/using-mysqls-load-infile-to-only-populate-certain-columns
+# https://stackoverflow.com/questions/4202564/how-to-insert-selected-columns-from-a-csv-file-to-a-mysql-database-using-load-da
+# https://stackoverflow.com/questions/14127529/mysql-import-data-from-csv-using-load-data-infile
+# https://phenobarbital.wordpress.com/2007/08/03/cargar-datos-en-mysql-con-load-data-infile/
+#*******************************************************************************

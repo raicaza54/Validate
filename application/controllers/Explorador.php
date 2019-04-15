@@ -40,6 +40,10 @@ class Explorador extends CI_Controller {
         ]);
     }
     
+    /**
+     * Archivos en directorio para realizar comparacion 
+     * de balances en Manipulacion
+     */
     public function balances() {
         $response = $this->response;
         try {
