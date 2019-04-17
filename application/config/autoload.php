@@ -70,6 +70,7 @@ $autoload['libraries'] = array(
     //'lib_gearman',
     'usertracking',
     'csvimport',
+    'archivo',
 );
 
 /*

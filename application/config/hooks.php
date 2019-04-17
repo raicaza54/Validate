@@ -18,7 +18,7 @@ $hook['post_controller_constructor'][] = array(
     'filename' => 'Usertracking.php',
     'filepath' => 'libraries'
 );
-if(1 == 1){
+if(1 == 2){
     $hook['post_controller'][] = array(
         'class'    => 'Db_log',
         'function' => 'logQueries',

@@ -17,3 +17,19 @@ SE ESTA TRABAJANDO
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
 ▪ Columnas con formato de numero en la visualización
 ▪ Actualización sin necesidad de Ctrl + Shift + R
+
+FECHA: 17/04/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Es posible elegir el tipo de columna según la definición contable para lectura en la araña o para tipo de dato en cada columna
+▪ Las columnas de fecha, numero y decimales se alinean a la derecha el resto de columnas a la derecha
+
+CORRECCIONES
+▪ El encabezado de tablas se mueven junto a las columnas al mostrar el contenido de los archivos
+
+SE ESTA TRABAJANDO
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Modulo de selección de tipo de columna según definición contable o para tipo de dato en cada columna
+▪ Actualización sin necesidad de Ctrl + Shift + R

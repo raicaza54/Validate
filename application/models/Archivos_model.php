@@ -14,7 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Archivos_model extends CI_Model {
 
     private $pref = 'clie__';
-    
+    public $column = [];
+            
     function __construct() {
         parent::__construct();
         // Set table name
@@ -27,10 +28,11 @@ class Archivos_model extends CI_Model {
         $this->column_order  = $column;
         // Set searchable column fields
         $this->column_search = $column;
+        $this->column = $column;
         // Set default order
         $this->order         = [
             'campo1' => 'asc'
-        ];        
+        ];
     }
     
     /*
@@ -66,12 +68,14 @@ class Archivos_model extends CI_Model {
         $query = $this->db->get();
         return $query->num_rows();
     }
-
+    
     /*
      * Perform the SQL queries needed for an server-side processing requested
      * @param $_POST filter data based on the posted parameters
      */
     private function _get_datatables_query($postData) {
+        $columnas = $this->archivo->columnas($postData['id']);
+        $this->db->select($columnas['columnSql']);
         $this->db->from($this->table);
         $this->db->where('linea', 'f');
         if((array_key_exists('digito', $postData)) && ($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
@@ -111,11 +115,12 @@ class Archivos_model extends CI_Model {
             }
             $i++;
         }
-
         if (isset($postData['order'])) {
+            $this->db->order_by('LENGTH('.$this->column_order[$postData['order']['0']['column']].')', $postData['order']['0']['dir']);
             $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
         } else if (isset($this->order)) {
             $order = $this->order;
+            $this->db->order_by('LENGTH('.key($order).')', $order[key($order)]);
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }    

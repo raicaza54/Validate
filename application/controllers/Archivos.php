@@ -71,7 +71,6 @@ class Archivos extends CI_Controller {
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
             $this->id = uniqint();
-            $tipos = [];
             $num = 0;
             for ($f = 1; $f <= 20; $f++) {
                 $tipos['campo'.$f] = 'string';
@@ -122,28 +121,6 @@ class Archivos extends CI_Controller {
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie
                 ];
-                /*
-                if($linea == 'f'){
-                    for ($f = 1; $f <= 20; $f++) {
-                        if(strlen($outsheet[$x]['campo'.$f])){
-                            if(is_numeric(trim($outsheet[$x]['campo'.$f]))){
-                                $num = trim($outsheet[$x]['campo'.$f]);
-                                if(($num == 0) && ($f > 1)){
-                                    $tipos['campo'.$f] = $tipos['campo'.($f-1)];
-                                }else{
-                                    if(filter_var($num, FILTER_VALIDATE_INT)){
-                                        $tipos['campo'.$f] = 'int';
-                                    }elseif(filter_var($num, FILTER_VALIDATE_FLOAT|FILTER_VALIDATE_FLOAT)){
-                                        $tipos['campo'.$f] = 'float';
-                                    }else{
-                                        $tipos['campo'.$f] = 'num';
-                                    }                                    
-                                }
-                            }
-                        }
-                    }
-                }
-                */
                 $x++;
                 $linea = 'f';
             }
@@ -159,7 +136,6 @@ class Archivos extends CI_Controller {
                     'created_clier' => $created_clier,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie,
-                    'columnas'      => json_encode($tipos)
                 ],
                 'detalle' => $outsheet
             ];
@@ -200,7 +176,6 @@ class Archivos extends CI_Controller {
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
             $this->id = uniqint();
-            $tipos = [];
             $num = 0;
             for ($f = 1; $f <= 20; $f++) {
                 $tipos['campo'.$f] = 'string';
@@ -234,26 +209,6 @@ class Archivos extends CI_Controller {
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie
                 ];
-                if($linea == 'f'){
-                    for ($f = 1; $f <= 20; $f++) {
-                        if(strlen($outsheet[$x]['campo'.$f])){
-                            if(is_numeric(trim($outsheet[$x]['campo'.$f]))){
-                                $num = trim($outsheet[$x]['campo'.$f]);
-                                if(($num == 0) && ($f > 1)){
-                                    $tipos['campo'.$f] = $tipos['campo'.($f-1)];
-                                }else{
-                                    if(filter_var($num, FILTER_VALIDATE_INT)){
-                                        $tipos['campo'.$f] = 'int';
-                                    }elseif(filter_var($num, FILTER_VALIDATE_FLOAT|FILTER_VALIDATE_FLOAT)){
-                                        $tipos['campo'.$f] = 'float';
-                                    }else{
-                                        $tipos['campo'.$f] = 'num';
-                                    }                                    
-                                }
-                            }
-                        }
-                    }
-                }
                 $x++;
                 $linea = 'f';
             }
@@ -269,7 +224,6 @@ class Archivos extends CI_Controller {
                     'created_clier' => $created_clier,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie,
-                    'columnas'      => json_encode($tipos)
                 ],
                 'detalle' => $outsheet
             ];
@@ -342,6 +296,22 @@ class Archivos extends CI_Controller {
             return FALSE;
         }
     }
+    
+    private function columnsDef($e, $key) {
+        $r = FALSE;
+        switch ($e) {
+            case 'date':
+                $r = "DATE_FORMAT(".$key.", '%d/%m/%Y') AS ".$key;
+                break;
+            case 'float':
+                $r = "FORMAT(".$key.", 2, 'de_DE') AS ".$key;
+                break;
+            default:
+                $r = $key;
+                break;
+        }
+        return $r;
+    }    
 
     public function header() {
         $response = $this->response;
@@ -353,8 +323,9 @@ class Archivos extends CI_Controller {
             $campoAnalizar = NULL;
             if(array_key_exists('campoAnalizar', $post)){
                 $campoAnalizar = $post['campoAnalizar'];
-            }            
-            $dataColumns = $this->Archivos_model->getEncabezado($this->input->post('id'), $campoAnalizar);
+            }
+            $columnas = $this->archivo->columnas($post['id']);
+            $dataColumns = $this->Archivos_model->getEncabezado($post['id'], $campoAnalizar);
             if (!is_array($dataColumns)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
@@ -368,15 +339,17 @@ class Archivos extends CI_Controller {
                 ];
                 $x++;
             }
-            
-            $columnsDef[] = [
-                'sType' => "numeric-comma",
-                'targets'   => 9,
-                'className' => "dt-body-right",
-            ];
+//            $columnsDef[] = ['targets' => 9, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 0, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 2, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 4, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 6, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 8, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 10, 'className' => "dt-body-right"];
+//            $columnsDef[] = ['targets' => 1, 'className' => "dt-body-right"];
             $response = [
                 "column"    => $columns,
-                "columnDef" => $columnsDef,
+                "columnDef" => $columnas['columnDef'],
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
