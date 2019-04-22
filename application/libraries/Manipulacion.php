@@ -122,8 +122,8 @@ class Manipulacion {
         extract($param);
         $this->cuentaValue['cxc']['t']            = $this->getValue($t,  [1305]);           //CXC
         $this->cuentaValue['cxc']['t-1']          = $this->getValue($t1, [1305]);           //CXC
-        $this->cuentaValue['ventas']['t']         = $this->getValue($t,  [41]);             //Ventas
-        $this->cuentaValue['ventas']['t-1']       = $this->getValue($t1, [41]);             //Ventas
+        $this->cuentaValue['ventas']['t']         = abs($this->getValue($t,  [41]));        //Ventas
+        $this->cuentaValue['ventas']['t-1']       = abs($this->getValue($t1, [41]));        //Ventas
         $this->cuentaValue['cventas']['t']        = $this->getValue($t,  [61]);             //Costo venta
         $this->cuentaValue['cventas']['t-1']      = $this->getValue($t1, [61]);             //Costo venta
         $this->cuentaValue['acorrientes']['t']    = $this->getValue($t, [11,12,13,14]);     //Activos corrientes

@@ -143,7 +143,20 @@ class Archivos_model extends CI_Model {
         if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
             $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
-        return (count($e) <= 0) ? FALSE : $e;
+        $colum     = $this->db->select('tipo, columnas')->where('id', $id)->get($this->pref . 'archivos')->row_array();
+        $columnDef = json_decode($colum['columnas'], TRUE);
+        $tipo      = $colum['tipo'];
+        return [
+            'tipo'       => $tipo,
+            'columnDef'  => $columnDef,
+            'encabezado' => (count($e) <= 0) ? FALSE : $e,
+        ];
+    }
+    
+    public function setColumnas($data, $id) {
+        $this->db->set('columnas', "'".$data."'", FALSE); 
+        $this->db->where('id', $id);
+        return $this->db->update($this->pref.'archivos');
     }
     
     public function getCuentas($id) {
@@ -207,14 +220,24 @@ class Archivos_model extends CI_Model {
             $this->pref.'archivos.id',
             $this->pref.'archivos.ext',
             $this->pref.'archivos.tipo',
+            $this->pref.'archivos.columnas',
+            "'T' AS estado",
         ]);
-        $this->db->where($this->pref.'archivos.fk_carpetas',$folderId);
-        $this->db->where($this->pref.'carpetas.parent_id',$folderId);
+        $this->db->where($this->pref.'archivos.fk_carpetas', $folderId);
+        $this->db->where($this->pref.'carpetas.parent_id', $folderId);
         $this->db->where($this->pref.'carpetas.deleted_at', 0);
         $this->db->where_in($this->pref.'carpetas.type',['excel','csv']);
         $this->db->where($this->pref.'archivos.tipo','blp');
-        $this->db->join($this->pref.'archivos',$this->pref.'carpetas.archivos_id = '.$this->pref.'archivos.id', 'inner');
+        $this->db->join($this->pref.'archivos', $this->pref.'carpetas.archivos_id = '.$this->pref.'archivos.id', 'inner');
         $r = $this->db->get($this->pref.'carpetas')->result_array();
+        if(is_array($r) && count($r)){
+            foreach ($r as $key => $value) {
+                if((!strpos($value['columnas'], 'cta') !== FALSE) || (!strpos($value['columnas'], 'valor') !== FALSE)){
+                    //unset($r[$key]);
+                    $r[$key]['estado'] = 'F';
+                }
+            }
+        }
         return $r;
     }
     
@@ -266,7 +289,8 @@ class Archivos_model extends CI_Model {
     }
     
     public function getManipulacion($archivo, $cuenta) {
-        $this->db->select('campo1, campo2, ABS(campo6) AS campo6');
+        //$this->db->select('campo1, campo2, ABS(campo6) AS campo6');
+        $this->db->select('campo1, campo2, campo6');
         $this->db->where('fk_archivos', $archivo);
         $this->db->where_in('campo1', $cuenta);
         $r = $this->db->get($this->pref.'archivos_detalle')->result_array();

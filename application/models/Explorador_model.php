@@ -20,6 +20,8 @@ class Explorador_model extends CI_Model {
     }
     
     public function getFolderEmpresa($id_empresa) {
+        $this->db->select($this->pref.'archivos.tipo, '.$this->pref.'carpetas.*');
+        $this->db->join($this->pref.'archivos', $this->pref.'archivos.id = '.$this->pref.'carpetas.archivos_id', 'left');
         $this->db->where('fk_empresas', $id_empresa);
         $this->db->where('deleted_at', 0);
         return $this->db->get($this->pref.'carpetas')->result_array();
@@ -51,13 +53,20 @@ class Explorador_model extends CI_Model {
     public function editar($param) {
         extract($param);
         $data = [
-            'label'       => $carpeta,
+            'label'       => strip_tags_content($carpeta),
             'parent_id'   => $parent_id,
             'deleted_at'  => (($deleted_at == 'true') ? 1 : 0),
             'update_user' => $this->session->userdata('users_id'),
             'update_clie' => $this->session->userdata('clientes_id'),
         ];
-        return $this->db->update($this->pref.'carpetas', $data, ['id' => $id]);
+        $r = $this->db->update($this->pref.'carpetas', $data, ['id' => $id]);
+        $carpeta = $this->db->where('id', $id)->get($this->pref.'carpetas')->row_array();
+        if(is_array($carpeta) && array_key_exists('type', $carpeta)){
+            if(in_array($carpeta['type'], ['excel', 'csv'])){
+                $this->db->update($this->pref.'archivos', ['fk_carpetas' => $parent_id], ['id' => $carpeta['archivos_id']]);
+            }
+        }
+        return $r;
     }
 
 }

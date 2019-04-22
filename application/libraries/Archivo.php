@@ -22,7 +22,7 @@ class Archivo {
     
     public function columnas($id) {
         $column = $this->CI->Archivos_model->getEncabezado($id);
-        $column = array_keys($column);
+        $column = array_keys($column['encabezado']);
         $columnDef = [];
         $columnSql = $column;
         $columnas = $this->CI->db->select('columnas')->where('id', $id)->get($this->pref . 'archivos')->row_array();
@@ -80,4 +80,40 @@ class Archivo {
         return $r;
     }    
     
+    private function configColumna($e) {
+        $r = FALSE;
+        if($e == 'num'){
+            $r = ['campo', 'num'];
+        }elseif($e == 'float'){
+            $r = ['campo', 'float'];
+        }elseif($e == 'string'){
+            $r = ['campo', 'string'];
+        }elseif($e == 'date'){
+            $r = ['campo', 'date'];
+        }elseif($e == 'cta'){
+            $r = ['cta', 'num'];
+        }elseif($e == 'comp'){
+            $r = ['comp', 'string'];
+        }elseif($e == 'doc'){
+            $r = ['doc', 'num'];
+        }elseif($e == 'tipo'){
+            $r = ['tipo', 'num'];
+        }elseif($e == 'valor'){
+            $r = ['valor', 'float'];
+        }
+        return [
+            $r[0],
+            $r[1]
+        ];
+    }
+
+    public function configColumnas($post) {
+        $columnas = [];
+        foreach ($post as $key => $value) {
+            if(strpos($key, 'campo') !== FALSE){
+                $columnas[$key] = $this->configColumna($value);
+            }
+        }
+        return json_encode($columnas);
+    }
 }

@@ -27,18 +27,34 @@ class Arbol {
 //    ['id' => "1", 'parent' => "20", 'text' => "Movimientos", 'type' => 'img', 'state' => ['opened' => false, 'selected' => false, 'disabled' => false]]
 //];
     
+    private function supTipo($tipo) {
+        $r = ['', ''];
+        if($tipo == 'mov'){
+            $r = [
+                '<sup title="Movimiento">M</sup>',
+                ' - [Movimiento]'
+            ];
+        }elseif($tipo == 'blp'){
+            $r = [
+                '<sup title="Balance de Prueba">B</sup>',
+                ' - [Balance de Prueba]'
+            ];
+        }
+        return $r;
+    }
+    
     public function run($id_empresa) {
-        $arbol = [];
-        $childs = [];
+        $arbol = []; $childs = []; $tipo = [];
         $elements  = $this->get($id_empresa);
         if(count($elements) > 0){
             $masters   = $elements["masters"];
             $childrens = $elements["childrens"];
             foreach($masters as $master){
+                $tipo = $this->supTipo($master["tipo"]);
                 $arbol[] = [
                     'id'     => $master["id"],
                     'parent' => '#',
-                    'text'   => $master["label"],
+                    'text'   => $master["label"].$tipo[0],
                     'type'   => $master["type"],
                     'state'  => [
                         'opened'   => boolval($master["opened"]),
@@ -47,7 +63,7 @@ class Arbol {
                     ],
                     'li_attr' => [
                         'file'           => $master["archivos_id"],
-                        'title'          => $master["label"],
+                        'title'          => $master["label"].$tipo[1],
                         'data-toggle'    => "tooltip",
                         'data-placement' => "top"
                     ]
@@ -78,15 +94,16 @@ class Arbol {
     }
 
     private function nested($rows = array(), $parent_id = 0) {
-        $ramas = [];
+        $ramas = []; $tipo = [];
         if (!empty($rows)) {
             foreach ($rows as $row) {
+                $tipo = $this->supTipo($row["tipo"]);
                 if ($row["parent_id"] == $parent_id) {
                     if ($row["have_childrens"] == 1) {
                         $ramas[] = [
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
-                            'text'   => $row['label'],
+                            'text'   => $row['label'].$tipo[0],
                             'type'   => $row["type"],
                             'state'  => [
                                 'opened'   => boolval($row["opened"]),
@@ -95,7 +112,7 @@ class Arbol {
                             ],
                             'li_attr' => [
                                 'file'           => $row["archivos_id"],
-                                'title'          => $row["label"],
+                                'title'          => $row["label"].$tipo[1],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"
                             ]
@@ -104,7 +121,7 @@ class Arbol {
                         $ramas[] = [                    
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
-                            'text'   => $row['label'],
+                            'text'   => $row['label'].$tipo[0],
                             'type'   => $row["type"],
                             'state'  => [
                                 'opened'   => boolval($row["opened"]),
@@ -113,7 +130,7 @@ class Arbol {
                             ],
                             'li_attr' => [
                                 'file'           => $row["archivos_id"],
-                                'title'          => $row["label"],
+                                'title'          => $row["label"].$tipo[1],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"
                             ]

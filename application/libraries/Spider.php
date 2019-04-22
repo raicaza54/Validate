@@ -24,7 +24,6 @@ class Spider {
     }
     
     public function procesar($cuenta) {
-        //debug_file("===========================================================================================");
         try{
         $ejemplo  = $this->data;
         $grupos = array();

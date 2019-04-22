@@ -332,21 +332,13 @@ class Archivos extends CI_Controller {
             $columns = [];
             $columnsDef = [];
             $x = 0;
-            foreach ($dataColumns as $key => $value) {
+            foreach ($dataColumns['encabezado'] as $key => $value) {
                 $columns[] = [
                     'title' => $value,
                     'data'  => $key
                 ];
                 $x++;
             }
-//            $columnsDef[] = ['targets' => 9, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 0, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 2, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 4, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 6, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 8, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 10, 'className' => "dt-body-right"];
-//            $columnsDef[] = ['targets' => 1, 'className' => "dt-body-right"];
             $response = [
                 "column"    => $columns,
                 "columnDef" => $columnas['columnDef'],
@@ -386,6 +378,29 @@ class Archivos extends CI_Controller {
                 ->set_output(json_encode($response));
     }
     
+    public function configurar() {
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+            }
+            $form = unSerializeArray($post['form']);
+            if(!is_array($form) || !array_key_exists('archivoId', $form) || !array_key_exists('campo1', $form)){
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 204);
+            }
+            $columnas = $this->archivo->configColumnas($form);
+            $this->Archivos_model->setColumnas($columnas, $form['archivoId']);
+            $response["data"] = [];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+    }
+    
     public function encabezado() {
         $response = $this->response;
         try {
@@ -397,7 +412,11 @@ class Archivos extends CI_Controller {
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            $response["data"] = $items;
+            $response["data"] = [
+                'encabezado' => $items['encabezado'],
+                'columnDef'  => $items['columnDef'],
+                'tipo'       => $items['tipo']
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

@@ -18,6 +18,8 @@ SE ESTA TRABAJANDO
 ▪ Columnas con formato de numero en la visualización
 ▪ Actualización sin necesidad de Ctrl + Shift + R
 
+#*******************************************************************************
+
 FECHA: 17/04/2019
 NUEVAS FUNCIONALIDADES
 ▪ No hay cambios
@@ -33,3 +35,26 @@ SE ESTA TRABAJANDO
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
 ▪ Modulo de selección de tipo de columna según definición contable o para tipo de dato en cada columna
 ▪ Actualización sin necesidad de Ctrl + Shift + R
+
+#*******************************************************************************
+
+FECHA: 21/04/2019
+NUEVAS FUNCIONALIDADES
+▪ Seleccionar el tipo de columna por archivo, ya sea un Movimiento o un Balance de Prueba, con notable diferencia en los tipos seleccionables
+
+ACTUALIZACIÓN
+▪ Al realizar una grafica de Benford solo es posible seleccionar columnas de tipo Valor, Número o Número decimal
+▪ Al realizar una manipulación se comprueba que los archivos tengan las columnas de Cuentas y Saldo Final definidas y mínimo existan dos archivos
+
+CORRECCIONES
+▪ Al mover un archivo, no se actualizaba la carpeta contenedora padre
+
+SE ESTA TRABAJANDO
+▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Actualización sin necesidad de Ctrl + Shift + R
+
+*NOTA IMPORTANTE*
+▪ Los archivos actuales no tienen definidas las columnas, esto trae como consecuencia que para la Ley de Benford y Manipulación sera un exigencia y no podrá continuar
+
+#*******************************************************************************

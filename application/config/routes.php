@@ -67,10 +67,12 @@ $route['explorador/v1/editar']['post']   = 'explorador/editar';
 /* -------------------------------------------------------------------------
  * Archivos
  * ------------------------------------------------------------------------- */
-$route['archivos/v1/datos']['post']  = 'archivos/datos';
-$route['archivos/v1/digito']['post'] = 'archivos/digito';
-$route['archivos/v1/subir']          = 'archivos/subir';
-$route['archivos/v1/header']         = 'archivos/header';
+$route['archivos/v1/datos']['post']      = 'archivos/datos';
+$route['archivos/v1/digito']['post']     = 'archivos/digito';
+$route['archivos/v1/subir']              = 'archivos/subir';
+$route['archivos/v1/header']             = 'archivos/header';
+$route['archivos/v1/encabezado']['post'] = 'archivos/encabezado';
+$route['archivos/v1/configurar']['post'] = 'archivos/configurar';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford
@@ -90,6 +92,9 @@ $route['spider/v1/procesar']['post'] = 'auditoria/spider';
 $route['manipulacion/v1/archivos']['post'] = 'explorador/balances';
 $route['manipulacion/v1/procesar']['post'] = 'auditoria/manipulacion';
 
+/* -------------------------------------------------------------------------
+ * Sistema por Defecto
+ * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';
 $route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;
