@@ -58,3 +58,14 @@ SE ESTA TRABAJANDO
 ▪ Los archivos actuales no tienen definidas las columnas, esto trae como consecuencia que para la Ley de Benford y Manipulación sera un exigencia y no podrá continuar
 
 #*******************************************************************************
+
+FECHA: 22/04/2019
+CORRECCIONES
+▪ El campo analizado en Ley de Benford con el cual se construye la grafica, no se filtraba correctamente con máximos y mínimos, el mismo no se consideraba como un numero, se utiliza la función FLOOR() al filtrar
+
+SE ESTA TRABAJANDO
+▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Actualización sin necesidad de Ctrl + Shift + R
+
+#*******************************************************************************

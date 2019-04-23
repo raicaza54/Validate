@@ -46,6 +46,7 @@ class Archivos_model extends CI_Model {
         }
         $this->db->where('fk_archivos', $postData['id']);
         $query = $this->db->get();
+        debug_file($this->db->last_query());
         return $query->result();
     }
 
@@ -88,8 +89,8 @@ class Archivos_model extends CI_Model {
             }
             if(is_numeric($postData['min']) && is_numeric($postData['max'])){
                 $this->db->group_start();
-                $this->db->where($postData['campoAnalizar']." >=", $postData['min']);
-                $this->db->where($postData['campoAnalizar']." <=", $postData['max']);
+                $this->db->where('FLOOR('.$postData['campoAnalizar'].") >=", $postData['min']);
+                $this->db->where('FLOOR('.$postData['campoAnalizar'].") <=", $postData['max']);
                 $this->db->group_end();
             }
         }
