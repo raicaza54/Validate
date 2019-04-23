@@ -86,10 +86,16 @@ class Archivos_model extends CI_Model {
             }else{
                 return FALSE;
             }
-            if(is_numeric($postData['min']) && is_numeric($postData['max'])){
+            if(is_numeric($postData['min']) || is_numeric($postData['max'])){
                 $this->db->group_start();
-                $this->db->where('FLOOR('.$postData['campoAnalizar'].") >=", $postData['min']);
-                $this->db->where('FLOOR('.$postData['campoAnalizar'].") <=", $postData['max']);
+                if(is_numeric($postData['min']) && is_numeric($postData['max'])){
+                    $this->db->where('FLOOR('.$postData['campoAnalizar'].") >=", $postData['min']);
+                    $this->db->where('FLOOR('.$postData['campoAnalizar'].") <=", $postData['max']);                    
+                }elseif((strlen($postData['min']) <= 0) && is_numeric($postData['max'])){
+                    $this->db->where('FLOOR('.$postData['campoAnalizar'].") <=", $postData['max']);                    
+                }elseif(is_numeric($postData['min']) && (strlen($postData['max']) <= 0)){
+                    $this->db->where('FLOOR('.$postData['campoAnalizar'].") >=", $postData['min']);
+                }
                 $this->db->group_end();
             }
         }
