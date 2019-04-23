@@ -46,7 +46,6 @@ class Archivos_model extends CI_Model {
         }
         $this->db->where('fk_archivos', $postData['id']);
         $query = $this->db->get();
-        debug_file($this->db->last_query());
         return $query->result();
     }
 
