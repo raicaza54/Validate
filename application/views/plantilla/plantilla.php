@@ -29,9 +29,6 @@
         <script src="<?= base_url('assets/library/datatables/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/plug-ins/dataTables.scrollResize.min.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/library/datatables/plug-ins/numeric-comma.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/library/datatables/plug-ins/num-html.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/library/datatables/plug-ins/formatted-num.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/d3.v5.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/billboard/1.7.1/js/billboard.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
@@ -102,6 +99,7 @@
                 <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
                     <div class="float-left" style="margin-left: 5px;">Explorador de archivos</div>
                     <div class="float-right" style="margin: 0px;">
+                        <i class="btn-icon fas fa-sync-alt" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(GLOBAL.empresaId)"></i>
                         <i class="btn-icon far fa-plus-square" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta()"></i>
                         <i class="btn-icon far fa-edit" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta()"></i>
                         <i class="btn-icon far fa-trash-alt" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>

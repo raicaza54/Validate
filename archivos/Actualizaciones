@@ -69,3 +69,20 @@ SE ESTA TRABAJANDO
 ▪ Actualización sin necesidad de Ctrl + Shift + R
 
 #*******************************************************************************
+
+FECHA: 24/04/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Se corrige un comportamiento al restaurar y maximizar la grafica Ley de Benford, la misma no se ajustaba al ancho de la ventana
+▪ Se corrige un comportamiento al restaurar y maximizar en los encabezados de columnas de tablas
+▪ Se suprimen librerias innecesarias de formato de numero
+
+SE ESTA TRABAJANDO
+▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Actualización sin necesidad de Ctrl + Shift + R

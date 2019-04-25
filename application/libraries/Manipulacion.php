@@ -41,14 +41,20 @@ class Manipulacion {
         $this->CI->load->model('Archivos_model');
     }
     
+    private function columnDef($archivo_id) {
+        return NULL; //$this->CI->Archivos_model->columnManipulacion($archivo_id);
+    }
+    
     public function run($balances) {
         foreach ($balances as $value) {
             if($value['posicion'] == 't'){
+                $ct = $this->columnDef($value['balance']);
                 $t  = $value['balance'];
             }elseif($value['posicion'] == 't-1'){
+                $ct1 = $this->columnDef($value['balance']);
                 $t1 = $value['balance'];
             }
-        } 
+        }
         $this->cuentasValues([
             't'   => $t,
             't1'  => $t1
