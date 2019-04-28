@@ -24,6 +24,7 @@ class Archivo {
         $column = $this->CI->Archivos_model->getEncabezado($id);
         $column = array_keys($column['encabezado']);
         $columnDef = [];
+        $columnDefs = [];
         $columnSql = $column;
         $columnas = $this->CI->db->select('columnas')->where('id', $id)->get($this->pref . 'archivos')->row_array();
         if(is_array($columnas) && count($columnas) && array_key_exists('columnas', $columnas)){
