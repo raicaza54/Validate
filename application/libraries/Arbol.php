@@ -31,12 +31,10 @@ class Arbol {
         $r = ['', ''];
         if($tipo == 'mov'){
             $r = [
-                '<sup title="Movimiento">M</sup>',
                 ' - [Movimiento]'
             ];
         }elseif($tipo == 'blp'){
             $r = [
-                '<sup title="Balance de Prueba">B</sup>',
                 ' - [Balance de Prueba]'
             ];
         }
@@ -54,7 +52,7 @@ class Arbol {
                 $arbol[] = [
                     'id'     => $master["id"],
                     'parent' => '#',
-                    'text'   => $master["label"].$tipo[0],
+                    'text'   => $master["label"],
                     'type'   => $master["type"],
                     'state'  => [
                         'opened'   => boolval($master["opened"]),
@@ -63,7 +61,7 @@ class Arbol {
                     ],
                     'li_attr' => [
                         'file'           => $master["archivos_id"],
-                        'title'          => $master["label"].$tipo[1],
+                        'title'          => $master["label"].$tipo[0],
                         'data-toggle'    => "tooltip",
                         'data-placement' => "top"
                     ]
@@ -103,7 +101,7 @@ class Arbol {
                         $ramas[] = [
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
-                            'text'   => $row['label'].$tipo[0],
+                            'text'   => $row['label'],
                             'type'   => $row["type"],
                             'state'  => [
                                 'opened'   => boolval($row["opened"]),
@@ -112,7 +110,7 @@ class Arbol {
                             ],
                             'li_attr' => [
                                 'file'           => $row["archivos_id"],
-                                'title'          => $row["label"].$tipo[1],
+                                'title'          => $row["label"].$tipo[0],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"
                             ]
@@ -121,7 +119,7 @@ class Arbol {
                         $ramas[] = [                    
                             'id'     => $row["id"],
                             'parent' => $row["parent_id"],
-                            'text'   => $row['label'].$tipo[0],
+                            'text'   => $row['label'],
                             'type'   => $row["type"],
                             'state'  => [
                                 'opened'   => boolval($row["opened"]),
@@ -130,7 +128,7 @@ class Arbol {
                             ],
                             'li_attr' => [
                                 'file'           => $row["archivos_id"],
-                                'title'          => $row["label"].$tipo[1],
+                                'title'          => $row["label"].$tipo[0],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"
                             ]

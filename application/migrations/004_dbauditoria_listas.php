@@ -128,7 +128,8 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'type'       => 'VARCHAR',
                 'constraint' => '512',
                 'comment'    => 'Se definen los tipos de datos en las columnas',
-                'null'       => TRUE
+                'null'       => TRUE,
+                'default'    => '{"campo1":["Campo","string"],"campo2":["Campo","string"],"campo3":["Campo","string"],"campo4":["Campo","string"],"campo5":["Campo","string"],"campo6":["Campo","string"],"campo7":["Campo","string"],"campo8":["Campo","string"],"campo9":["Campo","string"],"campo10":["Campo","string"],"campo11":["Campo","string"],"campo12":["Campo","string"],"campo13":["Campo","string"],"campo14":["Campo","string"],"campo15":["Campo","string"],"campo16":["Campo","string"],"campo17":["Campo","string"],"campo18":["Campo","string"],"campo19":["Campo","string"],"campo20":["Campo","string"]}'
             ],
             'observacion'   => [
                 'type'       => 'VARCHAR',
