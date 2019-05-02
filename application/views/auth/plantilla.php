@@ -21,9 +21,15 @@
     <body>
         <div class="container">
             <div class="row justify-content-md-center">
+                <?php if($this->uri->segment(2) == 'login'): ?>
                 <div class="col col-lg-5" style="margin-top: 2.5em;">
                     <?=$body?>
                 </div>
+                <?php else: ?>
+                <div class="col" style="margin-top: 2.5em;">
+                    <?=$body?>
+                </div>                
+                <?php endif; ?>
             </div>
         </div>        
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
