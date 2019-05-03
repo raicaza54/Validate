@@ -68,6 +68,9 @@ class Explorador extends CI_Controller {
     }
     
     public function crear() {
+        if(!$this->ion_auth->in_group([1,2])){
+            return FALSE;
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -99,6 +102,9 @@ class Explorador extends CI_Controller {
     }
     
     public function editar() {
+        if(!$this->ion_auth->in_group([1,2])){
+            return FALSE;
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();

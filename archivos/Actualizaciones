@@ -86,3 +86,25 @@ SE ESTA TRABAJANDO
 ▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
 ▪ Actualización sin necesidad de Ctrl + Shift + R
+
+#*******************************************************************************
+
+FECHA: 02/54/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Se añade un nuevo grupo de usuarios "educativo" el cual tiene restriccion, tales como: no crear, carpetas, editar carpetas y borrar carpetas, no puede subir archivos
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Actualización sin necesidad de Ctrl + Shift + R
+
+NOTAS
+▪ Se crean 17 cuentas en el grupo "educativo"
+▪ A cada uno de las cuentas se crean 3 directorios DIPLOMADO -> [Movimientos, Balances de prueba]
+▪ Se cargan los archivos de prueba a cada una de las 17 cuentas en total 3 balances y 2 movimientos

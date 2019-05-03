@@ -19,7 +19,7 @@
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>                
-                <div class="icono" id="mn-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
+                <div class="icono item-disabled" id="mn-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
                 </div>
@@ -31,7 +31,7 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono" id="mn-archivo" onclick="ARCHIVOS.methods.cargarArchivo()">
+                <div class="icono <?=$this->roles->viewaccess('principal-archivo')?>" id="mn-archivo" onclick="ARCHIVOS.methods.cargarArchivo()">
                     <i class="fas fa-file-upload"></i>
                     <span>Archivo</span>
                 </div>
@@ -85,7 +85,7 @@
                     <i class="fas fa-arrow-alt-circle-right"></i>
                     <span>Buscar Siguiente</span>
                 </div>
-                <div class="icono" id="mn-datoIr">
+                <div class="icono item-disabled" id="mn-datoIr">
                     <i class="fab fa-searchengin"></i>
                     <span>Ir a</span>
                 </div>
