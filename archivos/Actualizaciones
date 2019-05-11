@@ -89,7 +89,7 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
-FECHA: 02/54/2019
+FECHA: 02/04/2019
 NUEVAS FUNCIONALIDADES
 ▪ No hay cambios
 
@@ -108,3 +108,26 @@ NOTAS
 ▪ Se crean 17 cuentas en el grupo "educativo"
 ▪ A cada uno de las cuentas se crean 3 directorios DIPLOMADO -> [Movimientos, Balances de prueba]
 ▪ Se cargan los archivos de prueba a cada una de las 17 cuentas en total 3 balances y 2 movimientos
+
+#*******************************************************************************
+
+FECHA: 11/05/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Se crea la funcionalidad de permisos por grupo e individuales, prevaleciendo estas ultimas sobre las de grupo
+▪ Se corrije los permisos en todos los modulos Front-End
+▪ Actualización sin necesidad de Ctrl + Shift + R, primera versión requiere de pruebas en navegadores distintos
+▪ Se cargan datos de permisos a base de datos segun los grupos educativo, administrador y auditor
+
+CORRECCIONES
+▪ Correccio en base de datos, se retira del modelo una tabla auxiliar innecesaria, y se corrige el campo de clientes en varias tablas
+
+SE ESTA TRABAJANDO
+▪ Crear empresas, sujeto a limites de contrato
+▪ Añadir permisos de modulo en Back-End, segun perfil y grupo
+▪ Desplegar tabla de datos de araña
+▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Realizacion de pruebas para evitar Ctrl + Shift + R, se evalua el uso de jQuery.getScript() y asi evitar cache de recursos

@@ -12,19 +12,21 @@ class Migration extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('migration');
         if(!is_cli()){
             echo "Operación no permitida";
         }
     }
 
-    public function index($id) {
-        if (!$this->migration->version($id) || ($this->migration->current() === FALSE)) {
-            echo $this->migration->error_string()."\n";
-            echo "error\n";
-        } else {
-            echo "success\n";
-        }
+    public function version($id) {
+        $class = 'dbauditoria_'.str_pad($id,3,0,STR_PAD_LEFT);
+        $this->load->library('migrations/'.$class);
+        $this->$class->up();
+    }
+    
+    public function downgrade($id) {
+        $class = 'dbauditoria_'.str_pad($id,3,0,STR_PAD_LEFT);
+        $this->load->library('migrations/'.$class);
+        $this->$class->down();
     }
 
 }

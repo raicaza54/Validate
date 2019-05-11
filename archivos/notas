@@ -12,6 +12,13 @@
 # https://www.uno-de-piera.com/buenas-practicas-y-consejos-en-codeigniter/
 #*******************************************************************************
 
+#*******************************************************************************
+# Estructura de archivos en JavaScript
+#-------------------------------------------------------------------------------
+# methods: funciones que son accedidos por medio de eventos y botones 
+# computed: funciones accedidadas por methods, y procesan los datos
+# componets: funciones accedidadas por computed, y procesan datos con html
+#*******************************************************************************
 
 #*******************************************************************************
 # Font Ubuntu

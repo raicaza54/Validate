@@ -2,16 +2,16 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_dbauditoria_listas extends CI_Migration {
-
+class Dbauditoria_002{
+    private $CI;
     public function __construct() {
-        parent::__construct();
-        $this->load->dbforge();
+        $this->CI = & get_instance();
+        $this->CI->load->dbforge();
     }
 
     public function up() {
-        $this->dbforge->drop_table('sist__permisos', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('sist__permisos', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -35,7 +35,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -51,13 +51,13 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('sist__permisos');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->create_table('sist__permisos');
 
-        $this->dbforge->drop_table('sist__permisos_groups', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('sist__permisos_groups', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -87,7 +87,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -103,15 +103,15 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_key('fk_permisos');
-        $this->dbforge->add_key('fk_groups');
-        $this->dbforge->create_table('sist__permisos_groups');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->add_key('fk_permisos');
+        $this->CI->dbforge->add_key('fk_groups');
+        $this->CI->dbforge->create_table('sist__permisos_groups');
 
-        $this->dbforge->drop_table('sist__permisos_users', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('sist__permisos_users', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -141,7 +141,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -157,15 +157,15 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_key('fk_permisos');
-        $this->dbforge->add_key('fk_users');
-        $this->dbforge->create_table('sist__permisos_users');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->add_key('fk_permisos');
+        $this->CI->dbforge->add_key('fk_users');
+        $this->CI->dbforge->create_table('sist__permisos_users');
 
-        $this->dbforge->drop_table('sist__jerarquia', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('sist__jerarquia', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -195,7 +195,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -211,13 +211,13 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('sist__jerarquia');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->create_table('sist__jerarquia');
 
-        $this->dbforge->drop_table('sist__contratos', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('sist__contratos', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -261,7 +261,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -277,14 +277,14 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_key('fk_clientes');
-        $this->dbforge->create_table('sist__contratos');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->add_key('fk_clientes');
+        $this->CI->dbforge->create_table('sist__contratos');
 
-        $this->dbforge->drop_table('clie__clientes', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('clie__clientes', TRUE);
+        $this->CI->dbforge->add_field([
             'id'             => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -362,7 +362,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier'  => [
+            'created_clie'  => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -378,13 +378,13 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('clie__clientes');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->create_table('clie__clientes');
 
-        $this->dbforge->drop_table('clie__clientes_users', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('clie__clientes_users', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -412,7 +412,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -429,15 +429,15 @@ class Migration_dbauditoria_listas extends CI_Migration {
             ],
         ]);
 
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_key('fk_clientes');
-        $this->dbforge->add_key('fk_users');
-        $this->dbforge->create_table('clie__clientes_users');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->add_key('fk_clientes');
+        $this->CI->dbforge->add_key('fk_users');
+        $this->CI->dbforge->create_table('clie__clientes_users');
 
-        $this->dbforge->drop_table('clie__auditores_empresas', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('clie__auditores_empresas', TRUE);
+        $this->CI->dbforge->add_field([
             'id'            => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -465,7 +465,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier' => [
+            'created_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -482,15 +482,15 @@ class Migration_dbauditoria_listas extends CI_Migration {
             ],
         ]);
 
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_key('fk_auditores');
-        $this->dbforge->add_key('fk_empresas');
-        $this->dbforge->create_table('clie__auditores_empresas');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->add_key('fk_auditores');
+        $this->CI->dbforge->add_key('fk_empresas');
+        $this->CI->dbforge->create_table('clie__auditores_empresas');
 
-        $this->dbforge->drop_table('clie__empresas', TRUE);
-        $this->dbforge->add_field([
+        $this->CI->dbforge->drop_table('clie__empresas', TRUE);
+        $this->CI->dbforge->add_field([
             'id'             => [
                 'type'           => 'INT',
                 'constraint'     => '11',
@@ -562,7 +562,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'constraint' => '11',
                 'comment'    => 'id usuario creador'
             ],
-            'created_clier'  => [
+            'created_clie'  => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
@@ -578,22 +578,22 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comment'    => 'ultimo id cliente actualizo'
             ],
         ]);
-        $this->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('clie__empresas');
+        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        $this->CI->dbforge->add_key('id', TRUE);
+        $this->CI->dbforge->create_table('clie__empresas');
     }
 
     public function down() {
-        $this->dbforge->drop_table('sist__permisos', TRUE);
-        $this->dbforge->drop_table('sist__permisos_groups', TRUE);
-        $this->dbforge->drop_table('sist__permisos_users', TRUE);
-        $this->dbforge->drop_table('sist__jerarquia', TRUE);
-        $this->dbforge->drop_table('sist__contratos', TRUE);
-        $this->dbforge->drop_table('clie__clientes', TRUE);
-        $this->dbforge->drop_table('clie__clientes_users', TRUE);
-        $this->dbforge->drop_table('clie__auditores_empresas', TRUE);
-        $this->dbforge->drop_table('clie__empresas', TRUE);
+        $this->CI->dbforge->drop_table('sist__permisos', TRUE);
+        $this->CI->dbforge->drop_table('sist__permisos_groups', TRUE);
+        $this->CI->dbforge->drop_table('sist__permisos_users', TRUE);
+        $this->CI->dbforge->drop_table('sist__jerarquia', TRUE);
+        $this->CI->dbforge->drop_table('sist__contratos', TRUE);
+        $this->CI->dbforge->drop_table('clie__clientes', TRUE);
+        $this->CI->dbforge->drop_table('clie__clientes_users', TRUE);
+        $this->CI->dbforge->drop_table('clie__auditores_empresas', TRUE);
+        $this->CI->dbforge->drop_table('clie__empresas', TRUE);
     }
 
 }

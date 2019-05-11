@@ -38,7 +38,7 @@ class Explorador_model extends CI_Model {
             'opened'         => 0,
             'type'           => $type,
             'created_user'   => $this->session->userdata('users_id'),
-            'created_clier'  => $this->session->userdata('clientes_id'),
+            'created_clie'  => $this->session->userdata('clientes_id'),
             'update_user'    => $this->session->userdata('users_id'),
             'update_clie'    => $this->session->userdata('clientes_id'),
             'archivos_id'    => $archivos_id,

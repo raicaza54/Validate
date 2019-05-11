@@ -2,11 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_dbauditoria_listas extends CI_Migration {
-
+class Dbauditoria_005{
+    private $CI;
     public function __construct() {
-        parent::__construct();
-        $this->load->dbforge();
+        $this->CI = & get_instance();
+        $this->CI->load->dbforge();
     }
 
     public function up() {
@@ -39,13 +39,14 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'default'    => 0
             ],
         ];
-        $this->dbforge->add_column('clie__carpetas', $fields);
+        $this->CI->dbforge->add_column('clie__carpetas', $fields);
     }
 
     public function down() {
-        $this->dbforge->drop_column('clie__carpetas', [
-            'type','opened','disabled','selected'
-        ]);
+        $this->CI->dbforge->drop_column('clie__carpetas', 'type');
+        $this->CI->dbforge->drop_column('clie__carpetas', 'opened');
+        $this->CI->dbforge->drop_column('clie__carpetas', 'disabled');
+        $this->CI->dbforge->drop_column('clie__carpetas', 'selected');
     }
 
 }

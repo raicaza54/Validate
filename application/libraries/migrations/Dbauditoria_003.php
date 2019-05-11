@@ -2,11 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_dbauditoria_listas extends CI_Migration {
-
+class Dbauditoria_003{
+    private $CI;
     public function __construct() {
-        parent::__construct();
-        $this->load->dbforge();
+        $this->CI = & get_instance();
+        $this->CI->load->dbforge();
     }
 
     public function up() {
@@ -17,7 +17,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'nivel'         => '1',
                 'observacion'   => '',
                 'created_user'  => '1',
-                'created_clier' => '1',
+                'created_clie' => '1',
                 'update_user'   => '1',
                 'update_clie'   => '1',
             ]
@@ -39,7 +39,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'comercial'      => 'Luisa Londoño',
                 'observacion'    => '',
                 'created_user'   => '1',
-                'created_clier'  => '1',
+                'created_clie'  => '1',
                 'update_user'    => '1',
                 'update_clie'    => '1',
             ]
@@ -52,7 +52,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'fk_clientes'   => '1',
                 'observacion'   => '',
                 'created_user'  => '1',
-                'created_clier' => '1',
+                'created_clie' => '1',
                 'update_user'   => '1',
                 'update_clie'   => '1',
             ]
@@ -73,7 +73,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'persona_correo' => 'kevin.g.enriquez.c@gmail.com',
                 'observacion'    => '',
                 'created_user'   => '1',
-                'created_clier'  => '1',
+                'created_clie'  => '1',
                 'update_user'    => '1',
                 'update_clie'    => '1',
             ]
@@ -86,7 +86,7 @@ class Migration_dbauditoria_listas extends CI_Migration {
                 'fk_empresas'   => '1',
                 'observacion'   => '',
                 'created_user'  => '1',
-                'created_clier' => '1',
+                'created_clie' => '1',
                 'update_user'   => '1',
                 'update_clie'   => '1',
             ]

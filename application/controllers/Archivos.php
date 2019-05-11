@@ -66,7 +66,7 @@ class Archivos extends CI_Controller {
         try{
             $outsheet = []; $x = 0;
             $created_user  = $this->session->userdata('users_id');
-            $created_clier = $this->session->userdata('clientes_id');
+            $created_clie = $this->session->userdata('clientes_id');
             $update_user   = $this->session->userdata('users_id');
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
@@ -117,7 +117,7 @@ class Archivos extends CI_Controller {
                     'campo19'       => substr($value['campo19'], 0, 100),
                     'campo20'       => substr($value['campo20'], 0, 100),
                     'created_user'  => $created_user,
-                    'created_clier' => $created_clier,
+                    'created_clie' => $created_clie,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie
                 ];
@@ -133,7 +133,7 @@ class Archivos extends CI_Controller {
                     'ext'           => $type,
                     'tipo'          => $tipo,
                     'created_user'  => $created_user,
-                    'created_clier' => $created_clier,
+                    'created_clie' => $created_clie,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie,
                 ],
@@ -171,7 +171,7 @@ class Archivos extends CI_Controller {
             $sheet = $worksheet->rangetoArray("A1:T$highestRow",NULL, TRUE, FALSE, TRUE);
             $outsheet = []; $x = 0;
             $created_user  = $this->session->userdata('users_id');
-            $created_clier = $this->session->userdata('clientes_id');
+            $created_clie = $this->session->userdata('clientes_id');
             $update_user   = $this->session->userdata('users_id');
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
@@ -205,7 +205,7 @@ class Archivos extends CI_Controller {
                     'campo19'       => substr($value['S'], 0, 100),
                     'campo20'       => substr($value['T'], 0, 100),
                     'created_user'  => $created_user,
-                    'created_clier' => $created_clier,
+                    'created_clie' => $created_clie,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie
                 ];
@@ -221,7 +221,7 @@ class Archivos extends CI_Controller {
                     'ext'           => $type,
                     'tipo'          => $tipo,
                     'created_user'  => $created_user,
-                    'created_clier' => $created_clier,
+                    'created_clie' => $created_clie,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie,
                 ],
@@ -234,11 +234,11 @@ class Archivos extends CI_Controller {
     }
     
     public function subir() {
-        if(!$this->ion_auth->in_group([1,2])){
-            return FALSE;
-        }
         $response = $this->response;
         try {
+            if(strlen($this->permisos->viewaccess('mpe-importar-archivo')) > 0){
+                throw new Exception("Tenemos un problema, usted no tiene permisos para ejecutar esta funcionalidad", 500);
+            }
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('tipo', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);

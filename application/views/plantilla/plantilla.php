@@ -82,6 +82,9 @@
                     <i class="fas fa-bell" style="margin: 6px 5px 0px 5px;"></i>
                 </a>
                 <a class="nav-item nav-link" href="#">
+                    <i class="fas fa-cog" style="margin: 6px 5px 0px 5px;"></i>
+                </a>
+                <a class="nav-item nav-link" href="#">
                     <i class="far fa-question-circle" style="margin: 6px 5px 0px 5px;"></i>
                 </a>
                 <span class="navbar-text text-white">
@@ -99,10 +102,10 @@
                 <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
                     <div class="float-left" style="margin-left: 5px;">Explorador de archivos</div>
                     <div class="float-right" style="margin: 0px;">
-                        <i class="btn-icon fas fa-sync-alt <?=$this->roles->viewaccess('explorador-actualizar')?>" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(GLOBAL.empresaId)"></i>
-                        <i class="btn-icon far fa-plus-square <?=$this->roles->viewaccess('explorador-crear')?>" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta()"></i>
-                        <i class="btn-icon far fa-edit <?=$this->roles->viewaccess('explorador-editar')?>" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta()"></i>
-                        <i class="btn-icon far fa-trash-alt <?=$this->roles->viewaccess('explorador-eliminar')?>" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta()"></i>
+                        <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
+                        <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta(this)"></i>
+                        <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
+                        <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta(this)"></i>
                     </div>
                 </div>
                 <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">

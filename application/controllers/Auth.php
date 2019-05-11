@@ -76,8 +76,7 @@ class Auth extends CI_Controller {
                 sist__jerarquia.nivel AS nivel
             ');
             $this->db->from('auth__users');
-            $this->db->join('clie__clientes_users', 'clie__clientes_users.fk_users = auth__users.id');
-            $this->db->join('clie__clientes', 'clie__clientes.id = clie__clientes_users.fk_clientes');
+            $this->db->join('clie__clientes', 'clie__clientes.id = auth__users.fk_cliente');
             $this->db->join('sist__jerarquia', 'sist__jerarquia.id = auth__users.fk_jerarquia');
             $this->db->where('auth__users.'. $this->config->item('identity', 'ion_auth'), $this->input->post('identity'));
             $session_data = $this->db->get()->row_array();
