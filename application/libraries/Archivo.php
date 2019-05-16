@@ -13,6 +13,17 @@ class Archivo {
     
     private $CI;
     private $pref = 'clie__';
+    var $columnManipulacion = [
+        'cta',
+        'valor',
+    ];    
+    var $columnSpider = [
+        'cta',
+        'comp',
+        'doc',
+        'tipo',
+        'valor',
+    ];
     
     public function __construct() {
         set_time_limit(0);
@@ -116,5 +127,60 @@ class Archivo {
             }
         }
         return json_encode($columnas);
+    }
+    
+    public function columnManipulacion($archivo_id) {
+        $columnDef = [];
+        $columnas = $this->CI->Archivos_model->getColumn($archivo_id);
+        if(is_array($columnas) && count($columnas)){
+            foreach ($columnas as $key => $value) {
+                foreach ($this->columnManipulacion as $col) {
+                    if($col == $value[0]){
+                        $columnDef[$col] = $key;
+                    }
+                }
+            }
+        }else{
+            return FALSE;
+        }
+        $columnString = $this->columnString($columnDef);
+        return [
+            'string' => $columnString,
+            'array'  => $columnDef
+        ];
+    }
+    
+    public function columnSpider($archivo_id) {
+        $columnDef = [];
+        $columnas = $this->CI->Archivos_model->getColumn($archivo_id);
+        if(is_array($columnas) && count($columnas)){
+            foreach ($columnas as $key => $value) {
+                foreach ($this->columnSpider as $col) {
+                    if($col == $value[0]){
+                        $columnDef[$col] = $key;
+                    }
+                }
+            }
+        }else{
+            return FALSE;
+        }
+        $columnString = $this->columnString($columnDef);
+        return [
+            'string' => $columnString,
+            'array'  => $columnDef
+        ];
+    }
+    
+    private function columnString($column) {
+        $columnString = '';
+        if(is_array($column) && count($column)){
+            foreach ($column as $key => $value) {
+               $columnString .= $value.' AS '.$key.', ';
+            }
+            $columnString = substr($columnString, 0, -2);
+        }else{
+            return FALSE;
+        }
+        return $columnString;
     }
 }

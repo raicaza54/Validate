@@ -67,7 +67,8 @@ class Auditoria extends CI_Controller {
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form)){
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 204);
             }
-            $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar']);
+            $column = $this->archivo->columnSpider($form['archivoIdProcesar']);
+            $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar'], $column);
             if(!is_array($items) || (count($items) <= 0)){
                 throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 204);
             }            

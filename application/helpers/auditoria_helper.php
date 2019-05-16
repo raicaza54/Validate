@@ -74,3 +74,10 @@ if (!function_exists('strip_tags_content')) {
         return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
     }
 }
+
+if (!function_exists('is_json')) {
+    function is_json($strJson) {
+        json_decode($strJson);
+        return (json_last_error() === JSON_ERROR_NONE);
+    } 
+} 

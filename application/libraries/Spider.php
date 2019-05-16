@@ -28,11 +28,11 @@ class Spider {
         $ejemplo  = $this->data;
         $grupos = array();
         foreach ($ejemplo as $value) {
-            $grupos[$value['CTE'] . $value['DOC']][] = array(
-                'grupo'  => $value['CTE'] . $value['DOC'],
-                'cuenta' => $value['CUENTA'],
-                'tipo'   => $value['TIPO'],
-                'valor'  => $value['VALOR'],
+            $grupos[$value['comp'] . $value['doc']][] = array(
+                'grupo'  => $value['comp'] . $value['doc'],
+                'cuenta' => $value['cta'],
+                'tipo'   => $value['tipo'],
+                'valor'  => $value['valor'],
             );
         }
         $tabla_grupos = '';
@@ -141,6 +141,7 @@ class Spider {
                 }
             }
         }
+        $this->datos['tabla'] = $grupos_clasificado;
         //$this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
         //$this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
 //        $tabla_grupos_clasificados = '';

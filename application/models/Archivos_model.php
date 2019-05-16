@@ -35,6 +35,22 @@ class Archivos_model extends CI_Model {
         ];
     }
     
+    public function getColumn($archivo_id) {
+        $this->db->select('columnas');
+        $this->db->where('id', $archivo_id);
+        $column = $this->db->get($this->pref.'archivos')->row_array();
+        if(is_array($column) && count($column)){
+            $columnas = $column['columnas'];
+            if((strlen($columnas) > 0) && (is_json($columnas))){
+                return json_decode($columnas, TRUE);
+            }else{
+                return FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+    }
+    
     /*
      * Fetch members data from the database
      * @param $_POST filter data based on the posted parameters
@@ -246,23 +262,24 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
-    public function getDetalleIdSpider($id) {
-        $this->db->select([
-            "campo1  AS 'REGISTRO'",
-            "campo2  AS 'CUENTA'",
-            "campo3  AS 'CTE'",
-            "campo4  AS 'FECHA'",
-            "campo5  AS 'DOC'",
-            "campo6  AS 'REF'",
-            "campo7  AS 'NIT'",
-            "campo8  AS 'DETALLE'",
-            "campo9  AS 'TIPO'",
-            "campo10 AS 'VALOR'",
-            "campo11 AS 'BASE'",
-            "campo12 AS 'CC'",
-            "campo13 AS 'TB'",
-            "campo14 AS 'PL'"
-        ]);
+    public function getDetalleIdSpider($id, $column) {
+//        $this->db->select([
+//            "campo1  AS 'REGISTRO'",
+//            "campo2  AS 'CUENTA'",
+//            "campo3  AS 'CTE'",
+//            "campo4  AS 'FECHA'",
+//            "campo5  AS 'DOC'",
+//            "campo6  AS 'REF'",
+//            "campo7  AS 'NIT'",
+//            "campo8  AS 'DETALLE'",
+//            "campo9  AS 'TIPO'",
+//            "campo10 AS 'VALOR'",
+//            "campo11 AS 'BASE'",
+//            "campo12 AS 'CC'",
+//            "campo13 AS 'TB'",
+//            "campo14 AS 'PL'"
+//        ]);
+        $this->db->select($column['string']);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
         return $this->db->get($this->pref.'archivos_detalle')->result_array();
@@ -293,15 +310,15 @@ class Archivos_model extends CI_Model {
         $this->db->insert_batch($this->pref.'archivos_detalle', $batch['detalle']);
     }
     
-    public function getManipulacion($archivo, $cuenta) {
-        $this->db->select('campo1, campo2, campo6');
+    public function getManipulacion($archivo, $cuenta, $column) {
+        $this->db->select($column['string']);
         $this->db->where('fk_archivos', $archivo);
-        $this->db->where_in('campo1', $cuenta);
+        $this->db->where_in($column['array']['cta'], $cuenta);
         $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
         if ((is_bool($r) && $r === FALSE) || (is_array($r) && (count($r) <= 0))) {
             return 0;
         }else{
-            $sum = array_sum(array_column($r, 'campo6'));
+            $sum = array_sum(array_column($r, 'valor'));
             return $sum;
         }
     }

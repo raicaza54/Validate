@@ -32,9 +32,10 @@ class Manipulacion {
     private $AQI  = 0.593;
     private $SGI  = 0.717;
     private $DEPI = 0.107;
-    
-    public $data = [];
-    
+    public $data  = [];
+    private $ct   = '';
+    private $ct1  = '';
+
     function __construct() {
         set_time_limit(0);
         $this->CI = & get_instance();
@@ -42,16 +43,16 @@ class Manipulacion {
     }
     
     private function columnDef($archivo_id) {
-        return NULL; //$this->CI->Archivos_model->columnManipulacion($archivo_id);
+        return $this->CI->archivo->columnManipulacion($archivo_id);
     }
     
     public function run($balances) {
         foreach ($balances as $value) {
             if($value['posicion'] == 't'){
-                $ct = $this->columnDef($value['balance']);
+                $this->ct = $this->columnDef($value['balance']);
                 $t  = $value['balance'];
             }elseif($value['posicion'] == 't-1'){
-                $ct1 = $this->columnDef($value['balance']);
+                $this->ct1 = $this->columnDef($value['balance']);
                 $t1 = $value['balance'];
             }
         }
@@ -126,20 +127,20 @@ class Manipulacion {
     
     private function cuentasValues($param) {
         extract($param);
-        $this->cuentaValue['cxc']['t']            = $this->getValue($t,  [1305]);           //CXC
-        $this->cuentaValue['cxc']['t-1']          = $this->getValue($t1, [1305]);           //CXC
-        $this->cuentaValue['ventas']['t']         = abs($this->getValue($t,  [41]));        //Ventas
-        $this->cuentaValue['ventas']['t-1']       = abs($this->getValue($t1, [41]));        //Ventas
-        $this->cuentaValue['cventas']['t']        = $this->getValue($t,  [61]);             //Costo venta
-        $this->cuentaValue['cventas']['t-1']      = $this->getValue($t1, [61]);             //Costo venta
-        $this->cuentaValue['acorrientes']['t']    = $this->getValue($t, [11,12,13,14]);     //Activos corrientes
-        $this->cuentaValue['acorrientes']['t-1']  = $this->getValue($t1, [11,12,13,14]);    //Activos corrientes
-        $this->cuentaValue['inmmaterial']['t']    = $this->getValue($t, [15]);              //Inmovilizado Material
-        $this->cuentaValue['inmmaterial']['t-1']  = $this->getValue($t1, [15]);             //Inmovilizado Material        
-        $this->cuentaValue['actvtotales']['t']    = $this->getValue($t, [16,17,18,19]);     //Activos Totales
-        $this->cuentaValue['actvtotales']['t-1']  = $this->getValue($t1, [16,17,18,19]);    //Activos Totales
-        $this->cuentaValue['depreciacion']['t']   = $this->getValue($t, [5160,5260,7360]);  //Depresiacion
-        $this->cuentaValue['depreciacion']['t-1'] = $this->getValue($t1, [5160,5260,7360]); //Depresiacion
+        $this->cuentaValue['cxc']['t']            = $this->getValue($t,  [1305], $this->ct);            //CXC
+        $this->cuentaValue['cxc']['t-1']          = $this->getValue($t1, [1305], $this->ct1);           //CXC
+        $this->cuentaValue['ventas']['t']         = abs($this->getValue($t,  [41], $this->ct));         //Ventas
+        $this->cuentaValue['ventas']['t-1']       = abs($this->getValue($t1, [41], $this->ct1));        //Ventas
+        $this->cuentaValue['cventas']['t']        = $this->getValue($t,  [61], $this->ct);              //Costo venta
+        $this->cuentaValue['cventas']['t-1']      = $this->getValue($t1, [61], $this->ct1);             //Costo venta
+        $this->cuentaValue['acorrientes']['t']    = $this->getValue($t, [11,12,13,14], $this->ct);      //Activos corrientes
+        $this->cuentaValue['acorrientes']['t-1']  = $this->getValue($t1, [11,12,13,14], $this->ct1);    //Activos corrientes
+        $this->cuentaValue['inmmaterial']['t']    = $this->getValue($t, [15], $this->ct);               //Inmovilizado Material
+        $this->cuentaValue['inmmaterial']['t-1']  = $this->getValue($t1, [15], $this->ct1);             //Inmovilizado Material        
+        $this->cuentaValue['actvtotales']['t']    = $this->getValue($t, [16,17,18,19], $this->ct);      //Activos Totales
+        $this->cuentaValue['actvtotales']['t-1']  = $this->getValue($t1, [16,17,18,19], $this->ct1);    //Activos Totales
+        $this->cuentaValue['depreciacion']['t']   = $this->getValue($t, [5160,5260,7360], $this->ct);   //Depresiacion
+        $this->cuentaValue['depreciacion']['t-1'] = $this->getValue($t1, [5160,5260,7360], $this->ct1); //Depresiacion
         /**
          * Se totaliza la suma para obtener el total de activos
          */
@@ -184,8 +185,8 @@ class Manipulacion {
         return number_format($m5ind,3,'.','');
     }
     
-    private function getValue($archivo, $cuenta) {
-        $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta);
+    private function getValue($archivo, $cuenta, $column) {
+        $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta, $column);
         return $n;
     }
 }
