@@ -93,6 +93,12 @@ $route['manipulacion/v1/archivos']['post'] = 'explorador/balances';
 $route['manipulacion/v1/procesar']['post'] = 'auditoria/manipulacion';
 
 /* -------------------------------------------------------------------------
+ * Perfil
+ * ------------------------------------------------------------------------- */
+$route['perfil/v1/datos']['get'] = 'perfil/datos';
+
+
+/* -------------------------------------------------------------------------
  * Sistema por Defecto
  * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';

@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dbauditoria_007{
+class Dbauditoria_008{
     private $CI;
     public function __construct() {
         $this->CI = & get_instance();
@@ -11,18 +11,19 @@ class Dbauditoria_007{
 
     public function up() {
         $fields = [
-            'fk_cliente' => [
+            'estado' => [
                 'type'       => 'INT',
                 'constraint' => '11',
-                'comment'    => 'Cliente al cual pertenece el auditor',
+                'default'    => 1,
+                'comment'    => '0:inactivo, 1:activo, 2:cancelado, 3:borrado',
                 'null'       => FALSE
             ],
         ];
-        $this->CI->dbforge->add_column('auth__users', $fields);
+        $this->CI->dbforge->add_column('sist__contratos', $fields);
     }
 
     public function down() {
-        $this->CI->dbforge->drop_column('auth__users','fk_cliente');
+        $this->CI->dbforge->drop_column('sist__contratos','estado');
     }
 
 }

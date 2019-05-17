@@ -34,45 +34,20 @@ class Perfil extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Empresas_model');
+        $this->load->model('Perfil_model');
     }
 
     public function datos() {
         $response = $this->response;
-        $data = $row = array();
         try {
-            $items = $this->Empresas_model->getRows($this->input->post());
-            if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 204);
+            $cliente_id = $this->session->userdata('clientes_id');
+            $datos = $this->Perfil_model->getContrato($cliente_id);
+            if(!is_array($datos)){
+                throw new Exception("Tenemos un problema, por favor contactar con soporte", 204);
             }
             $response = [
-                "draw"            => $this->input->post('draw'),
-                "recordsTotal"    => $this->Empresas_model->countAll(),
-                "recordsFiltered" => $this->Empresas_model->countFiltered($this->input->post()),
-                "data"            => $items,
+                "data" => $datos,
             ];
-            throw new Exception("Resultado retornando correctamente", 200);
-        } catch (Exception $exc) {
-            $response = $this->tryCatch($exc, $response);
-        }
-        $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
-    }
-    
-    public function activar() {
-        $response = $this->response;
-        try {
-            $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
-            }
-            $this->session->set_userdata(['empresaId' => $post['id']]);
-            $item = $this->Empresas_model->getId($post['id']);
-            if (!is_array($item)) {
-                throw new Exception("No existen datos para mostrar", 204);
-            }
-            $response["data"] = $item;
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

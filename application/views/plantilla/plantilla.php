@@ -82,7 +82,7 @@
                     <i class="fas fa-bell" style="margin: 6px 5px 0px 5px;"></i>
                 </a>
                 <a class="nav-item nav-link" href="#">
-                    <i class="fas fa-cog" style="margin: 6px 5px 0px 5px;"></i>
+                    <i class="fas fa-cog" style="margin: 6px 5px 0px 5px;" onclick="PERFIL.methods.contrato();"></i>
                 </a>
                 <a class="nav-item nav-link" href="#">
                     <i class="far fa-question-circle" style="margin: 6px 5px 0px 5px;"></i>
