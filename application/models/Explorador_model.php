@@ -20,11 +20,11 @@ class Explorador_model extends CI_Model {
     }
     
     public function getFolderEmpresa($id_empresa) {
-        $this->db->select($this->pref.'archivos.tipo, '.$this->pref.'carpetas.*');
-        $this->db->join($this->pref.'archivos', $this->pref.'archivos.id = '.$this->pref.'carpetas.archivos_id', 'left');
+        $this->db->select('clie__archivos.tipo, '.'clie__carpetas.*');
+        $this->db->join('clie__archivos', 'clie__archivos.id = clie__carpetas.archivos_id', 'left');
         $this->db->where('fk_empresas', $id_empresa);
         $this->db->where('deleted_at', 0);
-        return $this->db->get($this->pref.'carpetas')->result_array();
+        return $this->db->get('clie__carpetas')->result_array();
     }
     
     public function crear($param) {
@@ -43,7 +43,7 @@ class Explorador_model extends CI_Model {
             'update_clie'    => $this->session->userdata('clientes_id'),
             'archivos_id'    => $archivos_id,
         ];
-        if($this->db->insert($this->pref.'carpetas', $data)){
+        if($this->db->insert('clie__carpetas', $data)){
             return $this->db->insert_id();
         }else{
             return FALSE;
@@ -59,11 +59,11 @@ class Explorador_model extends CI_Model {
             'update_user' => $this->session->userdata('users_id'),
             'update_clie' => $this->session->userdata('clientes_id'),
         ];
-        $r = $this->db->update($this->pref.'carpetas', $data, ['id' => $id]);
-        $carpeta = $this->db->where('id', $id)->get($this->pref.'carpetas')->row_array();
+        $r = $this->db->update('clie__carpetas', $data, ['id' => $id]);
+        $carpeta = $this->db->where('id', $id)->get('clie__carpetas')->row_array();
         if(is_array($carpeta) && array_key_exists('type', $carpeta)){
             if(in_array($carpeta['type'], ['excel', 'csv'])){
-                $this->db->update($this->pref.'archivos', ['fk_carpetas' => $parent_id], ['id' => $carpeta['archivos_id']]);
+                $this->db->update('clie__archivos', ['fk_carpetas' => $parent_id], ['id' => $carpeta['archivos_id']]);
             }
         }
         return $r;

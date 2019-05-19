@@ -35,7 +35,7 @@ class Archivos extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Archivos_model');
+        $this->load->model(['Cliente_model','Archivos_model']);
     }
 
     private function fileType($type, $t) {
@@ -372,6 +372,25 @@ class Archivos extends CI_Controller {
                 "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
                 "data"            => $items,
             ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($response));
+    }
+    
+    public function limites() {
+        $response = $this->response;
+        try {
+            $cliente_id = $this->session->userdata('clientes_id');
+            $limites = $this->Cliente_model->getLimites($cliente_id);
+            if (!is_array($limites)) {
+                throw new Exception("No existen datos para mostrar", 204);
+            }
+            
+            $response = ["data" => $limites];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

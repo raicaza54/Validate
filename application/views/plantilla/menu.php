@@ -3,11 +3,11 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
-                <div class="icono" id="mn-archivos">
+                <div class="icono" id="mn-archivos" onclick="ARCHIVOS.methods.explorador('explorador-archivos')">
                     <i class="far fa-folder"></i>
                     <span>Archivos</span>
                 </div>
-                <div class="icono" id="mn-resultados">
+                <div class="icono" id="mn-resultados" onclick="ARCHIVOS.methods.explorador('explorador-resultados')">
                     <i class="fas fa-mail-bulk"></i>
                     <span>Resultados</span>
                 </div>

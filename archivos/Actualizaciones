@@ -131,3 +131,23 @@ SE ESTA TRABAJANDO
 ▪ Araña considerar las columnas definidas en la configuración, por ahora se mantiene el requerimiento de ordenar las columnas
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
 ▪ Realizacion de pruebas para evitar Ctrl + Shift + R, se evalua el uso de jQuery.getScript() y asi evitar cache de recursos
+
+#*******************************************************************************
+
+FECHA: 19/05/2019
+NUEVAS FUNCIONALIDADES
+▪ Cambio de tipo de archivo en al configuracion, esto obliga a definir las columnas nuevamente
+▪ Al subir un archivo se visualiza los limites por cantidad y filas, segun el tipo de archivo y la cantidad que se han cargado
+▪ Perfil de usuario, es posible visualizar las especificacioens contratadas
+
+ACTUALIZACIÓN
+▪ Se aplican los limites segun el contrato al que se esta sujeto el cliente
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Crear empresas, sujeto a limites de contrato
+▪ Añadir permisos de modulo en Back-End, segun perfil y grupo
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+

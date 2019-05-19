@@ -34,14 +34,17 @@ class Perfil extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Perfil_model');
+        $this->load->model([
+            'Cliente_model',
+            'Perfil_model'
+        ]);
     }
 
     public function datos() {
         $response = $this->response;
         try {
             $cliente_id = $this->session->userdata('clientes_id');
-            $datos = $this->Perfil_model->getContrato($cliente_id);
+            $datos = $this->Cliente_model->getContrato($cliente_id);
             if(!is_array($datos)){
                 throw new Exception("Tenemos un problema, por favor contactar con soporte", 204);
             }

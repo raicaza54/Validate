@@ -73,6 +73,7 @@ $route['archivos/v1/subir']              = 'archivos/subir';
 $route['archivos/v1/header']             = 'archivos/header';
 $route['archivos/v1/encabezado']['post'] = 'archivos/encabezado';
 $route['archivos/v1/configurar']['post'] = 'archivos/configurar';
+$route['archivos/v1/limites']['get']     = 'archivos/limites';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford

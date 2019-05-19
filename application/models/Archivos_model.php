@@ -19,7 +19,7 @@ class Archivos_model extends CI_Model {
     function __construct() {
         parent::__construct();
         // Set table name
-        $this->table         = $this->pref . 'archivos_detalle';
+        $this->table         = 'clie__archivos_detalle';
         // Set orderable column fields
         $column = [];
         for ($x = 1; $x <= 20; $x++) {
@@ -38,7 +38,7 @@ class Archivos_model extends CI_Model {
     public function getColumn($archivo_id) {
         $this->db->select('columnas');
         $this->db->where('id', $archivo_id);
-        $column = $this->db->get($this->pref.'archivos')->row_array();
+        $column = $this->db->get('clie__archivos')->row_array();
         if(is_array($column) && count($column)){
             $columnas = $column['columnas'];
             if((strlen($columnas) > 0) && (is_json($columnas))){
@@ -149,13 +149,13 @@ class Archivos_model extends CI_Model {
     
     
     public function getTodas() {
-        return $this->db->get($this->pref.'archivos')->result_array();
+        return $this->db->get('clie__archivos')->result_array();
     }
     
     public function getEncabezado($id, $campoAnalizar = NULL) {
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'e');
-        $encabezado = $this->db->get($this->pref.'archivos_detalle')->row_array();
+        $encabezado = $this->db->get('clie__archivos_detalle')->row_array();
         $e = [];
         for ($x = 1; $x <= 20; $x++) {
             if(trim($encabezado['campo'.$x])){
@@ -165,7 +165,7 @@ class Archivos_model extends CI_Model {
         if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
             $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
-        $colum     = $this->db->select('tipo, columnas')->where('id', $id)->get($this->pref . 'archivos')->row_array();
+        $colum     = $this->db->select('tipo, columnas')->where('id', $id)->get('clie__archivos')->row_array();
         $columnDef = json_decode($colum['columnas'], TRUE);
         $tipo      = $colum['tipo'];
         return [
@@ -178,7 +178,7 @@ class Archivos_model extends CI_Model {
     public function setColumnas($data, $id) {
         $this->db->set('columnas', "'".$data."'", FALSE); 
         $this->db->where('id', $id);
-        return $this->db->update($this->pref.'archivos');
+        return $this->db->update('clie__archivos');
     }
     
     public function getCuentas($id) {
@@ -186,7 +186,7 @@ class Archivos_model extends CI_Model {
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
         $this->db->group_by('campo2');
-        $cuentas = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        $cuentas = $this->db->get('clie__archivos_detalle')->result_array();
         return $cuentas;
     }
     
@@ -231,27 +231,27 @@ class Archivos_model extends CI_Model {
         $this->db->limit(500);
         $this->db->order_by('linea', 'ASC');
         $this->db->order_by('id', 'DESC');
-        $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
         return $r;
     }
     
     public function getBalenaces($folderId) {
         $this->db->select([
-            $this->pref.'carpetas.label',
-            $this->pref.'carpetas.type',
-            $this->pref.'archivos.id',
-            $this->pref.'archivos.ext',
-            $this->pref.'archivos.tipo',
-            $this->pref.'archivos.columnas',
+            'clie__carpetas.label',
+            'clie__carpetas.type',
+            'clie__archivos.id',
+            'clie__archivos.ext',
+            'clie__archivos.tipo',
+            'clie__archivos.columnas',
             "'T' AS estado",
         ]);
-        $this->db->where($this->pref.'archivos.fk_carpetas', $folderId);
-        $this->db->where($this->pref.'carpetas.parent_id', $folderId);
-        $this->db->where($this->pref.'carpetas.deleted_at', 0);
-        $this->db->where_in($this->pref.'carpetas.type',['excel','csv']);
-        $this->db->where($this->pref.'archivos.tipo','blp');
-        $this->db->join($this->pref.'archivos', $this->pref.'carpetas.archivos_id = '.$this->pref.'archivos.id', 'inner');
-        $r = $this->db->get($this->pref.'carpetas')->result_array();
+        $this->db->where('clie__archivos.fk_carpetas', $folderId);
+        $this->db->where('clie__carpetas.parent_id', $folderId);
+        $this->db->where('clie__carpetas.deleted_at', 0);
+        $this->db->where_in('clie__carpetas.type',['excel','csv']);
+        $this->db->where('clie__archivos.tipo','blp');
+        $this->db->join('clie__archivos', 'clie__carpetas.archivos_id = clie__archivos.id', 'inner');
+        $r = $this->db->get('clie__carpetas')->result_array();
         if(is_array($r) && count($r)){
             foreach ($r as $key => $value) {
                 if((!strpos($value['columnas'], 'cta') !== FALSE) || (!strpos($value['columnas'], 'valor') !== FALSE)){
@@ -266,7 +266,7 @@ class Archivos_model extends CI_Model {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
-        return $this->db->get($this->pref.'archivos_detalle')->result_array();
+        return $this->db->get('clie__archivos_detalle')->result_array();
     }
     
     public function getDetalleIdBenford($id, $campoAnalizar) {
@@ -274,22 +274,22 @@ class Archivos_model extends CI_Model {
             $this->db->select($campoAnalizar.' AS valor');
             $this->db->where('fk_archivos', $id);
             $this->db->where('linea', 'f');
-            return $this->db->get($this->pref.'archivos_detalle')->result_array();
+            return $this->db->get('clie__archivos_detalle')->result_array();
         }else{
             return FALSE;
         }
     }
     
     public function insert_excel($batch) {
-        $this->db->insert($this->pref.'archivos', $batch['archivo']);
-        $this->db->insert_batch($this->pref.'archivos_detalle', $batch['detalle']);
+        $this->db->insert('clie__archivos', $batch['archivo']);
+        $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
     }
     
     public function getManipulacion($archivo, $cuenta, $column) {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $archivo);
         $this->db->where_in($column['array']['cta'], $cuenta);
-        $r = $this->db->get($this->pref.'archivos_detalle')->result_array();
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
         if ((is_bool($r) && $r === FALSE) || (is_array($r) && (count($r) <= 0))) {
             return 0;
         }else{
