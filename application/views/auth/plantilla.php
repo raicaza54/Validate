@@ -14,6 +14,11 @@
         <?= asset_css('fontawesome/css/solid.min.css') ?>
         <?= asset_css('auth/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>º        
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
 
         <title>Validate</title>
@@ -40,10 +45,5 @@
                 2019
             </span>
         </nav>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.slim.min.js') ?>"></script>
-        <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>"></script>
-        <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>"></script>
     </body>
 </html>

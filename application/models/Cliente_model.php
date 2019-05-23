@@ -114,22 +114,22 @@ class Cliente_model extends CI_Model {
                     'movimiento' => [
                         'limite' => $contrato['cant_movimiento'],
                         'filas'  => $contrato['filas_movimiento'],
-                        'cant'   => $cant['movimiento'],
+                        'cant'   => (array_key_exists('movimiento', $cant) ? $cant['movimiento'] : 0),
                     ],
                     'balances' => [
                         'limite' => $contrato['cant_balances'],
                         'filas'  => $contrato['filas_balances'],
-                        'cant'   => $cant['balances'],
+                        'cant'   => (array_key_exists('balances', $cant) ? $cant['balances'] : 0),
                     ],
                     'cxp' => [
                         'limite' => $contrato['cant_cxp'],
                         'filas'  => $contrato['filas_cxp'],
-                        'cant'   => $cant['cxp'],
+                        'cant'   => (array_key_exists('cxp', $cant) ? $cant['cxp'] : 0),
                     ],
                     'cxc' => [
                         'limite' => $contrato['cant_cxc'],
                         'filas'  => $contrato['filas_cxc'],
-                        'cant'   => $cant['cxc'],
+                        'cant'   => (array_key_exists('cxc', $cant) ? $cant['cxc'] : 0),
                     ]
                 ];
                 return $limites;

@@ -91,6 +91,11 @@ class Archivos extends CI_Controller {
                 }                
             }
             $sheet = $sheet['result'];
+            if(count($sheet) > $limite['filas']){
+                return [
+                    'error' => 'El archivo ('.number_format(count($sheet),0,'.',',').') supera el limite ('.number_format($limite['filas'],0,'.',',').') permitido para este tipo de archivo'
+                ];
+            }
             array_unshift($sheet, $line_headers);
             foreach ($sheet as $value) {
                 $outsheet[$x] = [
@@ -139,8 +144,10 @@ class Archivos extends CI_Controller {
                 ],
                 'detalle' => $outsheet
             ];
-        } catch (Exception $ex) {
-            return FALSE;
+        } catch (Exception $exc) {
+            return [
+                'error' => $exc->getCode().': '.$exc->getMessage()
+            ];
         }
         return $archivo;
     }
@@ -179,7 +186,12 @@ class Archivos extends CI_Controller {
             $num = 0;
             for ($f = 1; $f <= 20; $f++) {
                 $tipos['campo'.$f] = 'string';
-            }            
+            }
+            if(count($sheet) > $limite['filas']){
+                return [
+                    'error' => 'El archivo posee ('.number_format(count($sheet),0,'.',',').') filas, las cuales superan el limite  de ('.number_format($limite['filas'],0,'.',',').') filas permitidas para este tipo de archivo'
+                ];
+            }
             foreach ($sheet as $value) {
                 $outsheet[$x] = [
                     'fk_archivos'   => $this->id,
@@ -221,14 +233,16 @@ class Archivos extends CI_Controller {
                     'ext'           => $type,
                     'tipo'          => $tipo,
                     'created_user'  => $created_user,
-                    'created_clie' => $created_clie,
+                    'created_clie'  => $created_clie,
                     'update_user'   => $update_user,
                     'update_clie'   => $update_clie,
                 ],
                 'detalle' => $outsheet
             ];
-        } catch (Exception $ex) {
-            return FALSE;
+        } catch (Exception $exc) {
+            return [
+                'error' => $exc->getCode().': '.$exc->getMessage()
+            ];
         }
         return $archivo;
     }
@@ -243,6 +257,22 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('tipo', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
             }
+            $limites = $this->limites(FALSE);
+            $tipo = '';
+            if($post['tipo'] == 'mov'){
+                $tipo = 'movimiento';
+            }elseif($post['tipo'] == 'blp'){
+                $tipo = 'balances';
+            }else{
+                $tipo = $post['tipo'];
+            }
+            if(!is_array($limites['data']) || !array_key_exists($tipo, $limites['data'])){
+                throw new Exception("Tenemos un problema, el tipo de archivo definido no es correcto", 204);
+            }
+            $limite = $limites['data'][$tipo];
+            if(($limite['cant'] + 1) > $limite['limite']){
+                throw new Exception("Tenemos un problema, este tipo de archivos supera la cantidad de archivos permitidos", 204);
+            }
             $archivo = $this->do_upload();
             if(is_bool($archivo) || ($archivo === FALSE)){
                 throw new Exception("Tenemos un problema con el archivo", 204);
@@ -251,12 +281,17 @@ class Archivos extends CI_Controller {
                 $xls = $this->leer_excel($archivo + [
                     'parent_id' => $post['carpeta'],
                     'tipo'      => $post['tipo'],
-                ]);                
+                    'limite'    => $limite,
+                ]);
             }elseif($archivo['type'] == '.csv'){
                 $xls = $this->leer_csv($archivo + [
                     'parent_id' => $post['carpeta'],
                     'tipo'      => $post['tipo'],
-                ]);                
+                    'limite'    => $limite,
+                ]);
+            }
+            if(is_array($xls) && array_key_exists('error', $xls)){
+                throw new Exception($xls['error'], 204);
             }
             $xlsdb = $this->Archivos_model->insert_excel($xls);
             if(is_bool($xlsdb) || ($xlsdb === FALSE)){
@@ -381,7 +416,7 @@ class Archivos extends CI_Controller {
                 ->set_output(json_encode($response));
     }
     
-    public function limites() {
+    public function limites($json = TRUE) {
         $response = $this->response;
         try {
             $cliente_id = $this->session->userdata('clientes_id');
@@ -389,15 +424,18 @@ class Archivos extends CI_Controller {
             if (!is_array($limites)) {
                 throw new Exception("No existen datos para mostrar", 204);
             }
-            
             $response = ["data" => $limites];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
-        $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+        if($json){
+            $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($response));            
+        }else{
+            return $response;
+        }
     }
     
     public function configurar() {
