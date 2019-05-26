@@ -13,7 +13,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Archivos_model extends CI_Model {
 
-    private $pref = 'clie__';
     public $column = [];
             
     function __construct() {
@@ -175,8 +174,9 @@ class Archivos_model extends CI_Model {
         ];
     }
     
-    public function setColumnas($data, $id) {
+    public function setColumnas($data, $form, $id) {
         $this->db->set('columnas', "'".$data."'", FALSE); 
+        $this->db->set('tipo', $form['archivoTipo']); 
         $this->db->where('id', $id);
         return $this->db->update('clie__archivos');
     }

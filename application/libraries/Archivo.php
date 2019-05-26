@@ -12,7 +12,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Archivo {
     
     private $CI;
-    private $pref = 'clie__';
     var $columnManipulacion = [
         'cta',
         'valor',
@@ -37,7 +36,7 @@ class Archivo {
         $columnDef = [];
         $columnDefs = [];
         $columnSql = $column;
-        $columnas = $this->CI->db->select('columnas')->where('id', $id)->get($this->pref . 'archivos')->row_array();
+        $columnas = $this->CI->db->select('nombre, columnas, tipo')->where('id', $id)->get('clie__archivos')->row_array();
         if(is_array($columnas) && count($columnas) && array_key_exists('columnas', $columnas)){
             $columnDefs = json_decode($columnas['columnas'], TRUE);
             foreach ($column as $key => $value) {
@@ -49,6 +48,10 @@ class Archivo {
             }
         }
         return [
+            'archivo'   => [
+                'nombre' => ((is_array($columnas) && array_key_exists('nombre', $columnas)) ? $columnas['nombre'] : ''),
+                'tipo'   => ((is_array($columnas) && array_key_exists('tipo', $columnas)) ? $columnas['tipo'] : '')
+            ],
             'column'    => $column,
             'columnSql' => $columnSql,
             'columnDef' => $columnDef

@@ -134,22 +134,34 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
-FECHA: 19/05/2019
+FECHA: 25/05/2019
 NUEVAS FUNCIONALIDADES
-▪ Cambio de tipo de archivo en al configuracion, esto obliga a definir las columnas nuevamente
-▪ Al subir un archivo se visualiza los limites por cantidad y filas, segun el tipo de archivo y la cantidad que se han cargado
-▪ Perfil de usuario, es posible visualizar las especificacioens contratadas
+▪ Cambio de tipo de archivo en la configuración, esto obliga a definir las columnas nuevamente
+▪ Al subir un archivo se visualiza los limites por cantidad y filas, según el tipo de archivo y la cantidad que se han cargado
+▪ Perfil de usuario, es posible visualizar las especificaciones contratadas y limites
+▪ Permisos de usuarios según grupo o permisos individuales, los cuales prevalecen sobre los de grupo
+▪ Integración de Chat en linea con la herramienta tawk.to
 
 ACTUALIZACIÓN
-▪ Se aplican los limites segun el contrato al que se esta sujeto el cliente
+▪ Se aplican los limites según el contrato al que se esta sujeto el cliente al intentar cargar un archivo, se tiene en cuenta según el tipo de archivo, cantidad actual por cliente, máximo según contrato, filas máximas
+▪ Al intentar realizar un análisis Ley de Benford se valida, empresa seleccionada, tipo de archivo cargado, que tenga columna numérica
+▪ Al intentar realizar un análisis Araña se valida, empresa seleccionada, tipo de archivo cargado sea un movimiento, que tenga columna correspondientes
+▪ Al intentar realizar una Manipulación se valida, empresa seleccionada, directorio posea mas un balance de prueba, que tengan las columnas correspondientes
+▪ Definición de columnas para la Araña, lo que permite elegir donde están las columnas correspondientes sin ordenar el archivo
+▪ Definición de columnas para la Manipulación
 
 CORRECCIONES
-▪ No hay cambios
+▪ Al momento de ocurrir un error o situación inesperada se informa en la interfaz con un mensaje.
 
 SE ESTA TRABAJANDO
 ▪ Crear empresas, sujeto a limites de contrato
-▪ Añadir permisos de modulo en Back-End, segun perfil y grupo
+▪ Al momento de cargar un archivo no es posible actualizar el explorador
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos
+▪ Explorador de resultados
+▪ Resultados en PDF, Ley de Benford
+▪ Resultados en PDF, La Araña
+▪ Resultados en PDF, Manipulación
+▪ Listas de Control, Proveedores Ficticios
 
 #*******************************************************************************
 

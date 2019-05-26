@@ -43,7 +43,7 @@ class Empresas extends CI_Controller {
         try {
             $items = $this->Empresas_model->getRows($this->input->post());
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 204);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response = [
                 "draw"            => $this->input->post('draw'),
@@ -65,12 +65,12 @@ class Empresas extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $this->session->set_userdata(['empresaId' => $post['id']]);
             $item = $this->Empresas_model->getId($post['id']);
             if (!is_array($item)) {
-                throw new Exception("No existen datos para mostrar", 204);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response["data"] = $item;
             throw new Exception("Resultado retornando correctamente", 200);

@@ -46,7 +46,7 @@ class Perfil extends CI_Controller {
             $cliente_id = $this->session->userdata('clientes_id');
             $datos = $this->Cliente_model->getContrato($cliente_id);
             if(!is_array($datos)){
-                throw new Exception("Tenemos un problema, por favor contactar con soporte", 204);
+                throw new Exception("Tenemos un problema, por favor contactar con soporte", 202);
             }
             $response = [
                 "data" => $datos,

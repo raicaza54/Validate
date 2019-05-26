@@ -49,11 +49,14 @@ class Explorador extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('folderId', $post) || !is_numeric($post['folderId'])){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+                throw new Exception("Debes seleccionar una empresa y un directorio que contengan Balances de Prueba para comprobar Manipulación", 202);
             }
             $balances = $this->Archivos_model->getBalenaces($post['folderId']);
             if($balances === FALSE){
-                throw new Exception("Tenemos un problema, no pudimos recuperar los balances", 204);
+                throw new Exception("Tenemos un problema, no pudimos recuperar los balances", 202);
+            }            
+            if(is_array($balances) && (count($balances) <= 0)){
+                throw new Exception("Debes elegir un directorio donde se encuentren Balances de Prueba, intentalo nuevamente", 202);
             }            
             $response["data"] = [
                 'balances' => $balances
@@ -75,7 +78,7 @@ class Explorador extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $insert = $this->Explorador_model->crear([
                 'carpeta'     => $post['carpeta'],
@@ -85,7 +88,7 @@ class Explorador extends CI_Controller {
                 'archivos_id' => $post['id']
             ]);
             if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 204);
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
             }
             $response["data"] = [
                 'id'      => $insert,
@@ -109,7 +112,7 @@ class Explorador extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('deleted_at', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $insert = $this->Explorador_model->editar([
                 'carpeta'    => $post['carpeta'],
@@ -118,7 +121,7 @@ class Explorador extends CI_Controller {
                 'deleted_at' => $post['deleted_at'],
             ]);
             if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 204);
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
             }            
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -135,11 +138,11 @@ class Explorador extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 204);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }            
             $items = $this->arbol->run($post['id']);
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 204);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response["data"] = $items;
             throw new Exception("Resultado retornando correctamente", 200);

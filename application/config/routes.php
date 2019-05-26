@@ -71,14 +71,14 @@ $route['archivos/v1/datos']['post']      = 'archivos/datos';
 $route['archivos/v1/digito']['post']     = 'archivos/digito';
 $route['archivos/v1/subir']              = 'archivos/subir';
 $route['archivos/v1/header']             = 'archivos/header';
-$route['archivos/v1/encabezado']['post'] = 'archivos/encabezado';
+$route['archivos/v1/encabezado']['post'] = 'archivos/encabezado/0';
 $route['archivos/v1/configurar']['post'] = 'archivos/configurar';
 $route['archivos/v1/limites']['get']     = 'archivos/limites';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford
  * ------------------------------------------------------------------------- */
-$route['benford/v1/encabezado']['post'] = 'archivos/encabezado';
+$route['benford/v1/encabezado']['post'] = 'archivos/encabezado/1';
 $route['benford/v1/procesar']['post']   = 'auditoria/benford';
 
 /* -------------------------------------------------------------------------
