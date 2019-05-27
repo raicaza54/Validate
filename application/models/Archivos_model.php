@@ -281,8 +281,9 @@ class Archivos_model extends CI_Model {
     }
     
     public function insert_excel($batch) {
-        $this->db->insert('clie__archivos', $batch['archivo']);
-        $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
+        $arch = $this->db->insert('clie__archivos', $batch['archivo']);
+        $detall = $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
+        return $arch;
     }
     
     public function getManipulacion($archivo, $cuenta, $column) {

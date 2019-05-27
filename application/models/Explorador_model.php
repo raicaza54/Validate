@@ -29,7 +29,9 @@ class Explorador_model extends CI_Model {
     
     public function crear($param) {
         extract($param);
+        $id = uniqint();
         $data = [
+            'id'             => $id,
             'fk_empresas'    => (int) $empresaId,
             'order'          => 0,
             'parent_id'      => $parent_id,
@@ -43,8 +45,9 @@ class Explorador_model extends CI_Model {
             'update_clie'    => $this->session->userdata('clientes_id'),
             'archivos_id'    => $archivos_id,
         ];
-        if($this->db->insert('clie__carpetas', $data)){
-            return $this->db->insert_id();
+        $e = $this->db->insert('clie__carpetas', $data);
+        if($e){
+            return $id;
         }else{
             return FALSE;
         }

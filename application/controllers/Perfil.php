@@ -46,7 +46,7 @@ class Perfil extends CI_Controller {
             $cliente_id = $this->session->userdata('clientes_id');
             $datos = $this->Cliente_model->getContrato($cliente_id);
             if(!is_array($datos)){
-                throw new Exception("Tenemos un problema, por favor contactar con soporte", 202);
+                throw new Exception("Tenemos un problema, por favor contactar con soporte", 400);
             }
             $response = [
                 "data" => $datos,
@@ -78,7 +78,7 @@ class Perfil extends CI_Controller {
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         } else {
-            $response["title"]  = "Error Interno del Servidor";
+            $response["title"]  = "Error del cliente";
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         }

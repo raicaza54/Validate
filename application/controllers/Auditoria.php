@@ -61,16 +61,16 @@ class Auditoria extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
             }
             $column = $this->archivo->columnSpider($form['archivoIdProcesar']);
             $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar'], $column);
             if(!is_array($items) || (count($items) <= 0)){
-                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 202);
+                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 418);
             }            
             $this->spider->data = $items;
             $spider = $this->spider->procesar($form['campoSpider']);
@@ -93,7 +93,7 @@ class Auditoria extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $manipulacion = $this->manipulacion->run($post['balances']);
             $response["data"] = $manipulacion;
@@ -116,20 +116,20 @@ class Auditoria extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
             }
             $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
             if(!is_array($items) || (count($items) <= 0)){
-                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 202);
+                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 418);
             }
             $this->benford->data = $items;
             $tabla = $this->benford->procesar($form['digito']);
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
-                throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 202);
+                throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 418);
             }
             $response["data"] = $tabla + ['form' => $form];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -159,7 +159,7 @@ class Auditoria extends CI_Controller {
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         } else {
-            $response["title"]  = "Error Interno del Servidor";
+            $response["title"]  = "Error del cliente";
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         }
