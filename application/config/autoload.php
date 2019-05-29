@@ -72,6 +72,7 @@ $autoload['libraries'] = array(
     'permisos',
     'csvimport',
     'archivo',
+    'form_validation',
 );
 
 /*

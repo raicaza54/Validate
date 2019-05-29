@@ -165,6 +165,35 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
+FECHA: 27/05/2019
+NUEVAS FUNCIONALIDADES
+▪ Perfil de usuario, cambio de datos como clave, nombres y telefono
+
+ACTUALIZACIÓN
+▪ Se asignan los http code a mensajes de validaciones o errores
+▪ Asignacion de identificador de registro en carpetas se hace unico desde backend para evitar fallas en concurrencias
+▪ Actualizar datos de perfil de usuario, tales como nombre, apellido, telefono y clave
+
+CORRECCIONES
+▪ Al momento de cargar un archivo no era posible actualizar el explorador
+▪ Al borrar un archivo y el mismo se esta visualizando este tambien se borra de la vista
+▪ Al aplicar analisis de La Araña, las columnas no estaban correctamente validadas
+
+SE ESTA TRABAJANDO
+▪ Crear empresas, sujeto a limites de contrato
+▪ Explorador de resultados
+▪ Resultados en PDF, Ley de Benford
+▪ Resultados en PDF, La Araña
+▪ Resultados en PDF, Manipulación
+▪ Listas de Control, Proveedores Ficticios
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos (se posterga para una próxima iteración)
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+
+NOTA
+▪ La asiganación
+
+#*******************************************************************************
+
 Luisa Fernanda Londoño Gomez
 Fecha: sáb., 18 may. 12:18 
 

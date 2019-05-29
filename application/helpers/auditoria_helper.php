@@ -80,4 +80,32 @@ if (!function_exists('is_json')) {
         json_decode($strJson);
         return (json_last_error() === JSON_ERROR_NONE);
     } 
-} 
+}
+
+if (!function_exists('openCypher')) {
+    /**
+     * Encriptar y desencriptar cadenas de texto con PHP
+     * @param type $action string encrypt/decrypt
+     * @param type $string string cadena a procesar
+     * @return type string cadena procesada
+     */
+    function openCypher($action = 'encrypt', $string = false) {
+        $action = trim($action);
+        $output = false;
+        $myKey          = 'Aophei3ahfo7Che8';
+        $myIV           = 'Ii5oFei5wah6ooco';
+        $encrypt_method = 'AES-256-CBC';
+        $secret_key = hash('sha256', $myKey);
+        $secret_iv  = substr(hash('sha256', $myIV), 0, 16);
+        if ($action && ($action == 'encrypt' || $action == 'decrypt') && $string) {
+            $string = trim(strval($string));
+            if ($action == 'encrypt') {
+                $output = openssl_encrypt($string, $encrypt_method, $secret_key, 0, $secret_iv);
+            }
+            if ($action == 'decrypt') {
+                $output = openssl_decrypt($string, $encrypt_method, $secret_key, 0, $secret_iv);
+            }
+        }
+        return $output;
+    }
+}

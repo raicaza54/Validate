@@ -517,10 +517,20 @@ class Archivos extends CI_Controller {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 400);
-            }            
+            }
             $items = $this->Archivos_model->getCuentas($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 418);
+            }
+            $column = $this->archivo->columnSpider($post['id']);
+            if(!is_array($column) || !array_key_exists('array', $column)){
+                throw new Exception("Tenemos un problema, no estan definidas las columnas del archivo, se requiere configuración", 418);
+            }
+            if(!(is_array($column['array']) && (count($column['array']) >= 0))){
+                throw new Exception("Tenemos un problema, el tipo de columna no corresponde con el archivo, se requiere configuración", 418);
+            }
+            if(count(array_diff(['cta','comp','doc','tipo','valor'], array_keys($column['array']))) > 0){
+                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 400);
             }
             $response["data"] = $items;
             throw new Exception("Resultado retornando correctamente", 200);

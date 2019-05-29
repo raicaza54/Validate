@@ -81,7 +81,7 @@
                 <a class="nav-item nav-link nav-icon" href="#">
                     <i class="fas fa-bell"></i>
                 </a>
-                <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato();">
+                <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato(true);">
                     <i class="fas fa-cog"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#">
