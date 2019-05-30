@@ -180,14 +180,14 @@ CORRECCIONES
 ▪ Al aplicar analisis de La Araña, las columnas no estaban correctamente validadas
 
 SE ESTA TRABAJANDO
-▪ Crear empresas, sujeto a limites de contrato
 ▪ Explorador de resultados
 ▪ Resultados en PDF, Ley de Benford
 ▪ Resultados en PDF, La Araña
 ▪ Resultados en PDF, Manipulación
+▪ Crear empresas, sujeto a limites de contrato
 ▪ Listas de Control, Proveedores Ficticios
-▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos (se posterga para una próxima iteración)
 ▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos (se posterga para una próxima iteración)
 
 NOTA
 ▪ La asiganación
