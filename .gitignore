@@ -38,3 +38,4 @@ application/libraries/out
 composer.lock
 application/views/cache
 application/views/compile
+/application/config/database.php
