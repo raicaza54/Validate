@@ -32,6 +32,10 @@ class Tareas extends CI_Controller {
         $this->dbpermisos->admin($truncate);
     }
     
+    public function permisosMembers($truncate = 0) {
+        $this->dbpermisos->members($truncate);
+    }
+    
     public function permisosEducativo($truncate = 0) {
         $this->dbpermisos->educativo($truncate);
     }

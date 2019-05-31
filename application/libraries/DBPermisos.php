@@ -31,6 +31,7 @@ class DBPermisos {
      * $/var/www/html/validate$ php -f index.php tareas/permisos
      * $/var/www/html/validate$ php -f index.php tareas/permisosAdmin
      * $/var/www/html/validate$ php -f index.php tareas/permisosEducativo
+     * $/var/www/html/validate$ php -f index.php tareas/permisosMembers
      */
     public function definir() {
         $this->CI->db->truncate('sist__permisos');
@@ -85,6 +86,7 @@ class DBPermisos {
         $this->CI->db->truncate('sist__permisos_groups');
         $this->admin();
         $this->educativo();
+        $this->members();
     }
     
     public function admin($truncate = 0) {
@@ -118,6 +120,32 @@ class DBPermisos {
             ['fk_permisos' => 403, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 700, 'fk_groups' => 3] + $userDate,
+        ];
+        $this->CI->db->insert_batch('sist__permisos_groups', $data);
+    }
+    
+    public function members($truncate = 0) {
+        if($truncate == 1)
+        $this->CI->db->truncate('sist__permisos_groups');
+        $userDate = [
+            'created_user' => '1',
+            'created_clie' => '1',
+            'update_user'  => '1',
+            'update_clie'  => '1',
+        ];
+        $data = [
+            ['fk_permisos' => 200, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 201, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 202, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 203, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 401, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 402, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 403, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 600, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 601, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 602, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 603, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 700, 'fk_groups' => 2] + $userDate,
         ];
         $this->CI->db->insert_batch('sist__permisos_groups', $data);
     }
