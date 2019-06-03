@@ -65,6 +65,13 @@ $route['explorador/v1/crear']['post']    = 'explorador/crear';
 $route['explorador/v1/editar']['post']   = 'explorador/editar';
 
 /* -------------------------------------------------------------------------
+ * Resultados
+ * ------------------------------------------------------------------------- */
+$route['resultados/v1/carpetas']['post'] = 'resultados/carpetas';
+$route['resultados/v1/crear']['post']    = 'resultados/crear';
+$route['resultados/v1/editar']['post']   = 'resultados/editar';
+
+/* -------------------------------------------------------------------------
  * Archivos
  * ------------------------------------------------------------------------- */
 $route['archivos/v1/datos']['post']      = 'archivos/datos';

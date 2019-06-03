@@ -32,6 +32,7 @@ class DBPermisos {
      * $/var/www/html/validate$ php -f index.php tareas/permisosAdmin
      * $/var/www/html/validate$ php -f index.php tareas/permisosEducativo
      * $/var/www/html/validate$ php -f index.php tareas/permisosMembers
+     * $/var/www/html/validate$ php -f index.php tareas/permisosResetear
      */
     public function definir() {
         $this->CI->db->truncate('sist__permisos');
@@ -71,19 +72,25 @@ class DBPermisos {
             ['id' => 408, 'permiso' => 'mal-documentos-marcas', 'observacion' => ''] + $userDate,
             ['id' => 409, 'permiso' => 'mal-documentos-cxpc', 'observacion' => ''] + $userDate,
             #[mad - 500] - Menu Administrar
-            #[exp - 600] - Explorador Archivos/Resultados
+            #[exp - 600] - Explorador Archivos
             ['id' => 600, 'permiso' => 'exp-archivos-actualizar', 'observacion' => ''] + $userDate,
             ['id' => 601, 'permiso' => 'exp-archivos-crear', 'observacion' => ''] + $userDate,
             ['id' => 602, 'permiso' => 'exp-archivos-editar', 'observacion' => ''] + $userDate,
             ['id' => 603, 'permiso' => 'exp-archivos-borrar', 'observacion' => ''] + $userDate,
             #[mac - 700] - Modulo Archivos
             ['id' => 700, 'permiso' => 'mac-archivo-configurar', 'observacion' => ''] + $userDate,
+            #[exp - 800] - Explorador Resultados
+            ['id' => 800, 'permiso' => 'exp-resultados-actualizar', 'observacion' => ''] + $userDate,
+            ['id' => 801, 'permiso' => 'exp-resultados-crear', 'observacion' => ''] + $userDate,
+            ['id' => 802, 'permiso' => 'exp-resultados-editar', 'observacion' => ''] + $userDate,
+            ['id' => 803, 'permiso' => 'exp-resultados-borrar', 'observacion' => ''] + $userDate,            
         ];
         $this->CI->db->insert_batch('sist__permisos', $data);
     }
     
     public function resetear() {
         $this->CI->db->truncate('sist__permisos_groups');
+        $this->definir();
         $this->admin();
         $this->educativo();
         $this->members();
@@ -146,6 +153,10 @@ class DBPermisos {
             ['fk_permisos' => 602, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 603, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 700, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 800, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 801, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 802, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 803, 'fk_groups' => 2] + $userDate,            
         ];
         $this->CI->db->insert_batch('sist__permisos_groups', $data);
     }

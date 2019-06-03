@@ -62,7 +62,8 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array(
     'database',
     'email',
-    'arbol',
+    'arbole',
+    'arbolr',
     'session',
     'asset',
     'ion_auth',

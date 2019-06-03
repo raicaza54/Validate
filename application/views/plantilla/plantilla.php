@@ -98,46 +98,46 @@
         <?php $this->load->view('plantilla/menu'); ?>
         <!-- Sidebar -->
         <nav id="sidebar">
-            <div id="explorador-archivos" class="explorador-vista d-block">
-                <ul class="list-unstyled components" style="padding-top: 15px;">
-                    <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
-                        <div class="float-left" style="margin-left: 5px; font-weight: bold;">Explorador de archivos</div>
-                        <div class="float-right" style="margin: 0px;">
-                            <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
-                            <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta(this)"></i>
-                            <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
-                            <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta(this)"></i>
-                        </div>
+            <ul class="nav nav-tabs" id="explorador" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tabexplorador-tab" data-toggle="tab" href="#tabexplorador" role="tab" aria-controls="tabexplorador" aria-selected="true">Archivos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tabresultados-tab" data-toggle="tab" href="#tabresultados" role="tab" aria-controls="tabresultados" aria-selected="false">Resultados</a>
+                </li>
+            </ul>
+            <div class="tab-content shadow-sm" id="exploradorContent">
+                <div class="tab-pane fade show active" id="tabexplorador" role="tabpanel" aria-labelledby="tabexplorador-tab">
+                    <div class="explorador-icon">
+                        <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
+                        <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta(this)"></i>
+                        <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
+                        <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta(this)"></i>
                     </div>
-                    <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">
+                    <div class="card" style="height: calc(100vh - 245px); overflow-y: auto;">
                         <div class="card-body" id="explorador-content">
                             <div class="selec-empresa text-center text-muted small no-seleccionable">
                                 Debe Seleccionar<br/>una empresa
                             </div>
                         </div>
-                    </div>
-                </ul>
-            </div>
-            <div id="explorador-resultados" class="explorador-vista d-none">
-                <ul class="list-unstyled components" style="padding-top: 15px;">
-                    <div style="margin: 0px; padding: 0px 10px 0px 10px;" class="clearfix">
-                        <div class="float-left" style="margin-left: 5px; font-weight: bold;">Explorador de Resultados</div>
-                        <div class="float-right" style="margin: 0px;">
-                            <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas"></i>
-                            <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta"></i>
-                            <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta"></i>
-                            <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido"></i>
-                        </div>
-                    </div>
-                    <div class="card shadow-sm" style="height: calc(100vh - 243px); overflow-y: auto;">
-                        <div class="card-body" id="explorador-content">
+                    </div>                    
+                </div>
+                <div class="tab-pane fade" id="tabresultados" role="tabpanel" aria-labelledby="tabresultados-tab">
+                    <div class="explorador-icon">
+                        <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-resultados-actualizar')?>" id="exp-resultados-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="RESULTADOS.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
+                        <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-resultados-crear')?>" id="exp-resultados-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="RESULTADOS.methods.crearCarpeta(this)"></i>
+                        <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-resultados-editar')?>" id="exp-resultados-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="RESULTADOS.methods.editarCarpeta(this)"></i>
+                        <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-resultados-borrar')?>" id="exp-resultados-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="RESULTADOS.methods.borrarCarpeta(this)"></i>
+                    </div>                    
+                    <div class="card shadow-sm" style="height: calc(100vh - 245px); overflow-y: auto;">
+                        <div class="card-body" id="resultados-content">
                             <div class="selec-empresa text-center text-muted small no-seleccionable">
                                 Debe Seleccionar<br/>una empresa
                             </div>
                         </div>
-                    </div>
-                </ul>
-            </div>
+                    </div>                    
+                </div>
+            </div>            
         </nav>
         <div id="content" style="z-index: 1030;">
             <?= $body ?>

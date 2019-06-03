@@ -5,10 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
- * @Description Controlador Explorador de carpetas
- * @LastUpdate  2019-02-14
+ * @Description Controlador Explorador de Resultados
+ * @LastUpdate  2019-05-01
  */
-class Explorador extends CI_Controller {
+class Resultados extends CI_Controller {
 
     public $response = array(
         "meta"   => array(
@@ -35,7 +35,7 @@ class Explorador extends CI_Controller {
             show_404();
         }
         $this->load->model([
-            'Explorador_model',
+            'Resultados_model',
             'Archivos_model',
         ]);
     }
@@ -78,20 +78,15 @@ class Explorador extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            debug_file($post);
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
-            if(in_array($post['type'], ['xls','xlsx','csv']) && !(is_numeric($post['archivos_id']) && ($post['archivos_id'] <= 0))){
-                throw new Exception("Tenemos un problema, el identificador de archivo es incompletos o corruptos", 400);
-            }
-            $insert = $this->Explorador_model->crear([
+            $insert = $this->Resultados_model->crear([
                 'label'       => $post['label'],
                 'empresaId'   => $this->session->userdata('empresaId'),
                 'parent_id'   => $post['parent_id'],
                 'type'        => $post['type'],
-                'id'          => $post['id'],
-                'archivos_id' => $post['archivos_id']
+                'id'          => $post['id']
             ]);
             if($insert === FALSE){
                 throw new Exception("Tenemos un problema, no fue posible crear carpeta", 418);
@@ -121,7 +116,7 @@ class Explorador extends CI_Controller {
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('deleted_at', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
-            $insert = $this->Explorador_model->editar([
+            $insert = $this->Resultados_model->editar([
                 'label'      => $post['label'],
                 'id'         => $post['id'],
                 'parent_id'  => $post['parent_id'],
@@ -148,7 +143,7 @@ class Explorador extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }            
-            $items = $this->arbole->run($post['id']);
+            $items = $this->arbolr->run($post['id']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 418);
             }

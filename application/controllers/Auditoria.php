@@ -18,7 +18,7 @@ class Auditoria extends CI_Controller {
     
     public $response = array(
         "meta"   => array(
-            "copyright" => "Verify 2019",
+            "copyright" => "Validate 2019",
             "authors"   => array(
                 "Kevin Enriquez",
             )
@@ -80,8 +80,9 @@ class Auditoria extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));        
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function manipulacion() {
@@ -102,8 +103,9 @@ class Auditoria extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));        
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function benford() {
@@ -137,8 +139,9 @@ class Auditoria extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));        
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     private function tryCatch($exc, $response) {

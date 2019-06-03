@@ -3,8 +3,8 @@
 </p>
 <div class="card">
     <div class="card-body">
-        <h4 class="text-center"><?= lang('login_heading'); ?></h4>
-        <p><?= lang('login_subheading'); ?></p>
+        <h5 class="text-center"><?= lang('login_heading'); ?></h5>
+        <p class="text-center"><?= lang('login_subheading'); ?></p>
         <?php if(strlen($message)): ?>
         <div id="infoMessage" class="alert alert-secondary"><?= $message; ?></div>
         <?php endif; ?>
@@ -35,7 +35,7 @@
             <?= form_checkbox('remember', '1', FALSE, 'id="remember" class="form-check-input"'); ?>
             <?= lang('login_remember_label', 'remember', array('class' => 'form-check-label')); ?>
         </div>        
-        <?= form_submit('submit', lang('login_submit_btn'), 'class="btn btn-primary btn-lg btn-block mb-2"'); ?>
+        <?= form_submit('submit', lang('login_submit_btn'), 'class="btn btn-primary btn-block mb-2"'); ?>
         <?= form_close(); ?>
         <div class="text-center">
             <a href="forgot_password">

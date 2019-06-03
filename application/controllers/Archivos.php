@@ -12,7 +12,7 @@ class Archivos extends CI_Controller {
 
     public $response = array(
         "meta"   => array(
-            "copyright" => "Verify 2019",
+            "copyright" => "Validate 2019",
             "authors"   => array(
                 "Kevin Enriquez",
             )
@@ -261,7 +261,7 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, usted no tiene permisos para ejecutar esta funcionalidad", 400);
             }
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('carpeta', $post) || !array_key_exists('tipo', $post)){
+            if(!is_array($post) || !array_key_exists('folderId', $post) || !array_key_exists('tipo', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $limites = $this->limites(FALSE);
@@ -286,13 +286,13 @@ class Archivos extends CI_Controller {
             }
             if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx')){
                 $xls = $this->leer_excel($archivo + [
-                    'parent_id' => $post['carpeta'],
+                    'parent_id' => $post['folderId'],
                     'tipo'      => $post['tipo'],
                     'limite'    => $limite,
                 ]);
             }elseif($archivo['type'] == '.csv'){
                 $xls = $this->leer_csv($archivo + [
-                    'parent_id' => $post['carpeta'],
+                    'parent_id' => $post['folderId'],
                     'tipo'      => $post['tipo'],
                     'limite'    => $limite,
                 ]);
@@ -314,8 +314,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     private function do_upload() {
@@ -394,8 +395,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));        
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function datos() {
@@ -420,8 +422,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function limites($json = TRUE) {
@@ -439,8 +442,9 @@ class Archivos extends CI_Controller {
         }
         if($json){
             $this->output
-                    ->set_content_type('application/json')
-                    ->set_output(json_encode($response));            
+                ->set_content_type('application/json')
+                ->set_status_header($response['status'])
+                ->set_output(json_encode($response));
         }else{
             return $response;
         }
@@ -471,8 +475,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function encabezado($benford = 0) {
@@ -507,8 +512,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function cuentas() {
@@ -538,8 +544,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function digito() {
@@ -564,8 +571,9 @@ class Archivos extends CI_Controller {
             $response = $this->tryCatch($exc, $response);
         }
         $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($response));        
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
 
     private function tryCatch($exc, $response) {

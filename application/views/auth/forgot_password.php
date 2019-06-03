@@ -3,8 +3,8 @@
 </p>
 <div class="card">
     <div class="card-body">
-        <h4 class="text-center"><?= lang('forgot_password_heading'); ?></h4>
-        <p><?= sprintf(lang('forgot_password_subheading'), $identity_label); ?></p>
+        <h5 class="text-center"><?= lang('forgot_password_heading'); ?></h5>
+        <p class=""><?= sprintf(lang('forgot_password_subheading'), $identity_label); ?></p>
         <?php if(strlen($message)): ?>
         <div id="infoMessage" class="alert alert-secondary"><?= $message; ?></div>
         <?php endif; ?>
@@ -20,7 +20,7 @@
               <?= form_error('identity') ?>
             </div>            
         </div>
-        <?= form_submit('submit', lang('forgot_password_submit_btn'), 'class="btn btn-primary btn-lg btn-block mb-2"'); ?>
+        <?= form_submit('submit', lang('forgot_password_submit_btn'), 'class="btn btn-primary btn-block mb-2"'); ?>
         <?= form_close(); ?>
         <div class="text-center">
             <a href="login">

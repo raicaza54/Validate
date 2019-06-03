@@ -19,6 +19,7 @@ class Migration extends CI_Controller {
 
     public function version($id) {
         $class = 'dbauditoria_'.str_pad($id,3,0,STR_PAD_LEFT);
+        echo "Class: ".$class."\n";
         $this->load->library('migrations/'.$class);
         $this->$class->up();
     }

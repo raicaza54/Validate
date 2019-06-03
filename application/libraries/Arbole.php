@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @Description Libreria explorador de carpetas
  * @LastUpdate  2019-03-02
  */
-class Arbol {
+class Arbole {
 
     private $CI;
     private $_elements = array();

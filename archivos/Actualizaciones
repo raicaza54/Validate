@@ -189,8 +189,26 @@ SE ESTA TRABAJANDO
 ▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
 ▪ LOAD DATA INFILE MySQL, carga de archivo CSV mas eficiente en base de datos (se posterga para una próxima iteración)
 
-NOTA
-▪ La asiganación
+#*******************************************************************************
+
+FECHA: 03/06/2019
+NUEVAS FUNCIONALIDADES
+▪ Modulo de Resultados, creando, editgando y borrando carpetas donde se almacenaran los resultados
+
+ACTUALIZACIÓN
+▪ Identificador de carpetas y archivos, en el explorador de archivos como resultados se actualiza asignandolo desde el front-end asi evitar concurrencia y posibles fallos
+
+CORRECCIONES
+▪ Identificador de carpetas y archivos, en el explorador de archivos como resultados se actualiza asignandolo desde el front-end asi evitar concurrencia y posibles fallos
+▪ Creacion de carpetas en nodo raiz de directorio o cuando no existan carpetas en explorador o resultados
+
+SE ESTA TRABAJANDO
+▪ Resultados en PDF, Ley de Benford
+▪ Resultados en PDF, La Araña
+▪ Resultados en PDF, Manipulación
+▪ Crear empresas, sujeto a limites de contrato
+▪ Listas de Control, Proveedores Ficticios
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
 
 #*******************************************************************************
 

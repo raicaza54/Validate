@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author     GEO INFORMATIC SOLUTIONS SAS
  * @author     Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
  * @version    0.0.1
- * @LastUpdate 2018-02-13
+ * @LastUpdate 2019-02-13
  */
 class Archivos_model extends CI_Model {
 
