@@ -321,7 +321,7 @@ class Archivos extends CI_Controller {
     
     private function do_upload() {
         $r = FALSE;
-        $config['upload_path']      = $this->config->item('path_file');
+        $config['upload_path']      = $this->config->item('path_file').'/cli'.$this->session->userdata('clientes_id').'/archivos';
         $config['allowed_types']    = $this->config->item('types_file');
         $config['max_size']         = $this->config->item('size_file');
         $config['file_ext_tolower'] = TRUE;

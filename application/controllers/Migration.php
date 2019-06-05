@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Ejecucion via terminal
- * var/www/html/auditoria$ php index.php migration version 1
+ * var/www/html/auditoria$ php -f index.php migration version 1
  * this->migration->version(2)ejecutará el método up de
  * las migraciones 001 y 002 y el método down de las superiores
  */

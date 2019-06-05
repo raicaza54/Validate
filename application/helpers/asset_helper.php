@@ -43,7 +43,7 @@ if (!defined('BASEPATH'))
 if (!function_exists('load_assets')) {
 
     function load_assets($type = "", $https = false) {
-        $CI = & get_instance();
+        $CI     = & get_instance();
         $CI->load->library('asset');
         $output = "";
         switch ($type) {
@@ -80,7 +80,7 @@ if (!function_exists('load_assets')) {
 if (!function_exists('load_multiple_assets')) {
 
     function load_multiple_assets($type = array(), $https = false) {
-        $CI = & get_instance();
+        $CI            = & get_instance();
         $CI->load->config("asset_config");
         $CI->load->library('asset');
         $assets_config = $CI->config->item('assets');
@@ -326,15 +326,4 @@ if (!function_exists('external_less')) {
         return $CI->asset->external_asset("less", $url);
     }
 
-}
-
-if (!function_exists('money')) {
-
-    function money($value) {
-        if(substr($value,0,2) == '$-'){
-            $value = '-$'.substr($value, 2);
-        }
-        return $value;
-    }
-    
 }

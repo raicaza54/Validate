@@ -24,6 +24,12 @@ class Dbauditoria_005{
                 'null'       => TRUE,
                 'default'    => 0
             ],
+            'archivos_id' => [
+                'type'       => 'BIGINT',
+                'constraint' => '20',
+                'comment'    => 'clave foranea de archivo si es necesario',
+                'null'       => TRUE,
+            ],
             'disabled' => [
                 'type'       => 'TINYINT',
                 'constraint' => '1',

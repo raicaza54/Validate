@@ -13,10 +13,9 @@ class Dbauditoria_010{
         $this->CI->dbforge->drop_table('clie__resultados', TRUE);
         $this->CI->dbforge->add_field([
             'id'             => [
-                'type'           => 'INT',
-                'constraint'     => '11',
+                'type'           => 'BIGINT',
+                'constraint'     => '20',
                 'unsigned'       => TRUE,
-                'auto_increment' => TRUE
             ],
             'fk_empresas'    => [
                 'type'       => 'INT',

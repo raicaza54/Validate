@@ -64,18 +64,26 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $form = unSerializeArray($post['form']);
-            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form)){
+            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form) || !array_key_exists('ejecucion', $form)){
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
             }
             $column = $this->archivo->columnSpider($form['archivoIdProcesar']);
             $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar'], $column);
             if(!is_array($items) || (count($items) <= 0)){
                 throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 418);
-            }            
+            }
             $this->spider->data = $items;
             $spider = $this->spider->procesar($form['campoSpider']);
+            $id = uniqint();
+            $form = $form + ['id' => $id];
             $response["data"] = $spider + ['form' => $form];
-            throw new Exception("Se ha creado la araña correctamente", 200);            
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $form['ejecucion'],
+                'analisis_tipo' => 'spider'
+            ]);
+            throw new Exception("Se ha creado la araña correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
@@ -93,11 +101,18 @@ class Auditoria extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2) || !array_key_exists('ejecucion', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $manipulacion = $this->manipulacion->run($post['balances']);
+            $id = uniqint();
             $response["data"] = $manipulacion;
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $post['ejecucion'],
+                'analisis_tipo' => 'manipulacion'
+            ]);
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -121,7 +136,7 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $form = unSerializeArray($post['form']);
-            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form)){
+            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form) || !array_key_exists('ejecucion', $form)){
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
             }
             $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
@@ -133,7 +148,16 @@ class Auditoria extends CI_Controller {
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
                 throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 418);
             }
+            $id = uniqint();
+            $form = $form + ['id' => $id];
             $response["data"] = $tabla + ['form' => $form];
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $form['ejecucion'],
+                'observacion'   => 'Digito: ' . $form['digito'],
+                'analisis_tipo' => 'benford'
+            ]);
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

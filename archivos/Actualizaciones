@@ -193,14 +193,14 @@ SE ESTA TRABAJANDO
 
 FECHA: 03/06/2019
 NUEVAS FUNCIONALIDADES
-▪ Modulo de Resultados, creando, editgando y borrando carpetas donde se almacenaran los resultados
+▪ Modulo de Resultados, creando, editando y borrando carpetas donde se almacenaran los resultados
 
 ACTUALIZACIÓN
-▪ Identificador de carpetas y archivos, en el explorador de archivos como resultados se actualiza asignandolo desde el front-end asi evitar concurrencia y posibles fallos
+▪ No hay cambios
 
 CORRECCIONES
-▪ Identificador de carpetas y archivos, en el explorador de archivos como resultados se actualiza asignandolo desde el front-end asi evitar concurrencia y posibles fallos
-▪ Creacion de carpetas en nodo raiz de directorio o cuando no existan carpetas en explorador o resultados
+▪ Identificador de carpetas y archivos, en el explorador de archivos como resultados se actualiza asignándolo desde el front-end así evitar concurrencia y posibles fallos
+▪ Creación de carpetas en nodo raíz de directorio o cuando no existan carpetas en explorador o resultados
 
 SE ESTA TRABAJANDO
 ▪ Resultados en PDF, Ley de Benford

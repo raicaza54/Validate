@@ -13,10 +13,9 @@ class Dbauditoria_004{
         $this->CI->dbforge->drop_table('clie__carpetas', TRUE);
         $this->CI->dbforge->add_field([
             'id'             => [
-                'type'           => 'INT',
-                'constraint'     => '11',
+                'type'           => 'BIGINT',
+                'constraint'     => '20',
                 'unsigned'       => TRUE,
-                'auto_increment' => TRUE
             ],
             'fk_empresas'    => [
                 'type'       => 'INT',
@@ -30,8 +29,8 @@ class Dbauditoria_004{
                 'null'       => TRUE
             ],
             'parent_id'      => [
-                'type'       => 'INT',
-                'constraint' => '11',
+                'type'       => 'BIGINT',
+                'constraint' => '20',
                 'comment'    => 'registro padre',
                 'null'       => TRUE
             ],
@@ -88,10 +87,9 @@ class Dbauditoria_004{
         $this->CI->dbforge->drop_table('clie__archivos', TRUE);
         $this->CI->dbforge->add_field([
             'id'            => [
-                'type'           => 'INT',
-                'constraint'     => '11',
+                'type'           => 'BIGINT',
+                'constraint'     => '20',
                 'unsigned'       => TRUE,
-                'auto_increment' => TRUE
             ],
             'fk_carpetas'   => [
                 'type'       => 'INT',
