@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="<?= base_url('assets/library/bootstrap/4.2.1/css/bootstrap.min.css') ?>">
-        <link rel="stylesheet" href="<?= base_url('assets/library/scroller/3.1.5/css/jquery.mCustomScrollbar.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/jstree/style.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/library/scroller/3.1.5/css/jquery.mCustomScrollbar.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/billboard/1.7.1/css/billboard.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/datatables/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/datatables/Select-1.2.6/css/select.bootstrap.min.css') ?>">
@@ -20,11 +20,11 @@
             var base_url = '<?= base_url() ?>';
             var version = '<?= $assets['version'] ?>';
         </script>
-        <script src="<?= base_url('assets/library/jquery/3.3.1/jquery.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/jquery/3.4.1/jquery.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/bootstrap/4.2.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/scroller/3.1.5/js/jquery.mCustomScrollbar.concat.min.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/DataTables/datatables.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/datatables/Select-1.2.6/js/select.bootstrap.min.js') ?>" type="text/javascript"></script>
@@ -114,7 +114,7 @@
                         <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
                         <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta(this)"></i>
                     </div>
-                    <div class="card" style="height: calc(100vh - 245px); overflow-y: auto;">
+                    <div class="card" style="height: calc(100vh - 245px); overflow-y: auto; padding: 10px 0px;">
                         <div class="card-body" id="explorador-content">
                             <div class="selec-empresa text-center text-muted small no-seleccionable">
                                 Debe Seleccionar<br/>una empresa
@@ -129,7 +129,7 @@
                         <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-resultados-editar')?>" id="exp-resultados-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="RESULTADOS.methods.editarCarpeta(this)"></i>
                         <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-resultados-borrar')?>" id="exp-resultados-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="RESULTADOS.methods.borrarCarpeta(this)"></i>
                     </div>                    
-                    <div class="card shadow-sm" style="height: calc(100vh - 245px); overflow-y: auto;">
+                    <div class="card shadow-sm" style="height: calc(100vh - 245px); overflow-y: auto; padding: 10px 0px;">
                         <div class="card-body" id="resultados-content">
                             <div class="selec-empresa text-center text-muted small no-seleccionable">
                                 Debe Seleccionar<br/>una empresa

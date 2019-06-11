@@ -67,9 +67,12 @@ $route['explorador/v1/editar']['post']   = 'explorador/editar';
 /* -------------------------------------------------------------------------
  * Resultados
  * ------------------------------------------------------------------------- */
-$route['resultados/v1/carpetas']['post'] = 'resultados/carpetas';
-$route['resultados/v1/crear']['post']    = 'resultados/crear';
-$route['resultados/v1/editar']['post']   = 'resultados/editar';
+$route['resultados/v1/carpetas']['post']   = 'resultados/carpetas';
+$route['resultados/v1/crear']['post']      = 'resultados/crear';
+$route['resultados/v1/editar']['post']     = 'resultados/editar';
+$route['resultados/v1/pdf']['post']        = 'resultados/pdf';
+$route['resultados/v1/descargar']['post']  = 'resultados/descargar';
+$route['resultados/url/(:any)']['get']     = 'resultados/url/$1';
 
 /* -------------------------------------------------------------------------
  * Archivos

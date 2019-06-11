@@ -78,7 +78,6 @@ class Explorador extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            debug_file($post);
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }

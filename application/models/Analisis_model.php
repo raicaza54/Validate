@@ -30,12 +30,21 @@ class Analisis_model extends CI_Model {
     }
     
     public function getData($id) {
-        
+        $this->db->where('ejecucion', $id);
+        $this->db->where('fk_empresas', $this->session->userdata('empresaId'));
+        $this->db->where('created_user', $this->session->userdata('users_id'));
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $data = $this->db->get('clie__analisis')->result_array();
         return $data;
     }
     
     public function setUpdate($data, $id) {
-        $this->db->update('auth__users', $data, ['id' => $id]);
+        $this->db->update('clie__analisis', $data, ['id' => $id]);
+        return $this->db->affected_rows() == 1;
+    }
+    
+    public function setUpdatePdf($data, $ejecucion) {
+        $this->db->update('clie__analisis', $data, ['ejecucion' => $ejecucion]);
         return $this->db->affected_rows() == 1;
     }
     

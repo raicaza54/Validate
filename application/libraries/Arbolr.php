@@ -60,7 +60,7 @@ class Arbolr {
                         'disabled' => boolval($master["disabled"]),
                     ],
                     'li_attr' => [
-                        'file'           => 0,
+                        'file'           => $master["id"],
                         'title'          => $master["label"].$tipo[0],
                         'data-toggle'    => "tooltip",
                         'data-placement' => "top"
@@ -109,7 +109,7 @@ class Arbolr {
                                 'disabled' => boolval($row["disabled"])
                             ],
                             'li_attr' => [
-                                'file'           => 0,
+                                'file'           => $row["id"],
                                 'title'          => $row["label"].$tipo[0],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"
@@ -127,7 +127,7 @@ class Arbolr {
                                 'disabled' => boolval($row["disabled"])
                             ],
                             'li_attr' => [
-                                'file'           => 0,
+                                'file'           => $row["id"],
                                 'title'          => $row["label"].$tipo[0],
                                 'data-toggle'    => "tooltip",
                                 'data-placement' => "top"

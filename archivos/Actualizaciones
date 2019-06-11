@@ -212,6 +212,28 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
+FECHA: 11/06/2019
+NUEVAS FUNCIONALIDADES
+▪ Resultados en PDF, Ley de Benford
+▪ Resultados en PDF, La Araña
+▪ Resultados en PDF, Manipulación
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Eventos de error en front-end y variables CSRF
+
+SE ESTA TRABAJANDO
+▪ Permitir almacenar el mismo resultado PDF mas de una vez
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Crear empresas, sujeto a limites de contrato
+▪ Listas de Control, Proveedores Ficticios
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ Validaciones utilizando las librerias y utilidades nativas del framework
+
+#*******************************************************************************
+
 Luisa Fernanda Londoño Gomez
 Fecha: sáb., 18 may. 12:18 
 

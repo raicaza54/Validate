@@ -116,6 +116,7 @@ $autoload['helper'] = array(
     'number',
     'string',
     'auditoria_helper',
+    'security'
 );
 
 /*

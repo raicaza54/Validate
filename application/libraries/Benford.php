@@ -424,10 +424,15 @@ class Benford {
     }
     
     private function contar_valores($a, $buscado) {
-        if (!is_array($a))
+        $e = 0;
+        if (!is_array($a)){
             return NULL;
+        }
         $v = array_count_values($a);
-        return array_key_exists($buscado, $a) ? $v[$buscado] : 0;
+        if(array_key_exists($buscado, $a) && array_key_exists($buscado, $v)){
+            $e = $v[$buscado];
+        }
+        return $e;
     }    
     
 }

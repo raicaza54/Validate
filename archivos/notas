@@ -264,3 +264,30 @@
 # https://stackoverflow.com/questions/14127529/mysql-import-data-from-csv-using-load-data-infile
 # https://phenobarbital.wordpress.com/2007/08/03/cargar-datos-en-mysql-con-load-data-infile/
 #*******************************************************************************
+
+#*******************************************************************************
+# ¿Cómo instalamos mcrypt?
+#*******************************************************************************
+# sudo apt-get -y install gcc make autoconf libc-dev pkg-config
+# sudo apt-get -y install php7.2-dev
+# sudo apt-get -y install libmcrypt-dev
+# sudo pecl install mcrypt-1.0.1
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://tecnonucleous.com/2018/07/14/como-instalar-mcrypt-en-php-7-2/
+#*******************************************************************************
+
+#*******************************************************************************
+# Jugando con $.Deferred()
+#*******************************************************************************
+# El objeto deferred se introdujo en jQuery a partir de la versión 1.5 y provocó 
+# una importante mejora en las interfaces de programación asíncrona 
+# (y síncrona …) que se usaban hasta entonces. Es un objeto concatenable sobre 
+# el que se pueden registrar múltiples callbacks que se ejecutarán en función 
+# del resultado final de la deferred.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# http://yagoperez.com/jugando-con-jquery-deferred/
+#*******************************************************************************

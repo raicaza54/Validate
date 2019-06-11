@@ -64,6 +64,11 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
             }
             $form = unSerializeArray($post['form']);
+            $this->form_validation->set_data($form);
+            $this->form_validation->set_rules('ejecucion', 'Ejecución', 'required|max_length[50]|min_length[10]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception('<ul>'.validation_errors('<li>','</li>').'</ul>', 400);
+            }
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form) || !array_key_exists('ejecucion', $form)){
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
             }

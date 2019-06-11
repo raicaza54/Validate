@@ -26,3 +26,7 @@ if(1 == 2){
         'filepath' => 'hooks'
     );    
 }
+$hook['post_controller_constructor'] = function(){
+    $CI =& get_instance();
+    $CI->config->set_item('path_clie', $CI->config->item('path_file').'/cli'.$CI->session->userdata('clientes_id').'/');
+};
