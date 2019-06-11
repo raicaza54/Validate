@@ -225,6 +225,8 @@ CORRECCIONES
 ▪ Eventos de error en front-end y variables CSRF
 
 SE ESTA TRABAJANDO
+▪ Creación de directorios de forma dinamica
+▪ Correcciones de algunas situaciones front-end que provocan errores inesperados no frecuentes
 ▪ Permitir almacenar el mismo resultado PDF mas de una vez
 ▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
 ▪ Crear empresas, sujeto a limites de contrato
