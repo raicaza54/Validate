@@ -1891,21 +1891,21 @@ class TCPDF {
 		$this->last_enc_key = '';
 		// standard Unicode fonts
 		$this->CoreFonts = array(
-			'courier'=>'Courier',
-			'courierB'=>'Courier-Bold',
-			'courierI'=>'Courier-Oblique',
-			'courierBI'=>'Courier-BoldOblique',
-			'helvetica'=>'Helvetica',
-			'helveticaB'=>'Helvetica-Bold',
-			'helveticaI'=>'Helvetica-Oblique',
-			'helveticaBI'=>'Helvetica-BoldOblique',
-			'times'=>'Times-Roman',
-			'timesB'=>'Times-Bold',
-			'timesI'=>'Times-Italic',
-			'timesBI'=>'Times-BoldItalic',
-			'symbol'=>'Symbol',
-			'zapfdingbats'=>'ZapfDingbats'
-		);
+                    'courier'      => 'Courier',
+                    'courierB'     => 'Courier-Bold',
+                    'courierI'     => 'Courier-Oblique',
+                    'courierBI'    => 'Courier-BoldOblique',
+                    'helvetica'    => 'Helvetica',
+                    'helveticaB'   => 'Helvetica-Bold',
+                    'helveticaI'   => 'Helvetica-Oblique',
+                    'helveticaBI'  => 'Helvetica-BoldOblique',
+                    'times'        => 'Times-Roman',
+                    'timesB'       => 'Times-Bold',
+                    'timesI'       => 'Times-Italic',
+                    'timesBI'      => 'Times-BoldItalic',
+                    'symbol'       => 'Symbol',
+                    'zapfdingbats' => 'ZapfDingbats'
+                );
 		// set scale factor
 		$this->setPageUnit($unit);
 		// set page format and orientation
@@ -1950,14 +1950,14 @@ class TCPDF {
 		$this->signature_appearance = array('page' => 1, 'rect' => '0 0 0 0', 'name' => 'Signature');
 		$this->empty_signature_appearance = array();
 		// user's rights
-		$this->ur['enabled'] = false;
-		$this->ur['document'] = '/FullSave';
-		$this->ur['annots'] = '/Create/Delete/Modify/Copy/Import/Export';
-		$this->ur['form'] = '/Add/Delete/FillIn/Import/Export/SubmitStandalone/SpawnTemplate';
-		$this->ur['signature'] = '/Modify';
-		$this->ur['ef'] = '/Create/Delete/Modify/Import';
-		$this->ur['formex'] = '';
-		// set default JPEG quality
+		$this->ur['enabled']   = false;
+                $this->ur['document']  = '/FullSave';
+                $this->ur['annots']    = '/Create/Delete/Modify/Copy/Import/Export';
+                $this->ur['form']      = '/Add/Delete/FillIn/Import/Export/SubmitStandalone/SpawnTemplate';
+                $this->ur['signature'] = '/Modify';
+                $this->ur['ef']        = '/Create/Delete/Modify/Import';
+                $this->ur['formex']    = '';
+                // set default JPEG quality
 		$this->jpeg_quality = 75;
 		// initialize some settings
 		TCPDF_FONTS::utf8Bidi(array(''), '', false, $this->isunicode, $this->CurrentFont);

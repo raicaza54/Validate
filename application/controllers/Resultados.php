@@ -118,7 +118,8 @@ class Resultados extends CI_Controller {
         if(!file_exists($this->config->item('path_clie').'resultados/'.$file.'.pdf') || (strlen($file) > 50)){
             show_error("Archivo no encontrado", 404);
         }
-        force_download($this->config->item('path_clie').'resultados/'.$file.'.pdf', NULL);
+        $filename = 'Resultado.pdf';
+        download($this->config->item('path_clie').'resultados/'.$file.'.pdf', $filename);
     }
     
     public function descargar() {
@@ -298,10 +299,17 @@ class Resultados extends CI_Controller {
         foreach ($analisis as $spider) {
             $pdf = unserialize($spider['analisis']);
         }
+        $alto = 279.000; $a = 0;
+        if(is_array($pdf) && array_key_exists('alto', $pdf)){
+            $a = ($pdf['alto'] * 279) / 35;
+            if($a > $alto){
+                $alto = number_format($a, 3, '.','');
+            }
+        }
         $this->load->library('formatpdf/Spider_pdf', array(
             'orientation' => 'P',
             'unit'        => 'mm',
-            'format'      => 'LETTER',
+            'format'      => array(216.000, $alto),
             'unicode'     => TRUE,
             'encoding'    => 'UTF-8',
             'diskcache'   => FALSE,

@@ -120,7 +120,7 @@ if ( ! function_exists('force_download'))
 			$x[count($x) - 1] = strtoupper($extension);
 			$filename = implode('.', $x);
 		}
-
+                
 		if ($data === NULL && ($fp = @fopen($filepath, 'rb')) === FALSE)
 		{
 			return;

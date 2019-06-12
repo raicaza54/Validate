@@ -17,6 +17,12 @@ class Resultados_model extends CI_Model {
         parent::__construct();
     }
     
+    public function getFileId($id) {
+        $this->db->where('fk_empresas', $this->session->userdata('empresaId'));
+        $this->db->where('deleted_at', 0);
+        return $this->db->get('clie__resultados')->row_array();        
+    }
+    
     public function getFolderEmpresa($id_empresa) {
         $this->db->select('clie__resultados.type AS tipo, clie__resultados.*');
         $this->db->where('fk_empresas', $id_empresa);

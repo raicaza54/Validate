@@ -215,6 +215,7 @@ class Spider {
         }else{
             $x = 0;
         }
+        $this->datos['alto'] = $c;
         $t = ($x * 45) + 15;
         $hsvg = (($c * 45) - 15) / 2;
         $total_porcentaje = 0;

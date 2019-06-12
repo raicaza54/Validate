@@ -131,15 +131,15 @@ class Spider_pdf extends TCPDF {
         // Set font
         $this->SetFont($this->family, '', 7);
         // Page number
-        $y = 270;
+        $y = -10;
         $w = 204;
+        $this->setCellPaddings(0.3, 1, 0.3, 1);
         $style = array(
             'color' => $this->lineColor,
             'width' => $this->lineWidth
-        );        
-        $this->Line(10, $y, 206, $y, $style);
-        $this->MultiCell(100, NULL, 'Pág ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 'L', FALSE, 0, NULL, $y+1);
-        $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 0, 'R', FALSE, 1, NULL);
+        );
+        $this->MultiCell(100, NULL, 'Pág ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 'T', 'L', FALSE, 0, NULL, $y+1);
+        $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 'T', 'R', FALSE, 1, NULL);
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
 
