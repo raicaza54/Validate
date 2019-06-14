@@ -47,11 +47,11 @@ class Perfil extends CI_Controller {
             $users_id = $this->session->userdata('users_id');
             $contrato = $this->Cliente_model->getContrato($cliente_id);
             if(!is_array($contrato) || (count($contrato) <= 0)){
-                throw new Exception("Tenemos un problema con el contrato, por favor contactar con soporte", 418);
+                throw new Exception("Tenemos un problema con el contrato, por favor contactar con soporte", 202);
             }
             $usuario = $this->Perfil_model->getUsuario($users_id);
             if(!is_array($usuario) || (count($usuario) <= 0)){
-                throw new Exception("Tenemos un problema con su cuenta de usuario, por favor contactar con soporte", 418);
+                throw new Exception("Tenemos un problema con su cuenta de usuario, por favor contactar con soporte", 202);
             }            
             $response = [
                 "data" => [
@@ -76,16 +76,16 @@ class Perfil extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form) || !array_key_exists('id', $form)){
-                throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 400);
+                throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
             }
             $id = openCypher('decrypt', $form['id']);
             if(is_bool($form) && ($if === FALSE)){
                 log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
-                throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 400);
+                throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
             }
             $this->form_validation->set_data($form);
             $this->form_validation->set_rules('user_nombre', 'Nombres', 'required|max_length[50]');
@@ -98,7 +98,7 @@ class Perfil extends CI_Controller {
                 $data = $data + ['password' => $form['user_clave']];
             }
             if ($this->form_validation->run() == FALSE){
-                throw new Exception('<ul>'.validation_errors('<li>','</li>').'</ul>', 400);
+                throw new Exception('<ul>'.validation_errors('<li>','</li>').'</ul>', 202);
             }
             $data += [
                 'first_name' => $form['user_nombre'],
@@ -107,7 +107,7 @@ class Perfil extends CI_Controller {
             ];
             $update = $this->ion_auth->update($id, $data);            
             if(is_bool($update) && $update === FALSE){
-                throw new Exception('Los datos no fueron actualizados, si tiene algún problema no dude en contactar con soporte técnico', 418);
+                throw new Exception('Los datos no fueron actualizados, si tiene algún problema no dude en contactar con soporte técnico', 202);
             }
             $response = [
                 "data" => []

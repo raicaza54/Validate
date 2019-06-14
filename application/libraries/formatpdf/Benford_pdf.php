@@ -252,9 +252,13 @@ class Benford_pdf extends TCPDF {
             $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $this->MultiCell(67, NULL, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
-            $this->MultiCell(86, NULL, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, NULL, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
+            $h = $this->_height(array(
+                'txt' => 'Empresa: '.$this->empresa['nombre'],
+                'w' => 86
+            ));
+            $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
+            $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
+            $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
             $this->MultiCell(196, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d1, '1');

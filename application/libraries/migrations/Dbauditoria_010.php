@@ -17,6 +17,11 @@ class Dbauditoria_010{
                 'constraint'     => '20',
                 'unsigned'       => TRUE,
             ],
+            'fk_analisis'    => [
+                'type'           => 'BIGINT',
+                'constraint'     => '20',
+                'unsigned'       => TRUE,
+            ],
             'fk_empresas'    => [
                 'type'       => 'INT',
                 'constraint' => '11',

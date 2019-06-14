@@ -19,6 +19,8 @@ class Resultados_model extends CI_Model {
     
     public function getFileId($id) {
         $this->db->where('fk_empresas', $this->session->userdata('empresaId'));
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('id', $id);
         $this->db->where('deleted_at', 0);
         return $this->db->get('clie__resultados')->row_array();        
     }
@@ -34,6 +36,7 @@ class Resultados_model extends CI_Model {
         extract($param);
         $data = [
             'id'             => $id,
+            'fk_analisis'    => $fk_analisis,
             'fk_empresas'    => (int) $empresaId,
             'order'          => 0,
             'parent_id'      => $parent_id,
@@ -46,12 +49,7 @@ class Resultados_model extends CI_Model {
             'update_user'    => $this->session->userdata('users_id'),
             'update_clie'    => $this->session->userdata('clientes_id'),
         ];
-        $e = $this->db->insert('clie__resultados', $data);
-        if($e){
-            return $id;
-        }else{
-            return FALSE;
-        }
+        return $this->db->insert('clie__resultados', $data);
     }
     
     public function editar($param) {

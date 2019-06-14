@@ -256,13 +256,14 @@ class Archivos extends CI_Controller {
     }
     
     public function subir() {
+        $response = $this->response;
         try {
             if(strlen($this->permisos->viewaccess('mpe-importar-archivo')) > 0){
-                throw new Exception("Tenemos un problema, usted no tiene permisos para ejecutar esta funcionalidad", 400);
+                throw new Exception("Tenemos un problema, usted no tiene permisos para ejecutar esta funcionalidad", 202);
             }
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('folderId', $post) || !array_key_exists('tipo', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $limites = $this->limites(FALSE);
             $tipo = '';
@@ -274,16 +275,20 @@ class Archivos extends CI_Controller {
                 $tipo = $post['tipo'];
             }
             if(!is_array($limites['data']) || !array_key_exists($tipo, $limites['data'])){
-                throw new Exception("Tenemos un problema, el tipo de archivo definido no es correcto", 400);
+                throw new Exception("Tenemos un problema, el tipo de archivo definido no es correcto", 202);
             }
             $limite = $limites['data'][$tipo];
             if(($limite['cant'] + 1) > $limite['limite']){
-                throw new Exception("Tenemos un problema, este tipo de archivo supera la cantidad permitida, le sugerimos contactar con el ejecutivo de ventas encargado", 400);
+                throw new Exception("Tenemos un problema, este tipo de archivo supera la cantidad permitida, le sugerimos contactar con el ejecutivo de ventas encargado", 202);
             }
             $archivo = $this->do_upload();
-            if(is_bool($archivo) || ($archivo === FALSE)){
-                throw new Exception("Tenemos un problema con el archivo", 418);
+            if(!is_array($archivo)){
+                throw new Exception("Tenemos un problema con el archivo", 202);
             }
+            if(is_array($archivo) && array_key_exists('status', $archivo) && ($archivo['status'] == FALSE)){
+                throw new Exception($archivo['msg'], 202);
+            }
+            $xls = [];
             if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx')){
                 $xls = $this->leer_excel($archivo + [
                     'parent_id' => $post['folderId'],
@@ -298,11 +303,11 @@ class Archivos extends CI_Controller {
                 ]);
             }
             if(is_array($xls) && array_key_exists('error', $xls)){
-                throw new Exception($xls['error'], 418);
+                throw new Exception($xls['error'], 202);
             }
             $xlsdb = $this->Archivos_model->insert_excel($xls);
             if(is_bool($xlsdb) && ($xlsdb === FALSE)){
-                throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 418);
+                throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 202);
             }
             $response["data"] = [
                 'type'     => $this->fileType($archivo['type'], 1),
@@ -333,13 +338,21 @@ class Archivos extends CI_Controller {
             $fullpath = $data['upload_data']['full_path'];
             $type     = $data['upload_data']['file_ext'];
             return array(
+                'status'   => TRUE,
                 'filename' => $archivo,
                 'fullpath' => $fullpath,
                 'type'     => $type,
+                'msg'      => 'Success',
             );
         }else{
-            log_message('error', var_export($this->upload->display_errors(), TRUE));
-            return FALSE;
+            log_message('error', var_export($this->upload->display_errors('',''), TRUE));
+            return array(
+                'status'   => FALSE,
+                'filename' => '',
+                'fullpath' => '',
+                'type'     => '',
+                'msg'      => $this->upload->display_errors('',''),
+            );            
         }
     }
     
@@ -364,7 +377,7 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $campoAnalizar = NULL;
             if(array_key_exists('campoAnalizar', $post)){
@@ -373,7 +386,7 @@ class Archivos extends CI_Controller {
             $columnas = $this->archivo->columnas($post['id']);
             $dataColumns = $this->Archivos_model->getEncabezado($post['id'], $campoAnalizar);
             if (!is_array($dataColumns)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $columns = [];
             $columnsDef = [];
@@ -405,11 +418,11 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $items = $this->Archivos_model->getRows($this->input->post());
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response = [
                 "draw"            => $this->input->post('draw'),
@@ -433,7 +446,7 @@ class Archivos extends CI_Controller {
             $cliente_id = $this->session->userdata('clientes_id');
             $limites = $this->Cliente_model->getLimites($cliente_id);
             if (!is_array($limites)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response = ["data" => $limites];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -455,17 +468,17 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form) || !array_key_exists('archivoId', $form) || !array_key_exists('campo1', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
             }
             if(!array_key_exists('archivoTipo', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, como el tipo de archivo, estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, faltan algunos datos, como el tipo de archivo, estan incompletos o corruptos", 202);
             }
             if(!in_array($form['archivoTipo'], ['mov','blp','cxc','cxp'])){
-                throw new Exception("Tenemos un problema, faltan algunos datos, el tipo no es compatible, estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, faltan algunos datos, el tipo no es compatible, estan incompletos o corruptos", 202);
             }
             $columnas = $this->archivo->configColumnas($form);
             $this->Archivos_model->setColumnas($columnas, $form, $form['archivoId']);
@@ -485,11 +498,11 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 400);
+                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
             }
             $items = $this->Archivos_model->getEncabezado($post['id']);
             if (!is_array($items) && count($items)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $x = 0;
             if($benford == 1){
@@ -499,7 +512,7 @@ class Archivos extends CI_Controller {
                     }
                 }
                 if ($x <= 0) {
-                    throw new Exception("El archivo no posee campos de tipo número o valores para analizar, verifique e intentelo nuevamente", 400);
+                    throw new Exception("El archivo no posee campos de tipo número o valores para analizar, verifique e intentelo nuevamente", 202);
                 }                
             }
             $response["data"] = [
@@ -522,21 +535,21 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 400);
+                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
             }
             $items = $this->Archivos_model->getCuentas($post['id']);
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $column = $this->archivo->columnSpider($post['id']);
             if(!is_array($column) || !array_key_exists('array', $column)){
-                throw new Exception("Tenemos un problema, no estan definidas las columnas del archivo, se requiere configuración", 418);
+                throw new Exception("Tenemos un problema, no estan definidas las columnas del archivo, se requiere configuración", 202);
             }
             if(!(is_array($column['array']) && (count($column['array']) >= 0))){
-                throw new Exception("Tenemos un problema, el tipo de columna no corresponde con el archivo, se requiere configuración", 418);
+                throw new Exception("Tenemos un problema, el tipo de columna no corresponde con el archivo, se requiere configuración", 202);
             }
             if(count(array_diff(['cta','comp','doc','tipo','valor'], array_keys($column['array']))) > 0){
-                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 400);
+                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 202);
             }
             $response["data"] = $items;
             throw new Exception("Resultado retornando correctamente", 200);
@@ -554,11 +567,11 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post) || !array_key_exists('campoAnalizar', $post)){
-                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 400);
+                throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
             }
             $items = $this->Archivos_model->getRows($post);
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response = [
                 "draw"            => $this->input->post('draw'),
@@ -594,7 +607,7 @@ class Archivos extends CI_Controller {
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         } else {
-            $response["title"]  = "Error del cliente";
+            $response["title"]  = "Error Interno del Servidor";
             $response["detail"] = (strlen($exception["message"]) && !empty($exception["message"])) ? $exception["message"] : "Internal Server Error";
             log_message("error", $exc->getCode() . ' - ' . $exc->getMessage());
         }

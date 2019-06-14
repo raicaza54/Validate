@@ -236,6 +236,28 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
+FECHA: 14/06/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Permitir almacenar el mismo resultado PDF mas de una vez
+▪ Al descargar el archivo el mismo se nombrado como aparece en el árbol de directorios
+
+SE ESTA TRABAJANDO
+▪ Creación de directorios de forma dinámica
+▪ Correcciones de algunas situaciones front-end que provocan errores inesperados no frecuentes
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Crear empresas, sujeto a limites de contrato
+▪ Listas de Control, Proveedores Ficticios
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
 Luisa Fernanda Londoño Gomez
 Fecha: sáb., 18 may. 12:18 
 

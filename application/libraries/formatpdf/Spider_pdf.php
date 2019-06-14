@@ -143,16 +143,16 @@ class Spider_pdf extends TCPDF {
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
 
-    private function spiderCentral($html, $class) {
+    private function spiderCentral($html, $class, $h) {
         $left = 10;
         foreach($html->find('div.'.$class) as $div){
             preg_match_all('!\d+\.*\d*!', $div->style, $top);
             $top = $this->px_to_mm($top[0][0]);
-            $this->MultiCell(20, 4, $div->plaintext, TRUE, 'C', FALSE, 1, 98, $top, TRUE, 0, TRUE, TRUE, 0, 'M');
+            $this->MultiCell(20, 4, $div->plaintext, TRUE, 'C', FALSE, 1, 98, ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
         }
     }
     
-    private function spiderBox($html, $class) {
+    private function spiderBox($html, $class, $h) {
         $left = 10;
         if($class == 'spd-credito'){
             $left = 146;
@@ -163,13 +163,13 @@ class Spider_pdf extends TCPDF {
             foreach ($div->find('div') as $divChild) {
                 $txtCell[$divChild->class] = $divChild->plaintext;
             }
-            $this->MultiCell(20, 4, $txtCell['ispd-cuenta'], TRUE, 'R', FALSE, 0, ($left), $top, TRUE, 0, TRUE, TRUE, 0, 'M');
+            $this->MultiCell(20, 4, $txtCell['ispd-cuenta'], TRUE, 'R', FALSE, 0, ($left), ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
             $this->MultiCell(20, 4, $txtCell['ispd-dinero'], TRUE, 'R', FALSE, 0, ($left+20), '', TRUE, 0, TRUE, TRUE, 0, 'M');
             $this->MultiCell(20, 4, $txtCell['ispd-porcentaje'], TRUE, 'R', FALSE, 1, ($left+40), '', TRUE, 0, TRUE, TRUE, 0, 'M');
         }        
     }
     
-    private function spiderLine($html) {
+    private function spiderLine($html, $h) {
         $left = [
             'x1' => 3.2,
             'x2' => 13
@@ -183,9 +183,9 @@ class Spider_pdf extends TCPDF {
             }
             $this->Line(
                 $this->px_to_mm($line->x1) + $left['x1'], 
-                $this->px_to_mm($line->y1), 
+                $this->px_to_mm($line->y1) + ($top + round(($h-7),2)), 
                 $this->px_to_mm($line->x2) + $left['x2'], 
-                $this->px_to_mm($line->y2)
+                $this->px_to_mm($line->y2) + ($top + round(($h-7),2))
             );
         }
     }
@@ -212,21 +212,31 @@ class Spider_pdf extends TCPDF {
             $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $this->MultiCell(67, NULL, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
-            $this->MultiCell(86, NULL, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, NULL, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
+            $h = $this->_height(array(
+                'txt' => 'Empresa: '.$this->empresa['nombre'],
+                'w' => 86
+            ));
+            $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
+            $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
+            $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
-            if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && array_key_exists('body', $dataPdf[0])){
-                $this->SetFont($this->family, '', 5);
-                $this->setCellMargins(0, 0, 0, 0);
-                $this->setCellPaddings(0.3, 1, 0.3, 1);
-                $dataPdf = $dataPdf[0];
-                $pider = $dataPdf['body'];
-                $html = str_get_html($pider);
-                $this->spiderBox($html, 'spd-debito');
-                $this->spiderBox($html, 'spd-credito');
-                $this->spiderCentral($html, 'spd-spider');
-                $this->spiderLine($html);
+            if(is_array($dataPdf)){
+                if(array_key_exists(0, $dataPdf) && array_key_exists('body', $dataPdf[0])){
+                    $this->SetFont($this->family, '', 5);
+                    $this->setCellMargins(0, 0, 0, 0);
+                    $this->setCellPaddings(0.3, 1, 0.3, 1);
+                    $dataPdf = $dataPdf[0];
+                    $pider = $dataPdf['body'];
+                    $html = str_get_html($pider);
+                    $this->spiderBox($html, 'spd-debito', $h);
+                    $this->spiderBox($html, 'spd-credito', $h);
+                    $this->spiderCentral($html, 'spd-spider', $h);
+                    $this->spiderLine($html, $h);
+                }else{
+                    $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
+                }                
+            }else{
+                $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
             }
             //$this->Output('archivo.pdf', 'I');
             $filePath = $this->CI->config->item('path_clie').'resultados/SPI'.$this->namePdf.'.pdf';

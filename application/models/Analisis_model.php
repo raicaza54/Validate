@@ -32,7 +32,6 @@ class Analisis_model extends CI_Model {
     public function getData($id) {
         $this->db->where('ejecucion', $id);
         $this->db->where('fk_empresas', $this->session->userdata('empresaId'));
-        $this->db->where('created_user', $this->session->userdata('users_id'));
         $this->db->where('created_clie', $this->session->userdata('clientes_id'));
         $data = $this->db->get('clie__analisis')->result_array();
         return $data;

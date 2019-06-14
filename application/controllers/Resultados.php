@@ -52,7 +52,7 @@ class Resultados extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $insert = $this->Resultados_model->crear([
                 'label'       => $post['label'],
@@ -62,7 +62,7 @@ class Resultados extends CI_Controller {
                 'id'          => $post['id']
             ]);
             if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 418);
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
             }
             $response["data"] = [
                 'id'      => $insert,
@@ -90,7 +90,7 @@ class Resultados extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('deleted_at', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $insert = $this->Resultados_model->editar([
                 'label'      => $post['label'],
@@ -99,7 +99,7 @@ class Resultados extends CI_Controller {
                 'deleted_at' => $post['deleted_at'],
             ]);
             if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 418);
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
             }            
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -118,7 +118,11 @@ class Resultados extends CI_Controller {
         if(!file_exists($this->config->item('path_clie').'resultados/'.$file.'.pdf') || (strlen($file) > 50)){
             show_error("Archivo no encontrado", 404);
         }
+        $pdfResultado = $this->Resultados_model->getFileId(substr($file,3));
         $filename = 'Resultado.pdf';
+        if(is_array($pdfResultado) && count($pdfResultado) && array_key_exists('label', $pdfResultado) && strlen($pdfResultado['label'])){
+            $filename = $pdfResultado['label'];
+        }
         download($this->config->item('path_clie').'resultados/'.$file.'.pdf', $filename);
     }
     
@@ -130,13 +134,13 @@ class Resultados extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
-            $pdfAnalisis = $this->Analisis_model->getData($post['id']);
-            if (!is_array($pdfAnalisis) && (count($pdfAnalisis) <= 0)) {
-                throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 400);
+            $pdfResultado = $this->Resultados_model->getFileId($post['id']);
+            if (!is_array($pdfResultado) && (count($pdfResultado) <= 0)) {
+                throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 202);
             }
-            $tipo = $pdfAnalisis[0]['analisis_tipo']; $pref = '';
+            $tipo = $pdfResultado['type']; $pref = '';
             if ($tipo == 'benford') {
                 $pref = 'BEN';
             }elseif ($tipo == 'spider') {
@@ -145,7 +149,7 @@ class Resultados extends CI_Controller {
                 $pref = 'MAN';
             }
             if(!file_exists($this->config->item('path_clie').'resultados/'.$pref.$post['id'].'.pdf')){
-                throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 400);
+                throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
             }
             $response["data"] = ['url' => base_url('resultados/url/'.$pref.$post['id'])];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -165,8 +169,8 @@ class Resultados extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('nombre', $post) || !array_key_exists('carpeta', $post) || !(array_key_exists('pdfBenford', $post) || array_key_exists('pdfSpider', $post) || array_key_exists('pdfManipulacion', $post))){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+            if(!is_array($post) || !array_key_exists('nombre', $post) || !array_key_exists('idPdf', $post) || !array_key_exists('carpeta', $post) || !(array_key_exists('pdfBenford', $post) || array_key_exists('pdfSpider', $post) || array_key_exists('pdfManipulacion', $post))){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $pdf = ''; $pref = '';
             if(array_key_exists('pdfBenford', $post) && (strlen($post['pdfBenford']) > 5)){
@@ -182,38 +186,39 @@ class Resultados extends CI_Controller {
             $idAnalisis = trim($post[$pdf]);
             $pdfAnalisis = $this->Analisis_model->getData($idAnalisis);
             if (!is_array($pdfAnalisis) && (count($pdfAnalisis) <= 0)) {
-                throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 400);
+                throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 202);
             }
             $tipo = $pdfAnalisis[0]['analisis_tipo'];
             if (($tipo == 'benford') && (strlen($post['pdfBenford']) <= 0)) {
-                throw new Exception("Tenemos un problema con los datos Ley de Benford, no corresponden los tipos definidos", 400);
+                throw new Exception("Tenemos un problema con los datos Ley de Benford, no corresponden los tipos definidos", 202);
             }
             if (($tipo == 'spider') && (strlen($post['pdfSpider']) <= 0)) {
-                throw new Exception("Tenemos un problema con los datos La Araña, no corresponden los tipos definidos", 400);
+                throw new Exception("Tenemos un problema con los datos La Araña, no corresponden los tipos definidos", 202);
             }
             if (($tipo == 'manipulacion') && (strlen($post['pdfManipulacion']) <= 0)) {
-                throw new Exception("Tenemos un problema con los datos Manipulación, no corresponden los tipos definidos", 400);
+                throw new Exception("Tenemos un problema con los datos Manipulación, no corresponden los tipos definidos", 202);
             }
             $this->empresa =  $this->Empresas_model->getId($this->session->userdata('empresaId'));
-            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $idAnalisis);
+            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf']);
             if($rPdf == FALSE){
-                throw new Exception("Tenemos un problema, el archivo no pudo ser creado", 400);
+                throw new Exception("Tenemos un problema, el archivo no pudo ser creado", 202);
             }
             $insert = $this->Resultados_model->crear([
                 'label'       => $post['nombre'],
                 'empresaId'   => $this->session->userdata('empresaId'),
                 'parent_id'   => $post['carpeta'],
                 'type'        => $tipo,
-                'id'          => $idAnalisis
+                'fk_analisis' => $idAnalisis,
+                'id'          => $post['idPdf']
             ]);
-            if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 418);
+            if($insert == FALSE){
+                throw new Exception("Tenemos un problema, no fue posible crear el archivo PDF", 202);
             }
             $update = $this->Analisis_model->setUpdatePdf(
                 ['pdf' => 1],
                 $idAnalisis
             );
-            $response["data"] = ['url' => base_url('resultados/url/'.$pref.$idAnalisis)];
+            $response["data"] = ['url' => base_url('resultados/url/'.$pref.$post['idPdf'])];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -224,7 +229,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
-    public function benfordPdf($analisis, $idAnalisis) {
+    public function benfordPdf($analisis, $idPdf) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }        
@@ -253,7 +258,7 @@ class Resultados extends CI_Controller {
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
             'codigo'      => '000165410',
-            'namePdf'     => $idAnalisis,
+            'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
         if (!(is_array($d1) && (count($d1) > 0)) || !(is_array($d2) && (count($d2) > 0)) || !(is_array($d12) && (count($d12) > 0))) {
@@ -267,7 +272,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function manipulacionPdf($analisis, $idAnalisis) {
+    public function manipulacionPdf($analisis, $idPdf) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -284,14 +289,14 @@ class Resultados extends CI_Controller {
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
             'codigo'      => '000165540',
-            'namePdf'     => $idAnalisis,
+            'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
         $dataPdf = [$pdf];
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function spiderPdf($analisis, $idAnalisis) {
+    public function spiderPdf($analisis, $idPdf) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -299,6 +304,7 @@ class Resultados extends CI_Controller {
         foreach ($analisis as $spider) {
             $pdf = unserialize($spider['analisis']);
         }
+
         $alto = 279.000; $a = 0;
         if(is_array($pdf) && array_key_exists('alto', $pdf)){
             $a = ($pdf['alto'] * 279) / 35;
@@ -315,7 +321,7 @@ class Resultados extends CI_Controller {
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
             'codigo'      => '000165599',
-            'namePdf'     => $idAnalisis,
+            'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
         $dataPdf = [$pdf];
@@ -330,11 +336,11 @@ class Resultados extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 400);
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }            
             $items = $this->arbolr->run($post['id']);
             if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 418);
+                throw new Exception("No existen datos para mostrar", 202);
             }
             $response["data"] = $items;
             throw new Exception("Resultado retornando correctamente", 200);
