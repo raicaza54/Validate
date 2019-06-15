@@ -148,7 +148,7 @@ class Manipulacion_pdf extends TCPDF {
         extract($this->backGroundColor);
         try{
             $this->SetFont($this->family, '', 7);
-            $this->SetProtection(array('print', 'copy'), '', NULL, 0, NULL);
+            $this->SetProtection(array('modify', 'copy'), '');
             $this->SetTitle('Manipulación');
             $this->SetLineStyle(array(
                 'color' => $this->lineBackColor,
