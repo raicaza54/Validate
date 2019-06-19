@@ -98,7 +98,7 @@ class Perfil extends CI_Controller {
                 $data = $data + ['password' => $form['user_clave']];
             }
             if ($this->form_validation->run() == FALSE){
-                throw new Exception('<ul>'.validation_errors('<li>','</li>').'</ul>', 202);
+                throw new Exception(validation_errors('',''), 202);
             }
             $data += [
                 'first_name' => $form['user_nombre'],

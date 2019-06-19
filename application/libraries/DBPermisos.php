@@ -29,9 +29,9 @@ class DBPermisos {
      * si por alguna razon se supera este valor se debe añadir un digito al final
      * por ejemplo 199 -> 1000, 1001, 1002
      * $/var/www/html/validate$ php -f index.php tareas/permisos
-     * $/var/www/html/validate$ php -f index.php tareas/permisosAdmin
-     * $/var/www/html/validate$ php -f index.php tareas/permisosEducativo
-     * $/var/www/html/validate$ php -f index.php tareas/permisosMembers
+     * $/var/www/html/validate$ php -f index.php tareas/permisosAdmin/1
+     * $/var/www/html/validate$ php -f index.php tareas/permisosEducativo/1
+     * $/var/www/html/validate$ php -f index.php tareas/permisosMembers/1
      * $/var/www/html/validate$ php -f index.php tareas/permisosResetear
      */
     public function definir() {
@@ -122,6 +122,7 @@ class DBPermisos {
         ];
         $data = [
             ['fk_permisos' => 200, 'fk_groups' => 3] + $userDate,
+            ['fk_permisos' => 206, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 401, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 402, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 3] + $userDate,
@@ -145,6 +146,7 @@ class DBPermisos {
             ['fk_permisos' => 201, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 202, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 203, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 206, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 401, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 402, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 2] + $userDate,

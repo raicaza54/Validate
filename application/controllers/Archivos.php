@@ -32,9 +32,6 @@ class Archivos extends CI_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
         $this->load->model(['Cliente_model','Archivos_model']);
     }
 
@@ -57,6 +54,49 @@ class Archivos extends CI_Controller {
         return $fileType;
     }
     
+    public function descargar() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id','Archivo','required|max_length[40]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $archivo = $this->Archivos_model->getById($post['id']);
+            if(!file_exists($archivo['file_name'])){
+                throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
+            }
+            $response["data"] = ['url' => base_url('archivos/v1/url/'.basename($archivo['file_name']))];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
+    public function url($file) {
+        $file = xss_clean($file);
+        $file = strip_tags($file);
+        if(!file_exists($this->config->item('path_clie').'archivos/'.$file) || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        $fileResultado = $this->Archivos_model->getFileId($file);
+        if(is_array($fileResultado) && count($fileResultado) && array_key_exists('nombre', $fileResultado) && strlen($fileResultado['nombre'])){
+            $info = new SplFileInfo($fileResultado['nombre']);
+            $filename = str_replace('.'.$info->getExtension(), $fileResultado['ext'], $fileResultado['nombre']);
+        }else{
+            show_error("Archivo no encontrado", 404);
+        }
+        download($this->config->item('path_clie').'archivos/'.$file, $filename);
+        
+    }    
     
     private function leer_csv($param) {
         set_time_limit(0);
@@ -256,6 +296,9 @@ class Archivos extends CI_Controller {
     }
     
     public function subir() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             if(strlen($this->permisos->viewaccess('mpe-importar-archivo')) > 0){
@@ -373,6 +416,9 @@ class Archivos extends CI_Controller {
     }    
 
     public function header() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -414,6 +460,9 @@ class Archivos extends CI_Controller {
     }
     
     public function datos() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -441,6 +490,9 @@ class Archivos extends CI_Controller {
     }
     
     public function limites($json = TRUE) {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $cliente_id = $this->session->userdata('clientes_id');
@@ -464,6 +516,9 @@ class Archivos extends CI_Controller {
     }
     
     public function configurar() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -494,6 +549,9 @@ class Archivos extends CI_Controller {
     }
     
     public function encabezado($benford = 0) {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -531,6 +589,9 @@ class Archivos extends CI_Controller {
     }
     
     public function cuentas() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -563,6 +624,9 @@ class Archivos extends CI_Controller {
     }
     
     public function digito() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
         $response = $this->response;
         try {
             $post = $this->input->post();

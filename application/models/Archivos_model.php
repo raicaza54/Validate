@@ -298,5 +298,21 @@ class Archivos_model extends CI_Model {
             return $sum;
         }
     }
+    
+    public function getById($id) {
+        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name');
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('id', $id);
+        $e = $this->db->get('clie__archivos')->row_array();
+        return $e;
+    }
+    
+    public function getFileId($filename) {
+        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name');
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->like('file_name', $filename, 'before');
+        $e = $this->db->get('clie__archivos')->row_array();
+        return $e;        
+    }
 
 }

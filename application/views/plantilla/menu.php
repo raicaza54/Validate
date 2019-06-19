@@ -7,14 +7,14 @@
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>                
-                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" data-toggle="popover" data-placement="bottom" data-content="Creación de nuevas empresas">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-propiedades')?>" id="mpe-empresa-propiedades">
+                <?php /*<div class="icono < $this->permisos->viewaccess('mpe-empresa-propiedades')?>" id="mpe-empresa-propiedades">
                     <i class="far fa-building"></i>
                     <span>Propiedades</span>
-                </div>
+                </div>*/ ?>
                 <div class="titulo">Empresas</div>
             </div>
             <div class="menu-separador"></div>
@@ -35,7 +35,7 @@
                     <i class="fas fa-file-csv"></i>
                     <span>CSV</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-excel')?>" id="mpe-exportar-excel">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-excel')?>" id="mpe-exportar-excel" onclick="ARCHIVOS.methods.descargarExcel(this)">
                     <i class="fas fa-file-excel"></i>
                     <span>Excel</span>
                 </div>

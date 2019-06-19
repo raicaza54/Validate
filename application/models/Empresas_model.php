@@ -120,9 +120,44 @@ class Empresas_model extends CI_Model {
     }
 
     public function getId($id) {
-        $this->db->select('id, nombre, identificacion, telefonos, correo, persona, persona_tlfs');
-        $this->db->where('id', $id);
-        return $this->db->get('clie__empresas')->row_array();
+        $this->db->select('
+            clie__empresas.id,
+            nombre,
+            identificacion,
+            direccion,
+            telefonos,
+            correo,
+            persona,
+            persona_tlfs,
+            persona_direc,
+            persona_correo,
+            observacion,
+            CONCAT(created.first_name," ",created.last_name) AS created_user,
+            clie__empresas.created_clie,
+            CONCAT(updated.first_name," ",updated.last_name) AS update_user,
+            clie__empresas.update_clie,
+            DATE_FORMAT(clie__empresas.created_at,"%d/%m/%Y - %h:%i:%s %p") AS created_at,
+            DATE_FORMAT(clie__empresas.update_at,"%d/%m/%Y - %h:%i:%s %p") AS update_at'
+        );
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('clie__empresas.id', $id);
+        $this->db->join('auth__users created', 'clie__empresas.created_user = created.id');
+        $this->db->join('auth__users updated', 'clie__empresas.update_user = updated.id');
+        $e = $this->db->get('clie__empresas')->row_array();
+        return $e;
+    }
+    
+    public function updateData($data, $id) {
+        $data = $data + [
+            'update_user' => $this->session->userdata('users_id'),
+            'update_clie' => $this->session->userdata('clientes_id'),
+        ];
+        $this->db->update('clie__empresas', $data, ['id' => $id]);
+        return $this->db->affected_rows() == 1;
+    }
+    
+    public function insertData() {
+        
     }
 
 }

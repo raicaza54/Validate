@@ -54,8 +54,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /* -------------------------------------------------------------------------
  * Empresas
  * ------------------------------------------------------------------------- */
-$route['empresas/v1/datos']['post']   = 'empresas/datos';
-$route['empresas/v1/activar']['post'] = 'empresas/activar';
+$route['empresas/v1/datos']['post']      = 'empresas/datos';
+$route['empresas/v1/activar']['post']    = 'empresas/activar';
+$route['empresas/v1/formulario']['post'] = 'empresas/formulario';
+$route['empresas/v1/actualizar']['post'] = 'empresas/actualizar';
 
 /* -------------------------------------------------------------------------
  * Explorador
@@ -67,12 +69,12 @@ $route['explorador/v1/editar']['post']   = 'explorador/editar';
 /* -------------------------------------------------------------------------
  * Resultados
  * ------------------------------------------------------------------------- */
-$route['resultados/v1/carpetas']['post']   = 'resultados/carpetas';
-$route['resultados/v1/crear']['post']      = 'resultados/crear';
-$route['resultados/v1/editar']['post']     = 'resultados/editar';
-$route['resultados/v1/pdf']['post']        = 'resultados/pdf';
-$route['resultados/v1/descargar']['post']  = 'resultados/descargar';
-$route['resultados/url/(:any)']['get']     = 'resultados/url/$1';
+$route['resultados/v1/carpetas']['post']        = 'resultados/carpetas';
+$route['resultados/v1/crear']['post']           = 'resultados/crear';
+$route['resultados/v1/editar']['post']          = 'resultados/editar';
+$route['resultados/v1/pdf']['post']             = 'resultados/pdf';
+$route['resultados/v1/descargar']['post']       = 'resultados/descargar';
+$route['resultados/v1/url/(:any)/(r|d)']['get'] = 'resultados/url/$1/$2';
 
 /* -------------------------------------------------------------------------
  * Archivos
@@ -84,6 +86,8 @@ $route['archivos/v1/header']             = 'archivos/header';
 $route['archivos/v1/encabezado']['post'] = 'archivos/encabezado/0';
 $route['archivos/v1/configurar']['post'] = 'archivos/configurar';
 $route['archivos/v1/limites']['get']     = 'archivos/limites';
+$route['archivos/v1/descargar']['post']  = 'archivos/descargar';
+$route['archivos/v1/url/(:any)']['get']  = 'archivos/url/$1';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford

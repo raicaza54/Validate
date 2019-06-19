@@ -275,3 +275,28 @@ Relaciono compromisos que quedan para esta semana.
 10)  Certificado de Legalidad 
 
 Salida a la venta finales de junio de 2019
+
+#*******************************************************************************
+
+FECHA: 19/06/2019
+NUEVAS FUNCIONALIDADES
+▪ Editar datos de una empresa
+
+ACTUALIZACIÓN
+▪ Al hacer doble click sobre un resultado el mismo se pre-visualiza con la opción de descargar
+▪ Los archivos para procesar tales como movimientos y balances de prueba pueden ser exportados
+
+CORRECCIONES
+▪ En los métodos front-end se tiene en cuenta las excepciones para mantener estabilidad
+
+SE ESTA TRABAJANDO
+▪ Proveedores ficticios
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Creación de directorios de forma dinámica
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Crear empresas, sujeto a limites de contrato
+▪ Listas de Control, Proveedores Ficticios
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************

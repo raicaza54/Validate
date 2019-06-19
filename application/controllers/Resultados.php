@@ -112,10 +112,13 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
-    public function url($file) {
+    public function url($file, $dwl = 'r') {
         $file = xss_clean($file);
         $file = strip_tags($file);
         if(!file_exists($this->config->item('path_clie').'resultados/'.$file.'.pdf') || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        if(!in_array($dwl,['r', 'd'])){
             show_error("Archivo no encontrado", 404);
         }
         $pdfResultado = $this->Resultados_model->getFileId(substr($file,3));
@@ -123,13 +126,21 @@ class Resultados extends CI_Controller {
         if(is_array($pdfResultado) && count($pdfResultado) && array_key_exists('label', $pdfResultado) && strlen($pdfResultado['label'])){
             $filename = $pdfResultado['label'];
         }
-        download($this->config->item('path_clie').'resultados/'.$file.'.pdf', $filename);
+        if($dwl == 'r'){
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: inline; filename="'.$filename.'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');        
+            readfile($this->config->item('path_clie').'resultados/'.$file.".pdf");            
+        }elseif($dwl == 'd'){
+            download($this->config->item('path_clie').'resultados/'.$file.'.pdf', $filename);
+        }
     }
     
     public function descargar() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -151,7 +162,7 @@ class Resultados extends CI_Controller {
             if(!file_exists($this->config->item('path_clie').'resultados/'.$pref.$post['id'].'.pdf')){
                 throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
             }
-            $response["data"] = ['url' => base_url('resultados/url/'.$pref.$post['id'])];
+            $response["data"] = ['url' => base_url('resultados/v1/url/'.$pref.$post['id'])];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -218,7 +229,7 @@ class Resultados extends CI_Controller {
                 ['pdf' => 1],
                 $idAnalisis
             );
-            $response["data"] = ['url' => base_url('resultados/url/'.$pref.$post['idPdf'])];
+            $response["data"] = ['url' => base_url('resultados/v1/url/'.$pref.$post['idPdf'])];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
