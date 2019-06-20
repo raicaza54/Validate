@@ -63,7 +63,8 @@ class Archivo {
         switch ($e[1]) {
             case 'date':
                 $r = [
-                    'sql' => "DATE_FORMAT(".$key.", '%d/%m/%Y') AS ".$key,
+                    //'sql' => "DATE_FORMAT(".$key.", '%d/%m/%Y') AS ".$key,
+                    'sql' => "IF(LENGTH(".$key."),DATE_FORMAT(DATE('1899-12-30') + INTERVAL ".$key." DAY, '%d/%m/%Y'), DATE_FORMAT(".$key.", '%d/%m/%Y')) AS ".$key,
                     'def' => ['targets' => $x, 'className' => "dt-body-right"],
                 ];
                 break;
