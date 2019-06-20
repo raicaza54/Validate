@@ -181,11 +181,11 @@ class Archivos_model extends CI_Model {
         return $this->db->update('clie__archivos');
     }
     
-    public function getCuentas($id) {
-        $this->db->select('campo2');
+    public function getCuentas($id, $column) {
+        $this->db->select($column['array']['cta'], FALSE);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
-        $this->db->group_by('campo2');
+        $this->db->group_by($column['array']['cta']);
         $cuentas = $this->db->get('clie__archivos_detalle')->result_array();
         return $cuentas;
     }

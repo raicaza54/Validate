@@ -598,10 +598,6 @@ class Archivos extends CI_Controller {
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
             }
-            $items = $this->Archivos_model->getCuentas($post['id']);
-            if (!is_array($items)) {
-                throw new Exception("No existen datos para mostrar", 202);
-            }
             $column = $this->archivo->columnSpider($post['id']);
             if(!is_array($column) || !array_key_exists('array', $column)){
                 throw new Exception("Tenemos un problema, no estan definidas las columnas del archivo, se requiere configuración", 202);
@@ -612,7 +608,11 @@ class Archivos extends CI_Controller {
             if(count(array_diff(['cta','comp','doc','tipo','valor'], array_keys($column['array']))) > 0){
                 throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 202);
             }
-            $response["data"] = $items;
+            $items = $this->Archivos_model->getCuentas($post['id'], $column);
+            if (!is_array($items)) {
+                throw new Exception("No existen datos para mostrar", 202);
+            }
+            $response["data"] = ['items' => $items, 'column' => $column['array']['cta']];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
