@@ -7,7 +7,7 @@
                     <i class="fas fa-city"></i>
                     <span>Listar</span>
                 </div>                
-                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
                     <i class="far fa-hospital"></i>
                     <span>Crear</span>
                 </div>

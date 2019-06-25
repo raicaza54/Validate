@@ -29,4 +29,5 @@ if(1 == 2){
 $hook['post_controller_constructor'] = function(){
     $CI =& get_instance();
     $CI->config->set_item('path_clie', $CI->config->item('path_file').'/cli'.$CI->session->userdata('clientes_id').'/');
+    $CI->config->set_item('path_user', $CI->config->item('path_file').'/cli'.$CI->session->userdata('clientes_id').'/'.$CI->session->userdata('users_id').'/');
 };

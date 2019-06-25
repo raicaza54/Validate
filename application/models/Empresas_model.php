@@ -47,7 +47,9 @@ class Empresas_model extends CI_Model {
             $this->db->limit($postData['length'], $postData['start']);
         }
         $this->db->join('clie__auditores_empresas', 'clie__auditores_empresas.fk_empresas = clie__empresas.id');
-        $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
+        $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));
+        $this->db->where('clie__empresas.deleted_at', 0);
+        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
         $query = $this->db->get();
         return $query->result();
     }
@@ -59,6 +61,8 @@ class Empresas_model extends CI_Model {
         $this->db->from($this->table);
         $this->db->join('clie__auditores_empresas', 'clie__auditores_empresas.fk_empresas = clie__empresas.id');
         $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
+        $this->db->where('clie__empresas.deleted_at', 0);
+        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
         return $this->db->count_all_results();
     }
 
@@ -69,7 +73,9 @@ class Empresas_model extends CI_Model {
     public function countFiltered($postData) {
         $this->_get_datatables_query($postData);
         $this->db->join('clie__auditores_empresas', 'clie__auditores_empresas.fk_empresas = clie__empresas.id');
-        $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));        
+        $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));
+        $this->db->where('clie__empresas.deleted_at', 0);
+        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -116,6 +122,8 @@ class Empresas_model extends CI_Model {
         $this->db->select('clie__empresas.id, nombre, identificacion');
         $this->db->join('clie__auditores_empresas', 'clie__auditores_empresas.fk_empresas = clie__empresas.id');
         $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));
+        $this->db->where('clie__empresas.deleted_at', 0);
+        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
         return $this->db->get('clie__empresas')->result_array();
     }
 
@@ -139,8 +147,9 @@ class Empresas_model extends CI_Model {
             DATE_FORMAT(clie__empresas.created_at,"%d/%m/%Y - %h:%i:%s %p") AS created_at,
             DATE_FORMAT(clie__empresas.update_at,"%d/%m/%Y - %h:%i:%s %p") AS update_at'
         );
-        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
         $this->db->where('clie__empresas.id', $id);
+        $this->db->where('clie__empresas.deleted_at', 0);
         $this->db->join('auth__users created', 'clie__empresas.created_user = created.id');
         $this->db->join('auth__users updated', 'clie__empresas.update_user = updated.id');
         $e = $this->db->get('clie__empresas')->row_array();
@@ -152,12 +161,44 @@ class Empresas_model extends CI_Model {
             'update_user' => $this->session->userdata('users_id'),
             'update_clie' => $this->session->userdata('clientes_id'),
         ];
-        $this->db->update('clie__empresas', $data, ['id' => $id]);
+        $this->db->update('clie__empresas', $data, [
+            'id'           => $id,
+            'created_clie' => $this->session->userdata('clientes_id')
+        ]);
         return $this->db->affected_rows() == 1;
     }
     
-    public function insertData() {
-        
+    public function getIdentificacion($identificacion, $id = NULL) {
+        if(!is_null($id)){
+            $this->db->where('id !=', $id);
+        }
+        $this->db->where('identificacion', $identificacion);
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $e = $this->db->get('clie__empresas')->row_array();
+        return $e;
     }
-
+    
+    public function insertData($data) {
+        $auditoria = [
+            'created_user' => $this->session->userdata('users_id'),
+            'created_clie' => $this->session->userdata('clientes_id'),
+            'update_user'  => $this->session->userdata('users_id'),
+            'update_clie'  => $this->session->userdata('clientes_id'),
+        ];
+        $this->db->trans_begin();
+        $data = $data + $auditoria;
+        $this->db->insert('clie__empresas', $data);
+        $id = $this->db->insert_id();
+        if(($this->db->affected_rows() != 1) || !is_numeric($id)){
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+        $fkdata = [
+            'fk_auditores' => $this->session->userdata('users_id'),
+            'fk_empresas'  => $id,
+        ] + $auditoria;
+        $this->db->insert('clie__auditores_empresas', $fkdata);
+        $this->db->trans_commit();
+        return $this->db->affected_rows() == 1;
+    }    
 }

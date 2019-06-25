@@ -300,3 +300,24 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 
 #*******************************************************************************
+
+FECHA: 24/06/2019
+NUEVAS FUNCIONALIDADES
+▪ Crear empresas teniendo en cuenta el limite
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Al editar un empresa esta quedaba seleccionada pero activa lo que provocaba un comportamiento inadecuado
+
+SE ESTA TRABAJANDO
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Creación de directorios de forma dinámica
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Listas de Control, Proveedores Ficticios
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Almacenar en un directorio único por cada usuario sus archivos, para así poder determinar los megas utilizados
+
+#*******************************************************************************

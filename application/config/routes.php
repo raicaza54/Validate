@@ -58,6 +58,9 @@ $route['empresas/v1/datos']['post']      = 'empresas/datos';
 $route['empresas/v1/activar']['post']    = 'empresas/activar';
 $route['empresas/v1/formulario']['post'] = 'empresas/formulario';
 $route['empresas/v1/actualizar']['post'] = 'empresas/actualizar';
+$route['empresas/v1/crear']['post']      = 'empresas/crear';
+$route['empresas/v1/eliminar']['post']   = 'empresas/eliminar';
+$route['empresas/v1/limites']['get']     = 'empresas/limites';
 
 /* -------------------------------------------------------------------------
  * Explorador

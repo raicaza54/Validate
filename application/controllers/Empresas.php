@@ -34,9 +34,38 @@ class Empresas extends CI_Controller {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
-        $this->load->model('Empresas_model');
+        $this->load->model([
+            'Empresas_model',
+            'Cliente_model'
+        ]);
     }
 
+    public function limites($json = TRUE) {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $cliente_id = $this->session->userdata('clientes_id');
+            $limites = $this->Cliente_model->getLimites($cliente_id, 'empresas');
+            if (!is_array($limites)) {
+                throw new Exception("No existen datos para mostrar", 202);
+            }
+            $response = ["data" => $limites];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        if($json){
+            $this->output
+                ->set_content_type('application/json')
+                ->set_status_header($response['status'])
+                ->set_output(json_encode($response));
+        }else{
+            return $response;
+        }
+    }    
+    
     public function datos() {
         $response = $this->response;
         $data = $row = array();
@@ -88,6 +117,19 @@ class Empresas extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
+    private function _validaciones($form) {
+        $this->form_validation->set_rules('empresa-nombre',         'Empresa',                    'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-identificacion', 'Identificación',             'required|max_length[150]|callback__identificacionUnico['.$form['empresa-id'].']');
+        $this->form_validation->set_rules('empresa-direccion',      'Dirección',                  'required|max_length[500]');
+        $this->form_validation->set_rules('empresa-telefonos',      'Telefonos',                  'max_length[150]');
+        $this->form_validation->set_rules('empresa-correo',         'Correo',                     'max_length[150]');
+        $this->form_validation->set_rules('empresa-persona',        'Nombre Persona Contacto',    'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-persona_tlfs',   'Teléfono Persona Contacto',  'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-persona_direc',  'Dirección Persona Contacto', 'max_length[500]');
+        $this->form_validation->set_rules('empresa-persona_correo', 'Correo Persona Contacto',    'max_length[150]');
+        $this->form_validation->set_rules('empresa-observacion',    'Observaciones',              'max_length[150]');        
+    }
+    
     public function actualizar() {
         $response = $this->response;
         $data = $row = array();
@@ -97,24 +139,15 @@ class Empresas extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
-            $item = $this->Empresas_model->getId($form['empresa-id']);
-            if (!is_array($item)) {
-                throw new Exception("No existen datos para mostrar", 202);
-            }
             $this->form_validation->set_data($form);
-            $this->form_validation->set_rules('empresa-id',             'Identificador',              'required|max_length[11]|numeric');
-            $this->form_validation->set_rules('empresa-nombre',         'Empresa',                    'required|max_length[150]');
-            $this->form_validation->set_rules('empresa-identificacion', 'NIT',                        'required|max_length[150]');
-            $this->form_validation->set_rules('empresa-direccion',      'Dirección',                  'required|max_length[500]');
-            $this->form_validation->set_rules('empresa-telefonos',      'Telefonos',                  'max_length[150]');
-            $this->form_validation->set_rules('empresa-correo',         'Correo',                     'max_length[150]');
-            $this->form_validation->set_rules('empresa-persona',        'Nombre Persona Contacto',    'required|max_length[150]');
-            $this->form_validation->set_rules('empresa-persona_tlfs',   'Teléfono Persona Contacto',  'required|max_length[150]');
-            $this->form_validation->set_rules('empresa-persona_direc',  'Dirección Persona Contacto', 'max_length[500]');
-            $this->form_validation->set_rules('empresa-persona_correo', 'Correo Persona Contacto',    'max_length[150]');
-            $this->form_validation->set_rules('empresa-observacion',    'Observaciones',              'max_length[150]');
+            $this->form_validation->set_rules('empresa-id', 'Identificador', 'required|max_length[11]|numeric');
+            $this->_validaciones($form);
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
+            }
+            $item = $this->Empresas_model->getId($form['empresa-id']);
+            if (!is_array($item)) {
+                throw new Exception("No existen datos para actualizar", 202);
             }
             $data = [];
             foreach ($form as $key => $value) {
@@ -123,12 +156,12 @@ class Empresas extends CI_Controller {
             unset($data['id']);
             $update = $this->Empresas_model->updateData($data, $form['empresa-id']);
             if($update == FALSE){
-                throw new Exception("Los datos no pudieron ser actualizados, contactar con soporte técnico", 202);
+                throw new Exception('No se realizaron cambios en la empresa', 200);
             }
             $response = [
                 "data" => ['empresa' => $item],
             ];
-            throw new Exception("Resultado retornando correctamente", 200);
+            throw new Exception('Los datos se actualizaron correctamente', 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
@@ -136,6 +169,90 @@ class Empresas extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
+    }
+    
+    public function eliminar() {
+        $response = $this->response;
+        $data = $row = array();
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('id', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id', 'Identificador', 'required|max_length[11]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $item = $this->Empresas_model->getId($post['id']);
+            if (!is_array($item)) {
+                throw new Exception("No existen datos para actualizar", 202);
+            }
+            $update = $this->Empresas_model->updateData(['deleted_at' => 1], $post['id']);
+            if($update == FALSE){
+                throw new Exception('No se realizaron cambios en la empresa', 200);
+            }
+            $response = [
+                "data" => ['empresa' => $item],
+            ];
+            throw new Exception('La empresa fue eliminada', 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function crear() {
+        $response = $this->response;
+        $data = $row = array();
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $limites = $this->limites(FALSE);
+            if(($limites['data']['empresas']['cant'] + 1) > $limites['data']['empresas']['limite']){
+                throw new Exception("No es posible crear esta empresa ya que la misma supera el limite establecido, contacte con soporte", 202);
+            }
+            $form = unSerializeArray($post['form']);
+            $this->form_validation->set_data($form);
+            $this->_validaciones($form);
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $data = [];
+            foreach ($form as $key => $value) {
+                $data[substr($key,8)] = $value;
+            }
+            unset($data['id']);
+            $insert = $this->Empresas_model->insertData($data);
+            if($insert == FALSE){
+                throw new Exception('La empresa no pudo ser registrada, contacte a soporte', 200);
+            }
+            $response = [
+                "data" => ['empresa' => $form],
+            ];
+            throw new Exception('Los datos se actualizaron correctamente', 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    function _identificacionUnico($identificacion, $id = NULL) {
+        $empresa = $this->Empresas_model->getIdentificacion($identificacion, $id);
+        if(is_array($empresa) && count($empresa)){
+            $this->form_validation->set_message('_identificacionUnico', 'La {field} ya se encuentra registrada para la empresa "'.$empresa['nombre'].'"');
+            return FALSE;
+        }else{
+            return TRUE;
+        }
     }
     
     public function activar() {

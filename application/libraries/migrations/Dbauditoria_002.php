@@ -551,6 +551,12 @@ class Dbauditoria_002{
                 'comment'    => 'correo electronico de persona contacto',
                 'null'       => TRUE
             ],
+            'deleted_at'   => [
+                'type'       => 'INT',
+                'constraint' => '1',
+                'comment'    => 'borrado logico',
+                'default'    => 0
+            ],            
             'observacion'    => [
                 'type'       => 'VARCHAR',
                 'constraint' => '1024',

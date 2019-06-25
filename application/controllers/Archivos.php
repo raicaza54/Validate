@@ -496,7 +496,7 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $cliente_id = $this->session->userdata('clientes_id');
-            $limites = $this->Cliente_model->getLimites($cliente_id);
+            $limites = $this->Cliente_model->getLimites($cliente_id, 'archivos');
             if (!is_array($limites)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
