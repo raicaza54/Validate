@@ -114,6 +114,7 @@ $route['manipulacion/v1/procesar']['post'] = 'auditoria/manipulacion';
  * Perfil
  * ------------------------------------------------------------------------- */
 $route['perfil/v1/datos']['get'] = 'perfil/datos';
+$route['perfil/v1/disco']['get'] = 'perfil/disco';
 $route['perfil/v1/save']['post'] = 'perfil/saveDatos';
 
 

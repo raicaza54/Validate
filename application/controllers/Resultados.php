@@ -115,7 +115,7 @@ class Resultados extends CI_Controller {
     public function url($file, $dwl = 'r') {
         $file = xss_clean($file);
         $file = strip_tags($file);
-        if(!file_exists($this->config->item('path_clie').'resultados/'.$file.'.pdf') || (strlen($file) > 50)){
+        if(!file_exists($this->config->item('path_resultados').$file.'.pdf') || (strlen($file) > 50)){
             show_error("Archivo no encontrado", 404);
         }
         if(!in_array($dwl,['r', 'd'])){
@@ -131,9 +131,9 @@ class Resultados extends CI_Controller {
             header('Content-Disposition: inline; filename="'.$filename.'"');
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes');        
-            readfile($this->config->item('path_clie').'resultados/'.$file.".pdf");            
+            readfile($this->config->item('path_resultados').$file.".pdf");            
         }elseif($dwl == 'd'){
-            download($this->config->item('path_clie').'resultados/'.$file.'.pdf', $filename);
+            download($this->config->item('path_resultados').$file.'.pdf', $filename);
         }
     }
     
@@ -159,7 +159,7 @@ class Resultados extends CI_Controller {
             }elseif ($tipo == 'manipulacion') {
                 $pref = 'MAN';
             }
-            if(!file_exists($this->config->item('path_clie').'resultados/'.$pref.$post['id'].'.pdf')){
+            if(!file_exists($this->config->item('path_resultados').$pref.$post['id'].'.pdf')){
                 throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
             }
             $response["data"] = ['url' => base_url('resultados/v1/url/'.$pref.$post['id'])];

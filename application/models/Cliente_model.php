@@ -164,4 +164,50 @@ class Cliente_model extends CI_Model {
         }
     }
     
+    /**
+     * Tamano de directorio
+     * @param type $path
+     */
+    public function disco(){
+        $archivos = [];
+        $resultados = [];
+        $archivos_size = 0;
+        $dbFile = $this->db->query(
+            'SELECT clie__archivos.file_name 
+             FROM clie__auditores_empresas 
+             INNER JOIN clie__empresas ON clie__auditores_empresas.fk_empresas = clie__empresas.id
+             INNER JOIN clie__carpetas ON clie__carpetas.fk_empresas = clie__empresas.id
+             INNER JOIN clie__archivos ON clie__carpetas.archivos_id = clie__archivos.id 
+             WHERE clie__auditores_empresas.fk_auditores = '.$this->session->userdata('users_id').' 
+             AND clie__carpetas.deleted_at = 1 AND clie__carpetas.type IN("excel","csv") AND clie__archivos.file_name != ""'
+        )->result_array();
+        $filesDb = [];
+        if(count($dbFile)){
+            foreach ($dbFile as $value) {
+                $filesDb[] = basename($value['file_name']);
+            }            
+        }
+        if(is_dir($this->config->item('path_archivos'))){
+            $archivos = get_dir_file_info($this->config->item('path_archivos'));
+        }
+        if(is_dir($this->config->item('path_resultados'))){
+            $resultados = get_dir_file_info($this->config->item('path_resultados'));
+        }
+        $files = array_column($archivos, 'name');
+        $filesActive = array_diff($files, $filesDb);
+        if(count($archivos)){
+            foreach ($archivos as $value) {
+                if(in_array($value['name'], $filesActive)){
+                    $archivos_size += $value['size'];
+                }
+            }            
+        }
+        $resultados_size = array_sum(array_column($resultados, 'size'));
+        $size = $archivos_size + $resultados_size;
+        return [
+            'size'       => $size,
+            'sizeFormat' => formatBytes($size),
+        ];
+    }
+    
 }

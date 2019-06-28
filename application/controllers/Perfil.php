@@ -46,6 +46,7 @@ class Perfil extends CI_Controller {
             $cliente_id = $this->session->userdata('clientes_id');
             $users_id = $this->session->userdata('users_id');
             $contrato = $this->Cliente_model->getContrato($cliente_id);
+            $disco = $this->Cliente_model->disco();
             if(!is_array($contrato) || (count($contrato) <= 0)){
                 throw new Exception("Tenemos un problema con el contrato, por favor contactar con soporte", 202);
             }
@@ -57,6 +58,28 @@ class Perfil extends CI_Controller {
                 "data" => [
                     'contrato' => $contrato,
                     'usuario'  => $usuario,
+                    'disco'    => $disco,
+                ],
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function disco() {
+        $response = $this->response;
+        try {
+            $cliente_id = $this->session->userdata('clientes_id');
+            $users_id = $this->session->userdata('users_id');
+            $disco = $this->Cliente_model->disco();
+            $response = [
+                "data" => [
+                    'disco' => $disco,
                 ],
             ];
             throw new Exception("Resultado retornando correctamente", 200);

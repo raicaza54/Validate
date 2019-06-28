@@ -239,7 +239,11 @@ class Spider_pdf extends TCPDF {
                 $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
             }
             //$this->Output('archivo.pdf', 'I');
-            $filePath = $this->CI->config->item('path_clie').'resultados/SPI'.$this->namePdf.'.pdf';
+            $path = mkdir_validate($this->CI->config->item('path_resultados'));
+            if($path === FALSE){
+                return FALSE;
+            }            
+            $filePath = $this->CI->config->item('path_resultados').'SPI'.$this->namePdf.'.pdf';
             $this->Output($filePath, 'F');
         } catch(Exception $ex){
             return FALSE;

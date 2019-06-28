@@ -102,14 +102,14 @@
                     <i class="fas fa-user-secret"></i>
                     <span>Manipulaci&oacute;n</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
-                    <i class="fas fa-vote-yea"></i>
-                    <span>Materialidad</span>
-                </div>
                 <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas">
                     <i class="fas fa-fire"></i>
                     <span>Listas de Control</span>
                 </div>
+                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
+                    <i class="fas fa-vote-yea"></i>
+                    <span>Materialidad</span>
+                </div>                
                 <div class="titulo">An&aacute;lisis de datos</div>
             </div>
             <div class="menu-separador"></div>

@@ -12,7 +12,7 @@ if (!function_exists('debug_file')) {
 
     function debug_file($r) {
         $file = fopen(APPPATH . "logs/debug-" . date("Y-m-d") . ".php", "a");
-        if ($r == '-') {
+        if ($r === '-') {
             $r = '------------------------ ' . date("h:i:s a") . ' ------------------------------';
         } elseif (!is_string($r)) {
             $r = var_export($r, TRUE);
@@ -178,4 +178,37 @@ if (!function_exists('date5format')) {
 
 }
 
+if (!function_exists('mkdir_validate')) {
 
+    function mkdir_validate($path) {
+        if (!is_dir($path)) {
+            if (!mkdir($path, 0755, TRUE)) {
+                log_message('error', 'upload_no_filepath');
+                return FALSE;
+            }
+        }
+        if (!is_really_writable($path)) {
+            if (!chmod($path, 0755)) {
+                log_message('error', 'upload_not_writable');
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+}
+
+if (!function_exists('formatBytes')) {
+    /**
+     * 500 Mb => 524288000 Bytes
+     * @param type $bytes
+     * @param type $precision
+     * @return type
+     */
+    function formatBytes($bytes, $precision = 2) {
+        $unit = ["B", "Kb", "Mb", "Gb"];
+        $exp = floor(log($bytes, 1024)) | 0;
+        return round($bytes / (pow(1024, $exp)), $precision).' '.$unit[$exp];
+    }
+
+}

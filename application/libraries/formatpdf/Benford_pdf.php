@@ -223,7 +223,11 @@ class Benford_pdf extends TCPDF {
         $lplot->SetLegend('Ley de Benford');
         $lplot->SetColor("#ff7f0e");
         $fileName = md5($dn.$this->CI->session->userdata('clientes_id').$this->CI->session->userdata('users_id'));
-        $filePath = $this->CI->config->item('path_clie').'grafica/'.$fileName.'.png';
+        $path = mkdir_validate($this->CI->config->item('path_graficas'));
+        if($path === FALSE){
+            return FALSE;
+        }
+        $filePath = $this->CI->config->item('path_graficas').$fileName.'.png';
         $graph->Stroke($filePath);
         $this->Image($filePath, 10, '', 196, 60, 'PNG', '', 'N', FALSE, 300);
     }
@@ -270,7 +274,11 @@ class Benford_pdf extends TCPDF {
             $this->grafica($d12, '12');
             $this->digito($d12, '12');
             //$this->Output('archivo.pdf', 'I');
-            $filePath = $this->CI->config->item('path_clie').'resultados/BEN'.$this->namePdf.'.pdf';
+            $path = mkdir_validate($this->CI->config->item('path_resultados'));
+            if($path === FALSE){
+                return FALSE;
+            }
+            $filePath = $this->CI->config->item('path_resultados').'BEN'.$this->namePdf.'.pdf';
             $this->Output($filePath, 'F');
         } catch(Exception $ex){
             return FALSE;

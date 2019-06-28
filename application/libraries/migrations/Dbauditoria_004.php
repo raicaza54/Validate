@@ -119,7 +119,7 @@ class Dbauditoria_004{
             'file_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '50',
-                'comment'    => 'nombre de archivo en directorio config[path_file]',
+                'comment'    => 'nombre de archivo en directorio',
                 'null'       => TRUE,
             ],
             'columnas'      => [

@@ -84,7 +84,7 @@ class Archivos extends CI_Controller {
     public function url($file) {
         $file = xss_clean($file);
         $file = strip_tags($file);
-        if(!file_exists($this->config->item('path_clie').'archivos/'.$file) || (strlen($file) > 50)){
+        if(!file_exists($this->config->item('path_archivos').$file) || (strlen($file) > 50)){
             show_error("Archivo no encontrado", 404);
         }
         $fileResultado = $this->Archivos_model->getFileId($file);
@@ -94,7 +94,7 @@ class Archivos extends CI_Controller {
         }else{
             show_error("Archivo no encontrado", 404);
         }
-        download($this->config->item('path_clie').'archivos/'.$file, $filename);
+        download($this->config->item('path_archivos').$file, $filename);
         
     }    
     
@@ -218,7 +218,6 @@ class Archivos extends CI_Controller {
             $spreadsheet = $objPHPExcel->load($fullpath);
             $worksheet   = $spreadsheet->setActiveSheetIndex(0);
             $highestRow  = $worksheet->getHighestRow();
-            $highestCol  = $worksheet->getHighestColumn();
             $sheet = $worksheet->rangetoArray("A1:T$highestRow",NULL, TRUE, FALSE, TRUE);
             $outsheet = []; $x = 0;
             $created_user  = $this->session->userdata('users_id');
@@ -369,7 +368,7 @@ class Archivos extends CI_Controller {
     
     private function do_upload() {
         $r = FALSE;
-        $config['upload_path']      = $this->config->item('path_clie').'archivos';
+        $config['upload_path']      = $this->config->item('path_archivos');
         $config['allowed_types']    = $this->config->item('types_file');
         $config['max_size']         = $this->config->item('size_file');
         $config['file_ext_tolower'] = TRUE;

@@ -126,6 +126,7 @@ class DBPermisos {
             ['fk_permisos' => 401, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 402, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 3] + $userDate,
+            ['fk_permisos' => 405, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 700, 'fk_groups' => 3] + $userDate,
         ];
@@ -150,6 +151,7 @@ class DBPermisos {
             ['fk_permisos' => 401, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 402, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 405, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 601, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 602, 'fk_groups' => 2] + $userDate,
