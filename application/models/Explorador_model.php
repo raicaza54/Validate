@@ -35,6 +35,7 @@ class Explorador_model extends CI_Model {
             'label'          => $label,
             'have_childrens' => 0,
             'opened'         => 0,
+            'disabled'       => $disabled,
             'type'           => $type,
             'created_user'   => $this->session->userdata('users_id'),
             'created_clie'   => $this->session->userdata('clientes_id'),

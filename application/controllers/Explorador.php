@@ -78,11 +78,14 @@ class Explorador extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
-            }
-            if(in_array($post['type'], ['xls','xlsx','csv']) && !(is_numeric($post['archivos_id']) && ($post['archivos_id'] <= 0))){
-                throw new Exception("Tenemos un problema, el identificador de archivo es incompletos o corruptos", 202);
+            $this->form_validation->set_rules('id',          'Id',      'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('label',       'Nombre',  'required|regex_match[/^[\w\d\s.-áéíñóúüÁÉÍÑÓÚÜ]*$/]|max_length[250]');
+            $this->form_validation->set_rules('parent_id',   'Carpeta', 'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('type',        'Tipo',    'required|max_length[10]|in_list[csv,default,excel,folder]');
+            $this->form_validation->set_rules('archivos_id', 'Archivo', 'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('disabled',    'Estado',  'required|numeric|max_length[2]|in_list[0,1]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
             }
             $insert = $this->Explorador_model->crear([
                 'label'       => $post['label'],
@@ -90,7 +93,8 @@ class Explorador extends CI_Controller {
                 'parent_id'   => $post['parent_id'],
                 'type'        => $post['type'],
                 'id'          => $post['id'],
-                'archivos_id' => $post['archivos_id']
+                'archivos_id' => $post['archivos_id'],
+                'disabled'    => $post['disabled']
             ]);
             if($insert === FALSE){
                 throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);

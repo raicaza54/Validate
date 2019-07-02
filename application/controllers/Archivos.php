@@ -111,7 +111,6 @@ class Archivos extends CI_Controller {
             $update_user   = $this->session->userdata('users_id');
             $update_clie   = $this->session->userdata('clientes_id');
             $linea = 'e';
-            $this->id = uniqint();
             $num = 0;
             for ($f = 1; $f <= 20; $f++) {
                 $tipos['campo'.$f] = 'string';
@@ -220,12 +219,11 @@ class Archivos extends CI_Controller {
             $highestRow  = $worksheet->getHighestRow();
             $sheet = $worksheet->rangetoArray("A1:T$highestRow",NULL, TRUE, FALSE, TRUE);
             $outsheet = []; $x = 0;
-            $created_user  = $this->session->userdata('users_id');
+            $created_user = $this->session->userdata('users_id');
             $created_clie = $this->session->userdata('clientes_id');
-            $update_user   = $this->session->userdata('users_id');
-            $update_clie   = $this->session->userdata('clientes_id');
+            $update_user  = $this->session->userdata('users_id');
+            $update_clie  = $this->session->userdata('clientes_id');
             $linea = 'e';
-            $this->id = uniqint();
             $num = 0;
             for ($f = 1; $f <= 20; $f++) {
                 $tipos['campo'.$f] = 'string';
@@ -268,18 +266,6 @@ class Archivos extends CI_Controller {
                 $linea = 'f';
             }
             $archivo = [
-                'archivo' => [
-                    'id'            => $this->id,
-                    'fk_carpetas'   => $parent_id,
-                    'nombre'        => $filename,
-                    'file_name'     => $fullpath,
-                    'ext'           => $type,
-                    'tipo'          => $tipo,
-                    'created_user'  => $created_user,
-                    'created_clie'  => $created_clie,
-                    'update_user'   => $update_user,
-                    'update_clie'   => $update_clie,
-                ],
                 'detalle' => $outsheet
             ];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -292,6 +278,53 @@ class Archivos extends CI_Controller {
             log_message('error', $status.': '.$exc->getMessage());
             return FALSE;
         }
+    }
+    
+    public function preprocesar() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $this->response;
+        try {
+            $this->form_validation->set_rules('id',        'id',              'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('nombre',    'Archivo',         'required|regex_match[/^[\w\d\s.-áéíñóúüÁÉÍÑÓÚÜ]*$/]|max_length[250]');
+            $this->form_validation->set_rules('carpeta',   'Directorio',      'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('tipo',      'Tipo de Archivo', 'required|in_list[mov,blp,cxc,cxp]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $filename = pathinfo($this->input->post('nombre'));
+            $archivo = [
+                'archivo' => [
+                    'id'            => $this->input->post('id'),
+                    'fk_carpetas'   => $this->input->post('carpeta'),
+                    'nombre'        => $filename['basename'],
+                    'file_name'     => '',
+                    'ext'           => '.'.$filename['extension'],
+                    'tipo'          => $this->input->post('tipo'),
+                    'created_user'  => $this->session->userdata('users_id'),
+                    'created_clie'  => $this->session->userdata('clientes_id'),
+                    'update_user'   => $this->session->userdata('users_id'),
+                    'update_clie'   => $this->session->userdata('clientes_id')
+                ]
+            ];
+            $insert = $this->Archivos_model->insert_preprocesar($archivo);
+            if($insert == FALSE){
+                throw new Exception("Tenemos un problema con el archivo, no ha sido posible cargar el archivo, contactar con soporte", 202);
+            }
+            $response["data"] = [
+                'type'     => $this->fileType('.'.$filename['extension'], 1),
+                'filename' => $filename['basename'],
+                'id'       => $this->input->post('id'),
+            ];            
+            throw new Exception("Resultado retornando correctamente", 200);            
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
     }
     
     public function subir() {
@@ -323,6 +356,7 @@ class Archivos extends CI_Controller {
             if(($limite['cant'] + 1) > $limite['limite']){
                 throw new Exception("Tenemos un problema, este tipo de archivo supera la cantidad permitida, le sugerimos contactar con el ejecutivo de ventas encargado", 202);
             }
+            $this->id = $post['id'];
             $archivo = $this->do_upload();
             if(!is_array($archivo)){
                 throw new Exception("Tenemos un problema con el archivo", 202);

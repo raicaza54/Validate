@@ -31,7 +31,7 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-csv')?>" id="mpe-exportar-csv" data-toggle="popover" data-placement="bottom" data-content="Se exporta la base de datos en un archivo CSV separado por punto y comas (;)">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-csv')?>" id="mpe-exportar-csv">
                     <i class="fas fa-file-csv"></i>
                     <span>CSV</span>
                 </div>

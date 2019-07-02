@@ -82,15 +82,16 @@ $route['resultados/v1/url/(:any)/(r|d)']['get'] = 'resultados/url/$1/$2';
 /* -------------------------------------------------------------------------
  * Archivos
  * ------------------------------------------------------------------------- */
-$route['archivos/v1/datos']['post']      = 'archivos/datos';
-$route['archivos/v1/digito']['post']     = 'archivos/digito';
-$route['archivos/v1/subir']              = 'archivos/subir';
-$route['archivos/v1/header']             = 'archivos/header';
-$route['archivos/v1/encabezado']['post'] = 'archivos/encabezado/0';
-$route['archivos/v1/configurar']['post'] = 'archivos/configurar';
-$route['archivos/v1/limites']['get']     = 'archivos/limites';
-$route['archivos/v1/descargar']['post']  = 'archivos/descargar';
-$route['archivos/v1/url/(:any)']['get']  = 'archivos/url/$1';
+$route['archivos/v1/datos']['post']       = 'archivos/datos';
+$route['archivos/v1/digito']['post']      = 'archivos/digito';
+$route['archivos/v1/subir']['post']       = 'archivos/subir';
+$route['archivos/v1/preprocesar']['post'] = 'archivos/preprocesar';
+$route['archivos/v1/header']              = 'archivos/header';
+$route['archivos/v1/encabezado']['post']  = 'archivos/encabezado/0';
+$route['archivos/v1/configurar']['post']  = 'archivos/configurar';
+$route['archivos/v1/limites']['get']      = 'archivos/limites';
+$route['archivos/v1/descargar']['post']   = 'archivos/descargar';
+$route['archivos/v1/url/(:any)']['get']   = 'archivos/url/$1';
 
 /* -------------------------------------------------------------------------
  * Ley de Benford

@@ -66,10 +66,13 @@
                 </ul>
             </div>
             <div class="navbar-nav">
+                <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </a>
                 <a id="disco" class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
                     <i class="far fa-hdd"></i>
                 </a>
-                <a class="nav-item nav-link nav-icon" href="#">
+                <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
                     <i class="fas fa-bell"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato(true);">

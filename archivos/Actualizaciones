@@ -321,3 +321,41 @@ SE ESTA TRABAJANDO
 ▪ Almacenar en un directorio único por cada usuario sus archivos, para así poder determinar los megas utilizados
 
 #*******************************************************************************
+
+FECHA: 29/06/2019
+NUEVAS FUNCIONALIDADES
+▪ Crear empresas teniendo en cuenta el limite
+
+ACTUALIZACIÓN
+▪ Creación de directorios de forma dinámica
+▪ Almacenar en un directorio único por cada usuario sus archivos, para así poder determinar los megas utilizados
+
+CORRECCIONES
+▪ Al editar un empresa esta quedaba seleccionada pero activa lo que provocaba un comportamiento inadecuado
+
+SE ESTA TRABAJANDO
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+▪ Listas de Control, Proveedores Ficticios
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
+FECHA: 01/07/2019
+NUEVAS FUNCIONALIDADES
+▪ Carga de archivos xlsm (se ignora el macro)
+
+ACTUALIZACIÓN
+▪ Se carga el archivo con un estado en espera en segundo plano, se permite uno a la vez, permitiendo realizar otras acciones
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Listas de Control, Proveedores Ficticios
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
