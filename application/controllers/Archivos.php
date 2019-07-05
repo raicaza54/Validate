@@ -382,7 +382,7 @@ class Archivos extends CI_Controller {
             if(is_array($xls) && array_key_exists('error', $xls)){
                 throw new Exception($xls['error'], 202);
             }
-            $xlsdb = $this->Archivos_model->insert_excel($xls);
+            $xlsdb = $this->Archivos_model->insert_excel($xls, $this->id);
             if(is_bool($xlsdb) && ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 202);
             }
