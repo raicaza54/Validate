@@ -585,7 +585,7 @@ class Archivos extends CI_Controller {
     public function encabezado($benford = 0) {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -596,21 +596,40 @@ class Archivos extends CI_Controller {
             if (!is_array($items) && count($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
-            $x = 0;
+            $x = 0; $debehaber = [];
             if($benford == 1){
-                foreach ($items['columnDef'] as $value) {
+                foreach ($items['columnDef'] as $key => $value) {
                     if(in_array($value[1], ['num','float','int'])){
                         $x++;
+                    }
+                    if(in_array($value[0], ['debe','haber'])){
+                        $debehaber[] = $key;
                     }
                 }
                 if ($x <= 0) {
                     throw new Exception("El archivo no posee campos de tipo número o valores para analizar, verifique e intentelo nuevamente", 202);
-                }                
+                }
+            }
+            if($items['formato'] == 'debehaber'){
+                if($benford == 1){
+                    if(count($debehaber) != 2){
+                        throw new Exception("Para este tipo de archivo se deben definir las columnas de Debitos y Creditos", 202);
+                    }
+                    foreach ($debehaber as $value) {
+                        unset($items['columnDef'][$value]);
+                        unset($items['encabezado'][$value]);
+                    }
+                    $items['columnDef']['valor'] = [
+                        'valor', 'float'
+                    ];
+                    $items['encabezado']['valor'] = 'VALOR';
+                }
             }
             $response["data"] = [
                 'encabezado' => $items['encabezado'],
                 'columnDef'  => $items['columnDef'],
-                'tipo'       => $items['tipo']
+                'tipo'       => $items['tipo'],
+                'formato'    => $items['formato'],
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
@@ -639,7 +658,7 @@ class Archivos extends CI_Controller {
             if(!(is_array($column['array']) && (count($column['array']) >= 0))){
                 throw new Exception("Tenemos un problema, el tipo de columna no corresponde con el archivo, se requiere configuración", 202);
             }
-            if(count(array_diff(['cta','comp','doc','tipo','valor'], array_keys($column['array']))) > 0){
+            if((count(array_diff(['cta','comp','doc','debe','haber'], array_keys($column['array']))) > 0) && (count(array_diff(['cta','comp','doc','tipo','valor'], array_keys($column['array']))) > 0)){
                 throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 202);
             }
             $items = $this->Archivos_model->getCuentas($post['id'], $column);

@@ -144,6 +144,14 @@ class Auditoria extends CI_Controller {
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form) || !array_key_exists('ejecucion', $form)){
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
             }
+            $columndh = $this->archivo->columnas($form['archivoIdProcesar']);
+            if($form['campoAnalizar'] == 'valor'){
+                if($columndh === FALSE){
+                    throw new Exception("Para este tipo de archivo se deben definir las columnas de Debitos y Creditos", 202);
+                }else{
+                    $form['campoAnalizar'] = $columndh['debehaber'];
+                }
+            }
             $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
             if(!is_array($items) || (count($items) <= 0)){
                 throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 202);

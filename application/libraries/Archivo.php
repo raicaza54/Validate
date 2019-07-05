@@ -22,6 +22,8 @@ class Archivo {
         'doc',
         'tipo',
         'valor',
+        'debe',
+        'haber',
     ];
     
     public function __construct() {
@@ -32,6 +34,7 @@ class Archivo {
     
     public function columnas($id) {
         $column = $this->CI->Archivos_model->getEncabezado($id);
+        $columndh = $column['columnDef'];
         $column = array_keys($column['encabezado']);
         $columnDef = [];
         $columnDefs = [];
@@ -47,15 +50,35 @@ class Archivo {
                 }
             }
         }
+        $formato = ((is_array($columnas) && array_key_exists('formato', $columnas)) ? $columnas['formato'] : '');
+        $debehaber = []; $dh = '';
+        if($formato == 'debehaber'){
+            if (is_array($columndh) && (count($columndh) > 0)) {
+                foreach ($columndh as $key => $value) {
+                    if(in_array($value[0], ['debe','haber'])){
+                        $debehaber[] = $key;
+                    }
+                }
+            }
+            if(count($debehaber) == 2){
+                $dh = '(';
+                foreach ($debehaber as $value){
+                    $dh .= $value.'+';
+                }
+                $dh = substr($dh, 0, -1);
+                $dh .= ')';
+            }
+        }
         return [
             'archivo'   => [
                 'nombre'  => ((is_array($columnas) && array_key_exists('nombre', $columnas)) ? $columnas['nombre'] : ''),
                 'tipo'    => ((is_array($columnas) && array_key_exists('tipo', $columnas)) ? $columnas['tipo'] : ''),
-                'formato' => ((is_array($columnas) && array_key_exists('formato', $columnas)) ? $columnas['formato'] : '')
+                'formato' => $formato
             ],
             'column'    => $column,
             'columnSql' => $columnSql,
-            'columnDef' => $columnDef
+            'columnDef' => $columnDef,
+            'debehaber' => $dh,
         ];
     }
     
@@ -117,6 +140,10 @@ class Archivo {
             $r = ['tipo', 'num'];
         }elseif($e == 'valor'){
             $r = ['valor', 'float'];
+        }elseif($e == 'debe'){
+            $r = ['debe', 'float'];
+        }elseif($e == 'haber'){
+            $r = ['haber', 'float'];
         }
         return [
             $r[0],
@@ -157,7 +184,8 @@ class Archivo {
     
     public function columnSpider($archivo_id) {
         $columnDef = [];
-        $columnas = $this->CI->Archivos_model->getColumn($archivo_id);
+        $encabezado = $this->CI->Archivos_model->getEncabezado($archivo_id);
+        $columnas = $encabezado['columnDef'];
         if(is_array($columnas) && count($columnas)){
             foreach ($columnas as $key => $value) {
                 foreach ($this->columnSpider as $col) {
@@ -169,19 +197,35 @@ class Archivo {
         }else{
             return FALSE;
         }
-        $columnString = $this->columnString($columnDef);
+        $columnString = $this->columnString($columnDef, $encabezado['formato']);
         return [
             'string' => $columnString,
             'array'  => $columnDef
         ];
     }
     
-    private function columnString($column) {
-        $columnString = '';
+    private function columnString($column, $formato = '') {
+        $columnString = ''; $debehaber = [];
         if(is_array($column) && count($column)){
             foreach ($column as $key => $value) {
-               $columnString .= $value.' AS '.$key.', ';
+                if(($formato == 'debehaber') && ($key == 'debe')){
+                    $columnString .= 'IF('.$value.' > 0,1,2) AS tipo, ';
+                    $debehaber[] = $value;
+                }elseif(($formato == 'debehaber') && ($key == 'haber')){
+                    $debehaber[] = $value;
+                }else{
+                    $columnString .= $value.' AS '.$key.', ';
+                }
             }
+            if(count($debehaber) == 2){
+                $dh = '(';
+                foreach ($debehaber as $value){
+                    $dh .= $value.'+';
+                }
+                $dh = substr($dh, 0, -1);
+                $dh .= ')';
+                $columnString .= $dh.' AS valor, ';
+            }                
             $columnString = substr($columnString, 0, -2);
         }else{
             return FALSE;

@@ -164,11 +164,13 @@ class Archivos_model extends CI_Model {
         if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
             $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
-        $colum     = $this->db->select('tipo, columnas')->where('id', $id)->get('clie__archivos')->row_array();
+        $colum     = $this->db->select('tipo, columnas, formato')->where('id', $id)->get('clie__archivos')->row_array();
         $columnDef = json_decode($colum['columnas'], TRUE);
         $tipo      = $colum['tipo'];
+        $formato   = $colum['formato'];
         return [
             'tipo'       => $tipo,
+            'formato'    => $formato,
             'columnDef'  => $columnDef,
             'encabezado' => (count($e) <= 0) ? FALSE : $e,
         ];
