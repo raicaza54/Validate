@@ -39,6 +39,7 @@ class Archivos extends CI_Controller {
         $fileType = FALSE;
         switch ($type) {
             case '.xlsx':
+            case '.xlsm':
                 $fileType = ($t == 0) ? 'Excel2007' : 'excel';
                 break;
             case '.xls':
@@ -365,7 +366,7 @@ class Archivos extends CI_Controller {
                 throw new Exception($archivo['msg'], 202);
             }
             $xls = [];
-            if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx')){
+            if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx') || ($archivo['type'] == '.xlsm')){
                 $xls = $this->leer_excel($archivo + [
                     'parent_id' => $post['folderId'],
                     'tipo'      => $post['tipo'],

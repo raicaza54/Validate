@@ -116,6 +116,13 @@ class Dbauditoria_004{
                 'null'       => TRUE,
                 'default'    => 'xlsx'
             ],
+            'formato'       => [
+                'type'       => 'VARCHAR',
+                'constraint' => '25',
+                'comment'    => 'formato de archivo, naturaleza: naturaleza y valor, debehaber: debitos y creditos',
+                'null'       => FALSE,
+                'default'    => 'naturaleza'
+            ],
             'file_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '50',
