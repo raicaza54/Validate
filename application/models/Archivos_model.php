@@ -179,6 +179,7 @@ class Archivos_model extends CI_Model {
     public function setColumnas($data, $form, $id) {
         $this->db->set('columnas', "'".$data."'", FALSE); 
         $this->db->set('tipo', $form['archivoTipo']); 
+        $this->db->set('formato', $form['archivoFormato']); 
         $this->db->where('id', $id);
         return $this->db->update('clie__archivos');
     }
@@ -268,7 +269,8 @@ class Archivos_model extends CI_Model {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
-        return $this->db->get('clie__archivos_detalle')->result_array();
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
+        return $r;
     }
     
     public function getDetalleIdBenford($id, $campoAnalizar) {
