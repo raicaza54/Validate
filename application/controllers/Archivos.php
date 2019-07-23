@@ -63,7 +63,7 @@ class Archivos extends CI_Controller {
         try {
             $post = $this->input->post();
             $this->form_validation->set_data($post);
-            $this->form_validation->set_rules('id','Archivo','required|max_length[40]');
+            $this->form_validation->set_rules('id','Archivo','required|max_length[50]');
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }
@@ -572,6 +572,32 @@ class Archivos extends CI_Controller {
             $columnas = $this->archivo->configColumnas($form);
             $this->Archivos_model->setColumnas($columnas, $form, $form['archivoId']);
             $response["data"] = [];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function columlistas() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $this->response;
+        try {    
+            $post = $this->input->post();
+            $this->form_validation->set_rules('id', 'Identificador', 'required|max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $column = $this->archivo->columnListas($post['id']);
+            if((count(array_diff(['identificacion'], array_keys($column['array']))) > 0) && (count(array_diff(['nombre','identificacion'], array_keys($column['array']))) > 0)){
+                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar la consulta en las Listas de Control", 202);
+            }
+            $response["data"] = [];            
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

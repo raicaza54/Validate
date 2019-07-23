@@ -323,5 +323,12 @@ class Archivos_model extends CI_Model {
         $e = $this->db->get('clie__archivos')->row_array();
         return $e;        
     }
-
+    
+    public function getDetalleAll($id){
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'f');
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
+        return $r;
+    }
+    
 }

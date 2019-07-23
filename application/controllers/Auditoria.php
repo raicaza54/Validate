@@ -40,7 +40,8 @@ class Auditoria extends CI_Controller {
         $this->load->library(array(
             'benford',
             'spider',
-            'manipulacion'
+            'manipulacion',
+            'listascontrol'
         ));
         $this->load->model(array(
             'Archivos_model'
@@ -180,6 +181,38 @@ class Auditoria extends CI_Controller {
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
     }
+    
+    public function listascontrol() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_rules('id',        'Identificador', 'required|max_length[50]');
+            $this->form_validation->set_rules('ejecucion', 'Identificador', 'required|max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $consulta = $this->listascontrol->run($post['id']);
+            $id = uniqint();
+            $response["data"] = $consulta;
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $post['ejecucion'],
+                'analisis_tipo' => 'listascontrol'
+            ]);
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }    
     
     private function tryCatch($exc, $response) {
         $response["status"] = $exc->getCode();

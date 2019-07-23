@@ -158,6 +158,8 @@ class Resultados extends CI_Controller {
                 $pref = 'SPI';
             }elseif ($tipo == 'manipulacion') {
                 $pref = 'MAN';
+            }elseif ($tipo == 'listascontrol') {
+                $pref = 'LSC';
             }
             if(!file_exists($this->config->item('path_resultados').$pref.$post['id'].'.pdf')){
                 throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
@@ -193,6 +195,9 @@ class Resultados extends CI_Controller {
             } elseif (array_key_exists('pdfManipulacion', $post) && (strlen($post['pdfManipulacion']) > 5)) {
                 $pdf = 'pdfManipulacion';
                 $pref = 'MAN';
+            } elseif (array_key_exists('pdflistasControl', $post) && (strlen($post['pdflistasControl']) > 5)) {
+                $pdf = 'pdflistasControl';
+                $pref = 'LSC';
             }
             $idAnalisis = trim($post[$pdf]);
             $pdfAnalisis = $this->Analisis_model->getData($idAnalisis);
@@ -208,6 +213,9 @@ class Resultados extends CI_Controller {
             }
             if (($tipo == 'manipulacion') && (strlen($post['pdfManipulacion']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos Manipulación, no corresponden los tipos definidos", 202);
+            }
+            if (($tipo == 'listascontrol') && (strlen($post['pdflistasControl']) <= 0)) {
+                throw new Exception("Tenemos un problema con los datos de Listas de Control, no corresponden los tipos definidos", 202);
             }
             $this->empresa =  $this->Empresas_model->getId($this->session->userdata('empresaId'));
             $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf']);
@@ -292,6 +300,30 @@ class Resultados extends CI_Controller {
             $pdf = unserialize($manipulacion['analisis']);
         }        
         $this->load->library('formatpdf/Manipulacion_pdf', array(
+            'orientation' => 'P',
+            'unit'        => 'mm',
+            'format'      => 'LETTER',
+            'unicode'     => TRUE,
+            'encoding'    => 'UTF-8',
+            'diskcache'   => FALSE,
+            'empresa'     => $this->empresa,
+            'codigo'      => '000165540',
+            'namePdf'     => $idPdf,
+        ), 'pdf');
+        $data = [];
+        $dataPdf = [$pdf];
+        return $this->pdf->run($data, $dataPdf);
+    }
+    
+    public function listascontrolPdf($analisis = NULL, $idPdf = NULL) {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $e = []; $pdf = [];
+        foreach ($analisis as $listascontrol) {
+            $pdf = unserialize($listascontrol['analisis']);
+        }
+        $this->load->library('formatpdf/Listascontrol_pdf', array(
             'orientation' => 'P',
             'unit'        => 'mm',
             'format'      => 'LETTER',

@@ -118,6 +118,11 @@ $route['perfil/v1/datos']['get'] = 'perfil/datos';
 $route['perfil/v1/disco']['get'] = 'perfil/disco';
 $route['perfil/v1/save']['post'] = 'perfil/saveDatos';
 
+/* -------------------------------------------------------------------------
+ * Listas de Control
+ * ------------------------------------------------------------------------- */
+$route['listascontrol/v1/datos']['post']     = 'archivos/columlistas';
+$route['listascontrol/v1/consultar']['post'] = 'auditoria/listascontrol';
 
 /* -------------------------------------------------------------------------
  * Sistema por Defecto

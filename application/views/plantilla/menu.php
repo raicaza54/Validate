@@ -102,8 +102,8 @@
                     <i class="fas fa-user-secret"></i>
                     <span>Manipulaci&oacute;n</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas">
-                    <i class="fas fa-fire"></i>
+                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas" onclick="LISTASCONTROL.methods.consulta(this);">
+                    <i class="fas fa-tasks"></i>
                     <span>Listas de Control</span>
                 </div>
                 <div class="icono <?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
