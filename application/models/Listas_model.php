@@ -27,7 +27,8 @@ class Listas_model extends CI_Model {
     }
     
     public function extrac($a, $campo) {
-        $this->db->like($campo, $a, 'both');
+        //$this->db->like($campo, $a, 'both');
+        $this->db->like($campo, $a, 'none');
         $this->db->where('deleted_at', 0);
         $data = $this->db->get('sist__listas')->result_array();
         return $data;        
