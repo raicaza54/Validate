@@ -295,6 +295,11 @@ class Archivos_model extends CI_Model {
         return $detall;
     }
     
+    public function update_excel($data, $id) {
+        $this->db->update('clie__archivos', ['file_name' => $data['fullpath']], ['id' => $id]);
+        return $this->db->affected_rows() == 1;
+    }
+    
     public function getManipulacion($archivo, $cuenta, $column) {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $archivo);

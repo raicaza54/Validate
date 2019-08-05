@@ -316,5 +316,16 @@
 # https://github.com/wyndow/fuzzywuzzy
 #*******************************************************************************
 
-
-
+#*******************************************************************************
+# Levenshtein distance in mySQL
+#*******************************************************************************
+# According to Wikipedia, the Levenshtein distance is a string metric for 
+# measuring the difference between two sequences. Informally, the Levenshtein 
+# distance between two words is the minimum number of single-character edits 
+# (insertions, deletions or substitutions) required to change one word into 
+# the other. 
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://www.lucidar.me/en/web-dev/levenshtein-distance-in-mysql/
+#*******************************************************************************

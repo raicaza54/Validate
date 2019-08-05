@@ -60,7 +60,7 @@ class Auth extends CI_Controller {
             // check to see if the user is logging in
             // check for "remember me"
             $remember = (bool) $this->input->post('remember');
-            $this->db->select('
+            $this->db->select("
                 auth__users.id AS users_id,
                 ip_address,
                 username,
@@ -73,13 +73,17 @@ class Auth extends CI_Controller {
                 direccion AS clie_direccion,
                 telefonos AS clie_telefonos,
                 correo AS clie_correo,
-                sist__jerarquia.nivel AS nivel
-            ');
+                sist__jerarquia.nivel AS nivel, 
+                (SELECT GROUP_CONCAT(group_id ORDER BY user_id DESC SEPARATOR ',') AS grupos 
+                 FROM auth__users INNER JOIN auth__users_groups ON auth__users.id = auth__users_groups.user_id 
+                 WHERE auth__users.".$this->config->item('identity', 'ion_auth')." = '".$this->input->post('identity')."') AS grupos
+            ", FALSE);
             $this->db->from('auth__users');
             $this->db->join('clie__clientes', 'clie__clientes.id = auth__users.fk_cliente');
             $this->db->join('sist__jerarquia', 'sist__jerarquia.id = auth__users.fk_jerarquia');
             $this->db->where('auth__users.'. $this->config->item('identity', 'ion_auth'), $this->input->post('identity'));
             $session_data = $this->db->get()->row_array();
+            $session_data['grupos'] = array_map('trim', explode(',', $session_data['grupos']));
             if(!is_array($session_data) || count($session_data) <= 0){
                 $this->session->set_flashdata('message', lang('login_unsuccessful'));
                 redirect('auth/login', 'refresh');
@@ -88,7 +92,11 @@ class Auth extends CI_Controller {
                 //redirect them back to the home page
                 $this->session->set_userdata($session_data);
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
-                redirect('/', 'refresh');
+                if(in_array(1, $session_data['grupos'])){
+                    redirect('/admin', 'refresh');
+                }else{
+                    redirect('/', 'refresh');
+                }
             } else {
                 // if the login was un-successful
                 // redirect them back to the login page

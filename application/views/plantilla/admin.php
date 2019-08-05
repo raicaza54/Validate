@@ -1,6 +1,6 @@
 <?php include_once 'head.php'; ?>
     <body>
-        <nav class="navbar navbar-expand-lg fixed-top bg-auditor">
+        <nav class="navbar navbar-expand-lg fixed-top bg-admin">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
                 <?= asset_image('logo1.png" style="height: 30px;"')?>
             </a>
@@ -9,25 +9,16 @@
                     <li class="nav-item">
                         <a class="nav-link nav-icon active" id="pills-principal-tab" data-toggle="pill" href="#pills-principal" role="tab" aria-controls="pills-principal" aria-selected="true">Principal</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-icon" id="pills-datos-tab" data-toggle="pill" href="#pills-datos" role="tab" aria-controls="pills-datos" aria-selected="false">Datos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-icon" id="pills-analisis-tab" data-toggle="pill" href="#pills-analisis" role="tab" aria-controls="pills-analisis" aria-selected="false">Analizar</a>
-                    </li>
                 </ul>
             </div>
             <div class="navbar-nav">
                 <?php if(in_array('1', $this->session->grupos)): ?>
-                <a class="nav-link active nav-icon" href="admin" style="font-size: 1rem;">
-                    Administrador
+                <a class="nav-link active nav-icon" href="/" style="font-size: 1rem;">
+                    Validate System
                 </a>
                 <?php endif; ?>
                 <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
                     <i class="fas fa-circle-notch fa-spin"></i>
-                </a>
-                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
-                    <i class="far fa-hdd"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
                     <i class="fas fa-bell"></i>
@@ -46,7 +37,7 @@
                 </a>
             </div>
         </nav>
-        <?php $this->load->view('plantilla/menu'); ?>
+        <?php $this->load->view('plantilla/admin-menu'); ?>
         <!-- Sidebar -->
         <nav id="sidebar">
             <ul class="nav nav-tabs" id="explorador" role="tablist">
@@ -93,7 +84,7 @@
         <div id="content" style="z-index: 1030;">
             <?= $body ?>
         </div>
-        <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
+        <nav id="footer-validate" class="navbar fixed-bottom navbar-admin">
             <span class="navbar-text pull-left">
                 GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;2019
             </span>

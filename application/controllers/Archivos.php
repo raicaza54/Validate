@@ -300,7 +300,8 @@ class Archivos extends CI_Controller {
                     'id'            => $this->input->post('id'),
                     'fk_carpetas'   => $this->input->post('carpeta'),
                     'nombre'        => $filename['basename'],
-                    'file_name'     => '',
+                    'file_name'     => 'pre-cargado',
+                    'pid'           => getmypid(),
                     'ext'           => '.'.$filename['extension'],
                     'tipo'          => $this->input->post('tipo'),
                     'created_user'  => $this->session->userdata('users_id'),
@@ -364,6 +365,10 @@ class Archivos extends CI_Controller {
             }
             if(is_array($archivo) && array_key_exists('status', $archivo) && ($archivo['status'] == FALSE)){
                 throw new Exception($archivo['msg'], 202);
+            }
+            $update_preprocesar = $this->Archivos_model->update_excel($archivo, $this->id);
+            if($update_preprocesar == FALSE){
+                throw new Exception("Tenemos un problema con el archivo, no ha sido posible pre-cargar el archivo, contactar con soporte", 202);
             }
             $xls = [];
             if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx') || ($archivo['type'] == '.xlsm')){

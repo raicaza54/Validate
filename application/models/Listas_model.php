@@ -27,7 +27,7 @@ class Listas_model extends CI_Model {
     }
     
     public function extrac($a, $campo) {
-        //$this->db->like($campo, $a, 'both');
+        //SELECT * FROM sist__listas WHERE levenshtein('900053893', identificacion) BETWEEN 0 AND 2;
         $this->db->like($campo, $a, 'none');
         $this->db->where('deleted_at', 0);
         $data = $this->db->get('sist__listas')->result_array();
