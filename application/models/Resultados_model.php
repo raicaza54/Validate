@@ -70,5 +70,31 @@ class Resultados_model extends CI_Model {
         }
         return $r;
     }
+    
+    public function get_consecutivo($id_cliente, $analisis) {
+        $this->db->trans_begin();
+        $this->db->select_max('correlativo');
+        $this->db->where('fk_clientes', $id_cliente);
+        $correlativo = $this->db->get('clie__consecutivos')->row_array();
+        if(is_numeric($correlativo['correlativo'])){
+            $num = (int) $correlativo['correlativo'] + 1;
+        }else{
+            $num = 1;
+        }
+        $consecutivo = str_pad($id_cliente, 4, 0, STR_PAD_LEFT) . '-' . str_pad($num, 10, 0, STR_PAD_LEFT);
+        $this->db->insert('clie__consecutivos', [
+            'fk_clientes' => $id_cliente,
+            'fk_analisis' => $analisis,
+            'correlativo' => $num,
+            'consecutivo' => $consecutivo
+        ]);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $consecutivo = FALSE;
+        } else {
+            $this->db->trans_commit();
+        }
+        return $consecutivo;
+    }
 
 }

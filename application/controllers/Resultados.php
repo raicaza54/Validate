@@ -40,7 +40,7 @@ class Resultados extends CI_Controller {
             'Empresas_model',
         ]);
     }
-    
+   
     public function crear() {
         if (!$this->input->is_ajax_request()) {
             show_404();
@@ -217,8 +217,15 @@ class Resultados extends CI_Controller {
             if (($tipo == 'listascontrol') && (strlen($post['pdflistasControl']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos de Listas de Control, no corresponden los tipos definidos", 202);
             }
+            $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
+            if(is_bool($consecutivo) && $consecutivo === FALSE){
+                $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
+            }
+            if(is_bool($consecutivo) && $consecutivo === FALSE){
+                throw new Exception("Tenemos un problema con la generación del reporte, intente nuevamente", 202);
+            }            
             $this->empresa =  $this->Empresas_model->getId($this->session->userdata('empresaId'));
-            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf']);
+            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf'], $consecutivo);
             if($rPdf == FALSE){
                 throw new Exception("Tenemos un problema, el archivo no pudo ser creado", 202);
             }
@@ -234,7 +241,10 @@ class Resultados extends CI_Controller {
                 throw new Exception("Tenemos un problema, no fue posible crear el archivo PDF", 202);
             }
             $update = $this->Analisis_model->setUpdatePdf(
-                ['pdf' => 1],
+                [
+                    'pdf'        => 1,
+                    'update_pdf' => date('Y-m-d H:i:s'),
+                ],
                 $idAnalisis
             );
             $response["data"] = ['url' => base_url('resultados/v1/url/'.$pref.$post['idPdf'])];
@@ -248,7 +258,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
-    public function benfordPdf($analisis, $idPdf) {
+    public function benfordPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }        
@@ -276,7 +286,7 @@ class Resultados extends CI_Controller {
             'encoding'    => 'UTF-8',
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
-            'codigo'      => '000165410',
+            'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
@@ -291,7 +301,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function manipulacionPdf($analisis, $idPdf) {
+    public function manipulacionPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -307,7 +317,7 @@ class Resultados extends CI_Controller {
             'encoding'    => 'UTF-8',
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
-            'codigo'      => '000165540',
+            'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
@@ -315,7 +325,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function listascontrolPdf($analisis = NULL, $idPdf = NULL) {
+    public function listascontrolPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -331,7 +341,7 @@ class Resultados extends CI_Controller {
             'encoding'    => 'UTF-8',
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
-            'codigo'      => '000165540',
+            'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];
@@ -339,7 +349,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function spiderPdf($analisis, $idPdf) {
+    public function spiderPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -363,7 +373,7 @@ class Resultados extends CI_Controller {
             'encoding'    => 'UTF-8',
             'diskcache'   => FALSE,
             'empresa'     => $this->empresa,
-            'codigo'      => '000165599',
+            'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
         ), 'pdf');
         $data = [];

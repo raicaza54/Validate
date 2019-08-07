@@ -129,6 +129,12 @@ class Dbauditoria_004{
                 'comment'    => 'nombre de archivo en directorio',
                 'null'       => TRUE,
             ],
+            'pid' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '20',
+                'comment'    => 'id de la ejecución',
+                'null'       => TRUE,
+            ],
             'columnas'      => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',

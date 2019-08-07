@@ -27,10 +27,33 @@ class Listas_model extends CI_Model {
     }
     
     public function extrac($a, $campo) {
-        //SELECT * FROM sist__listas WHERE levenshtein('900053893', identificacion) BETWEEN 0 AND 2;
-        $this->db->like($campo, $a, 'none');
-        $this->db->where('deleted_at', 0);
-        $data = $this->db->get('sist__listas')->result_array();
+$query = $this->db->query("
+SELECT
+    *
+FROM
+    (
+    SELECT
+        sl.lista,
+        sl.nombre,
+        sl.aka,
+        sl.identificacion,
+        sl.otros,
+        sl.deleted_at,
+        levenshtein_ratio('$a', sl.$campo) AS ratio
+    FROM
+        sist__listas AS sl
+    WHERE
+        deleted_at = 0
+) AS li
+WHERE
+    li.ratio > 85");
+        
+        //$query = $this->db->query("SELECT * FROM sist__listas WHERE levenshtein_ratio('$a', $campo) > 85 AND deleted_at = 0");
+        $data = $query->result_array();
+        //$this->db->like($campo, $a, 'none');
+        //$this->db->where('deleted_at', 0);
+        //$data = $this->db->get('sist__listas')->result_array();
+        debug_file($data);
         return $data;        
     }
     
