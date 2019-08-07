@@ -82,7 +82,7 @@ class Resultados extends CI_Controller {
     public function editar() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
         }        

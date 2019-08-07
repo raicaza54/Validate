@@ -4,6 +4,8 @@ SELECT * FROM validate.track__seguimiento WHERE 1 ORDER BY id DESC;
 DESCRIBE clie__analisis;
 SELECT * FROM clie__analisis ORDER BY created_at DESC;
 
+SELECT * FROM clie__consecutivos ORDER BY id DESC;
+
 SELECT * FROM auth__users;
 SELECT * FROM auth__users_groups WHERE group_id = 2;
 SELECT * FROM clie__archivos WHERE id = 1634380766923482;

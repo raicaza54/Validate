@@ -329,3 +329,16 @@
 #-------------------------------------------------------------------------------
 # https://www.lucidar.me/en/web-dev/levenshtein-distance-in-mysql/
 #*******************************************************************************
+
+#*******************************************************************************
+# ApacheBench
+#*******************************************************************************
+# Es un programa informático de línea de comandos de un solo hilo para medir el 
+# rendimiento de los servidores web HTTP. Originalmente diseñado para probar el 
+# servidor HTTP Apache, es lo suficientemente genérico para probar cualquier 
+# servidor web
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://www.genbeta.com/desarrollo/apachebench-una-sencilla-herramienta-para-testear-servidores-web
+#*******************************************************************************
