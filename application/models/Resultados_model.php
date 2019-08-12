@@ -25,11 +25,35 @@ class Resultados_model extends CI_Model {
         return $this->db->get('clie__resultados')->row_array();        
     }
     
-    public function getFolderEmpresa($id_empresa) {
+    public function getFolderEmpresa($id_empresa, $id_archivo = 0) {
         $this->db->select('clie__resultados.type AS tipo, clie__resultados.*');
         $this->db->where('fk_empresas', $id_empresa);
         $this->db->where('deleted_at', 0);
-        return $this->db->get('clie__resultados')->result_array();
+        $r = $this->db->get('clie__resultados')->result_array();
+        $fl = [];
+        if($id_archivo != 0){
+            $fl = array_filter($r, function ($value, $key) use ($id_archivo){
+                return $value['archivos_id'] == $id_archivo;
+            }, ARRAY_FILTER_USE_BOTH);
+            $row = [];
+            foreach ($fl as $value) {
+                $this->filtrado[] = $value;
+                $row = array_merge($row, $this->filtro($r, $value['parent_id']));
+            }
+            $r = unique_multidim_array($row, 'id');
+        }        
+        return $r;
+    }
+    
+    var $filtrado = [];
+    private function filtro($arbol, $parent_id){
+        foreach ($arbol as $value) {
+            if($value['id'] == $parent_id){
+                $this->filtrado[] = $value;
+                $this->filtro($arbol, $value['parent_id']);
+            }
+        }            
+        return $this->filtrado;
     }
     
     public function crear($param) {
@@ -40,6 +64,7 @@ class Resultados_model extends CI_Model {
             'fk_empresas'    => (int) $empresaId,
             'order'          => 0,
             'parent_id'      => $parent_id,
+            'archivos_id'    => $archivos_id,
             'label'          => $label,
             'have_childrens' => 0,
             'opened'         => 0,

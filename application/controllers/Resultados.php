@@ -182,9 +182,20 @@ class Resultados extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('nombre', $post) || !array_key_exists('idPdf', $post) || !array_key_exists('carpeta', $post) || !(array_key_exists('pdfBenford', $post) || array_key_exists('pdfSpider', $post) || array_key_exists('pdfManipulacion', $post))){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
-            }
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('nombre',           'Nombre de Archivo',         'required|max_length[150]');
+            $this->form_validation->set_rules('idPdf',            'Código PDF',                'required|max_length[50]');
+            $this->form_validation->set_rules('carpeta',          'Destino',                   'required|max_length[50]');
+            $this->form_validation->set_rules('archivoId',        'Código Archivo',            'required|max_length[50]');
+            $this->form_validation->set_rules('pdfBenford',       'Archivo Benford',           'max_length[50]');
+            $this->form_validation->set_rules('pdfSpider',        'Archivo Spider',            'max_length[50]');
+            $this->form_validation->set_rules('pdfManipulacion',  'Archivo Manipulacion',      'max_length[50]');
+            $this->form_validation->set_rules('pdflistasControl', 'Archivo Listas de Control', 'max_length[50]');
+            
+            
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }            
             $pdf = ''; $pref = '';
             if(array_key_exists('pdfBenford', $post) && (strlen($post['pdfBenford']) > 5)){
                 $pdf = 'pdfBenford';
@@ -231,6 +242,7 @@ class Resultados extends CI_Controller {
             }
             $insert = $this->Resultados_model->crear([
                 'label'       => $post['nombre'],
+                'archivos_id' => $post['archivoId'],
                 'empresaId'   => $this->session->userdata('empresaId'),
                 'parent_id'   => $post['carpeta'],
                 'type'        => $tipo,
@@ -388,10 +400,11 @@ class Resultados extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
+            
             if(!is_array($post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }            
-            $items = $this->arbolr->run($post['id']);
+            $items = $this->arbolr->run($post['id'], $post['id_archivo']);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }

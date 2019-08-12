@@ -84,6 +84,12 @@ class Dbauditoria_010{
                 'null'       => TRUE,
                 'default'    => 0
             ],
+            'archivos_id'     => [
+                'type'       => 'BIGINT',
+                'constraint' => '20',
+                'unsigned'   => TRUE,
+                'null'       => TRUE
+            ],            
             'path'    => [
                 'type'       => 'VARCHAR',
                 'constraint' => '512',

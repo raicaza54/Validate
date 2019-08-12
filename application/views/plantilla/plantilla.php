@@ -35,7 +35,7 @@
                 <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato(true);">
                     <i class="fas fa-cog"></i>
                 </a>
-                <a class="nav-item nav-link nav-icon" href="#">
+                <a class="nav-item nav-link nav-icon" href="#" onclick="AYUDA.componets.tab();">
                     <i class="far fa-question-circle"></i>
                 </a>
                 <span class="navbar-text text-white" style="margin: 0px 10px;">

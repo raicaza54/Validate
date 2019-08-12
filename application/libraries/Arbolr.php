@@ -41,9 +41,9 @@ class Arbolr {
         return $r;
     }
     
-    public function run($id_empresa) {
+    public function run($id_empresa, $id_archivo = NULL) {
         $arbol = []; $childs = []; $tipo = [];
-        $elements  = $this->get($id_empresa);
+        $elements  = $this->get($id_empresa, $id_archivo);
         if(count($elements) > 0){
             $masters   = $elements["masters"];
             $childrens = $elements["childrens"];
@@ -76,8 +76,8 @@ class Arbolr {
         return $arbol;
     }
     
-    private function get($id_empresa) {
-        $query = $this->CI->Resultados_model->getFolderEmpresa($id_empresa);
+    private function get($id_empresa, $id_archivo) {
+        $query = $this->CI->Resultados_model->getFolderEmpresa($id_empresa, $id_archivo);
         $this->_elements["masters"] = $this->_elements["childrens"] = array();
         if (count($query) > 0) {
             foreach ($query as $element) {

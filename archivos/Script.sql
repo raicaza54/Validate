@@ -4,6 +4,16 @@ SELECT * FROM validate.track__seguimiento WHERE 1 ORDER BY id DESC;
 DESCRIBE clie__analisis;
 SELECT * FROM clie__analisis ORDER BY created_at DESC;
 
+DESCRIBE clie__resultados;
+SELECT * FROM clie__resultados ORDER BY created_at DESC;
+
+SELECT `clie__resultados`.`type` AS `tipo`, `clie__resultados`.*
+FROM `clie__resultados`
+WHERE `fk_empresas` = '1'
+AND `archivos_id` = '1629019615798832'
+AND `deleted_at` = 0;
+
+
 SELECT * FROM clie__consecutivos ORDER BY id DESC;
 
 SELECT * FROM auth__users;
