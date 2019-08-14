@@ -470,9 +470,28 @@ class Archivos extends CI_Controller {
             }
             $columnas = $this->archivo->columnas($post['id']);
             $dataColumns = $this->Archivos_model->getEncabezado($post['id'], $campoAnalizar);
-            if (!is_array($dataColumns)) {
-                throw new Exception("No existen datos para mostrar", 202);
+            if (!is_array($dataColumns) || !is_array($dataColumns['encabezado'])) {
+                if(file_exists($columnas['archivo']['file_name']) && !$this->_processExists($columnas['archivo']['pid'])){
+                    throw new Exception("El proceso fue interrumpido y ya no se esta cargando el archivo,
+                                         si usted lo desea podemos intentar cargar el archivo nuevamente o 
+                                         cancelar la carga del mismo", 206);
+                    /*
+                    folderId
+                    id
+                    archivo
+                    tipo
+                    return array(
+                        'status'   => TRUE,
+                        'filename' => $archivo,
+                        'fullpath' => $fullpath,
+                        'type'     => $type,
+                        'msg'      => 'Success',
+                    );
+                    */
+                }
+                throw new Exception("No existen datos para mostrar", 206);
             }
+            unset($columnas['archivo']['file_name']);
             $columns = [];
             $columnsDef = [];
             $x = 0;
@@ -498,6 +517,10 @@ class Archivos extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    private function _processExists ($pid) { 
+        return file_exists("/proc/{$pid}"); 
+    }
+    
     public function datos() {
         if (!$this->input->is_ajax_request()) {
             show_404();
@@ -509,7 +532,7 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $items = $this->Archivos_model->getRows($this->input->post());
-            if (!is_array($items)) {
+            if (!is_array($items) || (count($items) <= 0)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
             $response = [

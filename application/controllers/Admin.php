@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @LastUpdate  2019-08-01
  */
 class Admin extends CI_Controller {
+    var $data;
     function __construct() {
         parent::__construct();
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
@@ -17,6 +18,7 @@ class Admin extends CI_Controller {
     }
     
     function index() {
+        $this->data['body'] = '';
         $this->load->view("plantilla/admin", $this->data);
     }
     

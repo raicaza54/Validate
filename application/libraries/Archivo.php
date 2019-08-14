@@ -43,7 +43,7 @@ class Archivo {
         $columnDef = [];
         $columnDefs = [];
         $columnSql = $column;
-        $columnas = $this->CI->db->select('nombre, columnas, tipo, formato')->where('id', $id)->get('clie__archivos')->row_array();
+        $columnas = $this->CI->db->select('nombre, columnas, tipo, formato, pid, file_name')->where('id', $id)->get('clie__archivos')->row_array();
         if(is_array($columnas) && count($columnas) && array_key_exists('columnas', $columnas)){
             $columnDefs = json_decode($columnas['columnas'], TRUE);
             foreach ($column as $key => $value) {
@@ -75,9 +75,11 @@ class Archivo {
         }
         return [
             'archivo'   => [
-                'nombre'  => ((is_array($columnas) && array_key_exists('nombre', $columnas)) ? $columnas['nombre'] : ''),
-                'tipo'    => ((is_array($columnas) && array_key_exists('tipo', $columnas)) ? $columnas['tipo'] : ''),
-                'formato' => $formato
+                'nombre'    => ((is_array($columnas) && array_key_exists('nombre', $columnas)) ? $columnas['nombre'] : ''),
+                'tipo'      => ((is_array($columnas) && array_key_exists('tipo', $columnas)) ? $columnas['tipo'] : ''),
+                'pid'       => ((is_array($columnas) && array_key_exists('pid', $columnas)) ? $columnas['pid'] : ''),
+                'file_name' => ((is_array($columnas) && array_key_exists('file_name', $columnas)) ? $columnas['file_name'] : ''),
+                'formato'   => $formato
             ],
             'column'    => $column,
             'columnSql' => $columnSql,
