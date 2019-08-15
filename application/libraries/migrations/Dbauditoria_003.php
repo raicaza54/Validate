@@ -48,19 +48,6 @@ class Dbauditoria_003{
 
         $data = [
             [
-                'fk_users'      => '1',
-                'fk_clientes'   => '1',
-                'observacion'   => '',
-                'created_user'  => '1',
-                'created_clie' => '1',
-                'update_user'   => '1',
-                'update_clie'   => '1',
-            ]
-        ];
-        $this->db->insert_batch('clie__clientes_users', $data);
-
-        $data = [
-            [
                 'id'             => 1,
                 'nombre'         => 'GEO INFORMATIC SOLUTIONS SAS',
                 'identificacion' => '0123456789',
@@ -97,7 +84,6 @@ class Dbauditoria_003{
     public function down() {
         $this->db->truncate('sist__jerarquia');
         $this->db->truncate('clie__clientes');
-        $this->db->truncate('clie__clientes_users');
         $this->db->truncate('clie__auditores_empresas');
         $this->db->truncate('clie__empresas');
     }
