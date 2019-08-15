@@ -198,7 +198,12 @@ class Empresas_model extends CI_Model {
             'fk_empresas'  => $id,
         ] + $auditoria;
         $this->db->insert('clie__auditores_empresas', $fkdata);
-        $this->db->trans_commit();
-        return $this->db->affected_rows() == 1;
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return FALSE;
+        } else {
+            $this->db->trans_commit();
+        }
+        return TRUE;
     }    
 }
