@@ -383,59 +383,6 @@ class Dbauditoria_002{
         $this->CI->dbforge->add_key('id', TRUE);
         $this->CI->dbforge->create_table('clie__clientes');
 
-        $this->CI->dbforge->drop_table('clie__clientes_users', TRUE);
-        $this->CI->dbforge->add_field([
-            'id'            => [
-                'type'           => 'INT',
-                'constraint'     => '11',
-                'unsigned'       => TRUE,
-                'auto_increment' => TRUE
-            ],
-            'fk_clientes'   => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'unsigned'   => TRUE,
-            ],
-            'fk_users'      => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'unsigned'   => TRUE,
-            ],
-            'observacion'   => [
-                'type'       => 'VARCHAR',
-                'constraint' => '1024',
-                'comment'    => 'observaciones',
-                'null'       => TRUE
-            ],
-            'created_user'  => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'comment'    => 'id usuario creador'
-            ],
-            'created_clie' => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'comment'    => 'id cliente creador'
-            ],
-            'update_user'   => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'comment'    => 'ultimo id usuario actualizo'
-            ],
-            'update_clie'   => [
-                'type'       => 'INT',
-                'constraint' => '11',
-                'comment'    => 'ultimo id cliente actualizo'
-            ],
-        ]);
-
-        $this->CI->dbforge->add_field("`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP");
-        $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
-        $this->CI->dbforge->add_key('id', TRUE);
-        $this->CI->dbforge->add_key('fk_clientes');
-        $this->CI->dbforge->add_key('fk_users');
-        $this->CI->dbforge->create_table('clie__clientes_users');
-
         $this->CI->dbforge->drop_table('clie__auditores_empresas', TRUE);
         $this->CI->dbforge->add_field([
             'id'            => [
@@ -597,7 +544,6 @@ class Dbauditoria_002{
         $this->CI->dbforge->drop_table('sist__jerarquia', TRUE);
         $this->CI->dbforge->drop_table('sist__contratos', TRUE);
         $this->CI->dbforge->drop_table('clie__clientes', TRUE);
-        $this->CI->dbforge->drop_table('clie__clientes_users', TRUE);
         $this->CI->dbforge->drop_table('clie__auditores_empresas', TRUE);
         $this->CI->dbforge->drop_table('clie__empresas', TRUE);
     }

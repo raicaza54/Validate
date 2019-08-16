@@ -78,9 +78,17 @@ class Explorador extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
+            if(is_array($post)){
+                if(array_key_exists('parent_id', $post)){
+                    if($post['parent_id'] === '#'){
+                       $post['parent_id'] = 0; 
+                    }
+                }
+            }
+            $this->form_validation->set_data($post);
             $this->form_validation->set_rules('id',          'Id',      'required|numeric|max_length[20]');
             $this->form_validation->set_rules('label',       'Nombre',  'required|regex_match[/^[\w\d\s.-áéíñóúüÁÉÍÑÓÚÜ]*$/]|max_length[250]');
-            $this->form_validation->set_rules('parent_id',   'Carpeta', 'required|numeric|max_length[20]');
+            $this->form_validation->set_rules('parent_id',   'Carpeta Padre', 'required|numeric|max_length[20]');
             $this->form_validation->set_rules('type',        'Tipo',    'required|max_length[10]|in_list[csv,default,excel,folder]');
             $this->form_validation->set_rules('archivos_id', 'Archivo', 'required|numeric|max_length[20]');
             $this->form_validation->set_rules('disabled',    'Estado',  'required|numeric|max_length[2]|in_list[0,1]');

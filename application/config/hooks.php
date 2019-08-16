@@ -26,11 +26,12 @@ if(1 == 2){
         'filepath' => 'hooks'
     );    
 }
-$hook['post_controller_constructor'] = function(){
+$hook['post_controller_constructor'][] = function(){
     $CI =& get_instance();
     $CI->config->set_item('path_clie',       $CI->config->item('path_file').'/clie'.$CI->session->userdata('clientes_id').'/');
-    $CI->config->set_item('path_user',       $CI->config->item('path_clie').'/user'.$CI->session->userdata('users_id').'/');
+    $CI->config->set_item('path_user',       $CI->config->item('path_clie').'user'.$CI->session->userdata('users_id').'');
     $CI->config->set_item('path_archivos',   $CI->config->item('path_user').'/archivos/');
     $CI->config->set_item('path_graficas',   $CI->config->item('path_user').'/graficas/');
     $CI->config->set_item('path_resultados', $CI->config->item('path_user').'/resultados/');
+    
 };
