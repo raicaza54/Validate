@@ -288,7 +288,7 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $this->form_validation->set_rules('id',        'id',              'required|numeric|max_length[20]');
-            $this->form_validation->set_rules('nombre',    'Archivo',         'required|regex_match[/^[\w\d\s.\-áéíñóúüÁÉÍÑÓÚÜ]*$/]|max_length[250]');
+            $this->form_validation->set_rules('nombre',    'Archivo',         'required|max_length[250]');
             $this->form_validation->set_rules('carpeta',   'Directorio',      'required|numeric|max_length[20]');
             $this->form_validation->set_rules('tipo',      'Tipo de Archivo', 'required|in_list[mov,blp,cxc,cxp]');
             if ($this->form_validation->run() == FALSE){
