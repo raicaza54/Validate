@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row justify-content-md-center">
                 <?php if(in_array($this->uri->segment(2), ['forgot_password','login','reset_password'])): ?>
-                <div class="col col-lg-5">
+                <div class="col col-lg-5" style="margin-top: 2.5em;">
                     <?=$body?>
                 </div>
                 <?php else: ?>
