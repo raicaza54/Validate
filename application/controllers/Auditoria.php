@@ -146,6 +146,9 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
             }
             $columndh = $this->archivo->columnas($form['archivoIdProcesar']);
+            if(!is_array($columndh)){
+                throw new Exception("Tenemos un problema, archivo no encontrado", 202);
+            }
             if($form['campoAnalizar'] == 'valor'){
                 if($columndh === FALSE){
                     throw new Exception("Para este tipo de archivo se deben definir las columnas de Debitos y Creditos", 202);

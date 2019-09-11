@@ -223,7 +223,7 @@ class Spider {
         if(is_array($spider[$cuenta]['debito'])){
             foreach ($spider[$cuenta]['debito'] as $key => $value) {
                 $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-                $lineas              .= '<line class="lin-debito" x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:1"></line>';
+                $lineas              .= '<line class="lin-debito" x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:'.(($debitoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                  += 45;
                 $x++;
                 $total_porcentaje    += $value['porcentaje'];
@@ -245,7 +245,7 @@ class Spider {
         if(is_array($spider[$cuenta]['credito'])){
             foreach ($spider[$cuenta]['credito'] as $key => $value) {
                 $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-                $lineas              .= '<line class="lin-credito" x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:1"></line>';
+                $lineas              .= '<line class="lin-credito" x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:'.(($creditoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                  += 45;
                 $x++;
                 $total_porcentaje    += $value['porcentaje'];

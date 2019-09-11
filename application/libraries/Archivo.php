@@ -38,6 +38,9 @@ class Archivo {
     
     public function columnas($id) {
         $column = $this->CI->Archivos_model->getEncabezado($id);
+        if(!is_array($column)){
+            return FALSE;
+        }
         $columndh = $column['columnDef'];
         $column = array_keys($column['encabezado']);
         $columnDef = [];
