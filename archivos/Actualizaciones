@@ -419,3 +419,25 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 
 #*******************************************************************************
+
+FECHA: 10/09/2019
+NUEVAS FUNCIONALIDADES
+▪ Modulo de Ayuda, se añade nuevo video
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Filtro de Benford, se corrige visualización
+▪ Filtro de Benford, se muestra número de columna
+▪ Corrección de un bug al listar archivo no cargado
+▪ Araña, al mostrar lineas horizontales no se visualizaban
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Términos y Condiciones
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************

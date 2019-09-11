@@ -469,6 +469,9 @@ class Archivos extends CI_Controller {
                 $campoAnalizar = $post['campoAnalizar'];
             }
             $columnas = $this->archivo->columnas($post['id']);
+            if(!is_array($columnas)){
+                throw new Exception("Tenemos un problema, archivo no encontrado", 202);
+            }
             $dataColumns = $this->Archivos_model->getEncabezado($post['id'], $campoAnalizar);
             if (!is_array($dataColumns) || !is_array($dataColumns['encabezado'])) {
                 if(file_exists($columnas['archivo']['file_name']) && !$this->_processExists($columnas['archivo']['pid'])){
