@@ -90,6 +90,9 @@ class Archivos_model extends CI_Model {
      */
     private function _get_datatables_query($postData) {
         $columnas = $this->archivo->columnas($postData['id']);
+        if($columnas['archivo']['formato'] == 'debehaber'){
+            $postData['campoAnalizar'] = $columnas['debehaber'];
+        }
         $this->db->select($columnas['columnSql']);
         $this->db->from($this->table);
         $this->db->where('linea', 'f');
