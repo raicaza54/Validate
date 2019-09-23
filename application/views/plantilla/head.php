@@ -21,6 +21,7 @@
         </script>
         <script src="<?= base_url('assets/library/jquery/3.4.1/jquery.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/jstree/jquery.ui.touch.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/bootstrap/4.3.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/scroller/3.1.5/js/jquery.mCustomScrollbar.concat.min.js') ?>" type="text/javascript"></script>

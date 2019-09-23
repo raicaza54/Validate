@@ -4,18 +4,22 @@
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
+                    <i class="fas fa-chart-line"></i>
+                    <span><?=nbs(3)?>Estadisticas<?=nbs(3)?></span>
+                </div>
+                <div class="titulo">Tablero</div>
+            </div>
+            <div class="menu-separador"></div>            
+            <div class="menu-card-icon">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
                     <i class="fas fa-archive"></i>
-                    <span>Listar</span>
+                    <span><?=nbs(3)?>Listar<?=nbs(3)?></span>
                 </div>                
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
                     <i class="far fa-address-card"></i>
-                    <span>&nbsp;&nbsp;Crear&nbsp;&nbsp;</span>
+                    <span><?=nbs(3)?>Crear<?=nbs(3)?></span>
                 </div>
-                <?php /*<div class="icono < $this->permisos->viewaccess('mpe-empresa-propiedades')?>" id="mpe-empresa-propiedades">
-                    <i class="far fa-building"></i>
-                    <span>Propiedades</span>
-                </div>*/ ?>
-                <div class="titulo">Clientes</div>
+                <div class="titulo">Clientes/Empresas</div>
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
@@ -31,12 +35,16 @@
                     <i class="fas fa-user-cog"></i>
                     <span>Roles</span>
                 </div>                
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
+                    <i class="far fa-address-book"></i>
+                    <span>Exportar</span>
+                </div>                
                 <div class="titulo">Usuarios</div>
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
-                    <i class="fas fa-user-tag"></i>
+                    <i class="fas fa-user-clock"></i>
                     <span>Por vencer</span>
                 </div>                
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
@@ -56,6 +64,35 @@
                     <span>Presupuesto</span>
                 </div>
                 <div class="titulo">Contratos</div>
+            </div>            
+        </div>
+        <div class="tab-pane fade show" id="pills-configuracion" role="tabpanel" aria-labelledby="pills-configuracion-tab">
+            <div class="menu-card-icon">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
+                    <i class="fas fa-tools"></i>
+                    <span><?=nbs(3)?>Mantenimiento<?=nbs(3)?></span>
+                </div>                
+                <div class="titulo">Sistema</div>
+            </div>
+            <div class="menu-separador"></div>
+            <div class="menu-card-icon">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span><?=nbs(3)?>Listar<?=nbs(3)?></span>
+                </div>                
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
+                    <i class="far fa-comment-dots"></i>
+                    <span><?=nbs(3)?>Notificar<?=nbs(3)?></span>
+                </div>
+                <div class="titulo">Servicios An&aacute;lisis</div>
+            </div>
+            <div class="menu-separador"></div>
+            <div class="menu-card-icon">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
+                    <i class="fas fa-tasks"></i>
+                    <span><?=nbs(3)?>Lista de Control<?=nbs(3)?></span>
+                </div>
+                <div class="titulo">Actualizaciones</div>
             </div>            
         </div>
     </div>            

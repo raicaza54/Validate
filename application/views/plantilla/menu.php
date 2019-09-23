@@ -5,11 +5,11 @@
             <div class="menu-card-icon">
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
                     <i class="fas fa-city"></i>
-                    <span>Listar</span>
+                    <span><?=nbs(2)?>Listar<?=nbs(2)?></span>
                 </div>                
                 <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
                     <i class="far fa-hospital"></i>
-                    <span>Crear</span>
+                    <span><?=nbs(2)?>Crear<?=nbs(2)?></span>
                 </div>
                 <?php /*<div class="icono < $this->permisos->viewaccess('mpe-empresa-propiedades')?>" id="mpe-empresa-propiedades">
                     <i class="far fa-building"></i>

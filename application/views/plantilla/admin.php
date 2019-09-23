@@ -9,6 +9,9 @@
                     <li class="nav-item">
                         <a class="nav-link nav-icon active" id="pills-principal-tab" data-toggle="pill" href="#pills-principal" role="tab" aria-controls="pills-principal" aria-selected="true">Principal</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-icon" id="pills-configuracion-tab" data-toggle="pill" href="#pills-configuracion" role="tab" aria-controls="pills-configuracion" aria-selected="true">Configuraci&oacute;n</a>
+                    </li>
                 </ul>
             </div>
             <div class="navbar-nav">
