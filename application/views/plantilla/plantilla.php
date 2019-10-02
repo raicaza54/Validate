@@ -2,7 +2,7 @@
     <body>
         <nav class="navbar navbar-expand-sm fixed-top bg-auditor contenedor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
-                <?= asset_image('logo1.png" style="height: 30px;"')?>
+                <?= asset_image('logo3.png" style="height: 30px;"')?>
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="margin-left: 40px;">

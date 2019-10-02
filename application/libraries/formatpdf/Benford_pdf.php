@@ -114,7 +114,7 @@ class Benford_pdf extends TCPDF {
         // Set font
         $this->SetFont($this->family, '', 8);
         // Title
-        $this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
+        //$this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
         $this->SetFont($this->family, '', 8);
         $this->MultiCell(NULL, NULL, 'Análisis: Ley de Benford', 0, 'R', FALSE, 1, 50, 5);
         $y = 10;
