@@ -106,7 +106,7 @@ class Manipulacion_pdf extends TCPDF {
     public function Header() {
         // Logo
         $image_file = base_url('assets/images/pdf/logo.jpg');
-        $this->Image($image_file, 9, 4.6, 6, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
+        $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
         $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
         $this->Image($image_pdf, 6, 90, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
