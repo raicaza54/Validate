@@ -71,6 +71,7 @@ class DBPermisos {
             ['id' => 407, 'permiso' => 'mal-documentos-papeles', 'observacion' => ''] + $userDate,
             ['id' => 408, 'permiso' => 'mal-documentos-marcas', 'observacion' => ''] + $userDate,
             ['id' => 409, 'permiso' => 'mal-documentos-cxpc', 'observacion' => ''] + $userDate,
+            ['id' => 410, 'permiso' => 'mal-calculos-cond', 'observacion' => ''] + $userDate,
             #[mad - 500] - Menu Administrar
             #[exp - 600] - Explorador Archivos
             ['id' => 600, 'permiso' => 'exp-archivos-actualizar', 'observacion' => ''] + $userDate,
@@ -152,6 +153,7 @@ class DBPermisos {
             ['fk_permisos' => 402, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 405, 'fk_groups' => 2] + $userDate,
+            ['fk_permisos' => 410, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 601, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 602, 'fk_groups' => 2] + $userDate,

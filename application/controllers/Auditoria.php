@@ -37,19 +37,51 @@ class Auditoria extends CI_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        $this->load->library(array(
+        $this->load->library([
             'benford',
             'spider',
             'manipulacion',
             'listascontrol'
-        ));
-        $this->load->model(array(
-            'Archivos_model'
-        ));
+        ]);
+        $this->load->model([
+            'Archivos_model',
+            'Users_model',
+        ]);
     }
 
     public function index() {
-        $this->load->view("plantilla/plantilla", $this->data);
+        if($this->session->flashdata('terminos') === TRUE){
+            $this->ion_auth->logout();
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            redirect('auth/login', 'refresh');            
+        }
+        $terminos = $this->Users_model->terminoCondiciones($this->session->userdata('users_id'));
+        if($terminos <= 0){
+            $this->session->set_flashdata('terminos', TRUE);
+            $view_html = $this->load->view('terminos/terminos_vw', NULL, TRUE);
+            $this->load->view('auth/plantilla', ['body' => $view_html]);
+        }else{
+            $this->load->view("plantilla/plantilla", $this->data);        
+        }
+    }
+    
+    public function terminosCondiciones() {
+        try {
+            $this->form_validation->set_rules('terminos', 'Terminos y Condiciones', 'required|max_length[2]|in_list[ok]');
+            if ($this->form_validation->run() == FALSE) {
+                $this->ion_auth->logout();
+                $this->session->set_flashdata('message', 'Los datos enviados no son correctos');
+                redirect('auth/login', 'refresh');
+            }
+            if($this->Users_model->aceptarTerminoCondiciones()){
+                redirect('/', 'refresh');
+            }else{
+                $this->session->set_flashdata('message', 'Algo va mal, los datos enviados no son correctos');
+                redirect('auth/login', 'refresh');
+            }
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
     }
     
     public function spider() {

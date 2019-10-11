@@ -125,6 +125,11 @@ $route['listascontrol/v1/datos']['post']     = 'archivos/columlistas';
 $route['listascontrol/v1/consultar']['post'] = 'auditoria/listascontrol';
 
 /* -------------------------------------------------------------------------
+ * Terminos y Condiciones
+ * ------------------------------------------------------------------------- */
+$route['terminosCondiciones']['post'] = 'auditoria/terminosCondiciones';
+
+/* -------------------------------------------------------------------------
  * Sistema por Defecto
  * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';

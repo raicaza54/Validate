@@ -11,10 +11,6 @@
                     <i class="far fa-hospital"></i>
                     <span><?=nbs(2)?>Crear<?=nbs(2)?></span>
                 </div>
-                <?php /*<div class="icono < $this->permisos->viewaccess('mpe-empresa-propiedades')?>" id="mpe-empresa-propiedades">
-                    <i class="far fa-building"></i>
-                    <span>Propiedades</span>
-                </div>*/ ?>
                 <div class="titulo">Empresas</div>
             </div>
             <div class="menu-separador"></div>
@@ -106,11 +102,19 @@
                     <i class="fas fa-tasks"></i>
                     <span>Listas de Control</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
-                    <i class="fas fa-vote-yea"></i>
-                    <span>Materialidad</span>
-                </div>                
                 <div class="titulo">An&aacute;lisis de datos</div>
+            </div>
+            <div class="menu-separador"></div>
+            <div class="menu-card">
+                <div class="d-flex flex-column">
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
+                        <i class="fas fa-vote-yea"></i> Materialidad
+                    </span>                    
+                    <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond">
+                        <i class="fas fa-calculator"></i> Condiciones de cuenta
+                    </span>
+                </div>
+                <div class="titulo">C&aacute;lculos</div>
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card">
@@ -132,6 +136,7 @@
                 </div>
                 <div class="titulo">Documentos</div>
             </div>
+            
         </div>
     </div>                    
 </nav>
