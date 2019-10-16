@@ -26,6 +26,7 @@ class Explorador_model extends CI_Model {
     }
     
     public function crear($param) {
+        debug_file($param);
         extract($param);
         $data = [
             'id'             => $id,

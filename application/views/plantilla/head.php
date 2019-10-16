@@ -18,6 +18,7 @@
         <script type="text/javascript">
             var base_url = '<?= base_url() ?>';
             var version = '<?= $assets['version'] ?>';
+            var ayudame = '<?=$this->session->flashdata('ayudame') !== NULL ? 1 : 0 ?>';
         </script>
         <script src="<?= base_url('assets/library/jquery/3.4.1/jquery.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>

@@ -56,12 +56,16 @@ class Auditoria extends CI_Controller {
             redirect('auth/login', 'refresh');            
         }
         $terminos = $this->Users_model->terminoCondiciones($this->session->userdata('users_id'));
-        if($terminos <= 0){
+        if((int) $terminos['estado'] <= 0){
             $this->session->set_flashdata('terminos', TRUE);
-            $view_html = $this->load->view('terminos/terminos_vw', NULL, TRUE);
+            $view_html = $this->load->view('terminos/terminos001_vw', NULL, TRUE);
             $this->load->view('auth/plantilla', ['body' => $view_html]);
         }else{
-            $this->load->view("plantilla/plantilla", $this->data);        
+            if($terminos['ayudame'] == 1){
+                $this->session->set_flashdata('ayudame', TRUE);
+                $this->Users_model->ayudaAceptada($this->session->userdata('users_id'));
+            }
+            $this->load->view("plantilla/plantilla", $this->data);
         }
     }
     
@@ -73,7 +77,11 @@ class Auditoria extends CI_Controller {
                 $this->session->set_flashdata('message', 'Los datos enviados no son correctos');
                 redirect('auth/login', 'refresh');
             }
+            $terminos = $this->Users_model->terminoCondiciones($this->session->userdata('users_id'));
             if($this->Users_model->aceptarTerminoCondiciones()){
+                if(is_null($terminos['ayudame']) || ($terminos['ayudame'] == 1)){
+                    $this->session->set_flashdata('ayudame', TRUE);
+                }
                 redirect('/', 'refresh');
             }else{
                 $this->session->set_flashdata('message', 'Algo va mal, los datos enviados no son correctos');
@@ -247,7 +255,82 @@ class Auditoria extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
-    }    
+    }
+    
+    public function asistente() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $this->load->model([
+            'Empresas_model',
+            'Explorador_model',
+            'Resultados_model',
+        ]);
+        set_time_limit(0);
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            if(!array_key_exists('form', $post)){
+                throw new Exception('Datos no correctos', 202);
+            }
+            $this->form_validation->set_data($post['form']);
+            $this->form_validation->set_rules('nombre',         'Empresa',                          'required|max_length[250]');
+            $this->form_validation->set_rules('identificacion', 'NIT',                              'required|max_length[250]');
+            $this->form_validation->set_rules('direccion',      'Direccion',                        'required|max_length[500]');
+            $this->form_validation->set_rules('persona',        'Persona Contacto',                 'required|max_length[250]');
+            $this->form_validation->set_rules('persona_tlfs',   'Tel&eacute;fono Persona Contacto', 'required|max_length[250]');
+            $this->form_validation->set_rules('crp-label',      'Nombre de Carpeta Archivos',       'required|max_length[250]');
+            $this->form_validation->set_rules('res-label',      'Nombre de Carpeta Resultados',     'required|max_length[250]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $dataEmpresa = [
+                'nombre'         => $post['form']['nombre'],
+                'identificacion' => $post['form']['identificacion'],
+                'direccion'      => $post['form']['direccion'],
+                'persona'        => $post['form']['persona'],
+                'persona_tlfs'   => $post['form']['persona_tlfs'],
+            ];
+            $empresaId = $this->Empresas_model->insertData($dataEmpresa);
+            if($empresaId == FALSE){
+                throw new Exception('La empresa no pudo ser registrada, contacte a soporte', 200);
+            }
+            $id = uniqint();
+            $insertCarpeta = $this->Explorador_model->crear([
+                'label'       => $post['form']['crp-label'],
+                'empresaId'   => $empresaId,
+                'parent_id'   => 0,
+                'type'        => 'folder',
+                'id'          => $id,
+                'archivos_id' => $id,
+                'disabled'    => 0
+            ]);            
+            if($insertCarpeta === FALSE){
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta de archivos", 202);
+            }
+            $id = uniqint();
+            $insertResultado = $this->Resultados_model->crear([
+                'label'       => $post['form']['res-label'],
+                'empresaId'   => $empresaId,
+                'parent_id'   => '#',
+                'type'        => 'folder',
+                'id'          => $id
+            ]);
+            if($insertResultado === FALSE){
+                throw new Exception("Tenemos un problema, no fue posible crear carpeta de resultados", 202);
+            }
+            $response["data"] = [
+                'empresaId' => $empresaId
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
     
     private function tryCatch($exc, $response) {
         $response["status"] = $exc->getCode();

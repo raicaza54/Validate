@@ -36,7 +36,7 @@
                     <i class="fas fa-cog"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" onclick="AYUDA.componets.tab();">
-                    <i class="far fa-question-circle"></i>
+                    <i class="fas fa-question-circle"></i>
                 </a>
                 <span class="navbar-text text-white" style="margin: 0px 10px;">
                     <?= $this->session->first_name . ' ' . $this->session->last_name ?>
@@ -102,7 +102,7 @@
                 GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;2019
             </span>
         </nav>        
-        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
+        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true" data-keyboard="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" data-keyboard="false">
                 <div class="modal-content">
                     <div class="modal-header">

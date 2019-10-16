@@ -43,6 +43,31 @@ class Dbauditoria_014{
                 'null'       => FALSE,
                 'default'    => 1
             ],
+            'ayudame'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => '5',
+                'comment'    => '1: ver ayuda 0: no mostrar ayuda',
+                'null'       => FALSE,
+                'default'    => 1
+            ],
+            'user_platform'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => '256',
+                'comment'    => 'Sistema Operativo del cliente',
+                'null'       => FALSE,
+            ],
+            'user_ip'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => '128',
+                'comment'    => 'IP del cliente',
+                'null'       => FALSE,
+            ],
+            'user_agent'   => [
+                'type'       => 'VARCHAR',
+                'constraint' => '128',
+                'comment'    => 'Agente del cliente',
+                'null'       => FALSE,
+            ],
             'observacion'   => [
                 'type'       => 'VARCHAR',
                 'constraint' => '1024',

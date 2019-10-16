@@ -130,6 +130,11 @@ $route['listascontrol/v1/consultar']['post'] = 'auditoria/listascontrol';
 $route['terminosCondiciones']['post'] = 'auditoria/terminosCondiciones';
 
 /* -------------------------------------------------------------------------
+ * Ayuda
+ * ------------------------------------------------------------------------- */
+$route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
+
+/* -------------------------------------------------------------------------
  * Sistema por Defecto
  * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';
