@@ -179,7 +179,6 @@ class Empresas_model extends CI_Model {
     }
     
     public function insertData($data) {
-        debug_file($data);
         $auditoria = [
             'created_user' => $this->session->userdata('users_id'),
             'created_clie' => $this->session->userdata('clientes_id'),
