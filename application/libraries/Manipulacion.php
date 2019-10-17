@@ -175,7 +175,10 @@ class Manipulacion {
     
     private function depi() {
         $c = $this->cuentaValue;
-        $depi = ($c['depreciacion']['t']/($c['depreciacion']['t']+$c['inmmaterial']['t'])) / ($c['depreciacion']['t-1']/($c['depreciacion']['t-1']+$c['inmmaterial']['t-1']));
+        #Anterior
+        //$depi = ($c['depreciacion']['t']/($c['depreciacion']['t']+$c['inmmaterial']['t'])) / ($c['depreciacion']['t-1']/($c['depreciacion']['t-1']+$c['inmmaterial']['t-1']));
+        #Ajuste 01
+        $depi = ($c['depreciacion']['t-1']/($c['depreciacion']['t-1']+$c['inmmaterial']['t-1'])) / ($c['depreciacion']['t']/($c['depreciacion']['t']+$c['inmmaterial']['t']));
         return number_format($depi,3,'.','');
     }
     
