@@ -503,3 +503,25 @@ SE ESTA TRABAJANDO
 ▪ Envió de correo para recuperar contraseña
 
 #*******************************************************************************
+
+FECHA: 30/10/2019
+NUEVAS FUNCIONALIDADES
+▪ Condición de Cuenta
+
+ACTUALIZACIÓN
+▪ Se mantiene la empresa y archivo seleccionado al recargar el navegador
+▪ Se mejora la redacción de mensajes
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Pendiente almacenar PDF de Condición de Cuenta
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************

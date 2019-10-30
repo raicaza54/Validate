@@ -42,6 +42,18 @@
         <?= asset_js('loader.js') ?>
         <?= load_assets('js') ?>
         <script type="text/javascript">
+            var id = setInterval(frame, 500);
+            function frame() {
+                if ((typeof GLOBAL != 'undefined') && (typeof EMPRESAS != 'undefined')) {
+                    clearInterval(id);
+                    GLOBAL.empresaId = '<?=$this->session->userdata('empresaId')?>';
+                    GLOBAL.archivoId = '<?=$this->session->userdata('archivoId')?>';    
+                    GLOBAL.exploradorId = '<?=$this->session->userdata('exploradorId')?>';
+                    EMPRESAS.methods.loadEmpresa().then(function() {
+                        GLOBAL.computed.selectNode();
+                    });
+                }
+            }
             $(function ($) {
                 $.ajaxSetup({
                     data: {

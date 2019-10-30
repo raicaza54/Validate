@@ -21,6 +21,7 @@ class Archivo {
         'identificacion',
     ];    
     var $columnCondicion = [
+        'cta',
         'base',
         'valor',
         'debe',

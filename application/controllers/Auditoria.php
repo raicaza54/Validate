@@ -257,6 +257,83 @@ class Auditoria extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function CondicionCuenta() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;
+        $this->load->model('Condicion_model');
+        $this->load->library('Condicion');
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_rules('id',        'Identificador',       'required|max_length[50]');
+            $this->form_validation->set_rules('ejecucion', 'Identificador',       'required|max_length[50]');
+            $this->form_validation->set_rules('data',      'Condición de Cuenta', 'required');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $data = $this->input->post('data');
+            $data = json_decode($data, TRUE);
+            if(!is_array($data) || count($data) <= 0){
+                throw new Exception('Las condiciones de cuenta no se configuran de forma correcta, intentelo nuevamente', 202);
+            }
+            $data = array_map("unserialize", array_unique(array_map("serialize", $data)));
+            array_walk($data, function (&$value){
+                $value[0] = $value[0];
+                $value[1] = trim(str_replace([',','%'],['.',''],$value[1]));
+                $value[2] = trim(str_replace([',','%'],['.',''],$value[2]));
+            });
+            $data = array_filter($data, function ($value){
+               return ((ctype_alnum($value[0]) ||  is_numeric($value[0])) &&  is_numeric($value[1]) &&  is_numeric($value[2])) ? TRUE : FALSE;
+            });
+            if(!is_array($data) || count($data) <= 0){
+                throw new Exception('No existen datos de Condición de Cuenta para comprobar los valores, intentelo nuevamente', 202);
+            }
+            $condicion = [];
+            foreach ($data as $value) {
+                $condicion[] = [
+                    'fk_users'   => $this->session->userdata('users_id'),
+                    'cuenta'     => $value[0],
+                    'porcentaje' => $value[1],
+                    'fk_empresa' => $this->session->userdata('empresaId'),
+                    'tolerancia' => $value[2],
+                ];
+            }
+            $insert = $this->Condicion_model->set_condicion($condicion);
+            $column = $this->archivo->columnCondicion($post['id']);
+            $items = $this->Archivos_model->getBases($post['id'], $column);
+            if(!is_array($items) || count($items) <= 0){
+                throw new Exception('Algo no anda bien, el archivo no es legible, intentelo nuevamente o contacte con soporte', 202);   
+            }
+            $condiciones = [];
+            foreach ($condicion as $value) {
+                $condiciones[$value['cuenta']] = [
+                    'porcentaje' => $value['porcentaje'],
+                    'tolerancia' => $value['tolerancia'],
+                ];
+            }
+            $this->condicion->condiciones = $condiciones;
+            $this->condicion->datos = $items;            
+            $condicionesExc = $this->condicion->run();
+            $id = uniqint();
+            $response["data"] = $condicionesExc;
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $post['ejecucion'],
+                'analisis_tipo' => 'condicioncuenta'
+            ]);
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
     public function asistente() {
         if (!$this->input->is_ajax_request()) {
             show_404();

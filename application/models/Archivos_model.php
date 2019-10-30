@@ -149,11 +149,6 @@ class Archivos_model extends CI_Model {
         }
     }    
     
-    
-    public function getTodas() {
-        return $this->db->get('clie__archivos')->result_array();
-    }
-    
     public function getEncabezado($id, $campoAnalizar = NULL) {
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'e');
@@ -335,6 +330,30 @@ class Archivos_model extends CI_Model {
     public function getDetalleAll($id){
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
+        return $r;
+    }
+    
+    public function getCuentasBase($id_archivo, $column) {
+        $this->db->select($column['array']['cta'].' AS cta');
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('fk_archivos', $id_archivo);
+        $this->db->where('linea', 'f');
+        $this->db->where($column['array']['base'].'>', 0);
+        $this->db->group_by($column['array']['cta']);
+        $this->db->order_by($column['array']['cta']);
+        $r = $this->db->get('clie__archivos_detalle')->result_array();
+        return $r;
+    }
+    
+    public function getBases($id_archivo, $column) {
+        $this->db->select($column['string']);
+        $this->db->select('(('.$column['array']['base'].'/'.$column['array']['valor'].')) AS calculo');
+        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        $this->db->where('fk_archivos', $id_archivo);
+        $this->db->where('linea', 'f');
+        $this->db->where($column['array']['base'].'>', 0);
+        $this->db->limit(500);
         $r = $this->db->get('clie__archivos_detalle')->result_array();
         return $r;
     }

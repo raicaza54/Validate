@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * Analisis Model, al realizar cada ejecucion se almacena el rsultado
+ * Analisis Model, al realizar cada ejecucion se almacena el resultado
  *
  * Copyright   (c) 2019 Kevin Giovanni Enriquez Cordovez
  *  

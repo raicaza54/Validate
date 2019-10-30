@@ -174,7 +174,7 @@ class Listascontrol_pdf extends TCPDF {
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && (array_key_exists('identificacion', $dataPdf[0]) || array_key_exists('nombre', $dataPdf[0]))){
-                $this->MultiCell(196, NULL, 'Advertencia, este archivo existen coincidencia presentes en las listas de control, le sugerimos hacer una verificación y tomar las medidas según sea el caso', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(196, NULL, 'Advertencia, en este archivo se generaron coincidencias con la lista de control por lo cual debería proceder a una verificación del mismo y tomar las medidas pertinentes para este caso, el siguiente es el dato de la lista de control correspondiente al tercero o terceros que generaron coincidencias', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(5);
                 $dataPdf = $dataPdf[0];
                 $btm = 1; $fbtm = 0; $i = 0;
@@ -213,7 +213,7 @@ class Listascontrol_pdf extends TCPDF {
                     }
                 }
             }else{
-                $this->MultiCell(196, NULL, 'Enhorabuena, no existe niguna coincidencia!', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(196, NULL, 'Enhorabuena, no existe ninguna coincidencia con los terceros reportados en la lista de proveedores ficticios de la DIAN, por lo cual se le recomienda extraer un archivo PDF que certifique que a la fecha del archivo suministrado no se encuentran relaciones con este tipo de terceros.', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
             }
             //$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
