@@ -257,7 +257,7 @@ class Auditoria extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
-    public function CondicionCuenta() {
+    public function condicionCuenta() {
         if (!$this->input->is_ajax_request()) {
             show_404();
         }
@@ -276,7 +276,7 @@ class Auditoria extends CI_Controller {
             $data = $this->input->post('data');
             $data = json_decode($data, TRUE);
             if(!is_array($data) || count($data) <= 0){
-                throw new Exception('Las condiciones de cuenta no se configuran de forma correcta, intentelo nuevamente', 202);
+                throw new Exception('Las condiciones de cuenta no se configuraron de forma correcta, intentelo nuevamente', 202);
             }
             $data = array_map("unserialize", array_unique(array_map("serialize", $data)));
             array_walk($data, function (&$value){
@@ -293,10 +293,8 @@ class Auditoria extends CI_Controller {
             $condicion = [];
             foreach ($data as $value) {
                 $condicion[] = [
-                    'fk_users'   => $this->session->userdata('users_id'),
                     'cuenta'     => $value[0],
                     'porcentaje' => $value[1],
-                    'fk_empresa' => $this->session->userdata('empresaId'),
                     'tolerancia' => $value[2],
                 ];
             }

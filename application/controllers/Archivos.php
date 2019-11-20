@@ -688,11 +688,14 @@ class Archivos extends CI_Controller {
                 throw new Exception(validation_errors('',''), 202);
             }
             $column = $this->archivo->columnCondicion($post['id']);
-            if((count(array_diff(['valor','base'], array_keys($column['array']))) > 0) && (count(array_diff(['debe','haber','base'], array_keys($column['array']))) > 0)){
-                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el cálculo Condiciones de Cuenta", 202);
+            if((count(array_diff(['identificacion','doc','cta','valor','base'], array_keys($column['array']))) > 0) && (count(array_diff(['identificacion','doc','cta','debe','haber','base'], array_keys($column['array']))) > 0)){
+                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el cálculo Condiciones de Cuenta<br/>
+                                     Tenga en cuenta lo siguiente para archivos <br/>
+                                     <b>Columnas Naturaleza y Valor</b>: Identificación, Documento, Cuentas, Valor y Base.<br/>
+                                     <b>Columnas Debitos y Creditos</b>: Identificación, Documento, Cuentas, Debitos, Creditos y Base.", 202);
             }
             $condicion = $this->Condicion_model->get_condicion();
-            $response["data"] = $condicion;
+            $response["data"] = unserialize($condicion['condicion']);
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

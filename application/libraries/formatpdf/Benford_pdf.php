@@ -168,11 +168,7 @@ class Benford_pdf extends TCPDF {
         }
         if(is_array($d) && array_key_exists('d'.$dn, $d) && array_key_exists('tabla', $d['d'.$dn]) && (count($d['d'.$dn]['tabla']) > 0)){
             $this->Ln(5);
-            $this->MultiCell(30, NULL, 'Número', 1, 'C', TRUE, 0);
-            $this->MultiCell(41, NULL, 'Frecuencia', 1, 'C', TRUE, 0);
-            $this->MultiCell(41, NULL, 'Observado', 1, 'C', TRUE, 0);
-            $this->MultiCell(43, NULL, 'Ley de Benford', 1, 'C', TRUE, 0);
-            $this->MultiCell(41, NULL, 'Variación', 1, 'C', TRUE, 1);            
+            $this->drawHeader();
             foreach ($d['d'.$dn]['tabla'] as $filas) {
                 $this->MultiCell(30, NULL, $filas['numero'], 1, 'R', FALSE, 0);
                 $this->MultiCell(41, NULL, $filas['frecuencia'], 1, 'R', FALSE, 0);
@@ -181,10 +177,19 @@ class Benford_pdf extends TCPDF {
                 $this->MultiCell(41, NULL, $filas['variacion'], 1, 'R', FALSE, 1);            
                 if($this->GetY() > 260){
                     $this->AddPage();
+                    $this->drawHeader();
                 }
             }
             $this->Ln(5);
         }
+    }
+    
+    private function drawHeader() {
+        $this->MultiCell(30, NULL, 'Número', 1, 'C', TRUE, 0);
+        $this->MultiCell(41, NULL, 'Frecuencia', 1, 'C', TRUE, 0);
+        $this->MultiCell(41, NULL, 'Observado', 1, 'C', TRUE, 0);
+        $this->MultiCell(43, NULL, 'Ley de Benford', 1, 'C', TRUE, 0);
+        $this->MultiCell(41, NULL, 'Variación', 1, 'C', TRUE, 1);        
     }
     
     private function grafica($d, $dn) {

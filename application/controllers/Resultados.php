@@ -42,9 +42,7 @@ class Resultados extends CI_Controller {
     }
    
     public function crear() {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }        
+        if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
         }        
@@ -80,9 +78,7 @@ class Resultados extends CI_Controller {
     }
     
     public function editar() {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
+        if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
         }        
@@ -138,9 +134,7 @@ class Resultados extends CI_Controller {
     }
     
     public function descargar() {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
+        if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -160,6 +154,8 @@ class Resultados extends CI_Controller {
                 $pref = 'MAN';
             }elseif ($tipo == 'listascontrol') {
                 $pref = 'LSC';
+            }elseif ($tipo == 'condicioncuenta') {
+                $pref = 'CCU';
             }
             if(!file_exists($this->config->item('path_resultados').$pref.$post['id'].'.pdf')){
                 throw new Exception("Tenemos un problema interno, el archivo no puede ser localizado, contacte con soporte", 202);
@@ -176,23 +172,20 @@ class Resultados extends CI_Controller {
     }
     
     public function pdf() {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }        
+        if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
             $post = $this->input->post();
             $this->form_validation->set_data($post);
-            $this->form_validation->set_rules('nombre',           'Nombre de Archivo',         'required|max_length[150]');
-            $this->form_validation->set_rules('idPdf',            'Código PDF',                'required|max_length[50]');
-            $this->form_validation->set_rules('carpeta',          'Destino',                   'required|max_length[50]');
-            $this->form_validation->set_rules('archivoId',        'Código Archivo',            'required|max_length[50]');
-            $this->form_validation->set_rules('pdfBenford',       'Archivo Benford',           'max_length[50]');
-            $this->form_validation->set_rules('pdfSpider',        'Archivo Spider',            'max_length[50]');
-            $this->form_validation->set_rules('pdfManipulacion',  'Archivo Manipulacion',      'max_length[50]');
-            $this->form_validation->set_rules('pdflistasControl', 'Archivo Listas de Control', 'max_length[50]');
-            
-            
+            $this->form_validation->set_rules('nombre',             'Nombre de Archivo',         'required|max_length[150]');
+            $this->form_validation->set_rules('idPdf',              'Código PDF',                'required|max_length[50]');
+            $this->form_validation->set_rules('carpeta',            'Destino',                   'required|max_length[50]');
+            $this->form_validation->set_rules('archivoId',          'Código Archivo',            'required|max_length[50]');
+            $this->form_validation->set_rules('pdfBenford',         'Archivo Benford',           'max_length[50]');
+            $this->form_validation->set_rules('pdfSpider',          'Archivo Spider',            'max_length[50]');
+            $this->form_validation->set_rules('pdfManipulacion',    'Archivo Manipulacion',      'max_length[50]');
+            $this->form_validation->set_rules('pdflistasControl',   'Archivo Listas de Control', 'max_length[50]');
+            $this->form_validation->set_rules('pdfcondicionCuenta', 'Archivo Listas de Control', 'max_length[50]');
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }            
@@ -209,6 +202,12 @@ class Resultados extends CI_Controller {
             } elseif (array_key_exists('pdflistasControl', $post) && (strlen($post['pdflistasControl']) > 5)) {
                 $pdf = 'pdflistasControl';
                 $pref = 'LSC';
+            } elseif (array_key_exists('pdfcondicionCuenta', $post) && (strlen($post['pdfcondicionCuenta']) > 5)) {
+                $pdf = 'pdfcondicionCuenta';
+                $pref = 'CCU';
+            }
+            if(empty($pdf)){
+                throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 202);
             }
             $idAnalisis = trim($post[$pdf]);
             $pdfAnalisis = $this->Analisis_model->getData($idAnalisis);
@@ -227,6 +226,9 @@ class Resultados extends CI_Controller {
             }
             if (($tipo == 'listascontrol') && (strlen($post['pdflistasControl']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos de Listas de Control, no corresponden los tipos definidos", 202);
+            }
+            if (($tipo == 'pdfcondicionCuenta') && (strlen($post['pdfcondicionCuenta']) <= 0)) {
+                throw new Exception("Tenemos un problema con los datos de Condición de Cuenta, no corresponden los tipos definidos", 202);
             }
             $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
             if(is_bool($consecutivo) && $consecutivo === FALSE){
@@ -271,9 +273,7 @@ class Resultados extends CI_Controller {
     }
     
     public function benfordPdf($analisis, $idPdf, $consecutivo) {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }        
+        if (!$this->input->is_ajax_request()) show_404();
         if (count($analisis) != 3) {
             return FALSE;
         }
@@ -314,9 +314,7 @@ class Resultados extends CI_Controller {
     }
     
     public function manipulacionPdf($analisis, $idPdf, $consecutivo) {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
+        if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $manipulacion) {
             $pdf = unserialize($manipulacion['analisis']);
@@ -337,10 +335,31 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function listascontrolPdf($analisis, $idPdf, $consecutivo) {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
+    public function condicioncuentaPdf($analisis, $idPdf, $consecutivo) {
+        if (!$this->input->is_ajax_request()) show_404();
+        $e = []; $pdf = [];
+        foreach ($analisis as $condicioncuenta) {
+            $pdf = unserialize($condicioncuenta['analisis']);
         }
+        if(in_array(0, $pdf)) $pdf = $pdf[0];
+        $this->load->library('formatpdf/Condicioncuenta_pdf', array(
+            'orientation' => 'L',
+            'unit'        => 'mm',
+            'format'      => 'LETTER',
+            'unicode'     => TRUE,
+            'encoding'    => 'UTF-8',
+            'diskcache'   => FALSE,
+            'empresa'     => $this->empresa,
+            'codigo'      => $consecutivo,
+            'namePdf'     => $idPdf,
+        ), 'pdf');
+        $data = [];
+        $dataPdf = $pdf;
+        return $this->pdf->run($data, $dataPdf);
+    }
+    
+    public function listascontrolPdf($analisis, $idPdf, $consecutivo) {
+        if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $listascontrol) {
             $pdf = unserialize($listascontrol['analisis']);
@@ -362,9 +381,7 @@ class Resultados extends CI_Controller {
     }
     
     public function spiderPdf($analisis, $idPdf, $consecutivo) {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
+        if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $spider) {
             $pdf = unserialize($spider['analisis']);
@@ -394,9 +411,7 @@ class Resultados extends CI_Controller {
     }
     
     public function carpetas() {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }        
+        if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -420,9 +435,7 @@ class Resultados extends CI_Controller {
     }
 
     private function tryCatch($exc, $response) {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }        
+        if (!$this->input->is_ajax_request()) show_404();
         $response["status"] = $exc->getCode();
         $exception          = array(
             "code"    => $exc->getCode(),

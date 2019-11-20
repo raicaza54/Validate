@@ -42,16 +42,18 @@ class Condicion {
                             $condCalc = number_format($calculo - $max, 3);
                         }
                         $condicionEx[] = [
-                            'cta'        => $value['cta'],
-                            'base'       => $value['base'],
-                            'valor'      => $value['valor'],
-                            'calculo'    => $calculo,
-                            'max'        => $max,
-                            'min'        => $min,
-                            'porcentaje' => $condicion['porcentaje'],
-                            'tolerancia' => $condicion['tolerancia'],
-                            'condicion'  => $cond,
-                            'diferencia' => $condCalc,
+                            'doc'            => $value['doc'],
+                            'identificacion' => $value['identificacion'],
+                            'cta'            => $value['cta'],
+                            'base'           => $value['base'],
+                            'valor'          => $value['valor'],
+                            'calculo'        => $calculo,
+                            'max'            => $max,
+                            'min'            => $min,
+                            'porcentaje'     => $condicion['porcentaje'],
+                            'tolerancia'     => $condicion['tolerancia'],
+                            'condicion'      => $cond,
+                            'diferencia'     => $condCalc,
                         ];
                     }
                 }
