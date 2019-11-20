@@ -318,7 +318,7 @@ class Auditoria extends CI_Controller {
             $response["data"] = $condicionesExc;
             $this->Analisis_model->setInsert([
                 'id'            => $id,
-                'analisis'      => serialize($response["data"]),
+                'analisis'      => json_encode($response["data"]),
                 'ejecucion'     => $post['ejecucion'],
                 'analisis_tipo' => 'condicioncuenta'
             ]);

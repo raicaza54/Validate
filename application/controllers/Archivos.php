@@ -695,7 +695,7 @@ class Archivos extends CI_Controller {
                                      <b>Columnas Debitos y Creditos</b>: Identificación, Documento, Cuentas, Debitos, Creditos y Base.", 202);
             }
             $condicion = $this->Condicion_model->get_condicion();
-            $response["data"] = unserialize($condicion['condicion']);
+            $response["data"] = json_decode($condicion['condicion'], TRUE);
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

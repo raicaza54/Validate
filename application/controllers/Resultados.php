@@ -339,7 +339,7 @@ class Resultados extends CI_Controller {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $condicioncuenta) {
-            $pdf = unserialize($condicioncuenta['analisis']);
+            $pdf = json_decode($condicioncuenta['analisis'], TRUE);
         }
         if(in_array(0, $pdf)) $pdf = $pdf[0];
         $this->load->library('formatpdf/Condicioncuenta_pdf', array(

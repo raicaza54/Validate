@@ -6,9 +6,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * para aplicar el calculo de condicion de cuenta
  *
  * Copyright   (c) 2019 Kevin Giovanni Enriquez Cordovez
- *  
- * ALTER TABLE `clie__condicion_cuenta` ADD `condicion` TEXT NOT NULL COMMENT 'json de condiciones de cuenta' AFTER `tolerancia`;
- * ALTER TABLE `clie__condicion_cuenta` DROP `cuenta`, DROP `porcentaje`, DROP `tolerancia`;
  * 
  * @author     GEO INFORMATIC SOLUTIONS SAS
  * @author     Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
@@ -39,7 +36,7 @@ class Condicion_model extends CI_Model {
         $data = [
             'fk_empresa' => $this->session->userdata('empresaId'),
             'fk_users'   => $this->session->userdata('users_id'),
-            'condicion'  => serialize($datos)
+            'condicion'  => json_encode($datos)
         ] + $auditoria;
         $numrows = $this->db->where([
             'fk_users'      => $this->session->userdata('users_id'),
