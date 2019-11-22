@@ -341,7 +341,6 @@ class Resultados extends CI_Controller {
         foreach ($analisis as $condicioncuenta) {
             $pdf = json_decode($condicioncuenta['analisis'], TRUE);
         }
-        if(in_array(0, $pdf)) $pdf = $pdf[0];
         $this->load->library('formatpdf/Condicioncuenta_pdf', array(
             'orientation' => 'L',
             'unit'        => 'mm',

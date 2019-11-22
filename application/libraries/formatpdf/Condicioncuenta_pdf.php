@@ -173,13 +173,17 @@ class Condicioncuenta_pdf extends TCPDF {
             $this->MultiCell(118, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(59, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
-            if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && (array_key_exists('identificacion', $dataPdf[0]) || array_key_exists('base', $dataPdf[0]))){
+            if(is_array($dataPdf) && array_key_exists('filas', $dataPdf) && (array_key_exists('identificacion', $dataPdf['filas'][0]) || array_key_exists('base', $dataPdf['filas'][0]))){
                 $this->MultiCell(260, NULL, 'Advertencia, en este archivo se generaron coincidencias con la lista de control por lo cual debería proceder a una verificación del mismo y tomar las medidas pertinentes para este caso, el siguiente es el dato de la lista de control correspondiente al tercero o terceros que generaron coincidencias', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                if($dataPdf['exedido'] == 1){
+                    $this->Ln(2.5);
+                    $this->MultiCell(260, NULL, 'Los datos han excedido más de '.$this->CI->config->item('max_condicion').' filas, debe ajustar los valores', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                }
                 $this->Ln(5);
                 $dataPdf = $dataPdf;
                 $btm = 1; $fbtm = 0; $i = 0;
                 $this->drawHeader();
-                foreach ($dataPdf as $resultado) {
+                foreach ($dataPdf['filas'] as $resultado) {
                     $this->MultiCell(32.5, '', $resultado['cta'], TRUE, 'R', FALSE, 0);
                     $this->MultiCell(32.5, '', $resultado['doc'], TRUE, 'R', '', 0);
                     $this->MultiCell(32.5, '', $resultado['identificacion'], TRUE, 'R', FALSE, 0);
@@ -191,7 +195,14 @@ class Condicioncuenta_pdf extends TCPDF {
                     if($this->GetY() > 195){
                         $this->AddPage();
                         $this->drawHeader();
+                    }
+                }
+                if($dataPdf['exedido'] == 1){
+                    if($this->GetY() > 195){
+                        $this->AddPage();
+                        $this->drawHeader();
                     }                    
+                    $this->MultiCell(260, '', 'Este archivo contiene más de '.$this->CI->config->item('max_condicion').' registros', TRUE, 'L', FALSE, 1);
                 }
             }else{
                 $this->MultiCell(260, NULL, 'Enhorabuena, no existe ninguna coincidencia con los terceros reportados en la lista de proveedores ficticios de la DIAN, por lo cual se le recomienda extraer un archivo PDF que certifique que a la fecha del archivo suministrado no se encuentran relaciones con este tipo de terceros.', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);

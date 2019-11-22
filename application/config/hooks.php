@@ -33,5 +33,6 @@ $hook['post_controller_constructor'][] = function(){
     $CI->config->set_item('path_archivos',   $CI->config->item('path_user').'/archivos/');
     $CI->config->set_item('path_graficas',   $CI->config->item('path_user').'/graficas/');
     $CI->config->set_item('path_resultados', $CI->config->item('path_user').'/resultados/');
+    $CI->config->set_item('max_condicion',   200);
     
 };

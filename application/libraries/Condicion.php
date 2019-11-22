@@ -27,6 +27,8 @@ class Condicion {
         $max = 0; $min = 0;
         $cond = '';
         $condCalc = 0;
+        $n = 0;
+        $exedido = 0;
         if(count($this->datos) > 0){
             foreach ($this->datos as $value) {
                 if(array_key_exists($value['cta'], $this->condiciones)){
@@ -35,6 +37,7 @@ class Condicion {
                     $min = number_format((floatval($condicion['porcentaje']) - floatval($condicion['tolerancia'])), 3);
                     $calculo = number_format($value['calculo'], 3);
                     if(($calculo > $max) || ($calculo < $min )){
+                        $n++;
                         $cond = '-';
                         $condCalc = number_format($calculo - $min, 3);
                         if($calculo > $max){
@@ -55,11 +58,18 @@ class Condicion {
                             'condicion'      => $cond,
                             'diferencia'     => $condCalc,
                         ];
+                        if($n >= $this->CI->config->item('max_condicion')){
+                            $exedido = 1;
+                            break;
+                        }
                     }
                 }
             }
         }
-        return $condicionEx;
+        return [
+            'filas'   => $condicionEx,
+            'exedido' => $exedido,
+        ];
     }
     
 }
