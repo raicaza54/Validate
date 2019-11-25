@@ -786,10 +786,16 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 202);
             }
             $items = $this->Archivos_model->getCuentas($post['id'], $column);
+            $comp = $this->Archivos_model->getComprobantes($post['id'], $column);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
-            $response["data"] = ['items' => $items, 'column' => $column['array']['cta']];
+            $response["data"] = [
+                'items'  => $items,
+                'comp'   => $comp,
+                'column' => $column['array']['cta'],
+                'columnComp' => $column['array']['comp']
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

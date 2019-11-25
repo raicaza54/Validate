@@ -191,6 +191,15 @@ class Archivos_model extends CI_Model {
         return $cuentas;
     }
     
+    public function getComprobantes($id, $column) {
+        $this->db->select($column['array']['comp'], FALSE);
+        $this->db->where('fk_archivos', $id);
+        $this->db->where('linea', 'f');
+        $this->db->group_by($column['array']['comp']);
+        $cuentas = $this->db->get('clie__archivos_detalle')->result_array();
+        return $cuentas;
+    }
+    
     public function getDetalleId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {
         $r = FALSE;
         $this->db->select([

@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="<?= base_url('assets/library/toast/css/jquery.toast.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/jexcel/jexcel.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/jexcel/jsuites.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/library/chosen/css/bootstrap-select.min.css') ?>">
         <?= asset_css('plantilla/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
@@ -39,6 +40,8 @@
         <script src="<?= base_url('assets/library/fullscreen/0.6.0/jquery.fullscreen.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/toast/js/jquery.toast.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/cookie/2.2.0/js.cookie.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/chosen/js/bootstrap-select.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/chosen/js/i18n/defaults-es_ES.min.js') ?>" type="text/javascript"></script>
         <?= asset_js('loader.js') ?>
         <?= load_assets('js') ?>
         <script type="text/javascript">

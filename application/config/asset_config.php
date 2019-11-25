@@ -39,7 +39,7 @@
 |	
 |
 */
-$config['assets']['version'] = 58;
+$config['assets']['version'] = 62;
 
 
 /*
