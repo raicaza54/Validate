@@ -546,3 +546,25 @@ SE ESTA TRABAJANDO
 ▪ Envió de correo para recuperar contraseña
 
 #*******************************************************************************
+
+FECHA: 04/12/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Araña se añade filtro de de comprobante, uno o varios, ninguno es igual a todos
+▪ Araña se muestran los nombres de las cuentas en tooltip dobre de la cuenta
+▪ Araña se añade filtro de cuentas de 1 a 5, se debe tener en cuenta que el mismo se pierde al elegir una cuenta distinta
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************

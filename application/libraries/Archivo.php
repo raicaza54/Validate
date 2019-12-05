@@ -13,6 +13,7 @@ class Archivo {
     
     private $CI;
     var $columnManipulacion = [
+        'ctan',
         'cta',
         'valor',
     ];    
@@ -150,6 +151,8 @@ class Archivo {
             $r = ['campo', 'date'];
         }elseif($e == 'cta'){
             $r = ['cta', 'num'];
+        }elseif($e == 'ctan'){
+            $r = ['ctan', 'string'];
         }elseif($e == 'comp'){
             $r = ['comp', 'string'];
         }elseif($e == 'doc'){

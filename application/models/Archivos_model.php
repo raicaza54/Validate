@@ -29,7 +29,7 @@ class Archivos_model extends CI_Model {
         $this->column_search = $column;
         $this->column = $column;
         // Set default order
-        $this->order         = [
+        $this->order = [
             'campo1' => 'asc'
         ];
     }
@@ -140,11 +140,11 @@ class Archivos_model extends CI_Model {
             $i++;
         }
         if (isset($postData['order'])) {
-            $this->db->order_by('LENGTH('.$this->column_order[$postData['order']['0']['column']].')', $postData['order']['0']['dir']);
+            //$this->db->order_by('LENGTH('.$this->column_order[$postData['order']['0']['column']].')', $postData['order']['0']['dir']);
             $this->db->order_by($this->column_order[$postData['order']['0']['column']], $postData['order']['0']['dir']);
         } else if (isset($this->order)) {
             $order = $this->order;
-            $this->db->order_by('LENGTH('.key($order).')', $order[key($order)]);
+            //$this->db->order_by('LENGTH('.key($order).')', $order[key($order)]);
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }    
@@ -198,6 +198,37 @@ class Archivos_model extends CI_Model {
         $this->db->group_by($column['array']['comp']);
         $cuentas = $this->db->get('clie__archivos_detalle')->result_array();
         return $cuentas;
+    }
+    
+    public function getCuentasN($id, $column) {
+        $cuentasn = FALSE; $cuentas = [];
+        $this->db->select('archivos_id, columnas', FALSE);
+        $this->db->where('tipo', 'blp');
+        $this->db->where('deleted_at', '0');
+        $this->db->where('disabled', '0');
+        $this->db->like('clie__archivos.columnas', 'cta');
+        $this->db->like('clie__archivos.columnas', 'ctan');
+        $this->db->like('clie__archivos.columnas', 'valor');
+        $this->db->join('clie__carpetas', 'clie__archivos.id = clie__carpetas.archivos_id');
+        $balances = $this->db->get('clie__archivos')->result_array();
+        $col = []; $colSql = [];
+        if(is_array($balances) && count($balances)){
+            foreach ($balances as $value) {
+                $col = json_decode($value['columnas'], TRUE);
+                if(is_array($col) && count($col)){
+                    foreach ($col as $key => $valueCol) {
+                        if($valueCol[0] != 'campo') $colSql[$valueCol[0]] = $key;
+                    }
+                    $this->db->select('DISTINCT TRIM('.$colSql['cta'].') AS cta, UPPER(TRIM('.$colSql['ctan'].')) AS ctan', FALSE);
+                    $this->db->where('linea', 'f');
+                    $this->db->where('fk_archivos', $value['archivos_id']);
+                    $cuentas = $cuentas + $this->db->get('clie__archivos_detalle')->result_array();
+                    unique_multidim_array($cuentas, 'cta');
+                }
+            }
+        }
+        $cuentasn = array_column($cuentas, 'ctan', 'cta');
+        return $cuentasn;
     }
     
     public function getDetalleId($id, $digito = NULL, $grafica = NULL, $campoAnalizar = NULL) {
@@ -264,7 +295,7 @@ class Archivos_model extends CI_Model {
         $r = $this->db->get('clie__carpetas')->result_array();
         if(is_array($r) && count($r)){
             foreach ($r as $key => $value) {
-                if((!strpos($value['columnas'], 'cta') !== FALSE) || (!strpos($value['columnas'], 'valor') !== FALSE)){
+                if((!strpos($value['columnas'], 'cta') !== FALSE) || (!strpos($value['columnas'], 'valor') !== FALSE) || (!strpos($value['columnas'], 'ctan') !== FALSE)){
                     $r[$key]['estado'] = 'F';
                 }
             }
@@ -272,10 +303,13 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
-    public function getDetalleIdSpider($id, $column) {
+    public function getDetalleIdSpider($id, $column, $comp) {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
+        if(is_array($comp) && count($comp)){
+            $this->db->where_in($column['array']['comp'], $comp);
+        }
         $r = $this->db->get('clie__archivos_detalle')->result_array();
         return $r;
     }

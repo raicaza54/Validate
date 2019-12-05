@@ -787,14 +787,16 @@ class Archivos extends CI_Controller {
             }
             $items = $this->Archivos_model->getCuentas($post['id'], $column);
             $comp = $this->Archivos_model->getComprobantes($post['id'], $column);
+            $cuentas = $this->Archivos_model->getCuentasN($post['id'], $column);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
             $response["data"] = [
-                'items'  => $items,
-                'comp'   => $comp,
-                'column' => $column['array']['cta'],
-                'columnComp' => $column['array']['comp']
+                'items'      => $items,
+                'comp'       => $comp,
+                'column'     => $column['array']['cta'],
+                'columnComp' => $column['array']['comp'],
+                'cuentas'    => $cuentas
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

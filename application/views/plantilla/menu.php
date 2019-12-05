@@ -108,7 +108,7 @@
             <div class="menu-card">
                 <div class="d-flex flex-column">
                     <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond" onClick="CONDICION.methods.consulta(this)">
-                        <i class="fas fa-calculator"></i> Condiciones de cuenta
+                        <i class="fas fa-calculator"></i> Condiciones de Cuenta
                     </span>                    
                     <span class="<?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
                         <i class="fas fa-vote-yea"></i> Materialidad

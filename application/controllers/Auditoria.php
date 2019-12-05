@@ -84,7 +84,7 @@ class Auditoria extends CI_Controller {
                 }
                 redirect('/', 'refresh');
             }else{
-                $this->session->set_flashdata('message', 'Algo va mal, los datos enviados no son correctos');
+                $this->session->set_flashdata('message', 'Algo no anda bien, los datos enviados no son correctos');
                 redirect('auth/login', 'refresh');
             }
         } catch (Exception $exc) {
@@ -102,24 +102,65 @@ class Auditoria extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception("Algo no anda bien, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
             $this->form_validation->set_data($form);
             $this->form_validation->set_rules('ejecucion', 'Ejecución', 'required|max_length[50]|min_length[10]');
+            if(array_key_exists('clickSpider', $form) && strlen($form['clickSpider'])){
+                $this->form_validation->set_rules('clickSpider', 'Cuenta', 'required|numeric');
+            }else{
+                $this->form_validation->set_rules('archivoIdProcesar', 'Archivo', 'required|max_length[50]|min_length[10]');
+                $this->form_validation->set_rules('campoSpider[]', 'Cuenta(s)', 'required|numeric');
+                $this->form_validation->set_rules('comprobantes[]', 'Comprobante(s)', 'numeric');                
+            }
             if ($this->form_validation->run() == FALSE){
-                throw new Exception('<ul>'.validation_errors('<li>','</li>').'</ul>', 202);
+                throw new Exception(validation_errors('',''), 202);
             }
-            if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('campoSpider', $form) || !array_key_exists('ejecucion', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
+            $campoSpider       = '';
+            $archivoIdProcesar = '';
+            $comprobantes      = '';
+            $xspider           = [];
+            $campoSpiders      = [];
+            if(array_key_exists('clickSpider', $form) && strlen($form['clickSpider'])){
+                $xspider = $this->session->userdata('spider');
+                $campoSpider       = $form['clickSpider'];
+                $archivoIdProcesar = $xspider['archivoIdProcesar'];
+                $comprobantes      = $xspider['comprobantes'];
+                $campoSpiders      = $xspider['campoSpider'];
+                if(is_array($xspider['campoSpider']) && count($xspider['campoSpider']) > 1 && !in_array($campoSpider, $xspider['campoSpider'])){
+                    $campoSpiders = $form['clickSpider'];
+                }
+            }else{
+                $campoSpider       = $form['campoSpider'];
+                $archivoIdProcesar = $form['archivoIdProcesar'];
+                $comprobantes      = $form['comprobantes'];
+                $this->session->set_userdata([
+                    'spider' => [
+                        'campoSpider'       => $campoSpider,
+                        'archivoIdProcesar' => $archivoIdProcesar,
+                        'comprobantes'      => $comprobantes,
+                    ]
+                ]);
+                if(is_array($form['campoSpider']) && count($form['campoSpider'])){
+                    $campoSpiders = $form['campoSpider'];
+                    $campoSpider  = $form['campoSpider'][0];
+                }
             }
-            $column = $this->archivo->columnSpider($form['archivoIdProcesar']);
-            $items = $this->Archivos_model->getDetalleIdSpider($form['archivoIdProcesar'], $column);
+            $column = $this->archivo->columnSpider($archivoIdProcesar);
+            $items = $this->Archivos_model->getDetalleIdSpider($archivoIdProcesar, $column, $comprobantes);
+            $cuentas = $this->Archivos_model->getCuentasN($archivoIdProcesar, $column);            
             if(!is_array($items) || (count($items) <= 0)){
-                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 202);
+                throw new Exception("Algo no anda bien, el archivo no posee filas para analizar", 202);
             }
-            $this->spider->data = $items;
-            $spider = $this->spider->procesar($form['campoSpider']);
+            $this->spider->data  = $items;
+            $this->spider->comp  = $comprobantes;
+            $this->spider->ctas  = $campoSpiders;
+            $this->spider->ctasn = $cuentas;
+            $spider = $this->spider->procesar($campoSpider);
+            if(is_array($spider) && array_key_exists('alto', $spider) && $spider['alto'] <= 0){
+                throw new Exception("No existen datos para graficar la araña", 202);
+            }
             $id = uniqint();
             $form = $form + ['id' => $id];
             $response["data"] = $spider + ['form' => $form];
@@ -179,15 +220,15 @@ class Auditoria extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception("Algo no anda bien, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form) || !array_key_exists('archivoIdProcesar', $form) || !array_key_exists('digito', $form) || !array_key_exists('ejecucion', $form)){
-                throw new Exception("Tenemos un problema, faltan algunos datos, estan incompletos o corruptos", 202);
+                throw new Exception("Algo no anda bien, faltan algunos datos, estan incompletos o corruptos", 202);
             }
             $columndh = $this->archivo->columnas($form['archivoIdProcesar']);
             if(!is_array($columndh)){
-                throw new Exception("Tenemos un problema, archivo no encontrado", 202);
+                throw new Exception("Algo no anda bien, archivo no encontrado", 202);
             }
             if($form['campoAnalizar'] == 'valor'){
                 if($columndh === FALSE){
@@ -198,12 +239,12 @@ class Auditoria extends CI_Controller {
             }
             $items = $this->Archivos_model->getDetalleIdBenford($form['archivoIdProcesar'], $form['campoAnalizar']);
             if(!is_array($items) || (count($items) <= 0)){
-                throw new Exception("Tenemos un problema, el archivo no posee filas para analizar", 202);
+                throw new Exception("Algo no anda bien, el archivo no posee filas para analizar", 202);
             }
             $this->benford->data = $items;
             $tabla = $this->benford->procesar($form['digito']);
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
-                throw new Exception("Tenemos un problema, la columna seleccionada no fue posible procesarla", 202);
+                throw new Exception("Algo no anda bien, la columna seleccionada no fue posible procesarla", 202);
             }
             $id = uniqint();
             $form = $form + ['id' => $id];
@@ -288,7 +329,7 @@ class Auditoria extends CI_Controller {
                return ((ctype_alnum($value[0]) ||  is_numeric($value[0])) &&  is_numeric($value[1]) &&  is_numeric($value[2])) ? TRUE : FALSE;
             });
             if(!is_array($data) || count($data) <= 0){
-                throw new Exception('No existen datos de Condición de Cuenta para comprobar los valores, intentelo nuevamente', 202);
+                throw new Exception('Algo no anda bien, no existen datos de Condición de Cuenta para comprobar los valores, intentelo nuevamente', 202);
             }
             $condicion = [];
             foreach ($data as $value) {
@@ -368,7 +409,7 @@ class Auditoria extends CI_Controller {
             ];
             $empresaId = $this->Empresas_model->insertData($dataEmpresa);
             if($empresaId == FALSE){
-                throw new Exception('La empresa no pudo ser registrada, contacte a soporte', 200);
+                throw new Exception('Algo no anda bien, la empresa no pudo ser registrada, contacte a soporte', 200);
             }
             $id = uniqint();
             $insertCarpeta = $this->Explorador_model->crear([
@@ -381,7 +422,7 @@ class Auditoria extends CI_Controller {
                 'disabled'    => 0
             ]);            
             if($insertCarpeta === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta de archivos", 202);
+                throw new Exception("Algo no anda bien, no fue posible crear carpeta de archivos", 202);
             }
             $id = uniqint();
             $insertResultado = $this->Resultados_model->crear([
@@ -392,7 +433,7 @@ class Auditoria extends CI_Controller {
                 'id'          => $id
             ]);
             if($insertResultado === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta de resultados", 202);
+                throw new Exception("Algo no anda bien, no fue posible crear carpeta de resultados", 202);
             }
             $response["data"] = [
                 'empresaId' => $empresaId
