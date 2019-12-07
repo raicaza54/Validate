@@ -222,7 +222,7 @@ class Archivos_model extends CI_Model {
                     $this->db->select('DISTINCT TRIM('.$colSql['cta'].') AS cta, UPPER(TRIM('.$colSql['ctan'].')) AS ctan', FALSE);
                     $this->db->where('linea', 'f');
                     $this->db->where('fk_archivos', $value['archivos_id']);
-                    $cuentas = $cuentas + $this->db->get('clie__archivos_detalle')->result_array();
+                    $cuentas = array_merge_recursive($cuentas, $this->db->get('clie__archivos_detalle')->result_array());
                     unique_multidim_array($cuentas, 'cta');
                 }
             }
