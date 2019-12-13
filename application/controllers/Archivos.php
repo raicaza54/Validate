@@ -531,18 +531,54 @@ class Archivos extends CI_Controller {
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',  'Archivo',   'required|max_length[20]|numeric');
+            $this->form_validation->set_rules('exId','Explorador','required|max_length[20]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
             }
             $items = $this->Archivos_model->getRows($this->input->post());
             if (!is_array($items) || (count($items) <= 0)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
+            $this->session->set_userdata(['archivoId' => $this->input->post('id')]);
+            $this->session->set_userdata(['exploradorId' => $this->input->post('exId')]);
+            
             $response = [
                 "draw"            => $this->input->post('draw'),
                 "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
                 "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
                 "data"            => $items,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function extraerBase() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',  'Archivo',   'required|max_length[20]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $column = $this->archivo->columnCondicion($this->input->post('id'));
+            $items = $this->Archivos_model->getCuentasBase($this->input->post('id'), $column);
+            if (!is_array($items) || (count($items) <= 0)) {
+                throw new Exception("No existen datos para mostrar", 202);
+            }
+            $response = [
+                "data" => $items,
             ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
@@ -639,6 +675,37 @@ class Archivos extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function columcondicion() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $this->response;
+        $this->load->model('Condicion_model');
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_rules('id', 'Identificador', 'required|max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $column = $this->archivo->columnCondicion($post['id']);
+            if((count(array_diff(['identificacion','doc','cta','valor','base'], array_keys($column['array']))) > 0) && (count(array_diff(['identificacion','doc','cta','debe','haber','base'], array_keys($column['array']))) > 0)){
+                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el cálculo Condiciones de Cuenta<br/>
+                                     Tenga en cuenta lo siguiente para archivos <br/>
+                                     <b>Columnas Naturaleza y Valor</b>: Identificación, Documento, Cuentas, Valor y Base.<br/>
+                                     <b>Columnas Debitos y Creditos</b>: Identificación, Documento, Cuentas, Debitos, Creditos y Base.", 202);
+            }
+            $condicion = $this->Condicion_model->get_condicion();
+            $response["data"] = json_decode($condicion['condicion'], TRUE);
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
     public function encabezado($benford = 0) {
         if (!$this->input->is_ajax_request()) {
             show_404();
@@ -719,10 +786,18 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el análisis de La Araña", 202);
             }
             $items = $this->Archivos_model->getCuentas($post['id'], $column);
+            $comp = $this->Archivos_model->getComprobantes($post['id'], $column);
+            $cuentas = $this->Archivos_model->getCuentasN($post['id'], $column);
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
             }
-            $response["data"] = ['items' => $items, 'column' => $column['array']['cta']];
+            $response["data"] = [
+                'items'      => $items,
+                'comp'       => $comp,
+                'column'     => $column['array']['cta'],
+                'columnComp' => $column['array']['comp'],
+                'cuentas'    => $cuentas
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

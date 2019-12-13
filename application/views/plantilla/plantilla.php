@@ -2,7 +2,7 @@
     <body>
         <nav class="navbar navbar-expand-sm fixed-top bg-auditor contenedor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
-                <?= asset_image('logo1.png" style="height: 30px;"')?>
+                <?= asset_image('logo3.png" style="height: 30px;"')?>
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="margin-left: 40px;">
@@ -23,20 +23,20 @@
                     Administrador
                 </a>
                 <?php endif; ?>
-                <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
+                <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
                     <i class="fas fa-circle-notch fa-spin"></i>
                 </a>
-                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
+                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
                     <i class="far fa-hdd"></i>
                 </a>
-                <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
+                <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
                     <i class="fas fa-bell"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato(true);">
                     <i class="fas fa-cog"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" onclick="AYUDA.componets.tab();">
-                    <i class="far fa-question-circle"></i>
+                    <i class="fas fa-question-circle"></i>
                 </a>
                 <span class="navbar-text text-white" style="margin: 0px 10px;">
                     <?= $this->session->first_name . ' ' . $this->session->last_name ?>
@@ -62,6 +62,7 @@
         <div class="tab-content shadow-sm" id="exploradorContent">
             <div class="tab-pane fade show active" id="tabexplorador" role="tabpanel" aria-labelledby="tabexplorador-tab">
                 <div class="explorador-icon">
+                    <i class="btn-icon fas fa-check <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.computed.dblclicktr(true)"></i>
                     <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
                     <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta(this)"></i>
                     <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
@@ -77,6 +78,7 @@
             </div>
             <div class="tab-pane fade" id="tabresultados" role="tabpanel" aria-labelledby="tabresultados-tab">
                 <div class="explorador-icon">
+                    <i class="btn-icon fas fa-check <?=$this->permisos->viewaccess('exp-resultados-actualizar')?>" id="exp-resultados-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="RESULTADOS.computed.dblclicktr(true)"></i>
                     <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-resultados-actualizar')?>" id="exp-resultados-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="RESULTADOS.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
                     <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-resultados-crear')?>" id="exp-resultados-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="RESULTADOS.methods.crearCarpeta(this)"></i>
                     <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-resultados-editar')?>" id="exp-resultados-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="RESULTADOS.methods.editarCarpeta(this)"></i>
@@ -100,7 +102,7 @@
                 GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;2019
             </span>
         </nav>        
-        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
+        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true" data-keyboard="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" data-keyboard="false">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -114,6 +116,7 @@
                         <button type="button" class="btn btn-link" data-dismiss="modal">
                             Cancelar
                         </button>
+                        <div id="btn-extra"></div>
                         <button type="button" class="btn btn-primary">
                             Aceptar
                         </button>

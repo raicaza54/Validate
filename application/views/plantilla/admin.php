@@ -2,12 +2,15 @@
     <body>
         <nav class="navbar navbar-expand-sm fixed-top bg-admin contenedor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
-                <?= asset_image('logo1.png" style="height: 30px;"')?>
+                <?= asset_image('logo3.png" style="height: 30px;"')?>
             </a>
             <div class="collapse navbar-collapse">
                 <ul class="nav nav-pills" id="pills-tab" role="tablist" style="margin-left: 40px;">
                     <li class="nav-item">
                         <a class="nav-link nav-icon active" id="pills-principal-tab" data-toggle="pill" href="#pills-principal" role="tab" aria-controls="pills-principal" aria-selected="true">Principal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-icon" id="pills-configuracion-tab" data-toggle="pill" href="#pills-configuracion" role="tab" aria-controls="pills-configuracion" aria-selected="true">Configuraci&oacute;n</a>
                     </li>
                 </ul>
             </div>

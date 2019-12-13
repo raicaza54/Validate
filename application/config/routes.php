@@ -125,6 +125,23 @@ $route['listascontrol/v1/datos']['post']     = 'archivos/columlistas';
 $route['listascontrol/v1/consultar']['post'] = 'auditoria/listascontrol';
 
 /* -------------------------------------------------------------------------
+ * Condiciones de Cuenta
+ * ------------------------------------------------------------------------- */
+$route['condicion/v1/datos']['post']     = 'archivos/columcondicion';
+$route['condicion/v1/extraer']['post']   = 'archivos/extraerBase';
+$route['condicion/v1/consultar']['post'] = 'auditoria/condicionCuenta';
+
+/* -------------------------------------------------------------------------
+ * Terminos y Condiciones
+ * ------------------------------------------------------------------------- */
+$route['terminosCondiciones']['post'] = 'auditoria/terminosCondiciones';
+
+/* -------------------------------------------------------------------------
+ * Ayuda
+ * ------------------------------------------------------------------------- */
+$route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
+
+/* -------------------------------------------------------------------------
  * Sistema por Defecto
  * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';

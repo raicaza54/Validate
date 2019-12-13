@@ -1,8 +1,8 @@
 <p class="text-white text-center" style="">
-    <?= asset_image('logo2.png" style="height: 100px;"')?>
+    <?= asset_image('logo3.png" style="height: 100px;"')?>
 </p>
-<div class="card">
-    <div class="card-body">
+<div class="card shadow-sm">
+    <div class="card-body" style="background-color: #fafafa;">
         <h5 class="text-center"><?= lang('login_heading'); ?></h5>
         <p class="text-center"><?= lang('login_subheading'); ?></p>
         <?php if(strlen($message)): ?>

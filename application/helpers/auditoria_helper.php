@@ -29,7 +29,7 @@ if (!function_exists('unSerializeArray')) {
         $unSerailize = [];
         if (is_array($form) && count($form) > 0) {
             foreach ($form as $value) {
-                $unSerailize[$value['name']] = $value['value'];
+                @$unSerailize[$value['name']] = $value['value'];
             }
         } else {
             return $form;

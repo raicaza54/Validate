@@ -441,3 +441,130 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 
 #*******************************************************************************
+
+FECHA: 22/09/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Ajuste para pantallas tactiles
+
+CORRECCIONES
+▪ No hay cambios
+
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Términos y Condiciones
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
+FECHA: 24/09/2019
+NUEVAS FUNCIONALIDADES
+▪ Fase 1, funcionalidad de ayuda en 3 simples pasos
+
+ACTUALIZACIÓN
+▪ Apertura de elementos de árbol por medio de botón
+
+CORRECCIONES
+▪ No hay cambios
+
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Términos y Condiciones
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
+FECHA: 16/10/2019
+NUEVAS FUNCIONALIDADES
+▪ Términos y Condiciones
+▪ Asistente para crear empresas, carpeta de archivos y resultados
+
+ACTUALIZACIÓN
+▪ Ventana modal, inciar método
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Condiciones de Cuenta
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 30/10/2019
+NUEVAS FUNCIONALIDADES
+▪ Condición de Cuenta
+
+ACTUALIZACIÓN
+▪ Se mantiene la empresa y archivo seleccionado al recargar el navegador
+▪ Se mejora la redacción de mensajes
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Pendiente almacenar PDF de Condición de Cuenta
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 19/11/2019
+NUEVAS FUNCIONALIDADES
+▪ Reporte Condición de Cuenta
+
+ACTUALIZACIÓN
+▪ Se añaden las columnas de identificación y documento al reporte de Condición de Cuenta
+▪ Se convierten los criterios de Condición de Cuenta en formato JSON
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 04/12/2019
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Araña se añade filtro de de comprobante, uno o varios, ninguno es igual a todos
+▪ Araña se muestran los nombres de las cuentas en tooltip dobre de la cuenta
+▪ Araña se añade filtro de cuentas de 1 a 5, se debe tener en cuenta que el mismo se pierde al elegir una cuenta distinta
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************

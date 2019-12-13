@@ -13,12 +13,22 @@ class Archivo {
     
     private $CI;
     var $columnManipulacion = [
+        'ctan',
         'cta',
         'valor',
     ];    
     var $columnListas = [
         'nombre',
         'identificacion',
+    ];    
+    var $columnCondicion = [
+        'identificacion',
+        'cta',
+        'doc',
+        'base',
+        'valor',
+        'debe',
+        'haber',
     ];    
     var $columnSpider = [
         'cta',
@@ -141,6 +151,8 @@ class Archivo {
             $r = ['campo', 'date'];
         }elseif($e == 'cta'){
             $r = ['cta', 'num'];
+        }elseif($e == 'ctan'){
+            $r = ['ctan', 'string'];
         }elseif($e == 'comp'){
             $r = ['comp', 'string'];
         }elseif($e == 'doc'){
@@ -157,6 +169,8 @@ class Archivo {
             $r = ['identificacion', 'string'];
         }elseif($e == 'nombre'){
             $r = ['nombre', 'string'];
+        }elseif($e == 'base'){
+            $r = ['base', 'float'];
         }
         return [
             $r[0],
@@ -224,6 +238,28 @@ class Archivo {
         if(is_array($columnas) && count($columnas)){
             foreach ($columnas as $key => $value) {
                 foreach ($this->columnListas as $col) {
+                    if($col == $value[0]){
+                        $columnDef[$col] = $key;
+                    }
+                }
+            }
+        }else{
+            return FALSE;
+        }
+        $columnString = $this->columnString($columnDef, $encabezado['formato']);
+        return [
+            'string' => $columnString,
+            'array'  => $columnDef
+        ];
+    }
+    
+    public function columnCondicion($archivo_id) {
+        $columnDef = [];
+        $encabezado = $this->CI->Archivos_model->getEncabezado($archivo_id);
+        $columnas = $encabezado['columnDef'];
+        if(is_array($columnas) && count($columnas)){
+            foreach ($columnas as $key => $value) {
+                foreach ($this->columnCondicion as $col) {
                     if($col == $value[0]){
                         $columnDef[$col] = $key;
                     }

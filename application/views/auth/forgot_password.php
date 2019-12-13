@@ -1,5 +1,5 @@
 <p class="text-white text-center" style="">
-    <?= asset_image('logo2.png" style="height: 100px;"')?>
+    <?= asset_image('logo3.png" style="height: 100px;"')?>
 </p>
 <div class="card">
     <div class="card-body">

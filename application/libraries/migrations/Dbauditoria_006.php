@@ -77,6 +77,12 @@ class Dbauditoria_006{
                 'comment'    => 'espacio en disco por cliente',
                 'null'       => TRUE                
             ],
+            'tipo_contrato' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '5',
+                'comment'    => '0: demo, 1: pago',
+                'null'       => TRUE                
+            ],
         ];
         $this->CI->dbforge->add_column('sist__contratos', $fields);
     }
@@ -93,6 +99,7 @@ class Dbauditoria_006{
         $this->CI->dbforge->drop_column('sist__contratos','filas_cxp');
         $this->CI->dbforge->drop_column('sist__contratos','filas_cxc');
         $this->CI->dbforge->drop_column('sist__contratos','espacio_disco');
+        $this->CI->dbforge->drop_column('sist__contratos','tipo_contrato');
     }
 
 }

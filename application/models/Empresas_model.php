@@ -204,6 +204,6 @@ class Empresas_model extends CI_Model {
         } else {
             $this->db->trans_commit();
         }
-        return TRUE;
+        return $id;
     }    
 }

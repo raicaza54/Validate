@@ -14,7 +14,10 @@ class Spider {
     
     private $CI;
     
-    public $data = [];
+    public $data  = [];
+    public $comp  = [];
+    public $ctas  = [];
+    public $ctasn = [];
     
     private $datos = array('body' => '');
     
@@ -222,7 +225,7 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['debito'])){
             foreach ($spider[$cuenta]['debito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $this->datos['body'] .= '<div class="spd-debito" '.$this->title($key).'  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
                 $lineas              .= '<line class="lin-debito" x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:'.(($debitoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                  += 45;
                 $x++;
@@ -230,7 +233,7 @@ class Spider {
                 $total_dinero        += $value['valor'];
             }
         }
-        if($total_dinero > 0){        
+        if($total_dinero > 0){
             $this->datos['body'] .= '<div class="spd-debito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">D&eacute;bitos</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
         }
         $t = 15;
@@ -244,7 +247,7 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['credito'])){
             foreach ($spider[$cuenta]['credito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $this->datos['body'] .= '<div class="spd-credito" '.$this->title($key).' style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
                 $lineas              .= '<line class="lin-credito" x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:'.(($creditoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                  += 45;
                 $x++;
@@ -255,8 +258,19 @@ class Spider {
         if($total_dinero > 0){
             $this->datos['body'] .= '<div class="spd-credito"  style="top: ' . ($x * 45) . 'px; font-weight: bold;"><div class="ispd-cuenta" style="text-align: left; cursor: default; color: #000;">Cr&eacute;ditos</div><div class="ispd-dinero">$' . number_format($total_dinero, 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($total_porcentaje, 3, ',', '.') . '%</div></div>';
         }
-        $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) - 22) . 'px; text-align: center;"><b>' . $cuenta . '</b></div>';
+        $this->datos['body'] .= '<div class="spd-spider" '.$this->title($cuenta).' style="top: ' . ((($c * 45) / 2) - 22) . 'px; text-align: center;"><b>' . $cuenta . '</b></div>';
         $this->datos['body'] .= '<div class="spd-spider"  style="top: ' . ((($c * 45) / 2) + 7) . 'px; text-align: center">'.money('$' .number_format(($total_debito - $total_credito),2,',','.')) . '</div>';
+        
+        if(is_array($this->ctas) && count($this->ctas) > 0){
+            $u = ((($c * 45) / 2) - 22) + 58;
+            $title = '';
+            $crr = array_search($cuenta, $this->ctas);
+            if($crr !== FALSE) unset($this->ctas[$crr]);
+            foreach ($this->ctas as $ctas) {
+                $this->datos['body'] .= '<div class="spd-spider ispd-cuenta" '.$this->title($ctas).' style="top: ' . ($u) . 'px; text-align: center;" onclick="SPIDER.methods.procesarClick(this, \''.$ctas.'\')">' . $ctas . '</div>';
+                $u += 29;
+            }
+        }
         $this->datos['body'] .= '<svg width="1000" height="' . (($c * 45) - 30) . '" viewBox="0 0 1000 ' . (($c * 45) - 30) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
@@ -277,7 +291,17 @@ class Spider {
             }
         }
         return $this->datos;
-    }    
+    }
+    
+    private function title($cta) {
+        $title = '';
+        if(is_array($this->ctasn) && array_key_exists($cta, $this->ctasn)){
+            $title = 'title="'.$this->ctasn[$cta].'"';
+        }else{
+            $title = 'title="No disponible"';
+        }
+        return $title;
+    }
     
     private function exportEtpCsv($data, $archivo) {
         header("Content-type: application/csv");

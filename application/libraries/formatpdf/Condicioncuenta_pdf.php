@@ -31,7 +31,7 @@ if (!defined('BASEPATH'))
 
 require_once APPPATH . 'libraries/tcpdf/tcpdf.php';
 
-class Spider_pdf extends TCPDF {
+class Condicioncuenta_pdf extends TCPDF {
 
     /**
      * Variable para mostrar el nombre de la empresa
@@ -94,9 +94,9 @@ class Spider_pdf extends TCPDF {
     function __construct($param) {
         extract($param);
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
-        $this->CI = & get_instance();
+        $this->CI      = & get_instance();
         $this->empresa = $empresa;
-        $this->codigo = $codigo;
+        $this->codigo  = $codigo;
         $this->namePdf = $namePdf;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
@@ -109,19 +109,19 @@ class Spider_pdf extends TCPDF {
         $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
         $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
-        $this->Image($image_pdf, 6, 90, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
+        $this->Image($image_pdf, 6, 55, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Set font
         $this->SetFont($this->family, '', 8);
         // Title
         //$this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
         $this->SetFont($this->family, '', 8);
-        $this->MultiCell(NULL, NULL, 'Análisis: La Araña', 0, 'R', FALSE, 1, 50, 5);
+        $this->MultiCell(NULL, NULL, 'Análisis: Condición de Cuenta', 0, 'R', FALSE, 1, 50, 5);
         $y = 10;
         $style = array(
             'color' => $this->lineColor,
             'width' => $this->lineWidth
         );
-        $this->Line(10, $y, 206, $y, $style);
+        $this->Line(10, $y, 270, $y, $style);
     }
 
     // Page footer
@@ -137,67 +137,19 @@ class Spider_pdf extends TCPDF {
         $style = array(
             'color' => $this->lineColor,
             'width' => $this->lineWidth
-        );
+        );        
         $this->MultiCell(100, NULL, 'Pág ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 'T', 'L', FALSE, 0, NULL, $y+1);
         $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 'T', 'R', FALSE, 1, NULL);
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
 
-    private function spiderCentral($html, $class, $h) {
-        $left = 10;
-        foreach($html->find('div.'.$class) as $div){
-            preg_match_all('!\d+\.*\d*!', $div->style, $top);
-            $top = $this->px_to_mm($top[0][0]);
-            $this->MultiCell(20, 4, $div->plaintext, TRUE, 'C', FALSE, 1, 98, ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
-        }
-    }
-    
-    private function spiderBox($html, $class, $h) {
-        $left = 10;
-        if($class == 'spd-credito'){
-            $left = 146;
-        }
-        foreach ($html->find('div.'.$class) as $div) {
-            preg_match_all('!\d+\.*\d*!', $div->style, $top);
-            $top = $this->px_to_mm($top[0][0]);
-            foreach ($div->find('div') as $divChild) {
-                $txtCell[$divChild->class] = $divChild->plaintext;
-            }
-            $this->MultiCell(20, 4, $txtCell['ispd-cuenta'], TRUE, 'R', FALSE, 0, ($left), ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
-            $this->MultiCell(20, 4, $txtCell['ispd-dinero'], TRUE, 'R', FALSE, 0, ($left+20), '', TRUE, 0, TRUE, TRUE, 0, 'M');
-            $this->MultiCell(20, 4, $txtCell['ispd-porcentaje'], TRUE, 'R', FALSE, 1, ($left+40), '', TRUE, 0, TRUE, TRUE, 0, 'M');
-        }        
-    }
-    
-    private function spiderLine($html, $h) {
-        $left = [
-            'x1' => 3.2,
-            'x2' => 13
-        ];
-        foreach($html->find('line') as $line){
-            if($line->class == 'lin-credito'){
-                $left = [
-                    'x1' => -4,
-                    'x2' => 5.7
-                ];                
-            }
-            $this->Line(
-                $this->px_to_mm($line->x1) + $left['x1'], 
-                $this->px_to_mm($line->y1) + ($top + round(($h-7),2)), 
-                $this->px_to_mm($line->x2) + $left['x2'], 
-                $this->px_to_mm($line->y2) + ($top + round(($h-7),2))
-            );
-        }
-    }
-    
     public function run($data, $dataPdf) {
-        require_once (APPPATH.'/libraries/Simple_html_dom.php');
         extract($dataPdf);
         extract($this->backGroundColor);
         try{
             $this->SetFont($this->family, '', 7);
             $this->SetProtection(array('modify', 'copy'), '');
-            $this->SetTitle('La Araña');
+            $this->SetTitle('Listas de Control');
             $this->SetLineStyle(array(
                 'color' => $this->lineBackColor,
                 'width' => $this->lineWidth
@@ -208,53 +160,75 @@ class Spider_pdf extends TCPDF {
             $this->SetDisplayMode('real', 'default');
             $this->AddPage();
             $this->SetFillColor($r, $g, $b);
-            $this->MultiCell(67, NULL, 'Autor: '.$this->CI->session->first_name . ' ' . $this->CI->session->last_name, TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
+
+            $this->MultiCell(83, NULL, 'Autor: '.$this->CI->session->first_name . ' ' . $this->CI->session->last_name, TRUE, 'L', FALSE, 0);
+            $this->MultiCell(59, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
+            $this->MultiCell(59, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
+            $this->MultiCell(59, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
             $h = $this->_height(array(
                 'txt' => 'Empresa: '.$this->empresa['nombre'],
                 'w' => 86
             ));
-            $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
-            $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
-            $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
-            $this->Ln(5);
-            if(is_array($dataPdf)){
-                if(array_key_exists(0, $dataPdf) && array_key_exists('body', $dataPdf[0])){
-                    $this->SetFont($this->family, '', 5);
-                    $this->setCellMargins(0, 0, 0, 0);
-                    $this->setCellPaddings(0.3, 1, 0.3, 1);
-                    $dataPdf = $dataPdf[0];
-                    $pider = $dataPdf['body'];
-                    $html = str_get_html($pider);
-                    $this->spiderBox($html, 'spd-debito', $h);
-                    $this->spiderBox($html, 'spd-credito', $h);
-                    $this->spiderCentral($html, 'spd-spider', $h);
-                    $this->spiderLine($html, $h);
-                }else{
-                    $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
-                }                
+            $this->MultiCell(83, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
+            $this->MultiCell(118, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
+            $this->MultiCell(59, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
+            $this->Ln(3);
+            if(is_array($dataPdf) && array_key_exists('filas', $dataPdf) && (array_key_exists('identificacion', $dataPdf['filas'][0]) || array_key_exists('base', $dataPdf['filas'][0]))){
+                $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                if($dataPdf['exedido'] == 1){
+                    $this->Ln(2.5);
+                    $this->MultiCell(260, NULL, 'Los datos han excedido más de '.$this->CI->config->item('max_condicion').' filas, debe ajustar los valores', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                }
+                $this->Ln(5);
+                $dataPdf = $dataPdf;
+                $btm = 1; $fbtm = 0; $i = 0;
+                $this->drawHeader();
+                foreach ($dataPdf['filas'] as $resultado) {
+                    $this->MultiCell(32.5, '', $resultado['cta'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['doc'], TRUE, 'R', '', 0);
+                    $this->MultiCell(32.5, '', $resultado['identificacion'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['base'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['valor'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['calculo'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['porcentaje'], TRUE, 'R', FALSE, 0);
+                    $this->MultiCell(32.5, '', $resultado['condicion'].$resultado['diferencia'], TRUE, 'R', FALSE, 1);                    
+                    if($this->GetY() > 195){
+                        $this->AddPage();
+                        $this->drawHeader();
+                    }
+                }
+                if($dataPdf['exedido'] == 1){
+                    if($this->GetY() > 195){
+                        $this->AddPage();
+                        $this->drawHeader();
+                    }                    
+                    $this->MultiCell(260, '', 'Este archivo contiene más de '.$this->CI->config->item('max_condicion').' registros', TRUE, 'L', FALSE, 1);
+                }
             }else{
-                $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes', TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
             }
             //$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;
             }            
-            $filePath = $this->CI->config->item('path_resultados').'SPI'.$this->namePdf.'.pdf';
+            $filePath = $this->CI->config->item('path_resultados').'CCU'.$this->namePdf.'.pdf';
             $this->Output($filePath, 'F');
         } catch(Exception $ex){
             return FALSE;
         }
-        return file_exists($filePath);
+        return file_exists($filePath);        
     }
 
-    private function px_to_mm($pixels, $dpi = 180){
-        $mTop = 30;
-        $mm = (($pixels * 26.458) / $dpi) + $mTop;
-        return $mm;
+    private function drawHeader(){
+        $this->MultiCell(32.5, '', 'Cuenta', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Documento', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Identificación', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Base', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Valor', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Porcentaje', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Esperado', TRUE, 'L', TRUE, 0);
+        $this->MultiCell(32.5, '', 'Diferencia', TRUE, 'L', TRUE, 1);        
     }
     
     private function _height($param) {
