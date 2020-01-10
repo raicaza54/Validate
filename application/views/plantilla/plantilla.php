@@ -99,7 +99,7 @@
     </div>
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
             <span class="navbar-text pull-left">
-                GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;2019
+                GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;<?=VERSION?>
             </span>
         </nav>        
         <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true" data-keyboard="true" data-backdrop="static">

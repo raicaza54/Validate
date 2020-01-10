@@ -39,10 +39,7 @@
         </div>        
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
             <span class="navbar-text pull-left">
-                GEO Informatic Solutions S.A.
-            </span>
-            <span class="navbar-text pull-right">
-                2019
+                GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;<?=VERSION?>
             </span>
         </nav>
     </body>
