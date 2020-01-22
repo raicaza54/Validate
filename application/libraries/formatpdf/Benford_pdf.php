@@ -184,6 +184,41 @@ class Benford_pdf extends TCPDF {
         }
     }
     
+    private function tblBad($d, $dn) {
+        if(is_array($d) && array_key_exists('d'.$dn, $d) && array_key_exists('tblBad', $d['d'.$dn]) && (count($d['d'.$dn]['tblBad']) > 0)){
+            $yi = $y = $this->GetY() + 5; $dig = 0; $c = 0; $cl = 0;
+            $col1 = 10; $col2 = 42; $GetY = [];
+            foreach ($d['d'.$dn]['tblBad'] as $key => $value) {
+                $cl++;
+                if(($dig != $key) && ($cl > 1)){
+                    $col1 += 49;
+                    $col2 += 49;
+                    $y = $yi;
+                }
+                if($y > 220){
+                    $this->AddPage();
+                    $yi = $y = $this->GetY();
+                }                                
+                $this->MultiCell(32, 5, 'Número', 1, 'C', TRUE, 0, $col1, $y - 5);
+                $this->MultiCell(17, 5, 'Frecuencia', 1, 'C', TRUE, 1, $col2, $y - 5);
+                foreach ($value as $fila){
+                    $this->MultiCell(32, 5, number_format($fila['valor'], 2, ',', '.'), 1, 'R', FALSE, 0, $col1, $y);
+                    $this->MultiCell(17, 5, number_format($fila['cantidad'], 0, ',', '.'), 1, 'R', FALSE, 1, $col2, $y);
+                    $y += 5;
+                    $dig = $key;
+                    $c++;
+                }
+                $GetY[] = $this->GetY();
+                if($cl > 3){
+                    $col1 = 10; $col2 = 42;
+                    $yi = $y = max($GetY) + 10;
+                    unset($GetY);
+                    $cl = 0;
+                }                
+            }
+        }
+    }
+
     private function drawHeader() {
         $this->MultiCell(30, NULL, 'Número', 1, 'C', TRUE, 0);
         $this->MultiCell(41, NULL, 'Frecuencia', 1, 'C', TRUE, 0);
@@ -272,13 +307,18 @@ class Benford_pdf extends TCPDF {
             $this->MultiCell(196, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d1, '1');
             $this->digito($d1, '1');
+            if(isset($d1['d1']['tblBad'])) $this->tblBad($d1, '1'); 
+            if($this->GetY() > 200) $this->AddPage();
             $this->MultiCell(196, NULL, 'SEGUNDO DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d2, '2');
             $this->digito($d2, '2');
+            if(isset($d2['d2']['tblBad'])) $this->tblBad($d2, '2'); 
+            if($this->GetY() > 200) $this->AddPage();
             $this->MultiCell(196, NULL, 'PRIMERO Y SEGUNDO DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d12, '12');
             $this->digito($d12, '12');
-            //$this->Output('archivo.pdf', 'I');
+            if(isset($d12['d12']['tblBad'])) $this->tblBad($d12, '12'); 
+            //s$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;

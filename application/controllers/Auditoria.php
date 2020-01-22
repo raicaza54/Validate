@@ -242,6 +242,8 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Algo no anda bien, el archivo no posee filas para analizar", 202);
             }
             $this->benford->data = $items;
+            $this->benford->archivoIdProcesar = $form['archivoIdProcesar'];
+            $this->benford->campoAnalizar = $form['campoAnalizar'];
             $tabla = $this->benford->procesar($form['digito']);
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
                 throw new Exception("Algo no anda bien, la columna seleccionada no fue posible procesarla", 202);

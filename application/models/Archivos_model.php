@@ -325,6 +325,22 @@ class Archivos_model extends CI_Model {
         }
     }
     
+    public function getDetalleIdBadBenford($id, $campoAnalizar, $numero) {
+        if($campoAnalizar !== FALSE){
+            $this->db->select($campoAnalizar.' AS valor, COUNT(*) AS cantidad');
+            $this->db->where('fk_archivos', $id);
+            $this->db->where('linea', 'f');
+            $this->db->like($campoAnalizar, $numero, 'after');
+            $this->db->group_by($campoAnalizar);
+            $this->db->order_by('cantidad', 'DESC');
+            $this->db->limit(10, 0);
+            $r = $this->db->get('clie__archivos_detalle')->result_array();
+            return $r;
+        }else{
+            return FALSE;
+        }
+    }
+    
     public function insert_preprocesar($batch) {
         $this->db->insert('clie__archivos', $batch['archivo']);
         return $this->db->affected_rows() == 1;

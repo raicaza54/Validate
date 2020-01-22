@@ -568,3 +568,25 @@ SE ESTA TRABAJANDO
 ▪ Envió de correo para recuperar contraseña
 
 #*******************************************************************************
+
+FECHA: 21/01/2020
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Ley de Benford, se actualiza mostrando valores números mayores al máximo establecido por la Ley de Benford y en casos distintos a "Conformidad Aceptable"
+▪ PDF de Ley de Benford, se muestran estos nuevos datos
+
+CORRECCIONES
+▪ Ley de Benford, al presionar botón nuevamente esta remontaba los datos en la pantalla
+
+SE ESTA TRABAJANDO
+▪ Carga de archivo XLSX y XLS con la librería Spout
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************

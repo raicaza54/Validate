@@ -39,6 +39,22 @@ if (!function_exists('unSerializeArray')) {
 
 }
 
+if (!function_exists('transpose')) {
+    function transpose($array) {
+        $transposed_array = array();
+        if ($array) {
+            foreach ($array as $row_key => $row) {
+                foreach ($row as $column_key => $element) {
+                    $transposed_array[$column_key][$row_key] = $element;
+                }
+            }
+            return $transposed_array;
+        }
+        return $transposed_array;
+    }
+}
+
+
 if (!function_exists('maSort')) {
 
     function maSort($ma = '', $sortkey = '', $sortorder = 1) { // sortorder: 1=asc, 2=desc
