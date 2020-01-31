@@ -347,9 +347,9 @@ class Archivos_model extends CI_Model {
     }
     
     public function insert_excel($batch, $id) {
-        $detall = $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
+        //$detall = $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
         $this->db->update('clie__carpetas', ['disabled' => 0], ['archivos_id' => $id, 'deleted_at' => 0]);
-        return $detall;
+        return TRUE;
     }
     
     public function update_excel($data, $id) {

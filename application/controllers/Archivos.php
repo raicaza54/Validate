@@ -2,6 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH.'libraries/spout-3.1.0/src/Spout/Autoloader/autoload.php';
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
@@ -33,6 +36,60 @@ class Archivos extends CI_Controller {
             redirect('auth/login');
         }
         $this->load->model(['Cliente_model','Archivos_model']);
+    }
+    
+    public function leer_excel($param) {
+        set_time_limit(0);
+        extract($param);
+        $reader = ReaderEntityFactory::createReaderFromFile($fullpath);
+        $reader->open($fullpath);
+        $outsheet = []; $x = 0; $i = 0; $campo = []; $nl = 20; $a = 0;
+        $created_user = $this->session->userdata('users_id');
+        $created_clie = $this->session->userdata('clientes_id');
+        $update_user  = $this->session->userdata('users_id');
+        $update_clie  = $this->session->userdata('clientes_id');
+        $linea = 'e';
+        $num = 0;
+        $ejemplo = [];
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $row) {
+                $cells = $row->toArray();
+                if($linea == 'e'){
+                    $nl = $row->getNumCells();
+                    if ($nl > 20) $nl = 20;                    
+                }
+                for ($cl = 1; $cl <= $nl; $cl++) {
+                    if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
+                        $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
+                    }else{
+                        $campo['campo' . $cl] = '';
+                    }
+                }
+                if(is_array($campo)){
+                    $outsheet[] = array_merge([
+                        'fk_archivos'   => $this->id,
+                        'linea'         => $linea,
+                        'created_user'  => $created_user,
+                        'created_clie'  => $created_clie,
+                        'update_user'   => $update_user,
+                        'update_clie'   => $update_clie
+                    ], $campo);
+                    $x++; $i++;
+                    $linea = 'f';
+                    unset($campo);
+                    if($i > 3000){
+                        $this->db->insert_batch('clie__archivos_detalle', $outsheet);
+                        unset($outsheet);
+                        $a += $i;
+                        $i = 0;
+                        if($a > $limite['filas']) break;
+                    }
+                }
+            }
+            if($i > 0) $this->db->insert_batch('clie__archivos_detalle', $outsheet);
+            break;
+        }
+        $reader->close();
     }
 
     private function fileType($type, $t) {
@@ -205,8 +262,24 @@ class Archivos extends CI_Controller {
      * 
      * @param type $inputFile path de archivo
      */
-    private function leer_excel($param) {
+    private function leer_phpexcel() {
         set_time_limit(0);
+        $this->load->library('phpexcel');
+        $this->load->library('PHPExcel/iofactory');        
+        
+        //$infile = $this->config->item('path_archivos').'a1ee6fc1ddc4a1fed000d46c6c0a27bf.xls';
+        $infile = $this->config->item('path_archivos').'f5d761aba78822bb10477452ff9ed62d.xlsx';
+        $outfile = $this->config->item('path_archivos').'salida_'.date('his').'.csv';
+        
+        $objIOReader = new IOFactory();
+        $fileType = $objIOReader->identify($infile);
+        $objReader = $objIOReader->createReader($fileType);
+        $objReader->setReadDataOnly(true);   
+        $objPHPExcel = $objReader->load($infile);    
+        $objWriter = $objIOReader->createWriter($objPHPExcel, 'CSV');
+        $objWriter->save($outfile);
+
+        /*
         extract($param);
         $this->load->library('phpexcel');
         $this->load->library('PHPExcel/iofactory');        
@@ -279,6 +352,7 @@ class Archivos extends CI_Controller {
             log_message('error', $status.': '.$exc->getMessage());
             return FALSE;
         }
+        */
     }
     
     public function preprocesar() {

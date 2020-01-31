@@ -307,16 +307,19 @@ class Benford_pdf extends TCPDF {
             $this->MultiCell(196, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d1, '1');
             $this->digito($d1, '1');
+            if(isset($d1['d1']['madDescribe']) && strpos($d1['d1']['madDescribe'],'Conformidad Aceptable') === FALSE)
             if(isset($d1['d1']['tblBad'])) $this->tblBad($d1, '1'); 
-            if($this->GetY() > 200) $this->AddPage();
+            $this->AddPage();
             $this->MultiCell(196, NULL, 'SEGUNDO DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d2, '2');
             $this->digito($d2, '2');
+            if(isset($d2['d2']['madDescribe']) && strpos($d2['d2']['madDescribe'],'Conformidad Aceptable') === FALSE)
             if(isset($d2['d2']['tblBad'])) $this->tblBad($d2, '2'); 
-            if($this->GetY() > 200) $this->AddPage();
+            $this->AddPage();
             $this->MultiCell(196, NULL, 'PRIMERO Y SEGUNDO DÍGITO', FALSE, 'C', FALSE, 1);
             $this->grafica($d12, '12');
             $this->digito($d12, '12');
+            if(isset($d12['d12']['madDescribe']) && strpos($d12['d12']['madDescribe'],'Conformidad Aceptable') === FALSE)
             if(isset($d12['d12']['tblBad'])) $this->tblBad($d12, '12'); 
             //s$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
