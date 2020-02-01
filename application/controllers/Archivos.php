@@ -38,10 +38,11 @@ class Archivos extends CI_Controller {
         $this->load->model(['Cliente_model','Archivos_model']);
     }
     
-    public function leer_excel($param) {
+    public function leer_archivo($param) {
         set_time_limit(0);
         extract($param);
         $reader = ReaderEntityFactory::createReaderFromFile($fullpath);
+        $reader->setFieldDelimiter(';');
         $reader->open($fullpath);
         $outsheet = []; $x = 0; $i = 0; $campo = []; $nl = 20; $a = 0;
         $created_user = $this->session->userdata('users_id');
@@ -445,14 +446,8 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema con el archivo, no ha sido posible pre-cargar el archivo, contactar con soporte", 202);
             }
             $xls = [];
-            if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx') || ($archivo['type'] == '.xlsm')){
-                $xls = $this->leer_excel($archivo + [
-                    'parent_id' => $post['folderId'],
-                    'tipo'      => $post['tipo'],
-                    'limite'    => $limite,
-                ]);
-            }elseif($archivo['type'] == '.csv'){
-                $xls = $this->leer_csv($archivo + [
+            if(in_array($archivo['type'], ['.xls','.xlsx','.csv'])){
+                $xls = $this->leer_archivo($archivo + [
                     'parent_id' => $post['folderId'],
                     'tipo'      => $post['tipo'],
                     'limite'    => $limite,
