@@ -38,11 +38,26 @@ class Archivos extends CI_Controller {
         $this->load->model(['Cliente_model','Archivos_model']);
     }
     
+    /**
+     *  status true/false
+     *  filename nombre del archivo
+     *  fullpath ruta absoluta
+     *  type tipo de archivo .csv, .xls, .xlsx
+     *  msg mensaje de algun evento
+     *  parent_id carpeta
+     *  tipo tipo mov, blp, cxc, cpc
+     *  limite[
+     *    limite cantida de registros segun el tipo
+     *    filas cantida de filas segun el tipo
+     *    cant cantidad de archivos actuales segun el tipo
+     *  ]
+     *     * @param type $param
+     */
     public function leer_archivo($param) {
         set_time_limit(0);
         extract($param);
         $reader = ReaderEntityFactory::createReaderFromFile($fullpath);
-        $reader->setFieldDelimiter(';');
+        if($type == '.csv') $reader->setFieldDelimiter(';');
         $reader->open($fullpath);
         $outsheet = []; $x = 0; $i = 0; $campo = []; $nl = 20; $a = 0;
         $created_user = $this->session->userdata('users_id');
