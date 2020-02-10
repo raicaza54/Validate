@@ -35,7 +35,7 @@ class Archivos extends CI_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        $this->load->model(['Cliente_model','Archivos_model']);
+        $this->load->model(['Cliente_model','Archivos_model', 'Empresas_model']);
     }
     
     /**
@@ -475,6 +475,7 @@ class Archivos extends CI_Controller {
             if(is_bool($xlsdb) && ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 202);
             }
+            $this->archivo->columnaCompare($this->session->userdata('empresaId'), $this->id, $post['tipo']);
             $response["data"] = [
                 'type'     => $this->fileType($archivo['type'], 1),
                 'filename' => $archivo['filename'],
@@ -703,7 +704,7 @@ class Archivos extends CI_Controller {
     public function configurar() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -722,6 +723,26 @@ class Archivos extends CI_Controller {
             }
             $columnas = $this->archivo->configColumnas($form);
             $this->Archivos_model->setColumnas($columnas, $form, $form['archivoId']);
+            $colum = [];
+            if(isset($form['columnasDefault']) && $form['columnasDefault'] == '1'){
+                $items = serialize($this->Archivos_model->getEncabezado($form['archivoId']));
+                if(array_key_exists('archivoFormato', $form)){
+                    if($form['archivoFormato'] == 'naturaleza'){
+                        $colum['columnas_movnat'] = $items;
+                    }elseif($form['archivoFormato'] == 'debehaber'){
+                        $colum['columnas_movdhb'] = $items;
+                    }
+                }else{
+                    if($form['archivoTipo'] == 'blp'){
+                        $colum['columnas_blp'] = $items;
+                    }elseif($form['archivoTipo'] == 'cxc'){
+                        $colum['columnas_cxc'] = $items;
+                    }elseif($form['archivoTipo'] == 'cxp'){
+                        $colum['columnas_cxp'] = $items;
+                    }
+                }
+                $this->Empresas_model->configColumDefault($colum, $this->session->userdata('empresaId'));
+            }
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {

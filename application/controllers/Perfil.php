@@ -36,7 +36,8 @@ class Perfil extends CI_Controller {
         }
         $this->load->model([
             'Cliente_model',
-            'Perfil_model'
+            'Perfil_model',
+            'Empresas_model'
         ]);
     }
 
@@ -45,8 +46,10 @@ class Perfil extends CI_Controller {
         try {
             $cliente_id = $this->session->userdata('clientes_id');
             $users_id = $this->session->userdata('users_id');
+            $empresaId = $this->session->userdata('empresaId');
             $contrato = $this->Cliente_model->getContrato($cliente_id);
             $disco = $this->Cliente_model->disco();
+            $columnas = $this->Empresas_model->configGetColumDefault($users_id, $empresaId, $cliente_id);
             if(!is_array($contrato) || (count($contrato) <= 0)){
                 throw new Exception("Tenemos un problema con el contrato, por favor contactar con soporte", 202);
             }
@@ -59,8 +62,10 @@ class Perfil extends CI_Controller {
                     'contrato' => $contrato,
                     'usuario'  => $usuario,
                     'disco'    => $disco,
+                    'columnas' => $columnas,
                 ],
             ];
+            //$this->archivo->columnaCompare($empresaId, $this->session->userdata('archivoId'), 'blp');
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -92,9 +97,43 @@ class Perfil extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function saveColumnas() {
+        $response = $this->response;
+        $data = [];
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $form = unSerializeArray($post['form']);
+            $cliente_id = $this->session->userdata('clientes_id');
+            $users_id   = $this->session->userdata('users_id');
+            $empresaId  = $this->session->userdata('empresaId');            
+            $columnas = json_decode($this->archivo->configColumnas($form), TRUE);
+            $config = $this->Empresas_model->configGetEmpresa($users_id, $empresaId, $cliente_id);            
+            if(array_key_exists('columnas_' . $form['tipo'], $config)){
+                $data['columnas_' . $form['tipo']] = unserialize($config['columnas_' . $form['tipo']]);
+                $data['columnas_' . $form['tipo']]['columnDef'] = $columnas;
+                $data['columnas_' . $form['tipo']] = serialize($data['columnas_' . $form['tipo']]);
+                $this->Empresas_model->configColumDefault($data, $config['fk_empresas']);
+            }else{
+                throw new Exception("Tenemos un problema, los datos de tipo de archivo estan incompletos o corruptos", 202);
+            }
+            $response = [
+                "data" => []
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }    
+    
     public function saveDatos() {
         $response = $this->response;
-        $this->load->model('Ion_auth_model');
         $data = [];
         try {
             $post = $this->input->post();
@@ -213,6 +252,5 @@ class Perfil extends CI_Controller {
         }
         return $response;
     }
-
-    
+   
 }

@@ -590,3 +590,22 @@ SE ESTA TRABAJANDO
 ▪ Envió de correo para recuperar contraseña
 
 #*******************************************************************************
+
+FECHA: 09/02/2020
+NUEVAS FUNCIONALIDADES
+▪ Almacenar configuración de columnas por defecto por empresa
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Obtener la configuración por defecto en la ventana de configuración esta pendiente
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña

@@ -177,7 +177,9 @@ class Archivos_model extends CI_Model {
     public function setColumnas($data, $form, $id) {
         $this->db->set('columnas', "'".$data."'", FALSE); 
         $this->db->set('tipo', $form['archivoTipo']); 
-        $this->db->set('formato', $form['archivoFormato']); 
+        if(array_key_exists('archivoFormato', $form)){
+            $this->db->set('formato', $form['archivoFormato']);
+        }
         $this->db->where('id', $id);
         return $this->db->update('clie__archivos');
     }

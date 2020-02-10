@@ -113,6 +113,7 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
+                        <div id="btn-extra1" class="flex-grow-1"></div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">
                             Cancelar
                         </button>

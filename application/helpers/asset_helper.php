@@ -330,7 +330,8 @@ if (!function_exists('external_less')) {
 
 if (!function_exists('encrypt_url')) {
 
-    function encrypt_url($string, $key) {
+    function encrypt_url($string, $key = NULL) {
+        if($key === NULL) $key = config_item('encryption_key');
         return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
     }
 
@@ -338,7 +339,8 @@ if (!function_exists('encrypt_url')) {
 
 if (!function_exists('decrypt_url')) {
 
-    function decrypt_url($string, $key) {
+    function decrypt_url($string, $key = NULL) {
+        if($key === NULL) $key = config_item('encryption_key');
         return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($string), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
     }
 

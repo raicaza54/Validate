@@ -119,12 +119,12 @@ class Empresas_model extends CI_Model {
     }
 
     public function getTodas() {
-        $this->db->select('clie__empresas.id, nombre, identificacion');
-        $this->db->join('clie__auditores_empresas', 'clie__auditores_empresas.fk_empresas = clie__empresas.id');
-        $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));
-        $this->db->where('clie__empresas.deleted_at', 0);
-        $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
-        return $this->db->get('clie__empresas')->result_array();
+        $this->db->select('e.id, e.nombre, e.identificacion');
+        $this->db->join('clie__auditores_empresas ae', 'ae.fk_empresas = e.id');
+        $this->db->where('ae.fk_auditores', $this->session->userdata('users_id'));
+        $this->db->where('e.deleted_at', 0);
+        $this->db->where('e.created_clie', $this->session->userdata('clientes_id'));
+        return $this->db->get('clie__empresas e')->result_array();
     }
 
     public function getId($id) {
@@ -206,4 +206,82 @@ class Empresas_model extends CI_Model {
         }
         return $id;
     }    
+    
+    public function configColumDefault($columnas, $empresaId) {
+        $auditoria = [
+            'fk_empresas'  => $empresaId,
+            'created_user' => $this->session->userdata('users_id'),
+            'created_clie' => $this->session->userdata('clientes_id'),
+            'update_user'  => $this->session->userdata('users_id'),
+            'update_clie'  => $this->session->userdata('clientes_id'),
+        ];        
+        $this->db->select('id');
+        $this->db->where('fk_empresas', $empresaId);
+        $config = $this->db->get('clie__empresas_config')->row_array();
+        if(count($config) > 0){
+            $this->db->update('clie__empresas_config', $columnas, ['id' => $config['id']]);
+        }else{
+            $this->db->insert('clie__empresas_config', $columnas + $auditoria);
+        }
+        return $this->db->affected_rows() == 1;
+    }
+    
+    public function configGetColumDefault($users_id, $empresa_id, $cliente_id) {
+        $columnas = [
+            'columnas_movnat' => [],
+            'columnas_movdhb' => [],
+            'columnas_blp'    => [],
+            'columnas_cxc'    => [],
+            'columnas_cxp'    => []
+        ];
+        if(is_numeric($empresa_id) && $empresa_id > 0){
+            $config = $this->db->query('
+                SELECT ec.id, e.nombre ,columnas_movnat, columnas_movdhb, columnas_blp, columnas_cxc, columnas_cxp, ec.update_at 
+                FROM clie__empresas_config ec INNER JOIN clie__empresas e ON ec.fk_empresas = e.id 
+                WHERE e.id IN(
+                    SELECT se.id 
+                    FROM clie__empresas se INNER JOIN clie__auditores_empresas sae ON sae.fk_empresas = se.id 
+                    WHERE sae.fk_auditores = '.$users_id.'
+                ) AND ec.created_clie = '.$cliente_id.' AND ec.fk_empresas = '.$empresa_id.';
+            ')->row_array();
+            if(is_array($config) && count($config) > 0){
+                $columnas['id']        = $config['id'];
+                $columnas['empresa']   = $config['nombre'];
+                $columnas['update_at'] = $config['update_at'];
+                if(array_key_exists('columnas_movnat', $config) && strlen(trim($config['columnas_movnat']))){
+                    $columnas['columnas_movnat'] = unserialize($config['columnas_movnat']);
+                }
+                if(array_key_exists('columnas_movdhb', $config) && strlen(trim($config['columnas_movdhb']))){
+                    $columnas['columnas_movdhb'] = unserialize($config['columnas_movdhb']);
+                }
+                if(array_key_exists('columnas_blp', $config) && strlen(trim($config['columnas_blp']))){
+                    $columnas['columnas_blp'] = unserialize($config['columnas_blp']);
+                }
+                if(array_key_exists('columnas_cxc', $config) && strlen(trim($config['columnas_cxc']))){
+                    $columnas['columnas_cxc'] = unserialize($config['columnas_cxc']);
+                }
+                if(array_key_exists('columnas_cxp', $config) && strlen(trim($config['columnas_cxp']))){
+                    $columnas['columnas_cxp'] = unserialize($config['columnas_cxp']);
+                }
+            }            
+        }
+        return $columnas;
+    }
+    
+    public function configGetEmpresa($users_id, $empresa_id, $cliente_id) {
+        $config = [];
+        if(is_numeric($empresa_id) && $empresa_id > 0){
+            $config = $this->db->query('
+                SELECT ec.* 
+                FROM clie__empresas_config ec INNER JOIN clie__empresas e ON ec.fk_empresas = e.id 
+                WHERE e.id IN(
+                    SELECT se.id 
+                    FROM clie__empresas se INNER JOIN clie__auditores_empresas sae ON sae.fk_empresas = se.id 
+                    WHERE sae.fk_auditores = '.$users_id.'
+                ) AND ec.created_clie = '.$cliente_id.' AND ec.fk_empresas = '.$empresa_id.';
+            ')->row_array();
+        }
+        return $config;
+    }
+    
 }

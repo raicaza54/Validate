@@ -39,6 +39,21 @@ class Spider {
             );
         }
         $tabla_grupos = '';
+        /*
+        $fp = fopen($this->CI->config->item('path_archivos').'grupos_'.date('YmdHis').'.csv', 'w');
+        foreach ($grupos as $campos) {
+            foreach ($campos as $value) {
+                $linea = [
+                    $value['grupo'],
+                    $value['cuenta'],
+                    $value['tipo'],
+                    $value['valor'],
+                ];
+                fputcsv($fp, $linea, ';', '"');
+            }
+        }
+        fclose($fp);
+        */
 //        foreach ($grupos as $value) {
 //            $this->CI->table->set_heading('GRUPO', 'CUENTA', 'TIPO', 'VALOR');
 //            $tabla_grupos .= $this->CI->table->generate($value) . '<br/>';
@@ -145,8 +160,8 @@ class Spider {
             }
         }
         //$this->datos['tabla'] = $grupos_clasificado;
-        //$this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
-        //$this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
+//        $this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
+//        $this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
 //        $tabla_grupos_clasificados = '';
 //        foreach ($grupos_clasificado as $key => $value) {
 //            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
@@ -308,7 +323,7 @@ class Spider {
         header("Content-Disposition: attachment; filename=\"test" . ".csv\"");
         header("Pragma: no-cache");
         header("Expires: 0");
-        $handle = fopen(APPPATH.'logs/'.$archivo.'.csv', 'w');
+        $handle = fopen(APPPATH.'logs/'.$archivo.'_'.date('YmdHis').'.csv', 'w');
         fputcsv($handle, array("grupo", "cuenta", "tipo", "valor"), ';');
         foreach ($data as $keydat) {
             foreach ($keydat as $key) {
