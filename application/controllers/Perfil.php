@@ -97,6 +97,41 @@ class Perfil extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function columnasPorDefecto() {
+        $response = $this->response;
+        $data = [];
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_rules('id', 'Identificador', 'required|max_length[50]');
+            $this->form_validation->set_rules('archivoFormato', 'Formato de archivo', 'required|in_list[naturaleza,debehaber]');
+            $this->form_validation->set_rules('archivoTipo', 'Tipo de archivo', 'required|in_list[mov,blp,cxc,cxp]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $cliente_id = $this->session->userdata('clientes_id');
+            $users_id = $this->session->userdata('users_id');
+            $empresaId = $this->session->userdata('empresaId');
+            $columnas = $this->Empresas_model->configGetColumDefault($users_id, $empresaId, $cliente_id);
+            if($post['archivoTipo'] == 'blp'){
+                $data = $columnas['columnas_blp'];
+            }elseif($post['archivoTipo'] == 'mov' && $post['archivoFormato'] == 'naturaleza'){
+                $data = $columnas['columnas_movnat'];
+            }elseif($post['archivoTipo'] == 'mov' && $post['archivoFormato'] == 'debehaber'){
+                $data = $columnas['columnas_movdhb'];
+            }
+            $response = [
+                "data" => $data
+            ];            
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }    
+    
     public function saveColumnas() {
         $response = $this->response;
         $data = [];
