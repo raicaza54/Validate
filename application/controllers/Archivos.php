@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH.'libraries/spout-3.1.0/src/Spout/Autoloader/autoload.php';
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Common\Type;
 
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
@@ -128,6 +130,66 @@ class Archivos extends CI_Controller {
         return $fileType;
     }
     
+    public function exportarDigito() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id','Archivo','required|max_length[50]');
+            $this->form_validation->set_rules('digito','Digito','required|max_length[3]|numeric');
+            $this->form_validation->set_rules('grafica','Grafica','required|max_length[3]|numeric');
+            $this->form_validation->set_rules('campoAnalizar','Campo','required|max_length[50]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $writer = WriterEntityFactory::createXLSXWriter(Type::XLSX);
+            $writer->setShouldUseInlineStrings(true);
+            $writer->setShouldUseInlineStrings(false);
+            $archivo = $this->config->item('path_resultados').uniqid('DIG').'.xlsx';
+            $writer->openToFile($archivo);
+            $digito = $this->Archivos_model->getDigito($post);
+            if(is_array($digito) && count($digito) > 0){
+                foreach ($digito as $value) {
+                    $rowFromValues = WriterEntityFactory::createRowFromArray($value);
+                    $writer->addRow($rowFromValues);                                    
+                }
+            }
+            $writer->close();
+            $response["data"] = ['url' => str_replace('.xlsx', '', base_url('archivos/v1/digito/'.basename($archivo)))];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
+    public function urlDigito($file, $dwl = 'r') {
+        $file = xss_clean($file);
+        $file = strip_tags($file);
+        if(!file_exists($this->config->item('path_resultados').$file.'.xlsx') || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        if(!in_array($dwl,['r', 'd'])){
+            show_error("Archivo no encontrado", 404);
+        }
+        $filename = 'Digito.xlsx';
+        if($dwl == 'r'){
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: inline; filename="'.$filename.'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+            readfile($this->config->item('path_resultados').$file.".xlsx");
+        }elseif($dwl == 'd'){
+            download($this->config->item('path_resultados').$file.'.xlsx', $filename);
+        }
+    }    
+    
     public function descargar() {
         if (!$this->input->is_ajax_request()) {
             show_404();
@@ -152,7 +214,7 @@ class Archivos extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
-            ->set_output(json_encode($response));        
+            ->set_output(json_encode($response));
     }
     
     public function url($file) {

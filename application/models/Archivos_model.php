@@ -419,4 +419,27 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
+    public function getDigito($postData) {
+        $columnas = $this->archivo->columnas($postData['id']);
+        if($columnas['archivo']['formato'] == 'debehaber'){
+            $postData['campoAnalizar'] = $columnas['debehaber'];
+        }
+        $this->db->select($columnas['columnSql']);
+        $this->db->from($this->table);
+        $this->db->where('fk_archivos', $postData['id']);
+        $this->db->group_start();
+        if((array_key_exists('digito', $postData)) && ($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
+            if(($postData['grafica'] == 1) || ($postData['grafica'] == 12)){
+                $this->db->like($postData['campoAnalizar'], $postData['digito'], 'after');
+            }elseif($postData['grafica'] == 2){
+                $this->db->like('SUBSTR('.$postData['campoAnalizar'].', 2, 1)', $postData['digito'], 'before', FALSE);
+            }else{
+                return FALSE;
+            }
+        }
+        $this->db->or_where('linea', 'e');
+        $this->db->group_end();
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }
