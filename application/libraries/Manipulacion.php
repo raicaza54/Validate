@@ -22,19 +22,34 @@ class Manipulacion {
     private $cuentaValue = [];
     
     private $CI;
-    
-    /**
-     * Valores optimos de cada indicador
-     * @var type float
-     */
-    private $DSRI = 0.823;
-    private $GMI  = 0.906;
-    private $AQI  = 0.593;
-    private $SGI  = 0.717;
-    private $DEPI = 0.107;
     public $data  = [];
     private $ct   = '';
     private $ct1  = '';
+    
+    /**
+     * Valores optimos de cada indicador (5)
+     * @var type float
+     */
+    private $DSRI    = 0.823;
+    private $GMI     = 0.906;
+    private $AQI     = 0.593;
+    private $SGI     = 0.717;
+    private $DEPI    = 0.107;
+    private $riesgo5 = -2.76;
+
+    /**
+     * Valores optimos de cada indicador (8)
+     * @var type float
+     */    
+    private $DSRI8   = 0.92;
+    private $GMI8    = 0.528;
+    private $AQI8    = 0.404;
+    private $SGI8    = 0.892;
+    private $DEPI8   = 0.115;
+    private $SGAI8   = -0.172;
+    private $LVGI8   = -0.327;
+    private $TATA8   = 4.679;
+    private $riesgo8 = -2.22;
 
     function __construct() {
         set_time_limit(0);
@@ -44,6 +59,49 @@ class Manipulacion {
     
     private function columnDef($archivo_id) {
         return $this->CI->archivo->columnManipulacion($archivo_id);
+    }
+    
+    public function indicadores($balances) {
+        foreach ($balances as $value) {
+            if($value['posicion'] == 't'){
+                $this->ct = $this->columnDef($value['balance']);
+                $t  = $value['balance'];
+            }elseif($value['posicion'] == 't-1'){
+                $this->ct1 = $this->columnDef($value['balance']);
+                $t1 = $value['balance'];
+            }
+        }
+        $at   = 0;
+        $at1  = 0;
+        $pt   = 0;
+        $pt1  = 0;
+        $this->cuentasValues8([
+            't'   => $t,
+            't1'  => $t1
+        ]);
+        $data = [];
+        foreach ($this->cuentaValue as $key => $value) {
+            if (in_array($key, ['acorrientes', 'anocorrientes', 'obligacionesfc', 'otrospasivosc', 'pnocorrientes', 'obligacionesfnoc'])) {
+                $data[$key] = $value;
+                if (in_array($key, ['acorrientes', 'anocorrientes'])) {
+                    $at += $value['t'];
+                    $at1 += $value['t-1'];
+                    $data['suma_acorrientes_anocorrientes'] = [
+                        't' => $at,
+                        't-1' => $at1
+                    ];
+                }
+                if (in_array($key, ['otrospasivosc', 'pnocorrientes'])) {
+                    $pt += $value['t'];
+                    $pt1 += $value['t-1'];
+                    $data['suma_otrospasivosc_pnocorrientes'] = [
+                        't' => $pt,
+                        't-1' => $pt1
+                    ];
+                }
+            }
+        }
+        return $data;
     }
     
     public function run($balances) {
@@ -116,34 +174,51 @@ class Manipulacion {
             'aporte'       => $a_depi,
         ];
         $this->cuentaValue['m5ind'] = $this->m5ind();
-        $manipulacion = (($this->cuentaValue['m5ind'] >= -2.22) ? FALSE:TRUE);
+        $manipulacion = (($this->cuentaValue['m5ind'] >= $this->riesgo5) ? FALSE : TRUE);
         if($manipulacion == TRUE){
-            $this->cuentaValue['mensaje'] = 'La Manipulación arroja un score de '.number_format($this->cuentaValue['m5ind'],3,',','.').' este resultado es inferior a -2.22 se sugiere menor riesgo de manipulación';
+            $this->cuentaValue['mensaje'] = 'El Indicador de Cambio arroja un score de '.number_format($this->cuentaValue['m5ind'], 3, ',', '.').' este resultado es inferior a '.$this->riesgo5.' se sugiere menor riesgo de manipulaci&oacute;n';
         }else{
-            $this->cuentaValue['mensaje'] = 'La Manipulaci&oacute;n arroja un score de '.number_format($this->cuentaValue['m5ind'],3,',','.').' este resultado es superior a -2.22 se sugiere mayor riesgo de manipulaci&oacute;n';
+            $this->cuentaValue['mensaje'] = 'El Indicador de Cambio arroja un score de '.number_format($this->cuentaValue['m5ind'], 3, ',', '.').' este resultado es superior a '.$this->riesgo5.' se sugiere mayor riesgo de manipulaci&oacute;n';
         }
+        $this->cuentaValue['probabilidad'] = distr_norm_estand($this->cuentaValue['m5ind']);
+        $this->cuentaValue['analisis'] = $this->analisis($this->cuentaValue);
         return $this->cuentaValue;
+    }
+    
+    private function cuentasValues8($param) {
+        extract($param);
+        $this->cuentaValue['acorrientes']['t']        = $this->getValue($t,      [11,12,13,14], $this->ct);     //Activos corrientes
+        $this->cuentaValue['acorrientes']['t-1']      = $this->getValue($t1,     [11,12,13,14], $this->ct1);    //Activos corrientes        
+        $this->cuentaValue['anocorrientes']['t']      = $this->getValue($t,      [15,16,17,18], $this->ct);     //Activos no corrientes
+        $this->cuentaValue['anocorrientes']['t-1']    = $this->getValue($t1,     [15,16,17,18], $this->ct1);    //Activos no corrientes
+        $this->cuentaValue['obligacionesfc']['t']     = $this->getValue($t,      [21], $this->ct);              //Obligaciones financieras corrientes
+        $this->cuentaValue['obligacionesfc']['t-1']   = $this->getValue($t1,     [21], $this->ct1);             //Obligaciones financieras corrientes
+        $this->cuentaValue['obligacionesfnoc']['t']   = 0;                                                      //Obligaciones financieras no corrientes
+        $this->cuentaValue['obligacionesfnoc']['t-1'] = 0;                                                      //Obligaciones financieras no corrientes
+        $this->cuentaValue['otrospasivosc']['t']      = $this->getValue($t,      [22,23,24,25,26], $this->ct);  //Otros Pasivos Corrientes
+        $this->cuentaValue['otrospasivosc']['t-1']    = $this->getValue($t1,     [22,23,24,25,26], $this->ct1); //Otros Pasivos Corrientes
+        $this->cuentaValue['pnocorrientes']['t']      = $this->getValue($t,      [27,28,29], $this->ct);        //Pasivos No Corrientes
+        $this->cuentaValue['pnocorrientes']['t-1']    = $this->getValue($t1,     [27,28,29], $this->ct1);       //Pasivos No Corrientes        
     }
     
     private function cuentasValues($param) {
         extract($param);
-        $this->cuentaValue['cxc']['t']            = $this->getValue($t,  [1305], $this->ct);            //CXC
-        $this->cuentaValue['cxc']['t-1']          = $this->getValue($t1, [1305], $this->ct1);           //CXC
-        $this->cuentaValue['ventas']['t']         = abs($this->getValue($t,  [41], $this->ct));         //Ventas
-        $this->cuentaValue['ventas']['t-1']       = abs($this->getValue($t1, [41], $this->ct1));        //Ventas
-        $this->cuentaValue['cventas']['t']        = $this->getValue($t,  [61], $this->ct);              //Costo venta
-        $this->cuentaValue['cventas']['t-1']      = $this->getValue($t1, [61], $this->ct1);             //Costo venta
-        $this->cuentaValue['acorrientes']['t']    = $this->getValue($t, [11,12,13,14], $this->ct);      //Activos corrientes
-        $this->cuentaValue['acorrientes']['t-1']  = $this->getValue($t1, [11,12,13,14], $this->ct1);    //Activos corrientes
-        $this->cuentaValue['inmmaterial']['t']    = $this->getValue($t, [15], $this->ct);               //Inmovilizado Material
-        $this->cuentaValue['inmmaterial']['t-1']  = $this->getValue($t1, [15], $this->ct1);             //Inmovilizado Material        
-        $this->cuentaValue['actvtotales']['t']    = $this->getValue($t, [16,17,18,19], $this->ct);      //Activos Totales
-        $this->cuentaValue['actvtotales']['t-1']  = $this->getValue($t1, [16,17,18,19], $this->ct1);    //Activos Totales
-        $this->cuentaValue['depreciacion']['t']   = $this->getValue($t, [5160,5260,7360], $this->ct);   //Depresiacion
-        $this->cuentaValue['depreciacion']['t-1'] = $this->getValue($t1, [5160,5260,7360], $this->ct1); //Depresiacion
-        /**
-         * Se totaliza la suma para obtener el total de activos
-         */
+        $this->cuentaValue['cxc']['t']               = $this->getValue($t,      [1305], $this->ct);            //CXC
+        $this->cuentaValue['cxc']['t-1']             = $this->getValue($t1,     [1305], $this->ct1);           //CXC
+        $this->cuentaValue['ventas']['t']            = abs($this->getValue($t,  [41], $this->ct));             //Ventas
+        $this->cuentaValue['ventas']['t-1']          = abs($this->getValue($t1, [41], $this->ct1));            //Ventas
+        $this->cuentaValue['cventas']['t']           = $this->getValue($t,      [61], $this->ct);              //Costo venta
+        $this->cuentaValue['cventas']['t-1']         = $this->getValue($t1,     [61], $this->ct1);             //Costo venta
+        $this->cuentaValue['acorrientes']['t']       = $this->getValue($t,      [11,12,13,14], $this->ct);     //Activos corrientes
+        $this->cuentaValue['acorrientes']['t-1']     = $this->getValue($t1,     [11,12,13,14], $this->ct1);    //Activos corrientes
+        $this->cuentaValue['inmmaterial']['t']       = $this->getValue($t,      [15], $this->ct);              //Inmovilizado Material
+        $this->cuentaValue['inmmaterial']['t-1']     = $this->getValue($t1,     [15], $this->ct1);             //Inmovilizado Material
+        $this->cuentaValue['actvtotales']['t']       = $this->getValue($t,      [16,17,18,19], $this->ct);     //Activos Totales
+        $this->cuentaValue['actvtotales']['t-1']     = $this->getValue($t1,     [16,17,18,19], $this->ct1);    //Activos Totales
+        $this->cuentaValue['depreciacion']['t']      = $this->getValue($t,      [5160,5260,7360], $this->ct);  //Depresiacion
+        $this->cuentaValue['depreciacion']['t-1']    = $this->getValue($t1,     [5160,5260,7360], $this->ct1); //Depresiacion
+        
+        # Se totaliza la suma para obtener el total de activos
         $this->cuentaValue['actvtotales']['t']   += $this->cuentaValue['acorrientes']['t'] + $this->cuentaValue['inmmaterial']['t'];
         $this->cuentaValue['actvtotales']['t-1'] += $this->cuentaValue['acorrientes']['t-1'] + $this->cuentaValue['inmmaterial']['t-1'];
     }
@@ -192,4 +267,26 @@ class Manipulacion {
         $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta, $column);
         return $n;
     }
+    
+    private function analisis(array $indicadores) {
+        $data = [];
+        $analisis['dsri'] = ['value' => 1.031, 'min' => 'Neutral', 'max' => 'Evaluar reconocimiento de ingresos'];
+        $analisis['gmi']  = ['value' => 1.014, 'min' => 'Neutral', 'max' => '¿Porque se deterioran los margenes?'];
+        $analisis['aqi']  = ['value' => 1.039, 'min' => 'Neutral', 'max' => 'Evaluar capitalización de gastos'];
+        $analisis['sgi']  = ['value' => 1.134, 'min' => 'Neutral', 'max' => 'Evaluar capitalización de gastos'];
+        $analisis['depi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Tasa de depreciación decreciente'];
+        $analisis['sgai'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Gastos crecientes'];
+        $analisis['lvgi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Mayor endeudamiento'];
+        $analisis['tata'] = ['value' => 0.018, 'min' => 'Neutral', 'max' => 'Evaluar los cambios en el capital de trabajo'];
+        foreach ($indicadores as $key => $value) {
+            if(array_key_exists($key, $analisis)){
+                $data[$key] = $analisis[$key]['min'];
+                if($value['resultado'] > $analisis[$key]['value']){
+                    $data[$key] = $analisis[$key]['max'];
+                }
+            }
+        }
+        return $data;
+    }
+    
 }

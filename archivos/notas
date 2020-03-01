@@ -435,3 +435,24 @@ max_allowed_packet
 #-------------------------------------------------------------------------------
 # https://github.com/rap2hpoutre/fast-excel
 #*******************************************************************************
+¿Cómo crear una API REST con CodeIgniter?
+https://www.desarrollolibre.net/blog/codeigniter/como-crear-una-api-rest-con-codeigniter
+https://github.com/chriskacerguis/codeigniter-restserver
+
+apt-get install php-bcmath
+
+
+sudo apt-get -y install gcc make autoconf libc-dev pkg-config
+sudo pecl install stats-2.0.3
+
+https://www.academia.edu/4948120/EJERCICIOS_DISTRIBUCI%C3%93N_NORMAL_ESTANDAR
+https://www.vadenumeros.es/sociales/manejo-tabla-normal.htm
+https://es.slideshare.net/cecyvargasvelasco/manejo-de-tabla-distribucin-normal-estndar
+
+
+Easy Customizable Loading Mask Plugin With jQuery - mloading
+mloading is an easy and cross-browser jQuery plugin that lets you create a loading/busy indicator (with or without loading mask) on any DOM elements within the document. Compatible with RequireJS and SeaJS.
+https://www.jqueryscript.net/loading/Customizable-AJAX-Loader-Plugin-For-jQuery-Mask-Loader.html
+https://www.jqueryscript.net/loading/Easy-Customizable-Loading-Mask-Plugin-With-jQuery-mloading.html
+
+https://imask.js.org/guide.html#masked-number

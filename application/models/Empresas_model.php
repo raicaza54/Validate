@@ -135,6 +135,7 @@ class Empresas_model extends CI_Model {
             direccion,
             telefonos,
             correo,
+            naturaleza_credito,
             persona,
             persona_tlfs,
             persona_direc,

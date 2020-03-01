@@ -609,3 +609,26 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 29/02/2020
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Se crea un nuevo menú para Manipulación el cual incluye a Indicadores de Cambio (actual) e Indicadores de Confianza
+▪ Se añade Indicadores de Cambio porcentaje de probabilidad
+▪ Se añade Indicadores de Cambio mensaje de análisis por cada indicador
+
+CORRECCIONES
+▪ Carga de procesos se añade una animación para evitar suscesos inesperados
+
+SE ESTA TRABAJANDO
+▪ Indicadores de Confianza
+▪ Carga fallida de archivo, Re-intento o Borrar archivo
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña

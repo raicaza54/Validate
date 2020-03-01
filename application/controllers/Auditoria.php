@@ -180,6 +180,90 @@ class Auditoria extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function editarConfianza() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;        
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(count($indicadores) <= 5){
+                throw new Exception("Tenemos un problema, los datos no pueden ser procesados son incompletos", 202);
+            }
+            $response["data"] = $indicadores;
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    
+    public function confianza() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;
+        $estructura = [];
+        $errores = [];
+        try {
+            $post = $this->input->post();
+            foreach ($post['form'] as $value) {
+                $estructura[$value['name']] = str_replace('.','',$value['value']);
+                $estructura[$value['name']] = str_replace(',','.',$estructura[$value['name']]);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(($estructura['acorrientest'] + $estructura['anocorrientest']) != $indicadores['suma_acorrientes_anocorrientes']['t']){
+                $errores[] = 'acorrientest';
+                $errores[] = 'anocorrientest';
+            }
+            if(($estructura['acorrientest1'] + $estructura['anocorrientest1']) != $indicadores['suma_acorrientes_anocorrientes']['t-1']){
+                $errores[] = 'acorrientest1';
+                $errores[] = 'anocorrientest1';
+            }
+            
+            if(($estructura['obligacionesfct'] + $estructura['obligacionesfnoct'] + $estructura['otrospasivosct'] + $estructura['pnocorrientest']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t']){
+                $errores[] = 'obligacionesfct';
+                $errores[] = 'obligacionesfnoct';
+                $errores[] = 'otrospasivosct';
+                $errores[] = 'pnocorrientest';
+            }
+            if(($estructura['obligacionesfct1'] + $estructura['obligacionesfnoct1'] + $estructura['otrospasivosct1'] + $estructura['pnocorrientest1']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t-1']){
+                $errores[] = 'obligacionesfct1';
+                $errores[] = 'obligacionesfnoct1';
+                $errores[] = 'otrospasivosct1';
+                $errores[] = 'pnocorrientest1';
+            }
+            throw new Exception("Procesando calculos", 202);
+            
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(!is_array($indicadores)){
+                throw new Exception("Tenemos un problema, los datos no pueden ser procesados", 202);
+            }            
+            
+            $response["data"] = '';
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
     public function manipulacion() {
         if (!$this->input->is_ajax_request()) {
             show_404();

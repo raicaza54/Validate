@@ -49,7 +49,7 @@ class Archivo {
         ]);
     }
     
-    public function columnas($id) {
+    public function columnas($id, $header = FALSE) {
         $column = $this->CI->Archivos_model->getEncabezado($id);
         if(!is_array($column)){
             return FALSE;
@@ -64,7 +64,7 @@ class Archivo {
             $columnDefs = json_decode($columnas['columnas'], TRUE);
             foreach ($column as $key => $value) {
                 if(array_key_exists($value, $columnDefs)){
-                    $col = $this->columnsDef($columnDefs[$value], $value, $key);
+                    $col = $this->columnsDef($columnDefs[$value], $value, $key, $header);
                     $columnSql[$key]  = $col['sql'];
                     $columnDef[$key] = $col['def'];
                 }
@@ -104,7 +104,7 @@ class Archivo {
         ];
     }
     
-    private function columnsDef($e, $key, $x) {
+    private function columnsDef($e, $key, $x, $header = FALSE) {
         $r = FALSE;
         switch ($e[1]) {
             case 'date':
@@ -116,7 +116,7 @@ class Archivo {
                 break;
             case 'float':
                 $r = [
-                    'sql' => "FORMAT(".$key.", 2, 'de_DE') AS ".$key,
+                    'sql' => ($header == FALSE ? "FORMAT(".$key.", 2, 'de_DE') AS ".$key : "IF($key REGEXP '^[0-9]+$',FORMAT($key, 2, 'de_DE'),$key) AS $key"),
                     'def' => ['targets' => $x, 'className' => "dt-body-right"],
                 ];
                 break;

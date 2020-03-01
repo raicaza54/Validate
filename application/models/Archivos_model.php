@@ -420,7 +420,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getDigito($postData) {
-        $columnas = $this->archivo->columnas($postData['id']);
+        $columnas = $this->archivo->columnas($postData['id'], TRUE);
         if($columnas['archivo']['formato'] == 'debehaber'){
             $postData['campoAnalizar'] = $columnas['debehaber'];
         }

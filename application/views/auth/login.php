@@ -49,6 +49,6 @@
     $(document).ready(function () {
         setTimeout(function() {
             $('#identity').focus();
-        }, 1500);
+        }, 1000);
     });
 </script>

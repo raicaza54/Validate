@@ -25,6 +25,7 @@ class Condicion {
         $condicionEx = [];
         $condicion = [];
         $max = 0; $min = 0;
+        $max0 = 0; $min0 = 0;
         $cond = '';
         $condCalc = 0;
         $n = 0;
@@ -35,14 +36,16 @@ class Condicion {
                     $condicion = $this->condiciones[$value['cta']];
                     $max = number_format((floatval($condicion['porcentaje']) + floatval($condicion['tolerancia'])), 3);
                     $min = number_format((floatval($condicion['porcentaje']) - floatval($condicion['tolerancia'])), 3);
+                    $max0 = number_format((floatval($condicion['porcentaje'])), 3);
+                    $min0 = number_format((floatval($condicion['porcentaje'])), 3);
                     $calculo = number_format($value['calculo'], 3);
                     if(($calculo > $max) || ($calculo < $min )){
                         $n++;
                         $cond = '-';
-                        $condCalc = number_format($calculo - $min, 3);
+                        $condCalc = number_format($calculo - $min0, 3);
                         if($calculo > $max){
                             $cond = '+';
-                            $condCalc = number_format($calculo - $max, 3);
+                            $condCalc = number_format($calculo - $max0, 3);
                         }
                         $condicionEx[] = [
                             'doc'            => $value['doc'],

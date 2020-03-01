@@ -41,7 +41,28 @@ class Resultados extends CI_Controller {
         ]);
     }
    
-    public function crear() {
+    private function nn() {
+        $fp = fopen(APPPATH.'logs/distr_norm_estand_'.date('YmdHis').'.csv', 'w');
+        $k = 0.01;
+        $i = 0;
+        for ($x = -5; $x <= 4; $x++) {
+            for ($y = 0; $y <= 1000; $y++) {
+                if($x < 4.10 && $x >= -4.10){
+                    $i++;
+                    $a = numberFormat($x, 2);
+                    $b = distr_norm_estand($x);
+                    $linea = [$a, $b];                    
+                    echo 'score: '.$a.' / '.$b;
+                    fputcsv($fp, $linea, ';', '"');
+                    echo "\n";
+                }
+                $x += $k;
+            }
+        }
+        fclose($fp);
+    }
+    
+    private function crear() {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
@@ -77,7 +98,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
-    public function editar() {
+    private function editar() {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
@@ -133,7 +154,7 @@ class Resultados extends CI_Controller {
         }
     }
     
-    public function descargar() {
+    private function descargar() {
         if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
@@ -272,7 +293,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
-    public function benfordPdf($analisis, $idPdf, $consecutivo) {
+    private function benfordPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) show_404();
         if (count($analisis) != 3) {
             return FALSE;
@@ -313,7 +334,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function manipulacionPdf($analisis, $idPdf, $consecutivo) {
+    private function manipulacionPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $manipulacion) {
@@ -335,7 +356,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function condicioncuentaPdf($analisis, $idPdf, $consecutivo) {
+    private function condicioncuentaPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $condicioncuenta) {
@@ -357,7 +378,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function listascontrolPdf($analisis, $idPdf, $consecutivo) {
+    private function listascontrolPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $listascontrol) {
@@ -379,7 +400,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function spiderPdf($analisis, $idPdf, $consecutivo) {
+    private function spiderPdf($analisis, $idPdf, $consecutivo) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $spider) {

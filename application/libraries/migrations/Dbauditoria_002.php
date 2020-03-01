@@ -498,6 +498,13 @@ class Dbauditoria_002{
                 'comment'    => 'correo electronico de persona contacto',
                 'null'       => TRUE
             ],
+            'naturaleza_credito' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '10',
+                'comment'    => 'Las cuentas de pasivos, ingresos y patrimonio en su balance de prueba el saldo final es de naturaleza crédito si/no',
+                'default'    => 'no',
+                'null'       => FALSE
+            ],
             'deleted_at'   => [
                 'type'       => 'INT',
                 'constraint' => '1',

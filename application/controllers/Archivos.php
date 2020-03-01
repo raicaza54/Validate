@@ -604,13 +604,13 @@ class Archivos extends CI_Controller {
     public function header() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
-            }
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',            'Id',               'required|numeric|max_length[20]');            
+            $this->form_validation->set_rules('campoAnalizar', 'Campo a Analizar', 'alpha_numeric|max_length[10]');            
             $campoAnalizar = NULL;
             if(array_key_exists('campoAnalizar', $post)){
                 $campoAnalizar = $post['campoAnalizar'];
