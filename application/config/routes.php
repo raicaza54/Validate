@@ -87,6 +87,7 @@ $route['archivos/v1/digito']['post']             = 'archivos/digito';
 $route['archivos/v1/subir']['post']              = 'archivos/subir';
 $route['archivos/v1/preprocesar']['post']        = 'archivos/preprocesar';
 $route['archivos/v1/header']                     = 'archivos/header';
+$route['archivos/v1/comprobarDatos']             = 'archivos/comprobarDatos';
 $route['archivos/v1/encabezado']['post']         = 'archivos/encabezado/0';
 $route['archivos/v1/configurar']['post']         = 'archivos/configurar';
 $route['archivos/v1/limites']['get']             = 'archivos/limites';

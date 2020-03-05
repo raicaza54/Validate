@@ -632,3 +632,22 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 04/03/2020
+NUEVAS FUNCIONALIDADES
+▪ No hay cambios
+
+ACTUALIZACIÓN
+▪ Modulo Indicadores de Cambio se actualiza con las columnas que se muestran como resultado del procesamiento
+
+CORRECCIONES
+▪ Archivos con errores de carga al intentar seleccionarlos estos son descartados
+
+SE ESTA TRABAJANDO
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña

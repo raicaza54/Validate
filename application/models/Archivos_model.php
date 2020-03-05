@@ -373,7 +373,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getById($id) {
-        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name');
+        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name, pid');
         $this->db->where('created_clie', $this->session->userdata('clientes_id'));
         $this->db->where('id', $id);
         $e = $this->db->get('clie__archivos')->row_array();

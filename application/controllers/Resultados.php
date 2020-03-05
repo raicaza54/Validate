@@ -201,7 +201,7 @@ class Resultados extends CI_Controller {
             $this->form_validation->set_rules('nombre',             'Nombre de Archivo',         'required|max_length[150]');
             $this->form_validation->set_rules('idPdf',              'Código PDF',                'required|max_length[50]');
             $this->form_validation->set_rules('carpeta',            'Destino',                   'required|max_length[50]');
-            $this->form_validation->set_rules('archivoId',          'Código Archivo',            'required|max_length[50]');
+            $this->form_validation->set_rules('archivoId',          'Código Archivo',            'max_length[50]');
             $this->form_validation->set_rules('pdfBenford',         'Archivo Benford',           'max_length[50]');
             $this->form_validation->set_rules('pdfSpider',          'Archivo Spider',            'max_length[50]');
             $this->form_validation->set_rules('pdfManipulacion',    'Archivo Manipulacion',      'max_length[50]');

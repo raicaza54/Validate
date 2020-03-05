@@ -439,7 +439,7 @@ max_allowed_packet
 https://www.desarrollolibre.net/blog/codeigniter/como-crear-una-api-rest-con-codeigniter
 https://github.com/chriskacerguis/codeigniter-restserver
 
-apt-get install php-bcmath
+apt-get install php7.2-bcmath
 
 
 sudo apt-get -y install gcc make autoconf libc-dev pkg-config

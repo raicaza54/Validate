@@ -76,7 +76,7 @@ class Archivos extends CI_Controller {
                     $nl = $row->getNumCells();
                     if ($nl > 20) $nl = 20;                    
                 }
-                for ($cl = 1; $cl <= $nl; $cl++) {
+                for ($cl = 1; $cl < $nl; $cl++) {
                     if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
                         $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
                     }else{
@@ -625,19 +625,6 @@ class Archivos extends CI_Controller {
                     throw new Exception("El proceso fue interrumpido y ya no se esta cargando el archivo,
                                          si usted lo desea podemos intentar cargar el archivo nuevamente o 
                                          cancelar la carga del mismo", 206);
-                    /*
-                    folderId
-                    id
-                    archivo
-                    tipo
-                    return array(
-                        'status'   => TRUE,
-                        'filename' => $archivo,
-                        'fullpath' => $fullpath,
-                        'type'     => $type,
-                        'msg'      => 'Success',
-                    );
-                    */
                 }
                 throw new Exception("No existen datos para mostrar", 206);
             }
@@ -697,6 +684,38 @@ class Archivos extends CI_Controller {
                 "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
                 "data"            => $items,
             ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function comprobarDatos() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        $this->load->model('Explorador_model');
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id', 'Archivo', 'required|max_length[20]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $archivo = $this->Archivos_model->getById($post['id']);
+            $update = 0;
+            if(file_exists($archivo['file_name']) && !$this->_processExists($archivo['pid'])){
+                $update = 1;
+                if($this->Explorador_model->update_data(['deleted_at' => 1], $post['id']) !== TRUE){
+                    //throw new Exception("Algo no anda bien", 202);
+                }
+            }
+            $response['data'] = ['refresh' => $update];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

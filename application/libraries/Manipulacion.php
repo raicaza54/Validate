@@ -135,13 +135,13 @@ class Manipulacion {
         $r_sgi  = $this->SGI - $c_sgi;
         $r_depi = $this->DEPI - $c_depi;
 
-        $t5ind = $r_dsri + $r_gmi + $r_aqi + $r_sgi + $r_depi;
+        //$t5ind = $r_dsri + $r_gmi + $r_aqi + $r_sgi + $r_depi;
 
-        $a_dsri = ($r_dsri / $t5ind) * 100;
-        $a_gmi  = ($r_gmi  / $t5ind) * 100;
-        $a_aqi  = ($r_aqi  / $t5ind) * 100;
-        $a_sgi  = ($r_sgi  / $t5ind) * 100;
-        $a_depi = ($r_depi / $t5ind) * 100;
+        $a_dsri = $r_dsri;
+        $a_gmi  = $r_gmi;
+        $a_aqi  = $r_aqi;
+        $a_sgi  = $r_sgi;
+        $a_depi = $r_depi;
         
         $this->cuentaValue['dsri']  = [
             'manipulacion' => $this->DSRI,
@@ -182,6 +182,10 @@ class Manipulacion {
         }
         $this->cuentaValue['probabilidad'] = distr_norm_estand($this->cuentaValue['m5ind']);
         $this->cuentaValue['analisis'] = $this->analisis($this->cuentaValue);
+        foreach ($this->cuentaValue['analisis'] as $key => $value) {
+            $this->cuentaValue[$key]['ideal'] = $value['ideal'];
+            $this->cuentaValue[$key]['aporte'] = $value['ideal'] - $this->cuentaValue[$key]['resultado'];
+        }
         return $this->cuentaValue;
     }
     
@@ -280,9 +284,10 @@ class Manipulacion {
         $analisis['tata'] = ['value' => 0.018, 'min' => 'Neutral', 'max' => 'Evaluar los cambios en el capital de trabajo'];
         foreach ($indicadores as $key => $value) {
             if(array_key_exists($key, $analisis)){
-                $data[$key] = $analisis[$key]['min'];
+                $data[$key]['ideal'] = $analisis[$key]['value'];
+                $data[$key]['msg'] = $analisis[$key]['min'];
                 if($value['resultado'] > $analisis[$key]['value']){
-                    $data[$key] = $analisis[$key]['max'];
+                    $data[$key]['msg'] = $analisis[$key]['max'];
                 }
             }
         }
