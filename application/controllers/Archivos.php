@@ -76,7 +76,7 @@ class Archivos extends CI_Controller {
                     $nl = $row->getNumCells();
                     if ($nl > 20) $nl = 20;                    
                 }
-                for ($cl = 1; $cl < $nl; $cl++) {
+                for ($cl = 1; $cl <= $nl; $cl++) {
                     if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
                         $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
                     }else{
