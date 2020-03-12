@@ -62,7 +62,7 @@ class Resultados extends CI_Controller {
         fclose($fp);
     }
     
-    private function crear() {
+    public function crear() {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
@@ -98,7 +98,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
-    private function editar() {
+    public function editar() {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
