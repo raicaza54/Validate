@@ -154,7 +154,7 @@ class Resultados extends CI_Controller {
         }
     }
     
-    private function descargar() {
+    public function descargar() {
         if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
