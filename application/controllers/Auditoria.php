@@ -111,8 +111,8 @@ class Auditoria extends CI_Controller {
                 $this->form_validation->set_rules('clickSpider', 'Cuenta', 'required|numeric');
             }else{
                 $this->form_validation->set_rules('archivoIdProcesar', 'Archivo', 'required|max_length[50]|min_length[10]');
-                $this->form_validation->set_rules('campoSpider[]', 'Cuenta(s)', 'required|numeric');
-                $this->form_validation->set_rules('comprobantes[]', 'Comprobante(s)', 'numeric');                
+                $this->form_validation->set_rules('campoSpider[]', 'Cuenta(s)', 'required|alpha_dash');
+                $this->form_validation->set_rules('comprobantes[]', 'Comprobante(s)', 'alpha_dash');
             }
             if ($this->form_validation->run() == FALSE){
                 throw new Exception(validation_errors('',''), 202);
