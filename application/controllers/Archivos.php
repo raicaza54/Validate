@@ -77,8 +77,12 @@ class Archivos extends CI_Controller {
                     if ($nl > 20) $nl = 20;                    
                 }
                 for ($cl = 1; $cl <= $nl; $cl++) {
-                    if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
-                        $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
+                    if(array_key_exists(($cl - 1), $cells)){
+                        if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
+                            $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
+                        }else{
+                            $campo['campo' . $cl] = '';
+                        }                        
                     }else{
                         $campo['campo' . $cl] = '';
                     }

@@ -26,7 +26,7 @@
                 <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
                     <i class="fas fas fa-sync fa-spin"></i>
                 </a>
-                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
+                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<div> Espacio en Disco <span id='espacio'>0/0</span> <div class='progress'> <div class='progress-bar w-0' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div> </div> <p style='margin: 10px 0px 0px;'> Usted puede solicitar ampliar el espacio seg&uacute;n sus necesidades</p></div>">
                     <i class="far fa-hdd"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
