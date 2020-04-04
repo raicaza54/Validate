@@ -224,7 +224,7 @@ class Benford_pdf extends TCPDF {
         $this->MultiCell(41, NULL, 'Frecuencia', 1, 'C', TRUE, 0);
         $this->MultiCell(41, NULL, 'Observado', 1, 'C', TRUE, 0);
         $this->MultiCell(43, NULL, 'Ley de Benford', 1, 'C', TRUE, 0);
-        $this->MultiCell(41, NULL, 'Variación', 1, 'C', TRUE, 1);        
+        $this->MultiCell(41, NULL, 'Variación', 1, 'C', TRUE, 1);
     }
     
     private function grafica($d, $dn) {
@@ -244,7 +244,7 @@ class Benford_pdf extends TCPDF {
                 }
             }
         }
-        $graph = new Graph(1250, 400);
+        $graph = new Graph((($dn == '1') ? 800 : 1250), 400);
         $graph->SetScale("textlin");
         $graph->img->SetAntiAliasing(false);
         $graph->img->SetMargin(27, 1, 5, 80);
@@ -269,7 +269,7 @@ class Benford_pdf extends TCPDF {
         }
         $filePath = $this->CI->config->item('path_graficas').$fileName.'.png';
         $graph->Stroke($filePath);
-        $this->Image($filePath, 10, '', 196, 60, 'PNG', '', 'N', FALSE, 300);
+        $this->Image($filePath, (($dn == '1') ? 76 : 10), (($dn == '1') ? 35 : ''), (($dn == '1') ? 130 : 196), 60, 'PNG', '', 'N', FALSE, 300);
     }
     
     public function run($data, $dataPdf) {
@@ -304,7 +304,15 @@ class Benford_pdf extends TCPDF {
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
-            $this->MultiCell(196, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1);
+            $this->MultiCell(15, NULL, 'Número', 1, 'C', TRUE, 0, 10, 33);
+            $this->MultiCell(22, NULL, 'Observado', 1, 'C', TRUE, 0, 25, 33);
+            $this->MultiCell(22, NULL, 'Ley de Benford', 1, 'C', TRUE, 1, 47, 33);
+            foreach ($d1['d1']['tabla'] as $key => $value) {
+                $this->MultiCell(15, NULL, $value['numero'], 1, 'R', FALSE, 0, 10);
+                $this->MultiCell(22, NULL, $value['observado'], 1, 'R', FALSE, 0, 25);
+                $this->MultiCell(22, NULL, $value['benford'], 1, 'R', FALSE, 1, 47);                
+            } 
+            $this->MultiCell(130, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1, 76, 30);
             $this->grafica($d1, '1');
             $this->digito($d1, '1');
             if(isset($d1['d1']['madDescribe']) && strpos($d1['d1']['madDescribe'],'Conformidad Aceptable') === FALSE)
