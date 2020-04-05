@@ -203,7 +203,13 @@ class Perfil extends CI_Controller {
             if ($this->form_validation->run() == FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }
-            $archivo = $this->do_upload();
+            $archivo = [];
+            if (!empty($_FILES['archivo']['name'])){
+                $archivo = $this->do_upload();
+            }
+            if(isset($archivo['msg']) && $archivo['msg'] != 'Success'){
+                throw new Exception($archivo['msg'], 202);
+            }
             $data = [
                 'direccion'     => $form['empr_direccion'],
                 'telefonos'     => $form['empr_telefonos'],
@@ -231,15 +237,18 @@ class Perfil extends CI_Controller {
     }
     
     private function do_upload() {
-        $r = FALSE;
         $config['upload_path']      = $this->config->item('path_graficas');
         $config['overwrite']        = TRUE;
         $config['allowed_types']    = 'png|jpg|jpeg';
         $config['max_size']         = $this->config->item('size_file');
         $config['file_ext_tolower'] = TRUE;
         $config['file_name']        = 'logo';
+        $config['max_width']        = '300';
+        $config['max_height']       = '300';
+        $config['min_width']        = '200';
+        $config['min_height']       = '200';
         $this->load->library('upload', $config);
-        if ($this->upload->do_upload("empr_logotipo")) {
+        if ($this->upload->do_upload("archivo")) {
             $data = array('upload_data' => $this->upload->data());
             $archivo  = $data['upload_data']['client_name'];
             $fullpath = $data['upload_data']['full_path'];
