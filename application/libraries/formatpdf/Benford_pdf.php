@@ -48,6 +48,14 @@ class Benford_pdf extends TCPDF {
     private $codigo;
     
     /**
+     * Variable para mostrar datos del cliente
+     *
+     * @var String
+     */
+    private $cliente;
+    private $cliente_on = false;
+    
+    /**
      * Variable para nombrar el archivo
      *
      * @var String
@@ -95,8 +103,10 @@ class Benford_pdf extends TCPDF {
         extract($param);
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
         $this->CI = & get_instance();
+        $this->CI->load->library('formatpdf/Formato', NULL, 'Formato');
         $this->empresa = $empresa;
-        $this->codigo = $codigo;
+        $this->codigo  = $codigo;
+        $this->cliente = $cliente;
         $this->namePdf = $namePdf;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
@@ -106,10 +116,10 @@ class Benford_pdf extends TCPDF {
     //Page header
     public function Header() {
         // Logo
-        $image_file = base_url('assets/images/pdf/logo.jpg');
+        $image_file = $this->CI->config->item('path_pdf').'logo.jpg';
         $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
-        $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
+        $image_pdf = $this->CI->config->item('path_pdf').'logopdf.jpg';
         $this->Image($image_pdf, 6, 90, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Set font
         $this->SetFont($this->family, '', 8);
@@ -143,7 +153,7 @@ class Benford_pdf extends TCPDF {
         $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 'T', 'R', FALSE, 1, NULL);
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
-
+    
     private function digito($d, $dn) {
         if(is_array($d) && array_key_exists('d'.$dn, $d) && array_key_exists('mad', $d['d'.$dn]) && array_key_exists('madDescribe', $d['d'.$dn])){
             $this->MultiCell(196, NULL, 'DESVIACIÓN ABSOLUTA MEDIA', 0, 'L', FALSE, 1);
@@ -183,38 +193,42 @@ class Benford_pdf extends TCPDF {
             $this->Ln(5);
         }
     }
-    
+   
     private function tblBad($d, $dn) {
         if(is_array($d) && array_key_exists('d'.$dn, $d) && array_key_exists('tblBad', $d['d'.$dn]) && (count($d['d'.$dn]['tblBad']) > 0)){
             $yi = $y = $this->GetY() + 5; $dig = 0; $c = 0; $cl = 0;
             $col1 = 10; $col2 = 42; $GetY = [];
-            foreach ($d['d'.$dn]['tblBad'] as $key => $value) {
-                $cl++;
-                if(($dig != $key) && ($cl > 1)){
-                    $col1 += 49;
-                    $col2 += 49;
-                    $y = $yi;
+            if(count($d['d'.$dn]['tblBad']) > 0){
+                foreach ($d['d'.$dn]['tblBad'] as $key => $value) {
+                    if(count($value) > 0){
+                        $cl++;
+                        if(($dig != $key) && ($cl > 1)){
+                            $col1 += 49;
+                            $col2 += 49;
+                            $y = $yi;
+                        }
+                        if($y > 220){
+                            $this->AddPage();
+                            $yi = $y = $this->GetY();
+                        }                                
+                        $this->MultiCell(32, 5, 'Número', 1, 'C', TRUE, 0, $col1, $y - 5);
+                        $this->MultiCell(17, 5, 'Frecuencia', 1, 'C', TRUE, 1, $col2, $y - 5);
+                        foreach ($value as $fila){
+                            $this->MultiCell(32, 5, number_format($fila['valor'], 2, ',', '.'), 1, 'R', FALSE, 0, $col1, $y);
+                            $this->MultiCell(17, 5, number_format($fila['cantidad'], 0, ',', '.'), 1, 'R', FALSE, 1, $col2, $y);
+                            $y += 5;
+                            $dig = $key;
+                            $c++;
+                        }
+                        $GetY[] = $this->GetY();
+                        if($cl > 3){
+                            $col1 = 10; $col2 = 42;
+                            $yi = $y = max($GetY) + 10;
+                            unset($GetY);
+                            $cl = 0;
+                        }
+                    }
                 }
-                if($y > 220){
-                    $this->AddPage();
-                    $yi = $y = $this->GetY();
-                }                                
-                $this->MultiCell(32, 5, 'Número', 1, 'C', TRUE, 0, $col1, $y - 5);
-                $this->MultiCell(17, 5, 'Frecuencia', 1, 'C', TRUE, 1, $col2, $y - 5);
-                foreach ($value as $fila){
-                    $this->MultiCell(32, 5, number_format($fila['valor'], 2, ',', '.'), 1, 'R', FALSE, 0, $col1, $y);
-                    $this->MultiCell(17, 5, number_format($fila['cantidad'], 0, ',', '.'), 1, 'R', FALSE, 1, $col2, $y);
-                    $y += 5;
-                    $dig = $key;
-                    $c++;
-                }
-                $GetY[] = $this->GetY();
-                if($cl > 3){
-                    $col1 = 10; $col2 = 42;
-                    $yi = $y = max($GetY) + 10;
-                    unset($GetY);
-                    $cl = 0;
-                }                
             }
         }
     }
@@ -252,8 +266,12 @@ class Benford_pdf extends TCPDF {
         $bplot = new BarPlot($ydataBar);
         $graph->Add($bplot);
         $bplot->SetLegend('Recuento');
-        $bplot->SetColor("#1f77b4");
-        $bplot->SetFillColor("#1f77b4");
+        $defecto = '#1f77b4';
+        if(is_array($this->cliente) && array_key_exists('empr_color', $this->cliente)){
+            $defecto = $this->cliente['empr_color'];
+        }
+        $bplot->SetColor($defecto);
+        $bplot->SetFillColor($defecto);
         $lplot = new LinePlot($ydataLine);
         $graph->Add($lplot);
         $lplot->SetBarCenter();
@@ -269,7 +287,7 @@ class Benford_pdf extends TCPDF {
         }
         $filePath = $this->CI->config->item('path_graficas').$fileName.'.png';
         $graph->Stroke($filePath);
-        $this->Image($filePath, (($dn == '1') ? 76 : 10), (($dn == '1') ? 35 : ''), (($dn == '1') ? 130 : 196), 60, 'PNG', '', 'N', FALSE, 300);
+        $this->Image($filePath, (($dn == '1') ? 76 : 10), (($dn == '1') ? $this->cliente_on ? 50 : 33 : ''), (($dn == '1') ? 130 : 196), 60, 'PNG', '', 'N', FALSE, 300);
     }
     
     public function run($data, $dataPdf) {
@@ -296,23 +314,24 @@ class Benford_pdf extends TCPDF {
             $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $h = $this->_height(array(
-                'txt' => 'Empresa: '.$this->empresa['nombre'],
-                'w' => 86
-            ));
+            $h = $this->CI->Formato->height($this, 'Empresa: '.$this->empresa['nombre'], 86);
             $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
-            $this->MultiCell(15, NULL, 'Número', 1, 'C', TRUE, 0, 10, 33);
-            $this->MultiCell(22, NULL, 'Observado', 1, 'C', TRUE, 0, 25, 33);
-            $this->MultiCell(22, NULL, 'Ley de Benford', 1, 'C', TRUE, 1, 47, 33);
+            if($this->cliente['empr_usarlogotipo'] == 'si'){
+                $this->cliente_on = true;
+                $this->CI->Formato->datosCliente($this, $this->cliente);
+            } 
+            $this->MultiCell(15, NULL, 'Número', 1, 'C', TRUE, 0, 10, $this->cliente_on ? 48 : 33);
+            $this->MultiCell(22, NULL, 'Observado', 1, 'C', TRUE, 0, 25, $this->cliente_on ? 48 : 33);
+            $this->MultiCell(22, NULL, 'Ley de Benford', 1, 'C', TRUE, 1, 47, $this->cliente_on ? 48 : 33);
             foreach ($d1['d1']['tabla'] as $key => $value) {
                 $this->MultiCell(15, NULL, $value['numero'], 1, 'R', FALSE, 0, 10);
                 $this->MultiCell(22, NULL, $value['observado'], 1, 'R', FALSE, 0, 25);
                 $this->MultiCell(22, NULL, $value['benford'], 1, 'R', FALSE, 1, 47);                
             } 
-            $this->MultiCell(130, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1, 76, 30);
+            $this->MultiCell(130, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1, 76, $this->cliente_on ? 45 : 28);
             $this->grafica($d1, '1');
             $this->digito($d1, '1');
             if(isset($d1['d1']['madDescribe']) && strpos($d1['d1']['madDescribe'],'Conformidad Aceptable') === FALSE)
@@ -329,7 +348,7 @@ class Benford_pdf extends TCPDF {
             $this->digito($d12, '12');
             if(isset($d12['d12']['madDescribe']) && strpos($d12['d12']['madDescribe'],'Conformidad Aceptable') === FALSE)
             if(isset($d12['d12']['tblBad'])) $this->tblBad($d12, '12'); 
-            //s$this->Output('archivo.pdf', 'I');
+            //$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;
@@ -340,43 +359,6 @@ class Benford_pdf extends TCPDF {
             return FALSE;
         }
         return file_exists($filePath);        
-    }
-    
-    private function _height($param) {
-        extract($param);
-        // store current object
-        $this->startTransaction();
-        // store starting values
-        $start_y = $this->GetY();
-        $start_page = $this->getPage();
-        // call your printing functions with your parameters
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        $this->MultiCell($w, NULL, $txt, 1, 'L', false, 1, '', '', true, 0, true);
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // get the new Y
-        $end_y = $this->GetY();
-        $end_page = $this->getPage();
-        // calculate height
-        $height = 0;
-        if ($end_page == $start_page) {
-            $height = $end_y - $start_y;
-        } else {
-            for ($page=$start_page; $page <= $end_page; ++$page) {
-                $this->setPage($page);
-                if ($page == $start_page) {
-                    // first page
-                    $height = $this->h - $start_y - $this->bMargin;
-                } elseif ($page == $end_page) {
-                    // last page
-                    $height = $end_y - $this->tMargin;
-                } else {
-                    $height = $this->h - $this->tMargin - $this->bMargin;
-                }
-            }
-        }
-        // restore previous object
-        $this->rollbackTransaction(true);
-        return $height;
     }
 }
 

@@ -210,4 +210,8 @@ class Cliente_model extends CI_Model {
         ];
     }
     
+    public function updateCliente($data, $id) {
+        $this->db->update('clie__clientes', $data, ['id' => $id]);
+        return $this->db->affected_rows() == 1;
+    }        
 }

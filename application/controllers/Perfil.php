@@ -42,6 +42,7 @@ class Perfil extends CI_Controller {
     }
 
     public function datos() {
+        $this->config->load('imagenes');
         $response = $this->response;
         try {
             $cliente_id = $this->session->userdata('clientes_id');
@@ -56,13 +57,21 @@ class Perfil extends CI_Controller {
             $usuario = $this->Perfil_model->getUsuario($users_id);
             if(!is_array($usuario) || (count($usuario) <= 0)){
                 throw new Exception("Tenemos un problema con su cuenta de usuario, por favor contactar con soporte", 202);
-            }            
+            }
+            $extension = pathinfo($usuario['empr_logotipo'], PATHINFO_EXTENSION);
+            $b64 = null;
+            if(!isset($usuario['empr_logotipo']) && empty($usuario['empr_logotipo'])){
+                $b64 = $this->config->item('img_300x300');
+            }elseif(isset($usuario['empr_logotipo'])){
+                $b64 = $this->base64_encode_image($usuario['empr_logotipo'], $extension);
+            }
             $response = [
                 "data" => [
                     'contrato' => $contrato,
                     'usuario'  => $usuario,
                     'disco'    => $disco,
                     'columnas' => $columnas,
+                    'logo'     => $b64
                 ],
             ];
             //$this->archivo->columnaCompare($empresaId, $this->session->userdata('archivoId'), 'blp');
@@ -165,6 +174,100 @@ class Perfil extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
+    }    
+    
+    public function saveEmpresa() {
+        $response = $this->response;
+        $data = [];
+        try {
+            $form = $this->input->post();
+            if(!is_array($form)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            if(!is_array($form) || !array_key_exists('id', $form)){
+                throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
+            }
+            $id = openCypher('decrypt', $form['id']);
+            if(is_bool($form) && ($if === FALSE)){
+                log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
+                throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
+            }
+            $this->form_validation->set_data($form);
+            $this->form_validation->set_rules('empr_correo',         'Correo Electrónico', 'max_length[500]');
+            $this->form_validation->set_rules('empr_telefonos',      'Teléfonos',          'max_length[150]');
+            $this->form_validation->set_rules('empr_direccion',      'Dirección',          'max_length[500]');
+            $this->form_validation->set_rules('empr_firma',          'Firma',              'max_length[2000]');
+            $this->form_validation->set_rules('empr_usarlogotipo',   'Utilizar Logotipo',  'max_length[10]|in_list[si,no]');
+            $this->form_validation->set_rules('empr_usarfirma',      'Utilizar Firma',     'max_length[10]|in_list[si,no]');
+            $this->form_validation->set_rules('empr_color',          'Color Gráficas',     'max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $archivo = $this->do_upload();
+            $data = [
+                'direccion'     => $form['empr_direccion'],
+                'telefonos'     => $form['empr_telefonos'],
+                'correo'        => $form['empr_correo'],
+                'usar_logotipo' => $form['empr_usarlogotipo'],
+                'firma'         => $form['empr_firma'],
+                'usar_firma'    => $form['empr_usarfirma'],
+                'color'         => $form['empr_color'],
+            ];
+            if(isset($archivo['fullpath']) && !empty($archivo['fullpath'])){
+                $data['path_logotipo'] = $archivo['fullpath'];
+            }
+            $this->Cliente_model->updateCliente($data, $id);
+            $response = [
+                "data" => []
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));    
+    }
+    
+    private function do_upload() {
+        $r = FALSE;
+        $config['upload_path']      = $this->config->item('path_graficas');
+        $config['overwrite']        = TRUE;
+        $config['allowed_types']    = 'png|jpg|jpeg';
+        $config['max_size']         = $this->config->item('size_file');
+        $config['file_ext_tolower'] = TRUE;
+        $config['file_name']        = 'logo';
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload("empr_logotipo")) {
+            $data = array('upload_data' => $this->upload->data());
+            $archivo  = $data['upload_data']['client_name'];
+            $fullpath = $data['upload_data']['full_path'];
+            $type     = $data['upload_data']['file_ext'];
+            return array(
+                'status'   => TRUE,
+                'filename' => $archivo,
+                'fullpath' => $fullpath,
+                'type'     => $type,
+                'msg'      => 'Success',
+            );
+        }else{
+            log_message('error', var_export($this->upload->display_errors('',''), TRUE));
+            return array(
+                'status'   => FALSE,
+                'filename' => '',
+                'fullpath' => '',
+                'type'     => '',
+                'msg'      => $this->upload->display_errors('',''),
+            );            
+        }
+    }    
+    
+    function base64_encode_image ($filename = string, $filetype = string) {
+        if ($filename) {
+            $imgbinary = fread(fopen($filename, "r"), filesize($filename));
+            return 'data:image/' . $filetype . ';base64,' . base64_encode($imgbinary);
+        }
     }    
     
     public function saveDatos() {

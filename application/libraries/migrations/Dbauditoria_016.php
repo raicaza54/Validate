@@ -24,7 +24,7 @@ class Dbauditoria_016{
                 'unsigned'   => TRUE,
                 'null'       => FALSE
             ],
-            'columnas_movnat'     => [
+            'columnas_movnat' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '2048',
                 'comment'    => 'definicion de columnas por defecto, los datos son serializados, movimientos por naturaleza y valor',

@@ -122,6 +122,7 @@ $route['manipulacion/v1/confianza']['post']       = 'auditoria/confianza';
 $route['perfil/v1/datos']['get']               = 'perfil/datos';
 $route['perfil/v1/disco']['get']               = 'perfil/disco';
 $route['perfil/v1/save']['post']               = 'perfil/saveDatos';
+$route['perfil/v1/saveEmpresa']['post']        = 'perfil/saveEmpresa';
 $route['perfil/v1/saveColumnas']['post']       = 'perfil/saveColumnas';
 $route['perfil/v1/columnasPorDefecto']['post'] = 'perfil/columnasPorDefecto';
 

@@ -48,6 +48,13 @@ class Manipulacion_pdf extends TCPDF {
     private $codigo;
     
     /**
+     * Variable para mostrar datos del cliente
+     *
+     * @var String
+     */
+    private $cliente;    
+    
+    /**
      * Variable para nombrar el archivo
      *
      * @var String
@@ -95,8 +102,10 @@ class Manipulacion_pdf extends TCPDF {
         extract($param);
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
         $this->CI = & get_instance();
+        $this->CI->load->library('formatpdf/Formato', NULL, 'Formato');
         $this->empresa = $empresa;
-        $this->codigo = $codigo;
+        $this->codigo  = $codigo;
+        $this->cliente = $cliente;
         $this->namePdf = $namePdf;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
@@ -105,10 +114,10 @@ class Manipulacion_pdf extends TCPDF {
     //Page header
     public function Header() {
         // Logo
-        $image_file = base_url('assets/images/pdf/logo.jpg');
+        $image_file = $this->CI->config->item('path_pdf').'logo.jpg';
         $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
-        $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
+        $image_pdf = $this->CI->config->item('path_pdf').'logopdf.jpg';
         $this->Image($image_pdf, 6, 90, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Set font
         $this->SetFont($this->family, '', 8);
@@ -142,7 +151,7 @@ class Manipulacion_pdf extends TCPDF {
         $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 'T', 'R', FALSE, 1, NULL);
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
-
+    
     public function run($data, $dataPdf) {
         extract($dataPdf);
         extract($this->backGroundColor);
@@ -165,15 +174,13 @@ class Manipulacion_pdf extends TCPDF {
             $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $h = $this->_height(array(
-                'txt' => 'Empresa: '.$this->empresa['nombre'],
-                'w' => 86
-            ));            
+            $h = $this->CI->Formato->height($this, 'Empresa: '.$this->empresa['nombre'], 86);
             $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
-
+            if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
+            
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && array_key_exists('mensaje', $dataPdf[0])){
                 $dataPdf = $dataPdf[0];
                 $this->MultiCell(196, NULL, $dataPdf['mensaje'], FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);

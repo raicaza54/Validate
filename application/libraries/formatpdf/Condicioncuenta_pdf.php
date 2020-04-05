@@ -48,6 +48,13 @@ class Condicioncuenta_pdf extends TCPDF {
     private $codigo;
     
     /**
+     * Variable para mostrar datos del cliente
+     *
+     * @var String
+     */
+    private $cliente;    
+    
+    /**
      * Variable para nombrar el archivo
      *
      * @var String
@@ -95,8 +102,10 @@ class Condicioncuenta_pdf extends TCPDF {
         extract($param);
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
         $this->CI      = & get_instance();
+        $this->CI->load->library('formatpdf/Formato', NULL, 'Formato');
         $this->empresa = $empresa;
         $this->codigo  = $codigo;
+        $this->cliente = $cliente;
         $this->namePdf = $namePdf;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
@@ -105,10 +114,10 @@ class Condicioncuenta_pdf extends TCPDF {
     //Page header
     public function Header() {
         // Logo
-        $image_file = base_url('assets/images/pdf/logo.jpg');
+        $image_file = $this->CI->config->item('path_pdf').'logo.jpg';
         $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
-        $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
+        $image_pdf = $this->CI->config->item('path_pdf').'logopdf.jpg';
         $this->Image($image_pdf, 6, 55, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Set font
         $this->SetFont($this->family, '', 8);
@@ -165,14 +174,12 @@ class Condicioncuenta_pdf extends TCPDF {
             $this->MultiCell(59, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(59, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(59, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $h = $this->_height(array(
-                'txt' => 'Empresa: '.$this->empresa['nombre'],
-                'w' => 86
-            ));
+            $h = $this->CI->Formato->height($this, 'Empresa: '.$this->empresa['nombre'], 86);
             $this->MultiCell(83, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
             $this->MultiCell(118, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(59, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
+            if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente, 'H');
             if(is_array($dataPdf) && array_key_exists('filas', $dataPdf) && (array_key_exists('identificacion', $dataPdf['filas'][0]) || array_key_exists('base', $dataPdf['filas'][0]))){
                 $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
                 if($dataPdf['exedido'] == 1){
@@ -229,43 +236,6 @@ class Condicioncuenta_pdf extends TCPDF {
         $this->MultiCell(32.5, '', 'Porcentaje', TRUE, 'L', TRUE, 0);
         $this->MultiCell(32.5, '', 'Esperado', TRUE, 'L', TRUE, 0);
         $this->MultiCell(32.5, '', 'Diferencia', TRUE, 'L', TRUE, 1);        
-    }
-    
-    private function _height($param) {
-        extract($param);
-        // store current object
-        $this->startTransaction();
-        // store starting values
-        $start_y = $this->GetY();
-        $start_page = $this->getPage();
-        // call your printing functions with your parameters
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        $this->MultiCell($w, NULL, $txt, 1, 'L', false, 1, '', '', true, 0, true);
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // get the new Y
-        $end_y = $this->GetY();
-        $end_page = $this->getPage();
-        // calculate height
-        $height = 0;
-        if ($end_page == $start_page) {
-            $height = $end_y - $start_y;
-        } else {
-            for ($page=$start_page; $page <= $end_page; ++$page) {
-                $this->setPage($page);
-                if ($page == $start_page) {
-                    // first page
-                    $height = $this->h - $start_y - $this->bMargin;
-                } elseif ($page == $end_page) {
-                    // last page
-                    $height = $end_y - $this->tMargin;
-                } else {
-                    $height = $this->h - $this->tMargin - $this->bMargin;
-                }
-            }
-        }
-        // restore previous object
-        $this->rollbackTransaction(true);
-        return $height;
     }
 }
 

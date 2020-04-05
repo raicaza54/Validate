@@ -651,3 +651,29 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 04/04/2020
+NUEVAS FUNCIONALIDADES
+▪ Actualización de datos de empresa
+▪ Almacenamiento de logotipo JPG,JPEG,BMP
+▪ Eleccion de color para graficos en PDF Ley de Benford
+
+ACTUALIZACIÓN
+▪ PDF Ley de Benford, se añade logotipo de empresa si el cliente lo decide
+▪ PDF Araña, se añade logotipo de empresa si el cliente lo decide
+▪ PDF Listas de Control, se añade logotipo de empresa si el cliente lo decide
+▪ PDF Indicadores de Cambio, se añade logotipo de empresa si el cliente lo decide
+▪ PDF Condición de Cuenta, se añade logotipo de empresa si el cliente lo decide
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Indicadores de Confianza
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
