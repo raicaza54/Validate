@@ -277,7 +277,7 @@ class Manipulacion {
         $analisis['dsri'] = ['value' => 1.031, 'min' => 'Neutral', 'max' => 'Evaluar reconocimiento de ingresos'];
         $analisis['gmi']  = ['value' => 1.014, 'min' => 'Neutral', 'max' => '¿Porque se deterioran los margenes?'];
         $analisis['aqi']  = ['value' => 1.039, 'min' => 'Neutral', 'max' => 'Evaluar capitalización de gastos'];
-        $analisis['sgi']  = ['value' => 1.134, 'min' => 'Neutral', 'max' => 'Evaluar capitalización de gastos'];
+        $analisis['sgi']  = ['value' => 1.134, 'min' => 'Neutral', 'max' => 'Alto crecimiento de ventas'];
         $analisis['depi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Tasa de depreciación decreciente'];
         $analisis['sgai'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Gastos crecientes'];
         $analisis['lvgi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Mayor endeudamiento'];

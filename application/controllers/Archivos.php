@@ -173,6 +173,45 @@ class Archivos extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
+    public function exportarspider() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',         'Archivo',    'required|max_length[20]|numeric');
+            $this->form_validation->set_rules('cuenta',     'Cuenta',     'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('spider',     'Araña',      'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('naturaleza', 'Naturaleza', 'required|in_list[d,c]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $writer = WriterEntityFactory::createXLSXWriter(Type::XLSX);
+            $writer->setShouldUseInlineStrings(true);
+            $writer->setShouldUseInlineStrings(false);
+            $archivo = $this->config->item('path_resultados').uniqid('SPIEXP').'.xlsx';
+            $writer->openToFile($archivo);
+            $spider = $this->Archivos_model->getRelacion($post);
+            if(is_array($spider) && count($spider) > 0){
+                foreach ($spider as $value) {
+                    $rowFromValues = WriterEntityFactory::createRowFromArray($value);
+                    $writer->addRow($rowFromValues);                                    
+                }
+            }
+            $writer->close();
+            $response["data"] = ['url' => str_replace('.xlsx', '', base_url('archivos/v1/relacion/'.basename($archivo)))];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
     public function urlDigito($file, $dwl = 'r') {
         $file = xss_clean($file);
         $file = strip_tags($file);
@@ -192,7 +231,28 @@ class Archivos extends CI_Controller {
         }elseif($dwl == 'd'){
             download($this->config->item('path_resultados').$file.'.xlsx', $filename);
         }
-    }    
+    }
+    
+    public function urlRelacion($file, $dwl = 'r') {
+        $file = xss_clean($file);
+        $file = strip_tags($file);
+        if(!file_exists($this->config->item('path_resultados').$file.'.xlsx') || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        if(!in_array($dwl,['r', 'd'])){
+            show_error("Archivo no encontrado", 404);
+        }
+        $filename = 'Relacion.xlsx';
+        if($dwl == 'r'){
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: inline; filename="'.$filename.'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+            readfile($this->config->item('path_resultados').$file.".xlsx");
+        }elseif($dwl == 'd'){
+            download($this->config->item('path_resultados').$file.'.xlsx', $filename);
+        }
+    }
     
     public function descargar() {
         if (!$this->input->is_ajax_request()) {

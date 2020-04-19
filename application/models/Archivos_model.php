@@ -447,6 +447,24 @@ class Archivos_model extends CI_Model {
         return $query->result_array();
     }
     
+    public function getRelacion($postData) {
+        $columnas = $this->archivo->columnas($postData['id'], TRUE);
+        if($columnas['archivo']['formato'] == 'debehaber'){
+            $postData['campoAnalizar'] = $columnas['debehaber'];
+        }
+        $this->db->select($columnas['columnSql']);
+        $this->db->from($this->table);
+        $this->db->where('fk_archivos', $postData['id']);
+        $tmp = $this->session->userdata('clientes_id').$this->session->userdata('users_id');
+        $this->db->where_in('id', 'SELECT tmp1.id_detalle FROM spider_'.$tmp.' tmp1 WHERE tmp1.grupo IN (SELECT tmp2.grupo FROM spider_'.$tmp.' tmp2 WHERE tmp2.cuenta = '.$postData['cuenta'].' AND tmp2.naturaleza = \''.$postData['naturaleza'].'\')', FALSE);        
+        $this->db->group_start('', ' OR ');
+        $this->db->where('linea', 'e');
+        $this->db->where('fk_archivos', $postData['id']);
+        $this->db->group_end();
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
     public function dataTemp($tabla, $batch) {
         $this->db->insert_batch($tabla, $batch);
     }
