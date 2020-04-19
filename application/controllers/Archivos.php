@@ -1027,6 +1027,41 @@ class Archivos extends CI_Controller {
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
     }
+    
+    public function relacionspider() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',         'Archivo',    'required|max_length[20]|numeric');
+            $this->form_validation->set_rules('cuenta',     'Cuenta',     'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('spider',     'Araña',      'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('naturaleza', 'Naturaleza', 'required|in_list[d,c]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $items = $this->Archivos_model->getRows($post);
+            if (!is_array($items)) {
+                throw new Exception("No existen datos para mostrar", 202);
+            }
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
 
     private function tryCatch($exc, $response) {
         $response["status"] = $exc->getCode();

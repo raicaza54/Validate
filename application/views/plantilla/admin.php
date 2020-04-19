@@ -42,7 +42,7 @@
         </nav>
         <?php $this->load->view('plantilla/admin-menu'); ?>
         <!-- Sidebar -->
-        <div style="min-width: 1334px; position: relative;">
+        <div style="min-width: 1280px; position: relative;">
             <nav id="sidebar" style="min-width: 378px">
                 <ul class="nav nav-tabs" id="explorador" role="tablist">
                     <li class="nav-item">
@@ -85,7 +85,7 @@
                     </div>
                 </div>            
             </nav>
-            <div id="content" style="z-index: 1030; min-width: 956px;">
+            <div id="content" style="z-index: 1030; min-width: 500px;">
                 <?= $body ?>
             </div>
         </div>

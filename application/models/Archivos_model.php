@@ -117,6 +117,10 @@ class Archivos_model extends CI_Model {
                 $this->db->group_end();
             }
         }
+        if(array_key_exists('spider', $postData) && array_key_exists('cuenta', $postData) && array_key_exists('naturaleza', $postData)){
+            $tmp = $this->session->userdata('clientes_id').$this->session->userdata('users_id');
+            $this->db->where_in('id', 'SELECT tmp1.id_detalle FROM spider_'.$tmp.' tmp1 WHERE tmp1.grupo IN (SELECT tmp2.grupo FROM spider_'.$tmp.' tmp2 WHERE tmp2.cuenta = '.$postData['cuenta'].' AND tmp2.naturaleza = \''.$postData['naturaleza'].'\')', FALSE);
+        }
         $i = 0;
         // loop searchable columns 
         foreach ($this->column_search as $item) {
@@ -162,7 +166,7 @@ class Archivos_model extends CI_Model {
         if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
             $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
-        $colum     = $this->db->select('tipo, columnas, formato')->where('id', $id)->get('clie__archivos')->row_array();
+        $colum     = $this->db->select('id, tipo, columnas, formato')->where('id', $id)->get('clie__archivos')->row_array();
         $columnDef = json_decode($colum['columnas'], TRUE);
         $tipo      = $colum['tipo'];
         $formato   = $colum['formato'];
@@ -306,7 +310,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getDetalleIdSpider($id, $column, $comp) {
-        $this->db->select($column['string']);
+        $this->db->select($column['string'].', id');
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
         if(is_array($comp) && count($comp)){
@@ -441,5 +445,29 @@ class Archivos_model extends CI_Model {
         $this->db->group_end();
         $query = $this->db->get();
         return $query->result_array();
+    }
+    
+    public function dataTemp($tabla, $batch) {
+        $this->db->insert_batch($tabla, $batch);
+    }
+    
+    public function tableTemp($id) {
+        //CREATE TEMPORARY TABLE IF NOT EXISTS
+        //CREATE TABLE IF NOT EXISTS
+        $this->db->query('
+            CREATE TABLE IF NOT EXISTS spider_'.$id.'(
+               id INT NOT NULL AUTO_INCREMENT,
+               id_detalle INT NOT NULL,
+               grupo VARCHAR(100) NULL,
+               cuenta VARCHAR(100) NULL,
+               tipo VARCHAR(100) NULL,
+               valor VARCHAR(100) NULL,
+               naturaleza VARCHAR(5) NULL,
+               PRIMARY KEY ( id ),
+               INDEX (cuenta),
+               INDEX (id_detalle)
+            );
+        ');
+        $this->db->truncate('spider_'.$id);
     }
 }

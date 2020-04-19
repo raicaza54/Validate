@@ -24,6 +24,7 @@ class Spider {
     public function __construct() {
         set_time_limit(0);
         $this->CI = & get_instance();
+        $this->CI->load->model('Archivos_model');
     }
     
     public function procesar($cuenta) {
@@ -36,6 +37,7 @@ class Spider {
                 'cuenta' => $value['cta'],
                 'tipo'   => $value['tipo'],
                 'valor'  => $value['valor'],
+                'id'     => $value['id'],
             );
         }
         $tabla_grupos = '';
@@ -160,8 +162,10 @@ class Spider {
             }
         }
         //$this->datos['tabla'] = $grupos_clasificado;
-//        $this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
-//        $this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
+        //$this->exportEtpCsv($grupos_clasificado['credito'], 'credito');
+        //$this->exportEtpCsv($grupos_clasificado['debito'], 'debito');
+        $this->dataTemporal($grupos_clasificado['credito'], 'c');
+        $this->dataTemporal($grupos_clasificado['debito'], 'd');
 //        $tabla_grupos_clasificados = '';
 //        foreach ($grupos_clasificado as $key => $value) {
 //            $tabla_grupos_clasificados .= '############# ' . strtoupper($key) . ' #############';
@@ -240,9 +244,9 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['debito'])){
             foreach ($spider[$cuenta]['debito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-debito" '.$this->title($key).'  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-                $lineas              .= '<line class="lin-debito" x1="250" y1="' . $t . '" x2="375" y2="' . $hsvg . '" style="stroke:#000; stroke-width:'.(($debitoCount == 1) ? 1.01 : 0.7).'"></line>';
-                $t                  += 45;
+                $this->datos['body'] .= '<div class="spd-debito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'d\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-debito" '.$this->title($key).'  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $lineas              .= '<line class="lin-debito" x1="280" y1="' . $t . '" x2="405" y2="' . $hsvg . '" style="stroke:#000; stroke-width:'.(($debitoCount == 1) ? 1.01 : 0.7).'"></line>';
+                $t                   += 45;
                 $x++;
                 $total_porcentaje    += $value['porcentaje'];
                 $total_dinero        += $value['valor'];
@@ -262,9 +266,9 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['credito'])){
             foreach ($spider[$cuenta]['credito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-credito" '.$this->title($key).' style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
-                $lineas              .= '<line class="lin-credito" x1="625" y1="' . $hsvg . '" x2="750" y2="' . $t . '" style="stroke:#000; stroke-width:'.(($creditoCount == 1) ? 1.01 : 0.7).'"></line>';
-                $t                  += 45;
+                $this->datos['body'] .= '<div class="spd-credito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'c\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-credito" '.$this->title($key).' style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $lineas              .= '<line class="lin-credito" x1="655" y1="' . $hsvg . '" x2="780" y2="' . $t . '" style="stroke:#000; stroke-width:'.(($creditoCount == 1) ? 1.01 : 0.7).'"></line>';
+                $t                   += 45;
                 $x++;
                 $total_porcentaje    += $value['porcentaje'];
                 $total_dinero        += $value['valor'];            
@@ -286,7 +290,7 @@ class Spider {
                 $u += 29;
             }
         }
-        $this->datos['body'] .= '<svg width="1000" height="' . (($c * 45) - 30) . '" viewBox="0 0 1000 ' . (($c * 45) - 30) . '">';
+        $this->datos['body'] .= '<svg width="1060" height="' . (($c * 45) - 30) . '" viewBox="0 0 1060 ' . (($c * 45) - 30) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
         } catch (Exception $exc){
@@ -318,16 +322,34 @@ class Spider {
         return $title;
     }
     
+    private function dataTemporal($data, $tipo) {
+        $datos = false;
+        foreach ($data as $keydat) {
+            foreach ($keydat as $key) {
+                $datos[] = [
+                    'grupo'      => $key['grupo'],
+                    'cuenta'     => $key['cuenta'],
+                    'tipo'       => $key['tipo'],
+                    'valor'      => $key['valor'],
+                    'id_detalle' => $key['id'],
+                    'naturaleza' => $tipo,
+                ];
+            }
+        }
+        if($datos)
+        $this->CI->Archivos_model->dataTemp('spider_'.$this->CI->session->userdata('clientes_id').$this->CI->session->userdata('users_id'), $datos);
+    }
+    
     private function exportEtpCsv($data, $archivo) {
         header("Content-type: application/csv");
         header("Content-Disposition: attachment; filename=\"test" . ".csv\"");
         header("Pragma: no-cache");
         header("Expires: 0");
         $handle = fopen(APPPATH.'logs/'.$archivo.'_'.date('YmdHis').'.csv', 'w');
-        fputcsv($handle, array("grupo", "cuenta", "tipo", "valor"), ';');
+        fputcsv($handle, array("id", "grupo", "cuenta", "tipo", "valor"), ';');
         foreach ($data as $keydat) {
             foreach ($keydat as $key) {
-                $narray = array($key["grupo"], $key["cuenta"], $key["tipo"], $key["valor"]);
+                $narray = array($key["id"], $key["grupo"], $key["cuenta"], $key["tipo"], $key["valor"]);
                 fputcsv($handle, $narray, ';');
             }
         }

@@ -180,15 +180,15 @@ class Spider_pdf extends TCPDF {
     
     private function spiderLine($html, $h) {
         $left = [
-            'x1' => 3.2,
-            'x2' => 13
+            'x1' => -1.0,
+            'x2' => 8.3
         ];
         $top = 0;
         foreach($html->find('line') as $line){
             if($line->class == 'lin-credito'){
                 $left = [
-                    'x1' => -4,
-                    'x2' => 5.7
+                    'x1' => -8,
+                    'x2' => 1.4
                 ];                
             }
             $this->Line(
@@ -249,8 +249,7 @@ class Spider_pdf extends TCPDF {
             }else{
                 $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
             }
-            $this->Output('archivo.pdf', 'I');
-            exit();
+            //$this->Output('archivo.pdf', 'I'); exit();
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;

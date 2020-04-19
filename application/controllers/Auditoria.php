@@ -147,6 +147,7 @@ class Auditoria extends CI_Controller {
                     $campoSpider  = $form['campoSpider'][0];
                 }
             }
+            $this->Archivos_model->tableTemp($this->session->userdata('clientes_id').$this->session->userdata('users_id'));
             $column = $this->archivo->columnSpider($archivoIdProcesar);
             $items = $this->Archivos_model->getDetalleIdSpider($archivoIdProcesar, $column, $comprobantes);
             $cuentas = $this->Archivos_model->getCuentasN($archivoIdProcesar, $column);            

@@ -84,6 +84,7 @@ $route['resultados/v1/url/(:any)/(r|d)']['get'] = 'resultados/url/$1/$2';
  * ------------------------------------------------------------------------- */
 $route['archivos/v1/datos']['post']              = 'archivos/datos';
 $route['archivos/v1/digito']['post']             = 'archivos/digito';
+$route['archivos/v1/relacionspider']['post']     = 'archivos/relacionspider';
 $route['archivos/v1/subir']['post']              = 'archivos/subir';
 $route['archivos/v1/preprocesar']['post']        = 'archivos/preprocesar';
 $route['archivos/v1/header']                     = 'archivos/header';

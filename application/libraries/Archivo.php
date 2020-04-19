@@ -31,6 +31,7 @@ class Archivo {
         'haber',
     ];    
     var $columnSpider = [
+        'id',
         'cta',
         'comp',
         'doc',

@@ -677,3 +677,24 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 18/04/2020
+NUEVAS FUNCIONALIDADES
+▪ Tablas de grupos de cuenta relacionada con la araña
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Exportar PDF Araña
+
+SE ESTA TRABAJANDO
+▪ Exportar tabla de grupo relacionado
+▪ Indicadores de Confianza
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
