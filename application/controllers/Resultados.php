@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
  * @Description Controlador Explorador de Resultados
  * @LastUpdate  2019-05-01
+ * http://validate.local/resultados/manipulacionPdf
  */
 class Resultados extends CI_Controller {
 
@@ -38,9 +39,31 @@ class Resultados extends CI_Controller {
             'Archivos_model',
             'Analisis_model',
             'Empresas_model',
+            'Perfil_model',
         ]);
     }
    
+    private function nn() {
+        $fp = fopen(APPPATH.'logs/distr_norm_estand_'.date('YmdHis').'.csv', 'w');
+        $k = 0.01;
+        $i = 0;
+        for ($x = -5; $x <= 4; $x++) {
+            for ($y = 0; $y <= 1000; $y++) {
+                if($x < 4.10 && $x >= -4.10){
+                    $i++;
+                    $a = numberFormat($x, 2);
+                    $b = distr_norm_estand($x);
+                    $linea = [$a, $b];                    
+                    echo 'score: '.$a.' / '.$b;
+                    fputcsv($fp, $linea, ';', '"');
+                    echo "\n";
+                }
+                $x += $k;
+            }
+        }
+        fclose($fp);
+    }
+    
     public function crear() {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
@@ -180,7 +203,7 @@ class Resultados extends CI_Controller {
             $this->form_validation->set_rules('nombre',             'Nombre de Archivo',         'required|max_length[150]');
             $this->form_validation->set_rules('idPdf',              'Código PDF',                'required|max_length[50]');
             $this->form_validation->set_rules('carpeta',            'Destino',                   'required|max_length[50]');
-            $this->form_validation->set_rules('archivoId',          'Código Archivo',            'required|max_length[50]');
+            $this->form_validation->set_rules('archivoId',          'Código Archivo',            'max_length[50]');
             $this->form_validation->set_rules('pdfBenford',         'Archivo Benford',           'max_length[50]');
             $this->form_validation->set_rules('pdfSpider',          'Archivo Spider',            'max_length[50]');
             $this->form_validation->set_rules('pdfManipulacion',    'Archivo Manipulacion',      'max_length[50]');
@@ -236,9 +259,10 @@ class Resultados extends CI_Controller {
             }
             if(is_bool($consecutivo) && $consecutivo === FALSE){
                 throw new Exception("Tenemos un problema con la generación del reporte, intente nuevamente", 202);
-            }            
-            $this->empresa =  $this->Empresas_model->getId($this->session->userdata('empresaId'));
-            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf'], $consecutivo);
+            }
+            $this->empresa = $this->Empresas_model->getId($this->session->userdata('empresaId'));
+            $cliente = $this->Perfil_model->getUsuario($this->session->userdata('users_id'));
+            $rPdf = $this->{$tipo.'Pdf'}($pdfAnalisis, $post['idPdf'], $consecutivo, $cliente);
             if($rPdf == FALSE){
                 throw new Exception("Tenemos un problema, el archivo no pudo ser creado", 202);
             }
@@ -272,7 +296,7 @@ class Resultados extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
-    public function benfordPdf($analisis, $idPdf, $consecutivo) {
+    private function benfordPdf($analisis, $idPdf, $consecutivo, $cliente) {
         if (!$this->input->is_ajax_request()) show_404();
         if (count($analisis) != 3) {
             return FALSE;
@@ -300,6 +324,7 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
         ), 'pdf');
         $data = [];
         if (!(is_array($d1) && (count($d1) > 0)) || !(is_array($d2) && (count($d2) > 0)) || !(is_array($d12) && (count($d12) > 0))) {
@@ -313,7 +338,7 @@ class Resultados extends CI_Controller {
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function manipulacionPdf($analisis, $idPdf, $consecutivo) {
+    private function manipulacionPdf($analisis, $idPdf, $consecutivo, $cliente) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $manipulacion) {
@@ -329,13 +354,14 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
         ), 'pdf');
         $data = [];
         $dataPdf = [$pdf];
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function condicioncuentaPdf($analisis, $idPdf, $consecutivo) {
+    private function condicioncuentaPdf($analisis = '', $idPdf = '', $consecutivo = '', $cliente = '') {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $condicioncuenta) {
@@ -351,13 +377,14 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
         ), 'pdf');
         $data = [];
         $dataPdf = $pdf;
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function listascontrolPdf($analisis, $idPdf, $consecutivo) {
+    private function listascontrolPdf($analisis, $idPdf, $consecutivo, $cliente) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $listascontrol) {
@@ -373,20 +400,22 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'cliente'     => $cliente
         ), 'pdf');
         $data = [];
         $dataPdf = [$pdf];
         return $this->pdf->run($data, $dataPdf);
     }
     
-    public function spiderPdf($analisis, $idPdf, $consecutivo) {
+    private function spiderPdf($analisis, $idPdf, $consecutivo, $cliente) {
         if (!$this->input->is_ajax_request()) show_404();
         $e = []; $pdf = [];
         foreach ($analisis as $spider) {
             $pdf = unserialize($spider['analisis']);
         }
-
-        $alto = 279.000; $a = 0;
+        $extra = 0;
+        if($cliente['empr_usarlogotipo'] == 'si') $extra = 20;
+        $alto = 279.000 + $extra; $a = 0;
         if(is_array($pdf) && array_key_exists('alto', $pdf)){
             $a = ($pdf['alto'] * 279) / 35;
             if($a > $alto){
@@ -403,6 +432,7 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
         ), 'pdf');
         $data = [];
         $dataPdf = [$pdf];

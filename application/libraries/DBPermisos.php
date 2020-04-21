@@ -65,6 +65,7 @@ class DBPermisos {
             ['id' => 401, 'permiso' => 'mal-analisis-benford', 'observacion' => ''] + $userDate,
             ['id' => 402, 'permiso' => 'mal-analisis-spider', 'observacion' => ''] + $userDate,
             ['id' => 403, 'permiso' => 'mal-analisis-manipulacion', 'observacion' => ''] + $userDate,
+            ['id' => 411, 'permiso' => 'mal-analisis-indicadores', 'observacion' => ''] + $userDate,
             ['id' => 404, 'permiso' => 'mal-analisis-materialidad', 'observacion' => ''] + $userDate,
             ['id' => 405, 'permiso' => 'mal-analisis-listas', 'observacion' => ''] + $userDate,
             ['id' => 406, 'permiso' => 'mal-documentos-dictamen', 'observacion' => ''] + $userDate,
@@ -128,6 +129,7 @@ class DBPermisos {
             ['fk_permisos' => 402, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 403, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 405, 'fk_groups' => 3] + $userDate,
+            //['fk_permisos' => 411, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 3] + $userDate,
             ['fk_permisos' => 700, 'fk_groups' => 3] + $userDate,
         ];
@@ -154,6 +156,7 @@ class DBPermisos {
             ['fk_permisos' => 403, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 405, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 410, 'fk_groups' => 2] + $userDate,
+            //['fk_permisos' => 411, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 600, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 601, 'fk_groups' => 2] + $userDate,
             ['fk_permisos' => 602, 'fk_groups' => 2] + $userDate,

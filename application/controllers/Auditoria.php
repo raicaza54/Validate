@@ -112,7 +112,7 @@ class Auditoria extends CI_Controller {
             }else{
                 $this->form_validation->set_rules('archivoIdProcesar', 'Archivo', 'required|max_length[50]|min_length[10]');
                 $this->form_validation->set_rules('campoSpider[]', 'Cuenta(s)', 'required|alpha_dash');
-                $this->form_validation->set_rules('comprobantes[]', 'Comprobante(s)', 'alpha_dash');                
+                $this->form_validation->set_rules('comprobantes[]', 'Comprobante(s)', 'alpha_dash');
             }
             if ($this->form_validation->run() == FALSE){
                 throw new Exception(validation_errors('',''), 202);
@@ -147,6 +147,7 @@ class Auditoria extends CI_Controller {
                     $campoSpider  = $form['campoSpider'][0];
                 }
             }
+            $this->Archivos_model->tableTemp($this->session->userdata('clientes_id').$this->session->userdata('users_id'));
             $column = $this->archivo->columnSpider($archivoIdProcesar);
             $items = $this->Archivos_model->getDetalleIdSpider($archivoIdProcesar, $column, $comprobantes);
             $cuentas = $this->Archivos_model->getCuentasN($archivoIdProcesar, $column);            
@@ -178,6 +179,90 @@ class Auditoria extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
+    }
+    
+    public function editarConfianza() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;        
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(count($indicadores) <= 5){
+                throw new Exception("Tenemos un problema, los datos no pueden ser procesados son incompletos", 202);
+            }
+            $response["data"] = $indicadores;
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    
+    public function confianza() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        set_time_limit(0);
+        $response = $this->response;
+        $estructura = [];
+        $errores = [];
+        try {
+            $post = $this->input->post();
+            foreach ($post['form'] as $value) {
+                $estructura[$value['name']] = str_replace('.','',$value['value']);
+                $estructura[$value['name']] = str_replace(',','.',$estructura[$value['name']]);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(($estructura['acorrientest'] + $estructura['anocorrientest']) != $indicadores['suma_acorrientes_anocorrientes']['t']){
+                $errores[] = 'acorrientest';
+                $errores[] = 'anocorrientest';
+            }
+            if(($estructura['acorrientest1'] + $estructura['anocorrientest1']) != $indicadores['suma_acorrientes_anocorrientes']['t-1']){
+                $errores[] = 'acorrientest1';
+                $errores[] = 'anocorrientest1';
+            }
+            
+            if(($estructura['obligacionesfct'] + $estructura['obligacionesfnoct'] + $estructura['otrospasivosct'] + $estructura['pnocorrientest']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t']){
+                $errores[] = 'obligacionesfct';
+                $errores[] = 'obligacionesfnoct';
+                $errores[] = 'otrospasivosct';
+                $errores[] = 'pnocorrientest';
+            }
+            if(($estructura['obligacionesfct1'] + $estructura['obligacionesfnoct1'] + $estructura['otrospasivosct1'] + $estructura['pnocorrientest1']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t-1']){
+                $errores[] = 'obligacionesfct1';
+                $errores[] = 'obligacionesfnoct1';
+                $errores[] = 'otrospasivosct1';
+                $errores[] = 'pnocorrientest1';
+            }
+            throw new Exception("Procesando calculos", 202);
+            
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $indicadores = $this->manipulacion->indicadores($post['balances']);
+            if(!is_array($indicadores)){
+                throw new Exception("Tenemos un problema, los datos no pueden ser procesados", 202);
+            }            
+            
+            $response["data"] = '';
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
     }
     
     public function manipulacion() {
@@ -242,6 +327,8 @@ class Auditoria extends CI_Controller {
                 throw new Exception("Algo no anda bien, el archivo no posee filas para analizar", 202);
             }
             $this->benford->data = $items;
+            $this->benford->archivoIdProcesar = $form['archivoIdProcesar'];
+            $this->benford->campoAnalizar = $form['campoAnalizar'];
             $tabla = $this->benford->procesar($form['digito']);
             if(is_bool($tabla) || (($tabla['d1'] == FALSE) && ($tabla['d2'] == FALSE) && ($tabla['d12'] == FALSE))){
                 throw new Exception("Algo no anda bien, la columna seleccionada no fue posible procesarla", 202);

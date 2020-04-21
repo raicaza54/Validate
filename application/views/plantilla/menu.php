@@ -70,7 +70,7 @@
                     <span>Buscar Siguiente</span>
                 </div>
                 <div class="icono <?=$this->permisos->viewaccess('mda-busqueda-ir')?>" id="mda-busqueda-ir">
-                    <i class="fab fa-searchengin"></i>
+                    <i class="fas fa-terminal"></i>
                     <span>Ir a</span>
                 </div>
                 <div class="titulo">B&uacute;squeda</div>
@@ -94,10 +94,6 @@
                     <i class="fas fa-spider"></i>
                     <span>Araña</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-manipulacion')?>" id="mal-analisis-manipulacion" onClick="MANIPULACION.methods.parametros(this);">
-                    <i class="fas fa-user-secret"></i>
-                    <span>Manipulaci&oacute;n</span>
-                </div>
                 <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas" onClick="LISTASCONTROL.methods.consulta(this);">
                     <i class="fas fa-tasks"></i>
                     <span>Listas de Control</span>
@@ -105,6 +101,18 @@
                 <div class="titulo">An&aacute;lisis de datos</div>
             </div>
             <div class="menu-separador"></div>
+            <div class="menu-card">
+                <div class="d-flex flex-column">
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-manipulacion')?>" id="mal-analisis-manipulacion" onClick="MANIPULACION.methods.parametros(this);">
+                        <i class="fas fa-user-secret"></i> Indicadores de Cambio
+                    </span>                    
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-indicadores')?>" id="mal-analisis-indicadores" onClick="MANIPULACION.methods.parametrosConfianza(this);">
+                        <i class="fas fa-book"></i> Indicadores de Confianza
+                    </span>                    
+                </div>
+                <div class="titulo">Manipulaci&oacute;n</div>
+            </div>
+            <div class="menu-separador"></div>            
             <div class="menu-card">
                 <div class="d-flex flex-column">
                     <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond" onClick="CONDICION.methods.consulta(this)">

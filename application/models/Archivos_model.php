@@ -117,6 +117,10 @@ class Archivos_model extends CI_Model {
                 $this->db->group_end();
             }
         }
+        if(array_key_exists('spider', $postData) && array_key_exists('cuenta', $postData) && array_key_exists('naturaleza', $postData)){
+            $tmp = $this->session->userdata('clientes_id').$this->session->userdata('users_id');
+            $this->db->where_in('id', 'SELECT tmp1.id_detalle FROM spider_'.$tmp.' tmp1 WHERE tmp1.grupo IN (SELECT tmp2.grupo FROM spider_'.$tmp.' tmp2 WHERE tmp2.cuenta = '.$postData['cuenta'].' AND tmp2.naturaleza = \''.$postData['naturaleza'].'\')', FALSE);
+        }
         $i = 0;
         // loop searchable columns 
         foreach ($this->column_search as $item) {
@@ -162,7 +166,7 @@ class Archivos_model extends CI_Model {
         if(($campoAnalizar != '') && (array_key_exists($campoAnalizar, $encabezado))){
             $e = [$campoAnalizar => $encabezado[$campoAnalizar]] + $e;
         }
-        $colum     = $this->db->select('tipo, columnas, formato')->where('id', $id)->get('clie__archivos')->row_array();
+        $colum     = $this->db->select('id, tipo, columnas, formato')->where('id', $id)->get('clie__archivos')->row_array();
         $columnDef = json_decode($colum['columnas'], TRUE);
         $tipo      = $colum['tipo'];
         $formato   = $colum['formato'];
@@ -177,7 +181,9 @@ class Archivos_model extends CI_Model {
     public function setColumnas($data, $form, $id) {
         $this->db->set('columnas', "'".$data."'", FALSE); 
         $this->db->set('tipo', $form['archivoTipo']); 
-        $this->db->set('formato', $form['archivoFormato']); 
+        if(array_key_exists('archivoFormato', $form)){
+            $this->db->set('formato', $form['archivoFormato']);
+        }
         $this->db->where('id', $id);
         return $this->db->update('clie__archivos');
     }
@@ -304,7 +310,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getDetalleIdSpider($id, $column, $comp) {
-        $this->db->select($column['string']);
+        $this->db->select($column['string'].', id');
         $this->db->where('fk_archivos', $id);
         $this->db->where('linea', 'f');
         if(is_array($comp) && count($comp)){
@@ -325,15 +331,31 @@ class Archivos_model extends CI_Model {
         }
     }
     
+    public function getDetalleIdBadBenford($id, $campoAnalizar, $numero) {
+        if($campoAnalizar !== FALSE){
+            $this->db->select($campoAnalizar.' AS valor, COUNT(*) AS cantidad');
+            $this->db->where('fk_archivos', $id);
+            $this->db->where('linea', 'f');
+            $this->db->like($campoAnalizar, $numero, 'after');
+            $this->db->group_by($campoAnalizar);
+            $this->db->order_by('cantidad', 'DESC');
+            $this->db->limit(10, 0);
+            $r = $this->db->get('clie__archivos_detalle')->result_array();
+            return $r;
+        }else{
+            return FALSE;
+        }
+    }
+    
     public function insert_preprocesar($batch) {
         $this->db->insert('clie__archivos', $batch['archivo']);
         return $this->db->affected_rows() == 1;
     }
     
     public function insert_excel($batch, $id) {
-        $detall = $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
+        //$detall = $this->db->insert_batch('clie__archivos_detalle', $batch['detalle']);
         $this->db->update('clie__carpetas', ['disabled' => 0], ['archivos_id' => $id, 'deleted_at' => 0]);
-        return $detall;
+        return TRUE;
     }
     
     public function update_excel($data, $id) {
@@ -355,7 +377,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getById($id) {
-        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name');
+        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name, pid');
         $this->db->where('created_clie', $this->session->userdata('clientes_id'));
         $this->db->where('id', $id);
         $e = $this->db->get('clie__archivos')->row_array();
@@ -401,4 +423,69 @@ class Archivos_model extends CI_Model {
         return $r;
     }
     
+    public function getDigito($postData) {
+        $columnas = $this->archivo->columnas($postData['id'], TRUE);
+        if($columnas['archivo']['formato'] == 'debehaber'){
+            $postData['campoAnalizar'] = $columnas['debehaber'];
+        }
+        $this->db->select($columnas['columnSql']);
+        $this->db->from($this->table);
+        $this->db->where('fk_archivos', $postData['id']);
+        $this->db->group_start();
+        if((array_key_exists('digito', $postData)) && ($postData['digito'] !== NULL) && is_numeric($postData['digito']) && ($postData['grafica'] !== NULL) && is_numeric($postData['grafica'])){
+            if(($postData['grafica'] == 1) || ($postData['grafica'] == 12)){
+                $this->db->like($postData['campoAnalizar'], $postData['digito'], 'after');
+            }elseif($postData['grafica'] == 2){
+                $this->db->like('SUBSTR('.$postData['campoAnalizar'].', 2, 1)', $postData['digito'], 'before', FALSE);
+            }else{
+                return FALSE;
+            }
+        }
+        $this->db->or_where('linea', 'e');
+        $this->db->group_end();
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    public function getRelacion($postData) {
+        $columnas = $this->archivo->columnas($postData['id'], TRUE);
+        if($columnas['archivo']['formato'] == 'debehaber'){
+            $postData['campoAnalizar'] = $columnas['debehaber'];
+        }
+        $this->db->select($columnas['columnSql']);
+        $this->db->from($this->table);
+        $this->db->where('fk_archivos', $postData['id']);
+        $tmp = $this->session->userdata('clientes_id').$this->session->userdata('users_id');
+        $this->db->where_in('id', 'SELECT tmp1.id_detalle FROM spider_'.$tmp.' tmp1 WHERE tmp1.grupo IN (SELECT tmp2.grupo FROM spider_'.$tmp.' tmp2 WHERE tmp2.cuenta = '.$postData['cuenta'].' AND tmp2.naturaleza = \''.$postData['naturaleza'].'\')', FALSE);        
+        $this->db->group_start('', ' OR ');
+        $this->db->where('linea', 'e');
+        $this->db->where('fk_archivos', $postData['id']);
+        $this->db->group_end();
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    public function dataTemp($tabla, $batch) {
+        $this->db->insert_batch($tabla, $batch);
+    }
+    
+    public function tableTemp($id) {
+        //CREATE TEMPORARY TABLE IF NOT EXISTS
+        //CREATE TABLE IF NOT EXISTS
+        $this->db->query('
+            CREATE TABLE IF NOT EXISTS spider_'.$id.'(
+               id INT NOT NULL AUTO_INCREMENT,
+               id_detalle INT NOT NULL,
+               grupo VARCHAR(100) NULL,
+               cuenta VARCHAR(100) NULL,
+               tipo VARCHAR(100) NULL,
+               valor VARCHAR(100) NULL,
+               naturaleza VARCHAR(5) NULL,
+               PRIMARY KEY ( id ),
+               INDEX (cuenta),
+               INDEX (id_detalle)
+            );
+        ');
+        $this->db->truncate('spider_'.$id);
+    }
 }

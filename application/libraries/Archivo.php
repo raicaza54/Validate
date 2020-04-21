@@ -31,6 +31,7 @@ class Archivo {
         'haber',
     ];    
     var $columnSpider = [
+        'id',
         'cta',
         'comp',
         'doc',
@@ -43,10 +44,13 @@ class Archivo {
     public function __construct() {
         set_time_limit(0);
         $this->CI = & get_instance();
-        $this->CI->load->model('Archivos_model');
+        $this->CI->load->model([
+            'Archivos_model',
+            'Empresas_model',
+        ]);
     }
     
-    public function columnas($id) {
+    public function columnas($id, $header = FALSE) {
         $column = $this->CI->Archivos_model->getEncabezado($id);
         if(!is_array($column)){
             return FALSE;
@@ -61,7 +65,7 @@ class Archivo {
             $columnDefs = json_decode($columnas['columnas'], TRUE);
             foreach ($column as $key => $value) {
                 if(array_key_exists($value, $columnDefs)){
-                    $col = $this->columnsDef($columnDefs[$value], $value, $key);
+                    $col = $this->columnsDef($columnDefs[$value], $value, $key, $header);
                     $columnSql[$key]  = $col['sql'];
                     $columnDef[$key] = $col['def'];
                 }
@@ -101,7 +105,7 @@ class Archivo {
         ];
     }
     
-    private function columnsDef($e, $key, $x) {
+    private function columnsDef($e, $key, $x, $header = FALSE) {
         $r = FALSE;
         switch ($e[1]) {
             case 'date':
@@ -113,7 +117,7 @@ class Archivo {
                 break;
             case 'float':
                 $r = [
-                    'sql' => "FORMAT(".$key.", 2, 'de_DE') AS ".$key,
+                    'sql' => ($header == FALSE ? "FORMAT(".$key.", 2, 'de_DE') AS ".$key : "IF($key REGEXP '^[0-9]+$',FORMAT($key, 2, 'de_DE'),$key) AS $key"),
                     'def' => ['targets' => $x, 'className' => "dt-body-right"],
                 ];
                 break;
@@ -302,5 +306,48 @@ class Archivo {
             return FALSE;
         }
         return $columnString;
+    }
+        
+    /**
+     * Aplica la configuracion de las columnas por defecto
+     * @param type $empresaId
+     * @param type $archivoId
+     * @param type $tipo mov,blp,cxp,cxc
+     */
+    public function columnaCompare($empresaId, $archivoId, $tipo) {
+        $config     = [];
+        $formato    = NULL;
+        $cliente_id = $this->CI->session->userdata('clientes_id');
+        $users_id   = $this->CI->session->userdata('users_id');
+        $columna    = $this->CI->Empresas_model->configGetEmpresa($users_id, $empresaId, $cliente_id);
+        $archivo    = $this->CI->Archivos_model->getEncabezado($archivoId);
+        if($tipo == 'blp'){
+            if($columna['columnas_blp'] != NULL && strlen($columna['columnas_blp']) > 5){
+                $config = unserialize($columna['columnas_blp']);
+            }
+        }elseif($tipo == 'mov'){
+            if($columna['columnas_movnat'] != NULL && strlen($columna['columnas_movnat']) > 5){
+                $config = unserialize($columna['columnas_movnat']);
+                $formato = 'naturaleza';
+            }elseif($columna['columnas_movdhb'] != NULL && strlen($columna['columnas_movdhb']) > 5){
+                $config = unserialize($columna['columnas_movdhb']);
+                $formato = 'debehaber';
+            }
+        }else{
+            return FALSE;
+        }
+        if(count($config) > 0){
+            foreach ($config['encabezado'] as $key => $value) {
+                if(array_key_exists($key, $archivo['encabezado'])){
+                    if(mb_strtolower($archivo['encabezado'][$key], 'UTF-8') == mb_strtolower($value, 'UTF-8')){
+                       $archivo['columnDef'][$key] = $config['columnDef'][$key];
+                    }
+                }
+            }
+        }
+        $form['archivoFormato'] = $formato;
+        $form['archivoTipo'] = $tipo;
+        $this->CI->Archivos_model->setColumnas(json_encode($archivo['columnDef']), $form, $archivoId);
+        return TRUE;
     }
 }
