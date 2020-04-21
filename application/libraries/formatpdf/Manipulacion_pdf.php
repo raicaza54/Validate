@@ -48,6 +48,13 @@ class Manipulacion_pdf extends TCPDF {
     private $codigo;
     
     /**
+     * Variable para mostrar datos del cliente
+     *
+     * @var String
+     */
+    private $cliente;    
+    
+    /**
      * Variable para nombrar el archivo
      *
      * @var String
@@ -95,8 +102,10 @@ class Manipulacion_pdf extends TCPDF {
         extract($param);
         parent::__construct($orientation, $unit, $format, $unicode, $encoding, $diskcache);
         $this->CI = & get_instance();
+        $this->CI->load->library('formatpdf/Formato', NULL, 'Formato');
         $this->empresa = $empresa;
-        $this->codigo = $codigo;
+        $this->codigo  = $codigo;
+        $this->cliente = $cliente;
         $this->namePdf = $namePdf;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
@@ -105,10 +114,10 @@ class Manipulacion_pdf extends TCPDF {
     //Page header
     public function Header() {
         // Logo
-        $image_file = base_url('assets/images/pdf/logo.jpg');
+        $image_file = $this->CI->config->item('path_pdf').'logo.jpg';
         $this->Image($image_file, 9, 4.6, 20, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Logo Vertical
-        $image_pdf = base_url('assets/images/pdf/logopdf.jpg');
+        $image_pdf = $this->CI->config->item('path_pdf').'logopdf.jpg';
         $this->Image($image_pdf, 6, 90, 2.5, '', 'JPG', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
         // Set font
         $this->SetFont($this->family, '', 8);
@@ -142,7 +151,7 @@ class Manipulacion_pdf extends TCPDF {
         $this->MultiCell(NULL, NULL, 'Consecutivo: '.$this->codigo, 'T', 'R', FALSE, 1, NULL);
         //$this->Cell(0, 10, 'Page ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, FALSE, 'C', 0, '', 0, FALSE, 'T', 'M');
     }
-
+    
     public function run($data, $dataPdf) {
         extract($dataPdf);
         extract($this->backGroundColor);
@@ -165,55 +174,62 @@ class Manipulacion_pdf extends TCPDF {
             $this->MultiCell(43, NULL, 'Fecha: '.date('d/m/Y'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'Hora: '.date('h:i:s A'), TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, NULL, 'IP: '.$this->CI->input->ip_address(), TRUE, 'L', FALSE, 1);
-            $h = $this->_height(array(
-                'txt' => 'Empresa: '.$this->empresa['nombre'],
-                'w' => 86
-            ));            
+            $h = $this->CI->Formato->height($this, 'Empresa: '.$this->empresa['nombre'], 86);
             $this->MultiCell(67, $h, 'Consecutivo: '.$this->codigo, TRUE, 'L', FALSE, 0);
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
-
+            if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
+            
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && array_key_exists('mensaje', $dataPdf[0])){
                 $dataPdf = $dataPdf[0];
                 $this->MultiCell(196, NULL, $dataPdf['mensaje'], FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(109, NULL, 'MANIPULACIÓN SCORE', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, $dataPdf['m5ind'], TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(196, NULL, 'La probabilidad de los Indicadores de Cambio es '.$dataPdf['probabilidad'].'%', FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->Ln(1);
+                
+                $this->MultiCell(117, NULL, 'MANIPULACIÓN SCORE', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['m5ind'], TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
 
-                $this->MultiCell(43, NULL, 'INDICADORES', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, 'FACTOR IDEAL', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, 'FACTOR RESULTADO', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, 'PORCENTAJE DE FACTOR VARIABLE', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(60, NULL, 'INDICADORES', TRUE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, 'FACTOR IDEAL', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, 'FACTOR RESULTADO', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, 'VARIACIÓN (+/-)', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, 'ANÁLISIS', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(30, NULL, 'DSRI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['dsri']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['dsri']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['dsri']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['dsri']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['dsri']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
 
-                $this->MultiCell(21, NULL, 'DSRI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(22, NULL, number_format($dataPdf['dsri']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['dsri']['manipulacion'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['dsri']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['dsri']['aporte'],3,',','.').'%', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, 'GMI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['gmi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['gmi']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['gmi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['gmi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['gmi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
 
-                $this->MultiCell(21, NULL, 'GMI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(22, NULL, number_format($dataPdf['gmi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['gmi']['manipulacion'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['gmi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['gmi']['aporte'],3,',','.').'%', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, 'AQI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['aqi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['aqi']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['aqi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['aqi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['aqi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
 
-                $this->MultiCell(21, NULL, 'AQI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(22, NULL, number_format($dataPdf['aqi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['aqi']['manipulacion'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['aqi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['aqi']['aporte'],3,',','.').'%', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, 'SGI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['sgi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['sgi']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['sgi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['sgi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['sgi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
 
-                $this->MultiCell(21, NULL, 'SGI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(22, NULL, number_format($dataPdf['sgi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['sgi']['manipulacion'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['sgi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['sgi']['aporte'],3,',','.').'%', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
-
-                $this->MultiCell(21, NULL, 'DEPI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(22, NULL, number_format($dataPdf['depi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['depi']['manipulacion'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(33, NULL, number_format($dataPdf['depi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['depi']['aporte'],3,',','.').'%', TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, 'DEPI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['depi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['depi']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['depi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['depi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['depi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(5);
 
                 $this->MultiCell(109, NULL, 'DSRI', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);

@@ -20,7 +20,7 @@ class Condicion_model extends CI_Model {
     
     function get_condicion() {
         $this->db->where('fk_users', $this->session->userdata('users_id'));
-        $this->db->where('fk_empresa', $this->session->userdata('empresaId'));
+        $this->db->where('fk_empresas', $this->session->userdata('empresaId'));
         $this->db->where('created_clie', $this->session->userdata('clientes_id'));
         $e = $this->db->get('clie__condicion_cuenta')->row_array();
         return $e;
@@ -34,19 +34,19 @@ class Condicion_model extends CI_Model {
             'update_clie'  => $this->session->userdata('clientes_id'),
         ];
         $data = [
-            'fk_empresa' => $this->session->userdata('empresaId'),
+            'fk_empresas' => $this->session->userdata('empresaId'),
             'fk_users'   => $this->session->userdata('users_id'),
             'condicion'  => json_encode($datos)
         ] + $auditoria;
         $numrows = $this->db->where([
             'fk_users'      => $this->session->userdata('users_id'),
-            'fk_empresa'    => $this->session->userdata('empresaId'),
+            'fk_empresas'    => $this->session->userdata('empresaId'),
             'created_clie ' => $this->session->userdata('clientes_id'),
         ])->get('clie__condicion_cuenta')->num_rows();
         if($numrows > 0){
             $this->db->update('clie__condicion_cuenta', $data, [
                 'fk_users'      => $this->session->userdata('users_id'),
-                'fk_empresa'    => $this->session->userdata('empresaId'),
+                'fk_empresas'    => $this->session->userdata('empresaId'),
                 'created_clie ' => $this->session->userdata('clientes_id'),                
             ]);
         }else{

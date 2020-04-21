@@ -182,10 +182,13 @@ class Benford {
     );
     
     public $data = [];
+    public $archivoIdProcesar = 0;
+    public $campoAnalizar = 0;
     
     public function __construct() {
         set_time_limit(0);
         $this->CI = & get_instance();
+        $this->CI->load->model('Archivos_model');
     }
     
     private function formatoArray($start, $lenght) {
@@ -291,9 +294,14 @@ class Benford {
             $grf['data2'][] = number_format($value['benford'], 3, '.', '');
             $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
+        $r3 = [];
         $r2 = $this->formatoTabla($r2);
+        if(strtolower($mad_d12) != 'conformidad aceptable'){
+            $r3 = $this->formatoTablaBad($r2);
+        }
         return array(
             'tabla'       => $r2,
+            'tblBad'      => $r3,
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
@@ -343,9 +351,14 @@ class Benford {
             $grf['data2'][] = number_format($value['benford'], 3, '.', '');
             $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
+        $r3 = [];
         $r2 = $this->formatoTabla($r2);
+        if(strtolower($mad_d2) != 'conformidad aceptable'){
+            $r3 = $this->formatoTablaBad($r2);
+        }
         return array(
             'tabla'       => $r2,
+            'tblBad'      => $r3,
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
@@ -395,9 +408,14 @@ class Benford {
             $grf['data2'][] = number_format($value['benford'], 3, '.', '');
             $grf['data1'][] = number_format($value['observado'], 3, '.', '');
         }
+        $r3 = [];
         $r2 = $this->formatoTabla($r2);
+        if(strtolower($mad_d1) != 'conformidad aceptable'){
+            $r3 = $this->formatoTablaBad($r2);
+        }
         return array(
             'tabla'       => $r2,
+            'tblBad'      => $r3,
             'grafica'     => $grf,
             'x1'          => $x1,
             'x2'          => $x2,
@@ -405,6 +423,18 @@ class Benford {
             'madDescribe' => '<b>' . $mad_d1 . '</b>',
             'mad_d1'      => $this->mad_d1
         );
+    }
+    
+    private function formatoTablaBad($r2) {
+        $tbl = [];
+        if(is_array($r2) && count($r2)){
+            foreach ($r2 as $value) {
+                if(floatval($value['observado']) > floatval($value['benford'])){
+                    $tbl[$value['numero']] = $this->CI->Archivos_model->getDetalleIdBadBenford($this->archivoIdProcesar, $this->campoAnalizar, $value['numero']);
+                }
+            }
+        }
+        return $tbl;
     }
     
     private function formatoTabla($r2) {

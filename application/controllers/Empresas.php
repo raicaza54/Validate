@@ -118,16 +118,17 @@ class Empresas extends CI_Controller {
     }
     
     private function _validaciones($form) {
-        $this->form_validation->set_rules('empresa-nombre',         'Empresa',                    'required|max_length[150]');
-        $this->form_validation->set_rules('empresa-identificacion', 'Identificación',             'required|max_length[150]|callback__identificacionUnico['.$form['empresa-id'].']');
-        $this->form_validation->set_rules('empresa-direccion',      'Dirección',                  'required|max_length[500]');
-        $this->form_validation->set_rules('empresa-telefonos',      'Telefonos',                  'max_length[150]');
-        $this->form_validation->set_rules('empresa-correo',         'Correo',                     'max_length[150]');
-        $this->form_validation->set_rules('empresa-persona',        'Nombre Persona Contacto',    'required|max_length[150]');
-        $this->form_validation->set_rules('empresa-persona_tlfs',   'Teléfono Persona Contacto',  'required|max_length[150]');
-        $this->form_validation->set_rules('empresa-persona_direc',  'Dirección Persona Contacto', 'max_length[500]');
-        $this->form_validation->set_rules('empresa-persona_correo', 'Correo Persona Contacto',    'max_length[150]');
-        $this->form_validation->set_rules('empresa-observacion',    'Observaciones',              'max_length[150]');        
+        $this->form_validation->set_rules('empresa-nombre',             'Empresa',                    'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-identificacion',     'Identificación',             'required|max_length[150]|callback__identificacionUnico['.$form['empresa-id'].']');
+        $this->form_validation->set_rules('empresa-direccion',          'Dirección',                  'required|max_length[500]');
+        $this->form_validation->set_rules('empresa-telefonos',          'Telefonos',                  'max_length[150]');
+        $this->form_validation->set_rules('empresa-correo',             'Correo',                     'max_length[150]');
+        $this->form_validation->set_rules('empresa-naturaleza_credito', 'Naturaleza',                 'max_length[10]|in_list[si,no]');
+        $this->form_validation->set_rules('empresa-persona',            'Nombre Persona Contacto',    'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-persona_tlfs',       'Teléfono Persona Contacto',  'required|max_length[150]');
+        $this->form_validation->set_rules('empresa-persona_direc',      'Dirección Persona Contacto', 'max_length[500]');
+        $this->form_validation->set_rules('empresa-persona_correo',     'Correo Persona Contacto',    'max_length[150]');
+        $this->form_validation->set_rules('empresa-observacion',        'Observaciones',              'max_length[150]');        
     }
     
     public function actualizar() {

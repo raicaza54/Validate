@@ -18,14 +18,15 @@ class Perfil_model extends CI_Model {
     }
     
     public function getUsuario($users_id) {
-        $this->db->select('clie__clientes.nombre AS clie_nombre, clie__clientes.identificacion AS clie_identificacion, 
-            clie__clientes.direccion AS clie_direccion, clie__clientes.telefonos AS clie_telefonos, clie__clientes.correo AS clie_correo, 
-            auth__users.id, auth__users.email AS user_correo, auth__users.first_name AS user_nombre, auth__users.last_name AS user_apellido, 
-            auth__users.phone AS user_telefono, DATE_FORMAT(FROM_UNIXTIME(auth__users.last_login), "%d/%m/%Y - %h:%i:%s") AS user_last_login, 
-            auth__users.ip_address AS user_ip_address', FALSE);
-        $this->db->join('clie__clientes', 'auth__users.fk_cliente = clie__clientes.id', 'inner');
-        $this->db->where('auth__users.id', $users_id);
-        $usuario = $this->db->get('auth__users')->row_array();
+        $this->db->select('cl.nombre AS empr_nombre, cl.identificacion AS empr_identificacion, 
+            cl.direccion AS empr_direccion, cl.telefonos AS empr_telefonos, cl.correo AS empr_correo, cl.color AS empr_color, 
+            cl.firma AS empr_firma, cl.path_logotipo AS empr_logotipo, cl.usar_logotipo AS empr_usarlogotipo, cl.usar_firma AS empr_usarfirma,
+            au.id, au.email AS user_correo, au.first_name AS user_nombre, au.last_name AS user_apellido, 
+            au.phone AS user_telefono, DATE_FORMAT(FROM_UNIXTIME(au.last_login), "%d/%m/%Y - %h:%i:%s") AS user_last_login, 
+            au.ip_address AS user_ip_address', FALSE);
+        $this->db->from('auth__users au')->join('clie__clientes cl', 'au.fk_cliente = cl.id', 'inner');
+        $this->db->where('au.id', $users_id);
+        $usuario = $this->db->get()->row_array();
         if(is_array($usuario) && (count($usuario) > 0)){
             $usuario['id'] = openCypher('encrypt', $usuario['id']);
             return $usuario;

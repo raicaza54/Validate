@@ -2,6 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH.'libraries/spout-3.1.0/src/Spout/Autoloader/autoload.php';
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Common\Type;
+
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
@@ -32,7 +37,81 @@ class Archivos extends CI_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        $this->load->model(['Cliente_model','Archivos_model']);
+        $this->load->model(['Cliente_model','Archivos_model', 'Empresas_model']);
+    }
+    
+    /**
+     *  status true/false
+     *  filename nombre del archivo
+     *  fullpath ruta absoluta
+     *  type tipo de archivo .csv, .xls, .xlsx
+     *  msg mensaje de algun evento
+     *  parent_id carpeta
+     *  tipo tipo mov, blp, cxc, cpc
+     *  limite[
+     *    limite cantida de registros segun el tipo
+     *    filas cantida de filas segun el tipo
+     *    cant cantidad de archivos actuales segun el tipo
+     *  ]
+     *     * @param type $param
+     */
+    public function leer_archivo($param) {
+        set_time_limit(0);
+        extract($param);
+        $reader = ReaderEntityFactory::createReaderFromFile($fullpath);
+        if($type == '.csv') $reader->setFieldDelimiter(';');
+        $reader->open($fullpath);
+        $outsheet = []; $x = 0; $i = 0; $campo = []; $nl = 20; $a = 0;
+        $created_user = $this->session->userdata('users_id');
+        $created_clie = $this->session->userdata('clientes_id');
+        $update_user  = $this->session->userdata('users_id');
+        $update_clie  = $this->session->userdata('clientes_id');
+        $linea = 'e';
+        $num = 0;
+        $ejemplo = [];
+        foreach ($reader->getSheetIterator() as $sheet) {
+            foreach ($sheet->getRowIterator() as $row) {
+                $cells = $row->toArray();
+                if($linea == 'e'){
+                    $nl = $row->getNumCells();
+                    if ($nl > 20) $nl = 20;                    
+                }
+                for ($cl = 1; $cl <= $nl; $cl++) {
+                    if(array_key_exists(($cl - 1), $cells)){
+                        if(!is_array($cells[$cl - 1]) && !is_object($cells[$cl - 1])){
+                            $campo['campo' . $cl] = trim(substr($cells[$cl - 1], 0, 100));
+                        }else{
+                            $campo['campo' . $cl] = '';
+                        }                        
+                    }else{
+                        $campo['campo' . $cl] = '';
+                    }
+                }
+                if(is_array($campo)){
+                    $outsheet[] = array_merge([
+                        'fk_archivos'   => $this->id,
+                        'linea'         => $linea,
+                        'created_user'  => $created_user,
+                        'created_clie'  => $created_clie,
+                        'update_user'   => $update_user,
+                        'update_clie'   => $update_clie
+                    ], $campo);
+                    $x++; $i++;
+                    $linea = 'f';
+                    unset($campo);
+                    if($i > 3000){
+                        $this->db->insert_batch('clie__archivos_detalle', $outsheet);
+                        unset($outsheet);
+                        $a += $i;
+                        $i = 0;
+                        if($a > $limite['filas']) break;
+                    }
+                }
+            }
+            if($i > 0) $this->db->insert_batch('clie__archivos_detalle', $outsheet);
+            break;
+        }
+        $reader->close();
     }
 
     private function fileType($type, $t) {
@@ -53,6 +132,126 @@ class Archivos extends CI_Controller {
                 break;
         }
         return $fileType;
+    }
+    
+    public function exportarDigito() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id','Archivo','required|max_length[50]');
+            $this->form_validation->set_rules('digito','Digito','required|max_length[3]|numeric');
+            $this->form_validation->set_rules('grafica','Grafica','required|max_length[3]|numeric');
+            $this->form_validation->set_rules('campoAnalizar','Campo','required|max_length[50]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $writer = WriterEntityFactory::createXLSXWriter(Type::XLSX);
+            $writer->setShouldUseInlineStrings(true);
+            $writer->setShouldUseInlineStrings(false);
+            $archivo = $this->config->item('path_resultados').uniqid('DIG').'.xlsx';
+            $writer->openToFile($archivo);
+            $digito = $this->Archivos_model->getDigito($post);
+            if(is_array($digito) && count($digito) > 0){
+                foreach ($digito as $value) {
+                    $rowFromValues = WriterEntityFactory::createRowFromArray($value);
+                    $writer->addRow($rowFromValues);                                    
+                }
+            }
+            $writer->close();
+            $response["data"] = ['url' => str_replace('.xlsx', '', base_url('archivos/v1/digito/'.basename($archivo)))];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
+    public function exportarspider() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',         'Archivo',    'required|max_length[20]|numeric');
+            $this->form_validation->set_rules('cuenta',     'Cuenta',     'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('spider',     'Araña',      'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('naturaleza', 'Naturaleza', 'required|in_list[d,c]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $writer = WriterEntityFactory::createXLSXWriter(Type::XLSX);
+            $writer->setShouldUseInlineStrings(true);
+            $writer->setShouldUseInlineStrings(false);
+            $archivo = $this->config->item('path_resultados').uniqid('SPIEXP').'.xlsx';
+            $writer->openToFile($archivo);
+            $spider = $this->Archivos_model->getRelacion($post);
+            if(is_array($spider) && count($spider) > 0){
+                foreach ($spider as $value) {
+                    $rowFromValues = WriterEntityFactory::createRowFromArray($value);
+                    $writer->addRow($rowFromValues);                                    
+                }
+            }
+            $writer->close();
+            $response["data"] = ['url' => str_replace('.xlsx', '', base_url('archivos/v1/relacion/'.basename($archivo)))];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
+    }
+    
+    public function urlDigito($file, $dwl = 'r') {
+        $file = xss_clean($file);
+        $file = strip_tags($file);
+        if(!file_exists($this->config->item('path_resultados').$file.'.xlsx') || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        if(!in_array($dwl,['r', 'd'])){
+            show_error("Archivo no encontrado", 404);
+        }
+        $filename = 'Digito.xlsx';
+        if($dwl == 'r'){
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: inline; filename="'.$filename.'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+            readfile($this->config->item('path_resultados').$file.".xlsx");
+        }elseif($dwl == 'd'){
+            download($this->config->item('path_resultados').$file.'.xlsx', $filename);
+        }
+    }
+    
+    public function urlRelacion($file, $dwl = 'r') {
+        $file = xss_clean($file);
+        $file = strip_tags($file);
+        if(!file_exists($this->config->item('path_resultados').$file.'.xlsx') || (strlen($file) > 50)){
+            show_error("Archivo no encontrado", 404);
+        }
+        if(!in_array($dwl,['r', 'd'])){
+            show_error("Archivo no encontrado", 404);
+        }
+        $filename = 'Relacion.xlsx';
+        if($dwl == 'r'){
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: inline; filename="'.$filename.'"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes');
+            readfile($this->config->item('path_resultados').$file.".xlsx");
+        }elseif($dwl == 'd'){
+            download($this->config->item('path_resultados').$file.'.xlsx', $filename);
+        }
     }
     
     public function descargar() {
@@ -79,7 +278,7 @@ class Archivos extends CI_Controller {
         $this->output
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
-            ->set_output(json_encode($response));        
+            ->set_output(json_encode($response));
     }
     
     public function url($file) {
@@ -205,8 +404,24 @@ class Archivos extends CI_Controller {
      * 
      * @param type $inputFile path de archivo
      */
-    private function leer_excel($param) {
+    private function leer_phpexcel() {
         set_time_limit(0);
+        $this->load->library('phpexcel');
+        $this->load->library('PHPExcel/iofactory');        
+        
+        //$infile = $this->config->item('path_archivos').'a1ee6fc1ddc4a1fed000d46c6c0a27bf.xls';
+        $infile = $this->config->item('path_archivos').'f5d761aba78822bb10477452ff9ed62d.xlsx';
+        $outfile = $this->config->item('path_archivos').'salida_'.date('his').'.csv';
+        
+        $objIOReader = new IOFactory();
+        $fileType = $objIOReader->identify($infile);
+        $objReader = $objIOReader->createReader($fileType);
+        $objReader->setReadDataOnly(true);   
+        $objPHPExcel = $objReader->load($infile);    
+        $objWriter = $objIOReader->createWriter($objPHPExcel, 'CSV');
+        $objWriter->save($outfile);
+
+        /*
         extract($param);
         $this->load->library('phpexcel');
         $this->load->library('PHPExcel/iofactory');        
@@ -279,6 +494,7 @@ class Archivos extends CI_Controller {
             log_message('error', $status.': '.$exc->getMessage());
             return FALSE;
         }
+        */
     }
     
     public function preprocesar() {
@@ -371,14 +587,8 @@ class Archivos extends CI_Controller {
                 throw new Exception("Tenemos un problema con el archivo, no ha sido posible pre-cargar el archivo, contactar con soporte", 202);
             }
             $xls = [];
-            if(($archivo['type'] == '.xls') || ($archivo['type'] == '.xlsx') || ($archivo['type'] == '.xlsm')){
-                $xls = $this->leer_excel($archivo + [
-                    'parent_id' => $post['folderId'],
-                    'tipo'      => $post['tipo'],
-                    'limite'    => $limite,
-                ]);
-            }elseif($archivo['type'] == '.csv'){
-                $xls = $this->leer_csv($archivo + [
+            if(in_array($archivo['type'], ['.xls','.xlsx','.csv'])){
+                $xls = $this->leer_archivo($archivo + [
                     'parent_id' => $post['folderId'],
                     'tipo'      => $post['tipo'],
                     'limite'    => $limite,
@@ -391,6 +601,7 @@ class Archivos extends CI_Controller {
             if(is_bool($xlsdb) && ($xlsdb === FALSE)){
                 throw new Exception("Tenemos un problema al insertar el archivo en la nube con el archivo", 202);
             }
+            $this->archivo->columnaCompare($this->session->userdata('empresaId'), $this->id, $post['tipo']);
             $response["data"] = [
                 'type'     => $this->fileType($archivo['type'], 1),
                 'filename' => $archivo['filename'],
@@ -457,13 +668,13 @@ class Archivos extends CI_Controller {
     public function header() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
-            if(!is_array($post) || !array_key_exists('id', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
-            }
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',            'Id',               'required|numeric|max_length[20]');            
+            $this->form_validation->set_rules('campoAnalizar', 'Campo a Analizar', 'alpha_numeric|max_length[10]');            
             $campoAnalizar = NULL;
             if(array_key_exists('campoAnalizar', $post)){
                 $campoAnalizar = $post['campoAnalizar'];
@@ -478,19 +689,6 @@ class Archivos extends CI_Controller {
                     throw new Exception("El proceso fue interrumpido y ya no se esta cargando el archivo,
                                          si usted lo desea podemos intentar cargar el archivo nuevamente o 
                                          cancelar la carga del mismo", 206);
-                    /*
-                    folderId
-                    id
-                    archivo
-                    tipo
-                    return array(
-                        'status'   => TRUE,
-                        'filename' => $archivo,
-                        'fullpath' => $fullpath,
-                        'type'     => $type,
-                        'msg'      => 'Success',
-                    );
-                    */
                 }
                 throw new Exception("No existen datos para mostrar", 206);
             }
@@ -560,6 +758,38 @@ class Archivos extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function comprobarDatos() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        $this->load->model('Explorador_model');
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id', 'Archivo', 'required|max_length[20]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $archivo = $this->Archivos_model->getById($post['id']);
+            $update = 0;
+            if(file_exists($archivo['file_name']) && !$this->_processExists($archivo['pid'])){
+                $update = 1;
+                if($this->Explorador_model->update_data(['deleted_at' => 1], $post['id']) !== TRUE){
+                    //throw new Exception("Algo no anda bien", 202);
+                }
+            }
+            $response['data'] = ['refresh' => $update];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
     public function extraerBase() {
         if (!$this->input->is_ajax_request()) {
             show_404();
@@ -619,7 +849,7 @@ class Archivos extends CI_Controller {
     public function configurar() {
         if (!$this->input->is_ajax_request()) {
             show_404();
-        }        
+        }
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -638,6 +868,26 @@ class Archivos extends CI_Controller {
             }
             $columnas = $this->archivo->configColumnas($form);
             $this->Archivos_model->setColumnas($columnas, $form, $form['archivoId']);
+            $colum = [];
+            if(isset($form['columnasDefault']) && $form['columnasDefault'] == '1'){
+                $items = serialize($this->Archivos_model->getEncabezado($form['archivoId']));
+                if(array_key_exists('archivoFormato', $form)){
+                    if($form['archivoFormato'] == 'naturaleza'){
+                        $colum['columnas_movnat'] = $items;
+                    }elseif($form['archivoFormato'] == 'debehaber'){
+                        $colum['columnas_movdhb'] = $items;
+                    }
+                }else{
+                    if($form['archivoTipo'] == 'blp'){
+                        $colum['columnas_blp'] = $items;
+                    }elseif($form['archivoTipo'] == 'cxc'){
+                        $colum['columnas_cxc'] = $items;
+                    }elseif($form['archivoTipo'] == 'cxp'){
+                        $colum['columnas_cxp'] = $items;
+                    }
+                }
+                $this->Empresas_model->configColumDefault($colum, $this->session->userdata('empresaId'));
+            }
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
@@ -817,6 +1067,41 @@ class Archivos extends CI_Controller {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('id', $post) || !array_key_exists('digito', $post) || !array_key_exists('grafica', $post) || !array_key_exists('campoAnalizar', $post)){
                 throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
+            }
+            $items = $this->Archivos_model->getRows($post);
+            if (!is_array($items)) {
+                throw new Exception("No existen datos para mostrar", 202);
+            }
+            $response = [
+                "draw"            => $this->input->post('draw'),
+                "recordsTotal"    => $this->Archivos_model->countAll($this->input->post()),
+                "recordsFiltered" => $this->Archivos_model->countFiltered($this->input->post()),
+                "data"            => $items,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function relacionspider() {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }        
+        $response = $this->response;
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id',         'Archivo',    'required|max_length[20]|numeric');
+            $this->form_validation->set_rules('cuenta',     'Cuenta',     'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('spider',     'Araña',      'required|max_length[50]|alpha_dash');
+            $this->form_validation->set_rules('naturaleza', 'Naturaleza', 'required|in_list[d,c]');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
             }
             $items = $this->Archivos_model->getRows($post);
             if (!is_array($items)) {

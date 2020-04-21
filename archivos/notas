@@ -352,7 +352,107 @@
 #-------------------------------------------------------------------------------
 # URL's
 #-------------------------------------------------------------------------------
-https://bossanova.uk/jexcel/v3/docs
-https://bossanova.uk/jexcel/v2/docs/programmatically-changes
+# https://bossanova.uk/jexcel/v3/docshttps://bossanova.uk/jexcel/v2/docs/programmatically-changes
 #*******************************************************************************
 
+#*******************************************************************************
+# Leer archivos de datos XLSX - CSV entre otros
+#*******************************************************************************
+#
+# PPExcel-develop
+# Php-excel-reader-2.21
+# PhpSpreadsheet-develop
+# faisalman-simple-excel-php-4a69805
+# faisalman-simple-excel-php-4a69805
+# portphp-master
+# spreadsheet-reader
+# php-excel-reader
+# spout-master
+#
+#*******************************************************************************
+
+#*******************************************************************************
+max_allowed_packet
+#*******************************************************************************
+#
+# Property                Value
+# Command-Line Format 	--max-allowed-packet=#
+# System Variable 	max_allowed_packet
+# Scope                   Global, Session
+# Dynamic                 Yes
+# Type                    Integer
+# Default Value           4194304
+# Minimum Value           1024
+# Maximum Value           1073741824
+# 
+# The maximum size of one packet or any generated/intermediate string, or any 
+# parameter sent by the mysql_stmt_send_long_data() C API function. The default 
+# is 4MB.
+# 
+# The packet message buffer is initialized to net_buffer_length bytes, but can 
+# grow up to max_allowed_packet bytes when needed. This value by default is 
+# small, to catch large (possibly incorrect) packets.
+# 
+# You must increase this value if you are using large BLOB columns or long 
+# strings. It should be as big as the largest BLOB you want to use. The 
+# protocol limit for max_allowed_packet is 1GB. The value should be a multiple 
+# of 1024; nonmultiples are rounded down to the nearest multiple.
+# 
+# When you change the message buffer size by changing the value of the 
+# max_allowed_packet variable, you should also change the buffer size on the 
+# client side if your client program permits it. The default max_allowed_packet 
+# value built in to the client library is 1GB, but individual client programs 
+# might override this. For example, mysql and mysqldump have defaults of 16MB 
+# and 24MB, respectively. They also enable you to change the client-side value 
+# by setting max_allowed_packet on the command line or in an option file.
+# 
+# The session value of this variable is read only. The client can receive up to 
+# as many bytes as the session value. However, the server will not send to the 
+# client more bytes than the current global max_allowed_packet value. (The 
+# global value could be less than the session value if the global value is 
+# changed after the client connects.) 
+# 
+#*******************************************************************************
+# 
+#*******************************************************************************
+
+#*******************************************************************************
+# User Tracking for CodeIgniter
+#*******************************************************************************
+#
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://github.com/djonasm/ci-usertracking/blob/master/Usertracking.php
+#*******************************************************************************
+
+#*******************************************************************************
+# Fast Excel
+#*******************************************************************************
+# Fast Excel import/export for Laravel, thanks to Spout. See benchmarks below.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://github.com/rap2hpoutre/fast-excel
+#*******************************************************************************
+¿Cómo crear una API REST con CodeIgniter?
+https://www.desarrollolibre.net/blog/codeigniter/como-crear-una-api-rest-con-codeigniter
+https://github.com/chriskacerguis/codeigniter-restserver
+
+apt-get install php7.2-bcmath
+
+
+sudo apt-get -y install gcc make autoconf libc-dev pkg-config
+sudo pecl install stats-2.0.3
+
+https://www.academia.edu/4948120/EJERCICIOS_DISTRIBUCI%C3%93N_NORMAL_ESTANDAR
+https://www.vadenumeros.es/sociales/manejo-tabla-normal.htm
+https://es.slideshare.net/cecyvargasvelasco/manejo-de-tabla-distribucin-normal-estndar
+
+
+Easy Customizable Loading Mask Plugin With jQuery - mloading
+mloading is an easy and cross-browser jQuery plugin that lets you create a loading/busy indicator (with or without loading mask) on any DOM elements within the document. Compatible with RequireJS and SeaJS.
+https://www.jqueryscript.net/loading/Customizable-AJAX-Loader-Plugin-For-jQuery-Mask-Loader.html
+https://www.jqueryscript.net/loading/Easy-Customizable-Loading-Mask-Plugin-With-jQuery-mloading.html
+
+https://imask.js.org/guide.html#masked-number

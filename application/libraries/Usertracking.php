@@ -147,6 +147,8 @@ class Usertracking {
     public function track_this(array $respuesta = array()) {
         if (!$this->CI->ion_auth->logged_in()) {
             return FALSE;
+        }else{
+            $this->table = 'track__seguimiento';
         }
 
         //load necessary libraries
@@ -162,13 +164,15 @@ class Usertracking {
         $input_data['client_ip'] = $this->CI->input->server('REMOTE_ADDR');
         $input_data['client_user_agent'] = $this->CI->agent->agent_string();
         $input_data['referer_page'] = $this->CI->agent->referrer();
-        $input_data['post'] = serialize($_POST);
+        $post = $_POST;
+        if(is_array($post) && isset($post['password'])) $post['password'] = md5($post['password']);
+        $input_data['post'] = serialize($post);
         $input_data['resultado'] = serialize($respuesta);
         $input_data['class'] = $this->CI->router->class;
         $input_data['method'] = $this->CI->router->method;
         $input_data['pid'] = getmypid();
 
-        $input_data['user_identifier'] = $this->configuration['user_identifier'];
+        $input_data['user_identifier'] = $this->configuration['user_identifier'] ?: user_id();
         //Add it to the database
         $this->CI->load->database();
         $result = $this->CI->db->insert($this->table, $input_data);

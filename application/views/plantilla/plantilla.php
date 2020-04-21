@@ -24,9 +24,9 @@
                 </a>
                 <?php endif; ?>
                 <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
-                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <i class="fas fas fa-sync fa-spin"></i>
                 </a>
-                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="">
+                <a id="disco" class="nav-item nav-icon nav-link" href="#" onclick="PERFIL.methods.disco(this)" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<div> Espacio en Disco <span id='espacio'>0/0</span> <div class='progress'> <div class='progress-bar w-0' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div> </div> <p style='margin: 10px 0px 0px;'> Usted puede solicitar ampliar el espacio seg&uacute;n sus necesidades</p></div>">
                     <i class="far fa-hdd"></i>
                 </a>
                 <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
@@ -49,7 +49,7 @@
     </nav>
     <?php $this->load->view('plantilla/menu'); ?>
     <!-- Sidebar -->
-    <div style="min-width: 1334px; position: relative;">
+    <div style="min-width: 1280px; position: relative;">
         <nav id="sidebar" style="min-width: 378px">
         <ul class="nav nav-tabs" id="explorador" role="tablist">
             <li class="nav-item">
@@ -93,7 +93,7 @@
                 </div>                    
             </div>
         </nav>
-        <div id="content" style="z-index: 1030; min-width: 956px;">
+        <div id="content" style="z-index: 1030; min-width: 500px;">
             <?= $body ?>
         </div>
     </div>
@@ -113,6 +113,7 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
+                        <div id="btn-extra1" class="flex-grow-1"></div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">
                             Cancelar
                         </button>

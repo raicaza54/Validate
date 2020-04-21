@@ -36,7 +36,7 @@ class Dbauditoria_015{
                 'comment'    => 'valor decimal de porcentaje entre valor y la base',
                 'null'       => FALSE
             ],
-            'fk_empresa'   => [
+            'fk_empresas'   => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'identificador de la empresa',
@@ -79,7 +79,7 @@ class Dbauditoria_015{
         $this->CI->dbforge->add_field("`update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
         $this->CI->dbforge->add_key('id', TRUE);
         $this->CI->dbforge->add_key('fk_users');
-        $this->CI->dbforge->add_key('fk_empresa');
+        $this->CI->dbforge->add_key('fk_empresas');
         $this->CI->dbforge->add_key('fk_cuenta');
         $this->CI->dbforge->create_table('clie__condicion_cuenta');
     }

@@ -93,8 +93,10 @@ class Auth extends CI_Controller {
                 $this->session->set_userdata($session_data);
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
                 if(in_array(1, $session_data['grupos'])){
+                    $this->usertracking->track_this(['Inicio de sesion administrador']);
                     redirect('/admin', 'refresh');
                 }else{
+                    $this->usertracking->track_this(['Inicio de sesion']);
                     redirect('/', 'refresh');
                 }
             } else {

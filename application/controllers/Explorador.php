@@ -45,6 +45,7 @@ class Explorador extends CI_Controller {
      * de balances en Manipulacion
      */
     public function balances() {
+        if (!$this->input->is_ajax_request()) show_404();
         $response = $this->response;
         try {
             $post = $this->input->post();
@@ -72,6 +73,7 @@ class Explorador extends CI_Controller {
     }
     
     public function crear() {
+        if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
         }        
@@ -123,6 +125,7 @@ class Explorador extends CI_Controller {
     }
     
     public function editar() {
+        if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
         }        
