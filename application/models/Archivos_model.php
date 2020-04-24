@@ -185,7 +185,8 @@ class Archivos_model extends CI_Model {
             $this->db->set('formato', $form['archivoFormato']);
         }
         $this->db->where('id', $id);
-        return $this->db->update('clie__archivos');
+        $this->db->update('clie__archivos');
+        return $this->db->affected_rows() == 1;
     }
     
     public function getCuentas($id, $column) {

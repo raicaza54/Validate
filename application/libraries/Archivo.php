@@ -316,7 +316,7 @@ class Archivo {
      */
     public function columnaCompare($empresaId, $archivoId, $tipo) {
         $config     = [];
-        $formato    = NULL;
+        $formato    = 'naturaleza';
         $cliente_id = $this->CI->session->userdata('clientes_id');
         $users_id   = $this->CI->session->userdata('users_id');
         $columna    = $this->CI->Empresas_model->configGetEmpresa($users_id, $empresaId, $cliente_id);
