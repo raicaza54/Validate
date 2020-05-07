@@ -414,7 +414,8 @@ class Archivos_model extends CI_Model {
     
     public function getBases($id_archivo, $column) {
         $this->db->select($column['string']);
-        $this->db->select('(('.$column['array']['valor'].'/'.$column['array']['base'].')*100) AS calculo');
+        $valor = isset($column['array']['valor']) ? $column['array']['valor'] : '('.$column['array']['debe'].' + '.$column['array']['haber'].')';
+        $this->db->select('(('.$valor.'/'.$column['array']['base'].')*100) AS calculo');
         $this->db->where('created_clie', $this->session->userdata('clientes_id'));
         $this->db->where('fk_archivos', $id_archivo);
         $this->db->where('linea', 'f');
