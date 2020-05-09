@@ -1,4 +1,4 @@
-<?php include_once 'head.php'; ?>
+<?php include_once 'head-admin.php'; ?>
     <body>
         <nav class="navbar navbar-expand-sm fixed-top bg-admin contenedor">
             <a class="navbar-brand" href="#!" style="font-weight: 600; outline: none;">
@@ -26,11 +26,8 @@
                 <a class="nav-item nav-link nav-icon" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="No tiene notificaciones">
                     <i class="fas fa-bell"></i>
                 </a>
-                <a class="nav-item nav-link nav-icon" href="#" onclick="PERFIL.methods.contrato(true);">
-                    <i class="fas fa-cog"></i>
-                </a>
                 <a class="nav-item nav-link nav-icon" href="#">
-                    <i class="far fa-question-circle"></i>
+                    <i class="fas fa-question-circle"></i>
                 </a>
                 <span class="navbar-text text-white" style="margin: 0px 10px;">
                     <?= $this->session->first_name . ' ' . $this->session->last_name ?>
@@ -43,56 +40,22 @@
         <?php $this->load->view('plantilla/admin-menu'); ?>
         <!-- Sidebar -->
         <div style="min-width: 1280px; position: relative;">
-            <nav id="sidebar" style="min-width: 378px">
-                <ul class="nav nav-tabs" id="explorador" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="tabexplorador-tab" data-toggle="tab" href="#tabexplorador" role="tab" aria-controls="tabexplorador" aria-selected="true">Archivos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="tabresultados-tab" data-toggle="tab" href="#tabresultados" role="tab" aria-controls="tabresultados" aria-selected="false">Resultados</a>
-                    </li>
-                </ul>
-                <div class="tab-content shadow-sm" id="exploradorContent">
-                    <div class="tab-pane fade show active" id="tabexplorador" role="tabpanel" aria-labelledby="tabexplorador-tab">
-                        <div class="explorador-icon">
-                            <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-archivos-actualizar')?>" id="exp-archivos-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="EXPLORADOR.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
-                            <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-archivos-crear')?>" id="exp-archivos-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="EXPLORADOR.methods.crearCarpeta(this)"></i>
-                            <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-archivos-editar')?>" id="exp-archivos-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="EXPLORADOR.methods.editarCarpeta(this)"></i>
-                            <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-archivos-borrar')?>" id="exp-archivos-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="EXPLORADOR.methods.borrarCarpeta(this)"></i>
-                        </div>
-                        <div class="card" style="height: calc(100vh - 245px); overflow-y: auto; padding: 10px 0px;">
-                            <div class="card-body" id="explorador-content">
-                                <div class="selec-empresa text-center text-muted small no-seleccionable">
-                                    Debe Seleccionar<br/>una empresa
-                                </div>
-                            </div>
-                        </div>                    
-                    </div>
-                    <div class="tab-pane fade" id="tabresultados" role="tabpanel" aria-labelledby="tabresultados-tab">
-                        <div class="explorador-icon">
-                            <i class="btn-icon fas fa-sync-alt <?=$this->permisos->viewaccess('exp-resultados-actualizar')?>" id="exp-resultados-actualizar" data-toggle="popover" data-placement="top" data-content="Actualizar carpetas" onclick="RESULTADOS.methods.listarCarpetas(this, GLOBAL.empresaId)"></i>
-                            <i class="btn-icon far fa-plus-square <?=$this->permisos->viewaccess('exp-resultados-crear')?>" id="exp-resultados-crear" data-toggle="popover" data-placement="top" data-content="Crear una carpeta" onclick="RESULTADOS.methods.crearCarpeta(this)"></i>
-                            <i class="btn-icon far fa-edit <?=$this->permisos->viewaccess('exp-resultados-editar')?>" id="exp-resultados-editar" data-toggle="popover" data-placement="top" data-content="Renombrar carpeta" onclick="RESULTADOS.methods.editarCarpeta(this)"></i>
-                            <i class="btn-icon far fa-trash-alt <?=$this->permisos->viewaccess('exp-resultados-borrar')?>" id="exp-resultados-borrar" data-toggle="popover" data-placement="top" data-content="Borrar una carpeta y su contenido" onclick="RESULTADOS.methods.borrarCarpeta(this)"></i>
-                        </div>                    
-                        <div class="card shadow-sm" style="height: calc(100vh - 245px); overflow-y: auto; padding: 10px 0px;">
-                            <div class="card-body" id="resultados-content">
-                                <div class="selec-empresa text-center text-muted small no-seleccionable">
-                                    Debe Seleccionar<br/>una empresa
-                                </div>
-                            </div>
-                        </div>                    
-                    </div>
-                </div>            
-            </nav>
-            <div id="content" style="z-index: 1030; min-width: 500px;">
+            <div id="content" style="z-index: 1030; min-width: 500px; width: 100%">
                 <?= $body ?>
             </div>
         </div>
         <nav id="footer-validate" class="navbar fixed-bottom navbar-admin">
-            <span class="navbar-text pull-left">
-                GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;<?=VERSION?>
-            </span>
+            <div class="container-fluid p-0 pt-2 pb-2">
+                <div class="col-sm-3 p-0 text-white">
+                    GEO Informatic Solutions S.A.
+                </div>                
+                <div class="col-sm-6 p-0 text-center text-white">
+                    Validate System <?=VERSION?>
+                </div>
+                <div class="col-sm-3 p-0">
+                    &nbsp;
+                </div>
+            </div>
         </nav>        
         <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" data-keyboard="false">

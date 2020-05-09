@@ -70,6 +70,7 @@ class Empresas extends CI_Controller {
         $response = $this->response;
         $data = $row = array();
         try {
+            //Validaciones de datos
             $items = $this->Empresas_model->getRows($this->input->post());
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
@@ -303,6 +304,5 @@ class Empresas extends CI_Controller {
         }
         return $response;
     }
-    
 
 }

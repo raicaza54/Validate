@@ -19,7 +19,7 @@
                     <i class="far fa-address-card"></i>
                     <span><?=nbs(3)?>Crear<?=nbs(3)?></span>
                 </div>
-                <div class="titulo">Clientes/Empresas</div>
+                <div class="titulo">Clientes</div>
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">

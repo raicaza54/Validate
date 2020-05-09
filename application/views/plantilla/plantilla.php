@@ -98,9 +98,17 @@
         </div>
     </div>
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
-            <span class="navbar-text pull-left">
-                GEO Informatic Solutions S.A.&nbsp;&nbsp;&nbsp;&nbsp;<?=VERSION?>
-            </span>
+            <div class="container-fluid p-0 pt-2 pb-2">
+                <div class="col-sm-3 p-0 text-white">
+                    GEO Informatic Solutions S.A.
+                </div>                
+                <div class="col-sm-6 p-0 text-center text-white">
+                    Validate System <?=VERSION?>
+                </div>
+                <div class="col-sm-3 p-0">
+                    &nbsp;
+                </div>
+            </div>            
         </nav>        
         <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModal" aria-hidden="true" data-keyboard="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document" data-keyboard="false">
