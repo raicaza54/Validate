@@ -232,6 +232,7 @@ class Archivos_model extends CI_Model {
                     $cuentas = array_merge_recursive($cuentas, $this->db->get('clie__archivos_detalle')->result_array());
                     unique_multidim_array($cuentas, 'cta');
                 }
+                break;
             }
         }
         $cuentasn = array_column($cuentas, 'ctan', 'cta');
