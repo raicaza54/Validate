@@ -403,7 +403,14 @@ class Archivos_model extends CI_Model {
     
     public function getCuentasBase($id_archivo, $column) {
         $this->db->select($column['array']['cta'].' AS cta');
-        $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        if($this->session->has_userdata('demo') && $this->session->userdata('demo') == 'si'){
+            $this->db->group_start();
+            $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+            $this->db->or_where('created_clie', 1);
+            $this->db->group_end();
+        }else{
+            $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+        }
         $this->db->where('fk_archivos', $id_archivo);
         $this->db->where('linea', 'f');
         $this->db->where($column['array']['base'].'>', 0);
