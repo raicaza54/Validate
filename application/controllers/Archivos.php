@@ -851,6 +851,7 @@ class Archivos extends CI_Controller {
             show_404();
         }
         $response = $this->response;
+        $demo = NULL;
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
@@ -865,6 +866,16 @@ class Archivos extends CI_Controller {
             }
             if(!in_array($form['archivoTipo'], ['mov','blp','cxc','cxp'])){
                 throw new Exception("Tenemos un problema, faltan algunos datos, el tipo no es compatible, estan incompletos o corruptos", 202);
+            }
+            if($this->session->userdata('empresaId') == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $this->session->userdata('empresaId'), 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, no es posible configurar los archivos de esta empresa, la misma es unicamente para fines demostrativos', 202);
+                }
             }
             $columnas = $this->archivo->configColumnas($form);
             $this->Archivos_model->setColumnas($columnas, $form, $form['archivoId']);

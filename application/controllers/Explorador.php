@@ -78,6 +78,8 @@ class Explorador extends CI_Controller {
             return FALSE;
         }        
         $response = $this->response;
+        $demo = NULL;
+        $this->load->model('Empresas_model');        
         try {
             $post = $this->input->post();
             if(is_array($post)){
@@ -96,6 +98,16 @@ class Explorador extends CI_Controller {
             $this->form_validation->set_rules('disabled',    'Estado',  'required|numeric|max_length[2]|in_list[0,1]');
             if ($this->form_validation->run() == FALSE){
                 throw new Exception(validation_errors('',''), 202);
+            }
+            if($this->session->userdata('empresaId') == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $this->session->userdata('empresaId'), 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, no es posible crea archivos o carpetas, la misma es unicamente para fines demostrativos', 202);
+                }
             }
             $insert = $this->Explorador_model->crear([
                 'label'       => $post['label'],
@@ -128,24 +140,36 @@ class Explorador extends CI_Controller {
         if (!$this->input->is_ajax_request()) show_404();
         if(!$this->ion_auth->in_group([1,2])){
             return FALSE;
-        }        
+        }
+        $demo = NULL;
+        $this->load->model('Empresas_model');        
         $response = $this->response;
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('deleted_at', $post)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+                throw new Exception('Tenemos un problema, los datos estan incompletos o corruptos', 202);
             }
-            $insert = $this->Explorador_model->editar([
+            if($this->session->userdata('empresaId') == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $this->session->userdata('empresaId'), 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, los archivos y carpetas no pueden ser editados o eliminados, la misma es unicamente para fines demostrativos', 202);
+                }
+            }
+            $editar = $this->Explorador_model->editar([
                 'label'      => $post['label'],
                 'id'         => $post['id'],
                 'parent_id'  => $post['parent_id'],
                 'deleted_at' => $post['deleted_at'],
             ]);
-            if($insert === FALSE){
-                throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
+            if($editar === FALSE){
+                throw new Exception('Tenemos un problema, no fue posible crear carpeta', 202);
             }            
             $response["data"] = [];
-            throw new Exception("Resultado retornando correctamente", 200);
+            throw new Exception('Resultado retornando correctamente', 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }

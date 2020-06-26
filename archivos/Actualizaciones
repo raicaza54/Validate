@@ -698,3 +698,34 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+
+#*******************************************************************************
+
+FECHA: 25/06/2020 Version 1.4.0
+NUEVAS FUNCIONALIDADES
+▪ Empresa Demostración
+    ▪ La Empresa Demostración se activa/inactiva en la configuración
+    ▪ No se permite cambiar nombre de carpetas
+    ▪ No se permite cambiar nombre de archivos
+    ▪ No se permite eliminar archivos
+    ▪ No se permite eliminar carpetas
+    ▪ No se permite cambiar la configuración de archivos
+    ▪ No se permite editar la empresa
+    ▪ No se permite eliminar la empresa
+    ▪ Los datos de la empresa, archivos y carpetas unicamente son modificados por el administrador
+    ▪ Los resultados se almacenan en cada cuenta de usuario
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Indicadores de Confianza
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña

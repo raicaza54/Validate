@@ -50,6 +50,9 @@ class Empresas_model extends CI_Model {
         $this->db->where('clie__auditores_empresas.fk_auditores', $this->session->userdata('users_id'));
         $this->db->where('clie__empresas.deleted_at', 0);
         $this->db->where('clie__empresas.created_clie', $this->session->userdata('clientes_id'));
+        if(($this->session->userdata('demo') !== null) && ($this->session->userdata('demo') == 'si')){
+            $this->db->or_where('clie__empresas.id', 1);
+        }
         $query = $this->db->get();
         return $query->result();
     }
@@ -153,6 +156,9 @@ class Empresas_model extends CI_Model {
         $this->db->where('clie__empresas.deleted_at', 0);
         $this->db->join('auth__users created', 'clie__empresas.created_user = created.id');
         $this->db->join('auth__users updated', 'clie__empresas.update_user = updated.id');
+        if(($this->session->userdata('demo') !== null) && ($this->session->userdata('demo') == 'si') && ($id == 1)){
+            $this->db->or_where('clie__empresas.id', 1);
+        }        
         $e = $this->db->get('clie__empresas')->row_array();
         return $e;
     }
@@ -283,6 +289,16 @@ class Empresas_model extends CI_Model {
             ')->row_array();
         }
         return $config;
+    }
+    
+    public function editarDemo($users_id, $empresa_id, $cliente_id) {
+        $this->db->from('clie__auditores_empresas ae')
+            ->join('clie__empresas e', 'ae.fk_empresas = e.id', 'inner')
+            ->where('ae.fk_auditores', $users_id)
+            ->where('ae.fk_empresas', $empresa_id)
+            ->where('e.created_clie', $cliente_id);
+        $q = $this->db->count_all_results() > 0;
+        return $q;
     }
     
 }

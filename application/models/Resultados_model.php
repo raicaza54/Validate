@@ -27,8 +27,21 @@ class Resultados_model extends CI_Model {
     
     public function getFolderEmpresa($id_empresa, $id_archivo = 0) {
         $this->db->select('clie__resultados.type AS tipo, clie__resultados.*');
-        $this->db->where('fk_empresas', $id_empresa);
-        $this->db->where('deleted_at', 0);
+        if($this->session->userdata('empresaId') == 1){
+            $this->db->group_start();
+                $this->db->where('fk_empresas', $id_empresa);
+                $this->db->where('deleted_at', 0);
+                $this->db->where('type', 'folder');
+            $this->db->group_end();
+            $this->db->or_group_start();
+                $this->db->where('created_clie', $this->session->userdata('clientes_id'));
+                $this->db->where('deleted_at', 0);
+                $this->db->where('type !=', 'folder');                
+            $this->db->group_end();
+        }else{
+            $this->db->where('fk_empresas', $id_empresa);
+            $this->db->where('deleted_at', 0);                        
+        }
         $r = $this->db->get('clie__resultados')->result_array();
         $fl = [];
         if($id_archivo != 0){

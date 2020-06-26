@@ -21,9 +21,9 @@ class Dbauditoria_017{
             'usar_logotipo' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '5',
-                'comment'    => 'si el logotipo de la empresa sera utilizado en los pdfs de analisis SI/NO',
+                'comment'    => 'si el logotipo de la empresa sera utilizado en los pdfs de analisis si/no',
                 'null'       => TRUE,
-                'default'    => 'NO',
+                'default'    => 'no',
                 'after'      => 'path_logotipo'
             ],
             'firma' => [
@@ -36,9 +36,17 @@ class Dbauditoria_017{
             'usar_firma' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '5',
-                'comment'    => 'si la firma sera utilizada en los archivos pdfs de analisis SI/NO',
+                'comment'    => 'si la firma sera utilizada en los archivos pdfs de analisis si/no',
                 'null'       => TRUE,
-                'default'    => 'NO',
+                'default'    => 'no',
+                'after'      => 'firma'
+            ],
+            'usar_demo' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '5',
+                'comment'    => 'empresa demostracion si/no',
+                'null'       => TRUE,
+                'default'    => 'no',
                 'after'      => 'firma'
             ],
         ];
@@ -50,5 +58,6 @@ class Dbauditoria_017{
         $this->CI->dbforge->drop_column('clie__clientes', 'usar_logotipo');
         $this->CI->dbforge->drop_column('clie__clientes', 'firma');
         $this->CI->dbforge->drop_column('clie__clientes', 'usar_firma');
+        $this->CI->dbforge->drop_column('clie__clientes', 'usar_demo');
    }    
 }
