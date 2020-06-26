@@ -70,11 +70,23 @@ class Resultados extends CI_Controller {
             return FALSE;
         }        
         $response = $this->response;
+        $demo = NULL;
+        $this->load->model('Empresas_model');                
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('type', $post) || !array_key_exists('id', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
+            if($this->session->userdata('empresaId') == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $this->session->userdata('empresaId'), 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, no es posible crea archivos o carpetas, la misma es unicamente para fines demostrativos', 202);
+                }
+            }            
             $insert = $this->Resultados_model->crear([
                 'label'       => $post['label'],
                 'empresaId'   => $this->session->userdata('empresaId'),
@@ -106,18 +118,30 @@ class Resultados extends CI_Controller {
             return FALSE;
         }        
         $response = $this->response;
+        $demo = NULL;
+        $this->load->model('Empresas_model');                
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('label', $post) || !array_key_exists('id', $post) || !array_key_exists('parent_id', $post) || !array_key_exists('deleted_at', $post)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
-            $insert = $this->Resultados_model->editar([
+            if($this->session->userdata('empresaId') == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $this->session->userdata('empresaId'), 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, los archivos y carpetas no pueden ser editados o eliminados, la misma es unicamente para fines demostrativos', 202);
+                }
+            }            
+            $editar = $this->Resultados_model->editar([
                 'label'      => $post['label'],
                 'id'         => $post['id'],
                 'parent_id'  => $post['parent_id'],
                 'deleted_at' => $post['deleted_at'],
             ]);
-            if($insert === FALSE){
+            if($editar === FALSE){
                 throw new Exception("Tenemos un problema, no fue posible crear carpeta", 202);
             }            
             $response["data"] = [];

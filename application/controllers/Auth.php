@@ -67,20 +67,21 @@ class Auth extends CI_Controller {
                 email,
                 first_name,
                 last_name,
-                clie__clientes.id AS clientes_id,
+                cli.id AS clientes_id,
+                cli.usar_demo AS demo,
                 nombre AS clie_nombre,
                 identificacion AS clie_identificacion,
                 direccion AS clie_direccion,
                 telefonos AS clie_telefonos,
                 correo AS clie_correo,
-                sist__jerarquia.nivel AS nivel, 
+                jer.nivel AS nivel, 
                 (SELECT GROUP_CONCAT(group_id ORDER BY user_id DESC SEPARATOR ',') AS grupos 
                  FROM auth__users INNER JOIN auth__users_groups ON auth__users.id = auth__users_groups.user_id 
                  WHERE auth__users.".$this->config->item('identity', 'ion_auth')." = '".$this->input->post('identity')."') AS grupos
             ", FALSE);
             $this->db->from('auth__users');
-            $this->db->join('clie__clientes', 'clie__clientes.id = auth__users.fk_cliente');
-            $this->db->join('sist__jerarquia', 'sist__jerarquia.id = auth__users.fk_jerarquia');
+            $this->db->join('clie__clientes cli', 'cli.id = auth__users.fk_cliente');
+            $this->db->join('sist__jerarquia jer', 'jer.id = auth__users.fk_jerarquia');
             $this->db->where('auth__users.'. $this->config->item('identity', 'ion_auth'), $this->input->post('identity'));
             $session_data = $this->db->get()->row_array();
             $session_data['grupos'] = array_map('trim', explode(',', $session_data['grupos']));

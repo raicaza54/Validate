@@ -75,6 +75,8 @@ class Manipulacion {
         $at1  = 0;
         $pt   = 0;
         $pt1  = 0;
+        $ot   = 0;
+        $ot1  = 0;
         $this->cuentasValues8([
             't'   => $t,
             't1'  => $t1
@@ -97,6 +99,14 @@ class Manipulacion {
                     $data['suma_otrospasivosc_pnocorrientes'] = [
                         't' => $pt,
                         't-1' => $pt1
+                    ];
+                }
+                if (in_array($key, ['obligacionesfc', 'obligacionesfnoc'])) {
+                    $ot += $value['t'];
+                    $ot1 += $value['t-1'];
+                    $data['suma_obligacionesfc_obligacionesfnoc'] = [
+                        't' => $ot,
+                        't-1' => $ot1
                     ];
                 }
             }

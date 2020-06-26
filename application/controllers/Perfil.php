@@ -236,6 +236,55 @@ class Perfil extends CI_Controller {
             ->set_output(json_encode($response));    
     }
     
+    public function saveLimite() {
+        $response = $this->response;
+        $data = [];
+        try {
+            $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $form = unSerializeArray($post['form']);
+            if(!is_array($form)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            if(!is_array($form) || !array_key_exists('id', $form)){
+                throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
+            }
+            $id = openCypher('decrypt', $form['id']);
+            if(is_bool($form) && ($if === FALSE)){
+                log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
+                throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
+            }
+            $this->form_validation->set_data($form);
+            $this->form_validation->set_rules('empr_usardemo',      'Utilizar Empresa Demo',     'max_length[10]|in_list[si,no]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $data = [
+                'usar_demo' => $form['empr_usardemo'],
+            ];
+            $this->Cliente_model->updateCliente($data, $id);
+            $this->session->set_userdata([
+                'demo'      => $data['usar_demo'],
+                'empresaId' => 1
+            ]);
+            if(($form['empr_usardemo'] == 'no') && ($this->session->userdata('empresaId') == 1)){
+                $this->session->unset_userdata('empresaId');
+            }
+            $response = [
+                "data" => []
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));    
+    }
+    
     private function do_upload() {
         $config['upload_path']      = $this->config->item('path_graficas');
         $config['overwrite']        = TRUE;

@@ -126,6 +126,7 @@ $route['perfil/v1/datos']['get']               = 'perfil/datos';
 $route['perfil/v1/disco']['get']               = 'perfil/disco';
 $route['perfil/v1/save']['post']               = 'perfil/saveDatos';
 $route['perfil/v1/saveEmpresa']['post']        = 'perfil/saveEmpresa';
+$route['perfil/v1/saveLimite']['post']        = 'perfil/saveLimite';
 $route['perfil/v1/saveColumnas']['post']       = 'perfil/saveColumnas';
 $route['perfil/v1/columnasPorDefecto']['post'] = 'perfil/columnasPorDefecto';
 
@@ -151,6 +152,12 @@ $route['terminosCondiciones']['post'] = 'auditoria/terminosCondiciones';
  * Ayuda
  * ------------------------------------------------------------------------- */
 $route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
+
+
+/* -------------------------------------------------------------------------
+ * Administrador Clientes
+ * ------------------------------------------------------------------------- */
+$route['admin/v1/clientes/listar']['post'] = 'admin/clientes/listar';
 
 /* -------------------------------------------------------------------------
  * Sistema por Defecto

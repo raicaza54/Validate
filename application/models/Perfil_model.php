@@ -21,7 +21,7 @@ class Perfil_model extends CI_Model {
         $this->db->select('cl.nombre AS empr_nombre, cl.identificacion AS empr_identificacion, 
             cl.direccion AS empr_direccion, cl.telefonos AS empr_telefonos, cl.correo AS empr_correo, cl.color AS empr_color, 
             cl.firma AS empr_firma, cl.path_logotipo AS empr_logotipo, cl.usar_logotipo AS empr_usarlogotipo, cl.usar_firma AS empr_usarfirma,
-            au.id, au.email AS user_correo, au.first_name AS user_nombre, au.last_name AS user_apellido, 
+            au.id, au.email AS user_correo, au.first_name AS user_nombre, au.last_name AS user_apellido, cl.usar_demo AS empr_usardemo,
             au.phone AS user_telefono, DATE_FORMAT(FROM_UNIXTIME(au.last_login), "%d/%m/%Y - %h:%i:%s") AS user_last_login, 
             au.ip_address AS user_ip_address', FALSE);
         $this->db->from('auth__users au')->join('clie__clientes cl', 'au.fk_cliente = cl.id', 'inner');

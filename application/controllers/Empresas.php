@@ -70,6 +70,7 @@ class Empresas extends CI_Controller {
         $response = $this->response;
         $data = $row = array();
         try {
+            //Validaciones de datos
             $items = $this->Empresas_model->getRows($this->input->post());
             if (!is_array($items)) {
                 throw new Exception("No existen datos para mostrar", 202);
@@ -134,6 +135,7 @@ class Empresas extends CI_Controller {
     public function actualizar() {
         $response = $this->response;
         $data = $row = array();
+        $demo = NULL;
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
@@ -145,6 +147,16 @@ class Empresas extends CI_Controller {
             $this->_validaciones($form);
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
+            }
+            if($form['empresa-id'] == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $form['empresa-id'], 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, no es posible editar los datos de la empresa, la misma es unicamente para fines demostrativos', 202);
+                }
             }
             $item = $this->Empresas_model->getId($form['empresa-id']);
             if (!is_array($item)) {
@@ -185,6 +197,16 @@ class Empresas extends CI_Controller {
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }
+            if($post['id'] == 1){
+                $demo = $this->Empresas_model->editarDemo(
+                        $this->session->userdata('users_id'),
+                        $post['id'], 
+                        $this->session->userdata('clientes_id')
+                );
+                if($demo == FALSE){
+                    throw new Exception('Empresa Demostración, no es posible eliminar la empresa, la misma es unicamente para fines demostrativos', 202);
+                }
+            }            
             $item = $this->Empresas_model->getId($post['id']);
             if (!is_array($item)) {
                 throw new Exception("No existen datos para actualizar", 202);
@@ -303,6 +325,5 @@ class Empresas extends CI_Controller {
         }
         return $response;
     }
-    
 
 }
