@@ -251,20 +251,18 @@ class Perfil extends CI_Controller {
             if(!is_array($form) || !array_key_exists('id', $form)){
                 throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
             }
-            $id = openCypher('decrypt', $form['id']);
-            if(is_bool($form) && ($if === FALSE)){
-                log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
-                throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
-            }
             $this->form_validation->set_data($form);
             $this->form_validation->set_rules('empr_usardemo',      'Utilizar Empresa Demo',     'max_length[10]|in_list[si,no]');
             if ($this->form_validation->run() == FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }
+            if(in_array($this->session->userdata('clientes_id'), $this->config->item('id_demo'))){
+                throw new Exception('Cuenta Demostración, no es posible desactivar los datos, la misma es unicamente para fines demostrativos', 202);
+            }
             $data = [
                 'usar_demo' => $form['empr_usardemo'],
             ];
-            $this->Cliente_model->updateCliente($data, $id);
+            $this->Cliente_model->updateCliente($data, $this->session->userdata('clientes_id'));
             $this->session->set_userdata([
                 'demo'      => $data['usar_demo'],
                 'empresaId' => 1

@@ -69,6 +69,7 @@ class Auth extends CI_Controller {
                 last_name,
                 cli.id AS clientes_id,
                 cli.usar_demo AS demo,
+                con.tipo_contrato AS demostracion,
                 nombre AS clie_nombre,
                 identificacion AS clie_identificacion,
                 direccion AS clie_direccion,
@@ -82,7 +83,9 @@ class Auth extends CI_Controller {
             $this->db->from('auth__users');
             $this->db->join('clie__clientes cli', 'cli.id = auth__users.fk_cliente');
             $this->db->join('sist__jerarquia jer', 'jer.id = auth__users.fk_jerarquia');
+            $this->db->join('sist__contratos con', 'con.fk_clientes = auth__users.fk_cliente');
             $this->db->where('auth__users.'. $this->config->item('identity', 'ion_auth'), $this->input->post('identity'));
+            $this->db->where('con.estado', 1);
             $session_data = $this->db->get()->row_array();
             $session_data['grupos'] = array_map('trim', explode(',', $session_data['grupos']));
             if(!is_array($session_data) || count($session_data) <= 0){

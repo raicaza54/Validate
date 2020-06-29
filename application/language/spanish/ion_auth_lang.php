@@ -42,7 +42,7 @@ $lang['deactivate_current_user_unsuccessful'] = 'You cannot De-Activate your sel
 // Login / Logout
 $lang['login_successful']              = 'Sesión iniciada con éxito';
 $lang['login_unsuccessful']            = 'No se ha podido iniciar sesión';
-$lang['login_unsuccessful_not_active'] = 'Cuenta inactiva';
+$lang['login_unsuccessful_not_active'] = '<b>Cuenta inactiva</b>, si tiene algún inconveniente con su cuenta lo invitamos a contactarnos al <a href="javascript:void(Tawk_API.toggle())"> Chat en linea</a>, o enviando un correo a la siguiente dirección: '.mailto('comercial@validate.com.co');
 $lang['login_timeout']                 = 'Temporalmente bloqueado. Vuelva a intentarlo luego.';
 $lang['logout_successful']             = 'Sesión finalizada con éxito';
 
