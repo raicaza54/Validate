@@ -85,6 +85,27 @@ class Perfil extends CI_Controller {
             ->set_output(json_encode($response));
     }
     
+    public function datosCompra() {
+        $response = $this->response;
+        try {
+            $cliente_id = $this->session->userdata('clientes_id');
+            $users_id = $this->session->userdata('users_id');
+            $cliente = $this->Perfil_model->getDatosCompra($users_id);
+            $response = [
+                "data" => [
+                    'cliente' => $cliente,
+                ],
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
     public function disco() {
         $response = $this->response;
         try {
@@ -105,6 +126,43 @@ class Perfil extends CI_Controller {
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
     }
+    
+    public function saveCompra() {
+        $response = $this->response;
+        $data = [];
+        try {
+            $post = $this->input->post();
+            $form = unSerializeArray($post['form']);
+            $this->form_validation->set_data($form);
+            $this->form_validation->set_rules('com-nombre',      'Nombre y Apellido',    'required|max_length[250]');
+            $this->form_validation->set_rules('com-correo',      'Correo Electrónico',   'required|valid_email|max_length[250]');
+            $this->form_validation->set_rules('com-telefono',    'Teléfono de Contacto', 'required|max_length[250]');
+            $this->form_validation->set_rules('com-observacion', 'Observación',          'max_length[1024]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $perfil = $this->Perfil_model->setDatosCompra([
+                'nombre'      => $form['com-nombre'],
+                'correo'      => $form['com-correo'],
+                'telefono'    => $form['com-telefono'],
+                'observacion' => $form['com-observacion'],
+                'fk_clientes' => $this->session->userdata('clientes_id'),
+                'fk_users'    => $this->session->userdata('users_id'),
+                'user_ip'     => $this->input->ip_address(),
+            ], $this->session->userdata('users_id'));
+            if($perfil == FALSE){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            $response = ["data" => ''];            
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }    
     
     public function columnasPorDefecto() {
         $response = $this->response;

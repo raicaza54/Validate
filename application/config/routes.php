@@ -129,6 +129,8 @@ $route['perfil/v1/saveEmpresa']['post']        = 'perfil/saveEmpresa';
 $route['perfil/v1/saveLimite']['post']         = 'perfil/saveLimite';
 $route['perfil/v1/saveColumnas']['post']       = 'perfil/saveColumnas';
 $route['perfil/v1/columnasPorDefecto']['post'] = 'perfil/columnasPorDefecto';
+$route['perfil/v1/dataComprar']['get']         = 'perfil/datosCompra';
+$route['perfil/v1/saveComprar']['post']        = 'perfil/saveCompra';
 
 /* -------------------------------------------------------------------------
  * Listas de Control

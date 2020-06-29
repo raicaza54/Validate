@@ -23,8 +23,8 @@
                     Administrador
                 </a>
                 <?php endif; ?>
-                <?php if($this->session->userdata('demostracion') == 55): ?>
-                <a class="nav-link active nav-icon" href="#" style="font-size: 1rem;">
+                <?php if($this->session->userdata('demostracion') == 1): ?>
+                <a class="nav-link active nav-icon" href="#" style="font-size: 1rem;" onclick="COMPRAR.methods.comprarModal()">
                     <span style="background-color: #486196; border-radius: 35px; padding: 3px 8px;">
                         <i class="fas fa-comment-dollar"></i> Comprar
                     </span>

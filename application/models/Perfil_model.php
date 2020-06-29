@@ -35,6 +35,36 @@ class Perfil_model extends CI_Model {
         }
     }
     
+    public function getDatosCompra($users_id){
+        $this->db->select('email, CONCAT(first_name," ",last_name) AS nombre, phone AS telefono');
+        $this->db->where('id', $users_id);
+        $r = $this->db->get('auth__users')->row_array();
+        return $r;
+    }
+    
+    public function setDatosCompra($data, $users_id){
+        $auditoria = [
+            'created_user' => $this->session->userdata('users_id'),
+            'created_clie' => $this->session->userdata('clientes_id'),
+            'update_user'  => $this->session->userdata('users_id'),
+            'update_clie'  => $this->session->userdata('clientes_id'),
+        ];        
+        $this->db->where('fk_users', $users_id);
+        $compra = $this->db->get('sist__comprar')->row_array();
+        if(is_array($compra) && (count($compra) > 0)){
+            $this->db->update(
+                'sist__comprar',
+                $data + ['envios' => $compra['envios'] + 1],
+                ['fk_users' => $users_id]
+            );
+        }else{
+            $data = $data + $auditoria;
+            $this->db->insert('sist__comprar',$data);
+        }
+        return $this->db->affected_rows() == 1;
+    }
+    
+    
     public function updateUsers($data, $id) {
         $this->db->update('auth__users', $data, ['id' => $id]);
         return $this->db->affected_rows() == 1;

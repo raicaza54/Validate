@@ -729,3 +729,24 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 29/06/2020 Versión 1.5.0
+NUEVAS FUNCIONALIDADES
+▪ Las empresas demostración, ahora aparece un botón de comprar el cual enviá datos a base de datos
+
+ACTUALIZACIÓN
+▪ Se oculta la opción de firma, esta debe ser potenciada con firma digital certificada
+
+CORRECCIONES
+▪ No hay cambios
+
+SE ESTA TRABAJANDO
+▪ Envió de correo a comercial de intención de compra
+▪ Indicadores de Confianza
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+▪ Envió de correo de cuenta nueva
+▪ Envió de correo para recuperar contraseña
