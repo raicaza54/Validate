@@ -17,7 +17,7 @@
             <div class="navbar-nav">
                 <?php if(in_array('1', $this->session->grupos)): ?>
                 <a class="nav-link active nav-icon" href="/" style="font-size: 1rem;">
-                    Validate System
+                    Validate System - PHP <?=(float)phpversion()?>
                 </a>
                 <?php endif; ?>
                 <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">

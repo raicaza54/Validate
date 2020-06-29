@@ -23,6 +23,13 @@
                     Administrador
                 </a>
                 <?php endif; ?>
+                <?php if($this->session->userdata('demostracion') == 55): ?>
+                <a class="nav-link active nav-icon" href="#" style="font-size: 1rem;">
+                    <span style="background-color: #486196; border-radius: 35px; padding: 3px 8px;">
+                        <i class="fas fa-comment-dollar"></i> Comprar
+                    </span>
+                </a>
+                <?php endif; ?>
                 <a class="nav-item nav-link nav-icon d-none" id="notificacion" href="#" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Se esta cargando el archivo, espere un momento por favor">
                     <i class="fas fas fa-sync fa-spin"></i>
                 </a>
