@@ -244,6 +244,7 @@ class Auditoria extends CI_Controller {
                 $errores[] = 'otrospasivosct1';
                 $errores[] = 'pnocorrientest1';
             }
+            debug_file($post);
             throw new Exception("Procesando calculos", 202);
             
             if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){

@@ -83,7 +83,7 @@ class Manipulacion {
         ]);
         $data = [];
         foreach ($this->cuentaValue as $key => $value) {
-            if (in_array($key, ['acorrientes', 'anocorrientes', 'obligacionesfc', 'otrospasivosc', 'pnocorrientes', 'obligacionesfnoc'])) {
+            if (in_array($key, ['acorrientes', 'anocorrientes', 'obligacionesfc', 'obligacionesfnoc', 'otrospasivosc', 'pnocorrientes'])) {
                 $data[$key] = $value;
                 if (in_array($key, ['acorrientes', 'anocorrientes'])) {
                     $at += $value['t'];

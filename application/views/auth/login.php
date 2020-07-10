@@ -1,7 +1,7 @@
 <p class="text-white text-center" style="">
     <?= asset_image('logo3.png" style="height: 100px;"')?>
 </p>
-<div class="card shadow-sm">
+<div class="card shadow-sm mb-5">
     <div class="card-body" style="background-color: #fafafa;">
         <h5 class="text-center"><?= lang('login_heading'); ?></h5>
         <p class="text-center"><?= lang('login_subheading'); ?></p>
