@@ -15,11 +15,27 @@ class Admin extends CI_Controller {
         if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin()) {
             redirect('auth/login');
         }
+        $this->load->model([
+            'Archivos_model',
+            'Users_model',
+        ]);        
     }
     
     function index() {
-        $this->data['body'] = '';
-        $this->load->view("plantilla/admin", $this->data);
+        if($this->session->flashdata('terminos') === TRUE){
+            $this->ion_auth->logout();
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            redirect('auth/login', 'refresh');
+        }
+        $terminos = $this->Users_model->terminoCondiciones($this->session->userdata('users_id'));
+        if((int) $terminos['estado'] <= 0){
+            $this->session->set_flashdata('terminos', TRUE);
+            $view_html = $this->load->view('terminos/terminos001_vw', NULL, TRUE);
+            $this->load->view('auth/plantilla', ['body' => $view_html]);
+        }else{
+            $this->data['body'] = '';
+            $this->load->view("plantilla/admin", $this->data);
+        }
     }
     
 }

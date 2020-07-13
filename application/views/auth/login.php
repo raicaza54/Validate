@@ -1,5 +1,5 @@
-<p class="text-white text-center" style="">
-    <?= asset_image('logo3.png" style="height: 100px;"')?>
+<p class="text-white text-center">
+    <?= asset_image('logo3.png"')?>
 </p>
 <div class="card shadow-sm mb-5">
     <div class="card-body" style="background-color: #fafafa;">

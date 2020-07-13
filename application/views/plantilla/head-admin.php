@@ -24,7 +24,7 @@
             var version = '<?= $assets['version'] ?>';
             var ayudame = '<?=$this->session->flashdata('ayudame') !== NULL ? 1 : 0 ?>';
         </script>
-        <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico').'?'.$assets['version'] ?>">
+        <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico').'?v='.$assets['version'] ?>">
         <script src="<?= base_url('assets/library/jquery/3.4.1/jquery.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/jstree/jstree.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/jstree/jquery.ui.touch.js') ?>" type="text/javascript"></script>

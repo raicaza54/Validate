@@ -331,7 +331,7 @@ class Asset {
             $url = str_replace('http://', 'https://', $url);
         }
 
-        $asset_output = str_replace("{:url:}", $url . "?version=" . $this->version, $this->asset_format);
+        $asset_output = str_replace("{:url:}", $url . '?v=' . $this->version, $this->asset_format);
 
         return $asset_output;
     }

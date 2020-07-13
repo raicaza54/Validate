@@ -20,8 +20,11 @@
         <script src="<?= base_url('assets/library/popper/1.14.6/popper.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/bootstrap/4.3.1/js/bootstrap.min.js') ?>" type="text/javascript"></script>
         <link rel="icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico') ?>">
-
-        <title>Validate</title>
+        
+        <title>Validate System</title>
+        <style type="text/css">
+            img { height: 100px; }
+        </style>
     </head>
     <body>
         <div class="container">
