@@ -60,6 +60,6 @@ class Formato {
         // restore previous object
         $pdf->rollbackTransaction(true);
         return $height;
-    }    
+    }
     
 }

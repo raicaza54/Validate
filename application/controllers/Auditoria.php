@@ -82,7 +82,11 @@ class Auditoria extends CI_Controller {
                 if(is_null($terminos['ayudame']) || ($terminos['ayudame'] == 1)){
                     $this->session->set_flashdata('ayudame', TRUE);
                 }
-                redirect('/', 'refresh');
+                if($this->ion_auth->is_admin()){
+                    redirect('/admin', 'refresh');
+                }else{
+                    redirect('/', 'refresh');
+                }
             }else{
                 $this->session->set_flashdata('message', 'Algo no anda bien, los datos enviados no son correctos');
                 redirect('auth/login', 'refresh');
