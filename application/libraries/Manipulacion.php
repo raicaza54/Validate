@@ -54,7 +54,7 @@ class Manipulacion {
     function __construct() {
         set_time_limit(0);
         $this->CI = & get_instance();
-        $this->CI->load->model('Archivos_model');
+        $this->CI->load->model(['Archivos_model','Empresas_model']);
     }
     
     private function columnDef($archivo_id) {
@@ -93,6 +93,14 @@ class Manipulacion {
                         't-1' => $at1
                     ];
                 }
+                if (in_array($key, ['obligacionesfc', 'obligacionesfnoc'])) {
+                    $ot += $value['t'];
+                    $ot1 += $value['t-1'];
+                    $data['suma_obligacionesfc_obligacionesfnoc'] = [
+                        't' => $ot,
+                        't-1' => $ot1
+                    ];
+                }                
                 if (in_array($key, ['otrospasivosc', 'pnocorrientes'])) {
                     $pt += $value['t'];
                     $pt1 += $value['t-1'];
@@ -101,18 +109,33 @@ class Manipulacion {
                         't-1' => $pt1
                     ];
                 }
-                if (in_array($key, ['obligacionesfc', 'obligacionesfnoc'])) {
-                    $ot += $value['t'];
-                    $ot1 += $value['t-1'];
-                    $data['suma_obligacionesfc_obligacionesfnoc'] = [
-                        't' => $ot,
-                        't-1' => $ot1
-                    ];
-                }
             }
         }
         return $data;
     }
+
+    public function run_confianza($balances, $parametros, $empresa_id) {
+        foreach ($balances as $value) {
+            if($value['posicion'] == 't'){
+                $this->ct = $this->columnDef($value['balance']);
+                $t  = $value['balance'];
+            }elseif($value['posicion'] == 't-1'){
+                $this->ct1 = $this->columnDef($value['balance']);
+                $t1 = $value['balance'];
+            }
+        }
+        foreach ($parametros as $key => $value) {
+            $parametros[$value['name']] = str_replace('.','',$value['value']);
+            $parametros[$value['name']] = str_replace(',','.',$parametros[$value['name']]);
+            unset($parametros[$key]);
+        }
+        debug_file($this->cuentaValue);
+        $this->cuentasValuesConfianza([
+            't'   => $t,
+            't1'  => $t1
+        ], $parametros, $empresa_id);
+    }    
+    
     
     public function run($balances) {
         foreach ($balances as $value) {
@@ -202,7 +225,7 @@ class Manipulacion {
     private function cuentasValues8($param) {
         extract($param);
         $this->cuentaValue['acorrientes']['t']        = $this->getValue($t,      [11,12,13,14], $this->ct);     //Activos corrientes
-        $this->cuentaValue['acorrientes']['t-1']      = $this->getValue($t1,     [11,12,13,14], $this->ct1);    //Activos corrientes        
+        $this->cuentaValue['acorrientes']['t-1']      = $this->getValue($t1,     [11,12,13,14], $this->ct1);    //Activos corrientes
         $this->cuentaValue['anocorrientes']['t']      = $this->getValue($t,      [15,16,17,18], $this->ct);     //Activos no corrientes
         $this->cuentaValue['anocorrientes']['t-1']    = $this->getValue($t1,     [15,16,17,18], $this->ct1);    //Activos no corrientes
         $this->cuentaValue['obligacionesfc']['t']     = $this->getValue($t,      [21], $this->ct);              //Obligaciones financieras corrientes
@@ -213,6 +236,108 @@ class Manipulacion {
         $this->cuentaValue['otrospasivosc']['t-1']    = $this->getValue($t1,     [22,23,24,25,26], $this->ct1); //Otros Pasivos Corrientes
         $this->cuentaValue['pnocorrientes']['t']      = $this->getValue($t,      [27,28,29], $this->ct);        //Pasivos No Corrientes
         $this->cuentaValue['pnocorrientes']['t-1']    = $this->getValue($t1,     [27,28,29], $this->ct1);       //Pasivos No Corrientes        
+    }
+    
+    private function cuentasValuesConfianza($param, $parametros, $empresa_id) {
+        //debug_file('-');
+        extract($param);
+        $siCredito = $this->CI->Empresas_model->siCredito($empresa_id);
+        $this->cuentaValue['cxc']['t']                 = $this->getValue($t,      [1305], $this->ct);                      //CXC
+        $this->cuentaValue['cxc']['t-1']               = $this->getValue($t1,     [1305], $this->ct1);                     //CXC
+        $this->cuentaValue['ventas']['t']              = abs($this->getValue($t,  [41], $this->ct));                       //Ventas
+        $this->cuentaValue['ventas']['t-1']            = abs($this->getValue($t1, [41], $this->ct1));                      //Ventas
+        $this->cuentaValue['cventas']['t']             = $this->getValue($t,      [61], $this->ct);                        //Costo venta
+        $this->cuentaValue['cventas']['t-1']           = $this->getValue($t1,     [61], $this->ct1);                       //Costo venta        
+        $this->cuentaValue['acorrientes']['t']         = $parametros['acorrientest'];                                      //Activos corrientes
+        $this->cuentaValue['acorrientes']['t-1']       = $parametros['acorrientest1'];                                     //Activos corrientes        
+        $this->cuentaValue['actvtotales']['t']         = $this->getValue($t,      [16,17,18,19], $this->ct);               //Activos Totales
+        $this->cuentaValue['actvtotales']['t-1']       = $this->getValue($t1,     [16,17,18,19], $this->ct1);              //Activos Totales        
+        $this->cuentaValue['inmmaterial']['t']         = $this->getValue($t,      [15], $this->ct);                        //Inmovilizado Material
+        $this->cuentaValue['inmmaterial']['t-1']       = $this->getValue($t1,     [15], $this->ct1);                       //Inmovilizado Material
+        $this->cuentaValue['depreciacion']['t']        = $this->getValue($t,      [5160,5260,7360], $this->ct);            //Depresiacion
+        $this->cuentaValue['depreciacion']['t-1']      = $this->getValue($t1,     [5160,5260,7360], $this->ct1);           //Depresiacion        
+        $this->cuentaValue['gastosexplotacion']['t']   = $this->getValue($t,      [51, 52], $this->ct);                    //Gastos de Explotacion
+        $this->cuentaValue['gastosexplotacion']['t-1'] = $this->getValue($t1,     [51, 52], $this->ct1);                   //Gastos de Explotacion
+        $this->cuentaValue['deudaslplazo']['t']        = $parametros['obligacionesfnoct'];                                 //Deudas a largo Plazo
+        $this->cuentaValue['deudaslplazo']['t-1']      = $parametros['obligacionesfnoct1'];                                //Deudas a largo Plazo
+        $this->cuentaValue['pcorriente']['t']          = $parametros['obligacionesfct'] + $parametros['otrospasivosct'];   //Pasivo Corriente
+        $this->cuentaValue['pcorriente']['t-1']        = $parametros['obligacionesfct1'] + $parametros['otrospasivosct1']; //Pasivo Corriente
+        $this->cuentaValue['utilidadventas']['t']      = $this->utilidadventas($param, $siCredito);                        //Utilidad en Ventas
+        $this->cuentaValue['utilidadoperacional']['t'] = $this->utilidadoperacional($param);                               //Utilidad Operacional
+        $this->cuentaValue['utilidadaimpuestos']['t']  = $this->utilidadaimpuestos($param, $siCredito);                    //Utilidad Antes de Impuestos
+        $this->cuentaValue['utilidadneta']['t']        = $this->utilidadneta($param, $siCredito);                          //Utilidad Neta
+        $this->cuentaValue['utilidaddimpuesto']['t']   = 0;                                                                //Utilidad despues de impuesto
+        $this->cuentaValue['efectivogoperacion']['t']  = 0;                                                                //Efectivo generado en operación
+
+        /*
+        $this->cuentaValue['anocorrientes']['t']       = $this->getValue($t,      [15,16,17,18], $this->ct);               //Activos no corrientes
+        $this->cuentaValue['anocorrientes']['t-1']     = $this->getValue($t1,     [15,16,17,18], $this->ct1);              //Activos no corrientes
+        $this->cuentaValue['obligacionesfc']['t']      = $this->getValue($t,      [21], $this->ct);                        //Obligaciones financieras corrientes
+        $this->cuentaValue['obligacionesfc']['t-1']    = $this->getValue($t1,     [21], $this->ct1);                       //Obligaciones financieras corrientes
+        $this->cuentaValue['obligacionesfnoc']['t']    = 0;                                                                //Obligaciones financieras no corrientes
+        $this->cuentaValue['obligacionesfnoc']['t-1']  = 0;                                                                //Obligaciones financieras no corrientes
+        $this->cuentaValue['otrospasivosc']['t']       = $this->getValue($t,      [22,23,24,25,26], $this->ct);            //Otros Pasivos Corrientes
+        $this->cuentaValue['otrospasivosc']['t-1']     = $this->getValue($t1,     [22,23,24,25,26], $this->ct1);           //Otros Pasivos Corrientes
+        $this->cuentaValue['pnocorrientes']['t']       = $this->getValue($t,      [27,28,29], $this->ct);                  //Pasivos No Corrientes
+        $this->cuentaValue['pnocorrientes']['t-1']     = $this->getValue($t1,     [27,28,29], $this->ct1);                 //Pasivos No Corrientes
+        */
+//        debug_file($this->cuentaValue);
+//        debug_file('$siCredito = '.$siCredito);
+    }
+    
+    private function utilidadoperacional($param) {
+        extract($param);
+        $this->cuentaValue['utilidadventas']['t'];
+        $cuentas = $this->getValue($t, [51,52,71,72,73,74], $this->ct);
+        return number_format($this->cuentaValue['utilidadventas']['t'] - $cuentas, 2, '.', '');
+    }
+    
+    private function utilidadventas($param, $siCredito) {
+        extract($param);
+        $utilidadventas = 0;
+        $cuentas = $this->getValue($t, [41, 61], $this->ct, TRUE);
+        if($siCredito == 'si'){
+            $utilidadventas = array_sum(array_column($cuentas, 'valor'));
+        }else{
+            foreach ($cuentas as $key => $value) {
+                $cuentas[$value['cta']] = $value['valor'];
+                unset($cuentas[$key]);
+            }
+            $c41 = array_key_exists('41', $cuentas) ? $cuentas['41'] : 0;
+            $c61 = array_key_exists('61', $cuentas) ? $cuentas['61'] : 0;
+            $utilidadventas = $c41 - $c61;
+        }
+        return number_format($utilidadventas, 2, '.', '');
+    }
+    
+    private function utilidadaimpuestos($param, $siCredito) {
+        extract($param);
+        $utilidadaimpuestos = 0;
+        $cuentas = $this->getValue($t, [42, 53], $this->ct, TRUE);
+        if($siCredito == 'si'){
+            $utilidadaimpuestos = $this->cuentaValue['utilidadoperacional']['t'] + array_sum(array_column($cuentas, 'valor'));
+        }else{
+            foreach ($cuentas as $key => $value) {
+                $cuentas[$value['cta']] = $value['valor'];
+                unset($cuentas[$key]);
+            }
+            $c42 = array_key_exists('42', $cuentas) ? $cuentas['42'] : 0;
+            $c53 = array_key_exists('53', $cuentas) ? $cuentas['53'] : 0;
+            $utilidadaimpuestos = ($this->cuentaValue['utilidadoperacional']['t'] + $c42) - $c53;
+        }
+        return number_format($utilidadaimpuestos, 2, '.', '');
+    }
+    
+    private function utilidadneta($param, $siCredito) {
+        extract($param);
+        $utilidadneta = 0;
+        $cuentas = $this->getValue($t, [54], $this->ct);
+        if($siCredito == 'si'){
+            $utilidadneta = $this->cuentaValue['utilidadaimpuestos']['t'] + $cuentas;
+        }else{
+            $utilidadneta = $this->cuentaValue['utilidadaimpuestos']['t'] - $cuentas;
+        }
+        return number_format($utilidadneta, 2, '.', '');
     }
     
     private function cuentasValues($param) {
@@ -277,8 +402,8 @@ class Manipulacion {
         return number_format($m5ind,3,'.','');
     }
     
-    private function getValue($archivo, $cuenta, $column) {
-        $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta, $column);
+    private function getValue($archivo, $cuenta, $column, $data = FALSE) {
+        $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta, $column, $data);
         return $n;
     }
     

@@ -365,16 +365,18 @@ class Archivos_model extends CI_Model {
         return $this->db->affected_rows() == 1;
     }
     
-    public function getManipulacion($archivo, $cuenta, $column) {
+    public function getManipulacion($archivo, $cuenta, $column, $data = false) {
         $this->db->select($column['string']);
         $this->db->where('fk_archivos', $archivo);
         $this->db->where_in($column['array']['cta'], $cuenta);
         $r = $this->db->get('clie__archivos_detalle')->result_array();
         if ((is_bool($r) && $r === FALSE) || (is_array($r) && (count($r) <= 0))) {
             return 0;
-        }else{
+        }elseif($data == false){
             $sum = array_sum(array_column($r, 'valor'));
             return $sum;
+        }else{
+            return $r;
         }
     }
     

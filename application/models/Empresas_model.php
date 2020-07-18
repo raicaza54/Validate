@@ -301,4 +301,12 @@ class Empresas_model extends CI_Model {
         return $q;
     }
     
+    public function siCredito($empresa_id) {
+        $this->db->select('naturaleza_credito')
+            ->from('clie__empresas ae')
+            ->where('id', $empresa_id);
+        $r = $this->db->get()->row_array();
+        return $r['naturaleza_credito'];
+    }
+    
 }

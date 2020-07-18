@@ -82,7 +82,11 @@ class Auditoria extends CI_Controller {
                 if(is_null($terminos['ayudame']) || ($terminos['ayudame'] == 1)){
                     $this->session->set_flashdata('ayudame', TRUE);
                 }
-                redirect('/', 'refresh');
+                if($this->ion_auth->is_admin()){
+                    redirect('/admin', 'refresh');
+                }else{
+                    redirect('/', 'refresh');
+                }
             }else{
                 $this->session->set_flashdata('message', 'Algo no anda bien, los datos enviados no son correctos');
                 redirect('auth/login', 'refresh');
@@ -223,6 +227,8 @@ class Auditoria extends CI_Controller {
                 $estructura[$value['name']] = str_replace(',','.',$estructura[$value['name']]);
             }
             $indicadores = $this->manipulacion->indicadores($post['balances']);
+            
+            //TOTAL ACTIVOS
             if(($estructura['acorrientest'] + $estructura['anocorrientest']) != $indicadores['suma_acorrientes_anocorrientes']['t']){
                 $errores[] = 'acorrientest';
                 $errores[] = 'anocorrientest';
@@ -232,19 +238,26 @@ class Auditoria extends CI_Controller {
                 $errores[] = 'anocorrientest1';
             }
             
-            if(($estructura['obligacionesfct'] + $estructura['obligacionesfnoct'] + $estructura['otrospasivosct'] + $estructura['pnocorrientest']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t']){
+            //TOTAL OBLIGACIONES FINANCIERAS
+            if(($estructura['obligacionesfct'] + $estructura['obligacionesfnoct']) != $indicadores['suma_obligacionesfc_obligacionesfnoc']['t']){
                 $errores[] = 'obligacionesfct';
                 $errores[] = 'obligacionesfnoct';
+            }
+            if(($estructura['obligacionesfct1'] + $estructura['obligacionesfnoct1']) != $indicadores['suma_obligacionesfc_obligacionesfnoc']['t-1']){
+                $errores[] = 'obligacionesfct1';
+                $errores[] = 'obligacionesfnoct1';
+            }
+            
+            //TOTAL PASIVOS
+            if(($estructura['otrospasivosct'] + $estructura['pnocorrientest']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t']){
                 $errores[] = 'otrospasivosct';
                 $errores[] = 'pnocorrientest';
             }
-            if(($estructura['obligacionesfct1'] + $estructura['obligacionesfnoct1'] + $estructura['otrospasivosct1'] + $estructura['pnocorrientest1']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t-1']){
-                $errores[] = 'obligacionesfct1';
-                $errores[] = 'obligacionesfnoct1';
+            if(($estructura['otrospasivosct1'] + $estructura['pnocorrientest1']) != $indicadores['suma_otrospasivosc_pnocorrientes']['t-1']){
                 $errores[] = 'otrospasivosct1';
                 $errores[] = 'pnocorrientest1';
             }
-            debug_file($post);
+            $this->manipulacion->run_confianza($post['balances'], $post['form'], $this->session->userdata('empresaId'));
             throw new Exception("Procesando calculos", 202);
             
             if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
