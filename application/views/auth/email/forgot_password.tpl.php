@@ -193,25 +193,24 @@
                                                     </div>
                                                 </div>
                                                 <!--[if mso]></td></tr></table><![endif]-->
+                                                <!--[if mso]></td></tr></table><![endif]-->
+                                                <div align="center" class="button-container" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://validate.geoiss.com/auth/login" style="height:31.5pt; width:214.5pt; v-text-anchor:middle;" arcsize="10%" stroke="false" fillcolor="#0068a5"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Tahoma, Verdana, sans-serif; font-size:16px"><![endif]-->
+                                                        <a href="<?=base_url('/auth/reset_password/'.$forgotten_password_code)?>" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #0068a5; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; width: auto; width: auto; border-top: 1px solid #0068a5; border-right: 1px solid #0068a5; border-bottom: 1px solid #0068a5; border-left: 1px solid #0068a5; padding-top: 5px; padding-bottom: 5px; font-family: Tahoma, Verdana, Segoe, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;" target="_blank">
+                                                            <span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;">
+                                                                <span style="font-size: 16px; margin: 0; line-height: 2; word-break: break-word; font-family: Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 32px;">
+                                                                    <?=lang('email_forgot_password_link')?>
+                                                                </span>
+                                                            </span>
+                                                        </a>
+                                                    <!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
+                                                </div>
+                                                <!--[if (!mso)&(!IE)]><!-->                                                
                                                 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
                                                 <div style="color:#555555;font-family:Tahoma, Verdana, Segoe, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                                     <div style="line-height: 1.5; font-size: 12px; text-align: justify; font-family: Tahoma, Verdana, Segoe, sans-serif; color: #555555; mso-line-height-alt: 18px;"><span style="font-size: 14px;">Si no solicitó cambiar su contraseña, puede ignorar este correo electrónico de manera segura.</span></div>
                                                 </div>
                                             </div>
-                                            <!--[if mso]></td></tr></table><![endif]-->
-                                            <div align="center" class="button-container" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                                    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://validate.geoiss.com/auth/login" style="height:31.5pt; width:214.5pt; v-text-anchor:middle;" arcsize="10%" stroke="false" fillcolor="#0068a5"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Tahoma, Verdana, sans-serif; font-size:16px"><![endif]-->
-                                                    <?=lang('email_forgot_password_subheading')?>
-                                                    <a href="auth/reset_password/<?=$forgotten_password_code?>" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #0068a5; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; width: auto; width: auto; border-top: 1px solid #0068a5; border-right: 1px solid #0068a5; border-bottom: 1px solid #0068a5; border-left: 1px solid #0068a5; padding-top: 5px; padding-bottom: 5px; font-family: Tahoma, Verdana, Segoe, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;" target="_blank">
-                                                        <span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;">
-                                                            <span style="font-size: 16px; margin: 0; line-height: 2; word-break: break-word; font-family: Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 32px;">
-                                                                <?=lang('email_forgot_password_link')?>
-                                                            </span>
-                                                        </span>
-                                                    </a>
-                                                <!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
-                                            </div>
-                                            <!--[if (!mso)&(!IE)]><!-->
                                         </div>
                                         <!--<![endif]-->
                                     </div>

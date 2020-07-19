@@ -259,6 +259,7 @@ class Ion_auth {
                 'identity'   => $user->{$identity},
                 'id'         => $user->id,
                 'email'      => $email,
+                'password'   => $password,
                 'activation' => $activation_code,
             ];
             if (!$this->config->item('use_ci_email', 'ion_auth')) {
@@ -271,9 +272,9 @@ class Ion_auth {
                 $this->email->clear();
                 $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
                 $this->email->to($email);
+                $this->email->bcc($this->config->item('admin_email', 'ion_auth'));
                 $this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_activation_subject'));
                 $this->email->message($message);
-
                 if ($this->email->send() === TRUE) {
                     $this->ion_auth_model->trigger_events(['post_account_creation', 'post_account_creation_successful', 'activation_email_successful']);
                     $this->set_message('activation_email_successful');
