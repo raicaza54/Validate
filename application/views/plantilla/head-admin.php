@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="<?= base_url('assets/library/jexcel/jsuites.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/chosen/css/bootstrap-select.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/mloading/jquery.mloading.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/library/gijgo/css/gijgo.min.css') ?>">
         <?= asset_css('plantilla/estilo.css') ?>
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         
@@ -47,6 +48,7 @@
         <script src="<?= base_url('assets/library/imaskjs/moment.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/imaskjs/imask.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/mloading/jquery.mloading.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/gijgo/js/gijgo.min.js') ?>" type="text/javascript"></script>
         <?= asset_js('loader-admin.js') ?>
         <?= load_assets('js') ?>
         <script type="text/javascript">

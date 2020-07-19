@@ -162,6 +162,12 @@ $route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
 $route['admin/v1/clientes/listar']['post'] = 'admin/clientes/listar';
 
 /* -------------------------------------------------------------------------
+ * Metricas
+ * ------------------------------------------------------------------------- */
+$route['admin/v1/metricas/reporte1']['post'] = 'admin_metricas/reporte1';
+$route['admin/v1/metricas/reporte2']['post'] = 'admin_metricas/reporte2';
+
+/* -------------------------------------------------------------------------
  * Sistema por Defecto
  * ------------------------------------------------------------------------- */
 $route['default_controller']   = 'auditoria';
