@@ -129,11 +129,11 @@ class Manipulacion {
             $parametros[$value['name']] = str_replace(',','.',$parametros[$value['name']]);
             unset($parametros[$key]);
         }
-        debug_file($this->cuentaValue);
         $this->cuentasValuesConfianza([
             't'   => $t,
             't1'  => $t1
         ], $parametros, $empresa_id);
+        return $this->cuentaValue;
     }    
     
     
@@ -214,7 +214,7 @@ class Manipulacion {
             $this->cuentaValue['mensaje'] = 'El Indicador de Cambio arroja un score de '.number_format($this->cuentaValue['m5ind'], 3, ',', '.').' este resultado es superior a '.$this->riesgo5.' se sugiere mayor riesgo de manipulaci&oacute;n';
         }
         $this->cuentaValue['probabilidad'] = distr_norm_estand($this->cuentaValue['m5ind']);
-        $this->cuentaValue['analisis'] = $this->analisis($this->cuentaValue);
+        $this->cuentaValue['analisis'] = $this->analisis5($this->cuentaValue);
         foreach ($this->cuentaValue['analisis'] as $key => $value) {
             $this->cuentaValue[$key]['ideal'] = $value['ideal'];
             $this->cuentaValue[$key]['aporte'] = $value['ideal'] - $this->cuentaValue[$key]['resultado'];
@@ -263,13 +263,16 @@ class Manipulacion {
         $this->cuentaValue['pcorriente']['t']          = $parametros['obligacionesfct'] + $parametros['otrospasivosct'];   //Pasivo Corriente
         $this->cuentaValue['pcorriente']['t-1']        = $parametros['obligacionesfct1'] + $parametros['otrospasivosct1']; //Pasivo Corriente
         $this->cuentaValue['utilidadventas']['t']      = $this->utilidadventas($param, $siCredito);                        //Utilidad en Ventas
-        $this->cuentaValue['utilidadoperacional']['t'] = $this->utilidadoperacional($param);                               //Utilidad Operacional
+        $this->cuentaValue['utilidadoperacional']['t'] = $this->utilidadoperacional($param, $siCredito);                   //Utilidad Operacional
         $this->cuentaValue['utilidadaimpuestos']['t']  = $this->utilidadaimpuestos($param, $siCredito);                    //Utilidad Antes de Impuestos
         $this->cuentaValue['utilidadneta']['t']        = $this->utilidadneta($param, $siCredito);                          //Utilidad Neta
-        $this->cuentaValue['utilidaddimpuesto']['t']   = 0;                                                                //Utilidad despues de impuesto
-        $this->cuentaValue['efectivogoperacion']['t']  = 0;                                                                //Efectivo generado en operación
-
-        /*
+        $this->cuentaValue['utilidaddimpuesto']['t']   = $this->utilidaddimpuestos($siCredito);                            //Utilidad despues de impuesto
+        $this->cuentaValue['provisionimpuestos']['t']  = $this->getValue($t,      [54], $this->ct);                        //Mas provision de impuestos
+        $this->cuentaValue['depresiacionamortiz']['t'] = $this->getValue($t,      [5160,5165,5260,5265], $this->ct);       //Mas depresiacion y amortizacion
+        $this->cuentaValue['variacionactivos']['t']    = $this->variacionactivos($param);                                  //+/- Variacion de activos
+        $this->cuentaValue['variacionpasivos']['t']    = $this->variacionpasivos($param);                                  //+/- Variacion de pasivos
+        $this->cuentaValue['gif']['t']                 = $this->gif($param);                                               //Generacion Interna de Fondos
+        $this->cuentaValue['efectivogoperacion']['t']  = $this->efectivogoperacion($param);                                //Efectivo Generado en Operacion
         $this->cuentaValue['anocorrientes']['t']       = $this->getValue($t,      [15,16,17,18], $this->ct);               //Activos no corrientes
         $this->cuentaValue['anocorrientes']['t-1']     = $this->getValue($t1,     [15,16,17,18], $this->ct1);              //Activos no corrientes
         $this->cuentaValue['obligacionesfc']['t']      = $this->getValue($t,      [21], $this->ct);                        //Obligaciones financieras corrientes
@@ -279,17 +282,155 @@ class Manipulacion {
         $this->cuentaValue['otrospasivosc']['t']       = $this->getValue($t,      [22,23,24,25,26], $this->ct);            //Otros Pasivos Corrientes
         $this->cuentaValue['otrospasivosc']['t-1']     = $this->getValue($t1,     [22,23,24,25,26], $this->ct1);           //Otros Pasivos Corrientes
         $this->cuentaValue['pnocorrientes']['t']       = $this->getValue($t,      [27,28,29], $this->ct);                  //Pasivos No Corrientes
-        $this->cuentaValue['pnocorrientes']['t-1']     = $this->getValue($t1,     [27,28,29], $this->ct1);                 //Pasivos No Corrientes
-        */
-//        debug_file($this->cuentaValue);
-//        debug_file('$siCredito = '.$siCredito);
+        $this->cuentaValue['pnocorrientes']['t-1']     = $this->getValue($t1,     [27,28,29], $this->ct1);                 //Pasivos No Corrientes        
+        
+        $dsri = $this->dsri();
+        $gmi  = $this->gmi();
+        $aqi  = $this->aqi();
+        $sgi  = $this->sgi();
+        $depi = $this->depi();
+        $sgai = $this->sgai();
+        $lvgi = $this->lvgi();
+        $tata = $this->tata();
+        
+//        debug_file('dsri: '.$dsri);
+//        debug_file('gmi: '.$gmi);
+//        debug_file('aqi: '.$aqi);
+//        debug_file('sgi: '.$sgi);
+//        debug_file('depi: '.$depi);
+//        debug_file('sgai: '.$sgai);
+//        debug_file('lvgi: '.$lvgi);
+//        debug_file('tata: '.$tata);
+
+        $c_dsri = $this->DSRI8 * $dsri;
+        $c_gmi  = $this->GMI8  * $gmi;
+        $c_aqi  = $this->AQI8  * $aqi;
+        $c_sgi  = $this->SGI8  * $sgi;
+        $c_depi = $this->DEPI8 * $depi;
+        $c_sgai = $this->SGAI8 * $sgai;
+        $c_lvgi = $this->LVGI8 * $lvgi;
+        $c_tata = $this->TATA8 * $tata;
+        
+        $r_dsri = $this->DSRI8 - $c_dsri;
+        $r_gmi  = $this->GMI8 - $c_gmi;
+        $r_aqi  = $this->AQI8 - $c_aqi;
+        $r_sgi  = $this->SGI8 - $c_sgi;
+        $r_depi = $this->DEPI8 - $c_depi;
+        $r_sgai = $this->SGAI8 - $c_sgai;
+        $r_lvgi = $this->LVGI8 - $c_lvgi;
+        $r_tata = $this->TATA8 - $c_tata;
+        
+        $a_dsri = $r_dsri;
+        $a_gmi  = $r_gmi;
+        $a_aqi  = $r_aqi;
+        $a_sgi  = $r_sgi;
+        $a_depi = $r_depi;        
+        $a_sgai = $r_sgai;
+        $a_lvgi = $r_lvgi;
+        $a_tata = $r_tata;
+        
+        $this->cuentaValue['dsri']  = [
+            'manipulacion' => $this->DSRI8,
+            'resultado'    => $dsri,
+            'obtenido'     => $c_dsri,
+            'aporte'       => $a_dsri,
+        ];
+        $this->cuentaValue['gmi']   = [
+            'manipulacion' => $this->GMI8,
+            'resultado'    => $gmi,
+            'obtenido'     => $c_gmi,
+            'aporte'       => $a_gmi,
+        ];
+        $this->cuentaValue['aqi']   = [
+            'manipulacion' => $this->AQI8,
+            'resultado'    => $aqi,
+            'obtenido'     => $c_aqi,
+            'aporte'       => $a_aqi,
+        ];
+        $this->cuentaValue['sgi']   = [
+            'manipulacion' => $this->SGI8,
+            'resultado'    => $sgi,
+            'obtenido'     => $c_sgi,
+            'aporte'       => $a_sgi,
+        ];
+        $this->cuentaValue['depi']  = [
+            'manipulacion' => $this->DEPI8,
+            'resultado'    => $depi,
+            'obtenido'     => $c_depi,
+            'aporte'       => $a_depi,
+        ];
+        $this->cuentaValue['sgai']  = [
+            'manipulacion' => $this->SGAI8,
+            'resultado'    => $sgai,
+            'obtenido'     => $c_sgai,
+            'aporte'       => $a_sgai,
+        ];
+        $this->cuentaValue['lvgi']  = [
+            'manipulacion' => $this->LVGI8,
+            'resultado'    => $lvgi,
+            'obtenido'     => $c_lvgi,
+            'aporte'       => $a_lvgi,
+        ];
+        $this->cuentaValue['tata']  = [
+            'manipulacion' => $this->TATA8,
+            'resultado'    => $tata,
+            'obtenido'     => $c_tata,
+            'aporte'       => $a_tata,
+        ];
+        $this->cuentaValue['m8ind'] = $this->m8ind();
+        //debug_file('m8ind: '.$this->cuentaValue['m8ind']);
+        $manipulacion = (($this->cuentaValue['m8ind'] >= $this->riesgo8) ? FALSE : TRUE);        
+        if($manipulacion == TRUE){
+            $this->cuentaValue['mensaje'] = 'El Indicador de Cambio arroja un score de '.number_format($this->cuentaValue['m8ind'], 3, ',', '.').' este resultado es inferior a '.$this->riesgo8.' se sugiere menor riesgo de manipulaci&oacute;n';
+        }else{
+            $this->cuentaValue['mensaje'] = 'El Indicador de Cambio arroja un score de '.number_format($this->cuentaValue['m8ind'], 3, ',', '.').' este resultado es superior a '.$this->riesgo8.' se sugiere mayor riesgo de manipulaci&oacute;n';
+        }
+        $this->cuentaValue['probabilidad'] = distr_norm_estand($this->cuentaValue['m8ind']);
+        $this->cuentaValue['analisis'] = $this->analisis8($this->cuentaValue);
+        foreach ($this->cuentaValue['analisis'] as $key => $value) {
+            $this->cuentaValue[$key]['ideal'] = $value['ideal'];
+            $this->cuentaValue[$key]['aporte'] = $value['ideal'] - $this->cuentaValue[$key]['resultado'];
+        }
+        return $this->cuentaValue;
+        //debug_file('$siCredito = '.$siCredito);
+        //debug_file($this->cuentaValue);
     }
     
-    private function utilidadoperacional($param) {
+    private function efectivogoperacion($param) {
+        extract($param);
+        $cuenta = $this->cuentaValue['gif']['t'] + $this->cuentaValue['variacionactivos']['t'] + $this->cuentaValue['variacionpasivos']['t'];
+        return $cuenta;
+    }
+    
+    private function gif($param) {
+        extract($param);
+        $cuenta = $this->cuentaValue['utilidaddimpuesto']['t'] + $this->cuentaValue['provisionimpuestos']['t'] + $this->cuentaValue['depresiacionamortiz']['t'];
+        return $cuenta;
+    }
+    
+    private function variacionpasivos($param) {
+        extract($param);
+        $cuentas = ($this->getValue($t1, [22,23,24,25,26,27,28,29], $this->ct1) - $this->getValue($t, [22,23,24,25,26,27,28,29], $this->ct)) - $this->getValue($t, [54], $this->ct);
+        return number_format($cuentas, 2, '.', '');
+    }
+    
+    private function variacionactivos($param) {
+        extract($param);
+        $cuentas = ($this->getValue($t1, [13,14,16,17,18,19], $this->ct1) - $this->getValue($t, [13,14,16,17,18,19], $this->ct)) - $this->getValue($t, [5165,5265], $this->ct);
+        return number_format($cuentas, 2, '.', '');
+    }
+    
+    private function utilidadoperacional($param, $siCredito) {
         extract($param);
         $this->cuentaValue['utilidadventas']['t'];
         $cuentas = $this->getValue($t, [51,52,71,72,73,74], $this->ct);
-        return number_format($this->cuentaValue['utilidadventas']['t'] - $cuentas, 2, '.', '');
+        $r = 0;
+        if($siCredito == 'si'){
+            $r = number_format($this->cuentaValue['utilidadventas']['t'] + $cuentas, 2, '.', '');
+        }else{
+            $r = number_format($this->cuentaValue['utilidadventas']['t'] - $cuentas, 2, '.', '');
+        }
+        return number_format($r, 2, '.', '');
     }
     
     private function utilidadventas($param, $siCredito) {
@@ -308,6 +449,14 @@ class Manipulacion {
             $utilidadventas = $c41 - $c61;
         }
         return number_format($utilidadventas, 2, '.', '');
+    }
+    
+    private function utilidaddimpuestos($siCredito) {
+        $r = $this->cuentaValue['utilidadneta']['t'];
+        if($siCredito == 'si'){
+            $r = $this->cuentaValue['utilidadneta']['t'] * -1;
+        }
+        return number_format($r, 2, '.', '');
     }
     
     private function utilidadaimpuestos($param, $siCredito) {
@@ -365,26 +514,27 @@ class Manipulacion {
     private function dsri() {
         $c = $this->cuentaValue;
         $dsri = ($c['cxc']['t']/$c['ventas']['t']) / ($c['cxc']['t-1']/$c['ventas']['t-1']);
-        return number_format($dsri,3,'.','');
+        return number_format($dsri, 3, '.', '');
     }
     
     private function gmi() {
         $c = $this->cuentaValue;
         //debug_file("((".$c['ventas']['t-1']."-".$c['cventas']['t-1'].")/".$c['ventas']['t-1'].") / ((".$c['ventas']['t']."-".$c['cventas']['t'].")/".$c['ventas']['t'].")");
         $gmi = (($c['ventas']['t-1']-$c['cventas']['t-1'])/$c['ventas']['t-1']) / (($c['ventas']['t']-$c['cventas']['t'])/$c['ventas']['t']);
-        return number_format($gmi,3,'.','');
+        return number_format($gmi, 3, '.', '');
     }
     
     private function aqi() {
         $c = $this->cuentaValue;
-        $gmi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t'])/$c['actvtotales']['t'])) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1'])/$c['actvtotales']['t-1']));
-        return number_format($gmi,3,'.','');
+        //debug_file("(((1-"."(".$c['acorrientes']['t']."+".$c['inmmaterial']['t']."))/".$c['actvtotales']['t'].")) / ((1-(".$c['acorrientes']['t-1']."+".$c['inmmaterial']['t-1']."))/".$c['actvtotales']['t-1'].")");
+        $gmi = (((1-($c['acorrientes']['t']+$c['inmmaterial']['t']))/$c['actvtotales']['t'])) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1']))/$c['actvtotales']['t-1']);
+        return number_format($gmi, 3, '.', '');
     }
     
     private function sgi() {
         $c = $this->cuentaValue;
         $sgi = $c['ventas']['t'] / $c['ventas']['t-1'];
-        return number_format($sgi,3,'.','');
+        return number_format($sgi, 3, '.', '');
     }
     
     private function depi() {
@@ -393,7 +543,28 @@ class Manipulacion {
         //$depi = ($c['depreciacion']['t']/($c['depreciacion']['t']+$c['inmmaterial']['t'])) / ($c['depreciacion']['t-1']/($c['depreciacion']['t-1']+$c['inmmaterial']['t-1']));
         #Ajuste 01
         $depi = ($c['depreciacion']['t-1']/($c['depreciacion']['t-1']+$c['inmmaterial']['t-1'])) / ($c['depreciacion']['t']/($c['depreciacion']['t']+$c['inmmaterial']['t']));
-        return number_format($depi,3,'.','');
+        return number_format($depi, 3, '.', '');
+    }
+    
+    private function sgai() {
+        $c = $this->cuentaValue;
+        //debug_file("sgai: (".$c['gastosexplotacion']['t']." / ".$c['ventas']['t'].") / (".$c['gastosexplotacion']['t-1']." / ".$c['ventas']['t-1'].")");
+        $sgai = ($c['gastosexplotacion']['t'] / $c['ventas']['t']) / ($c['gastosexplotacion']['t-1'] / $c['ventas']['t-1']);
+        return number_format($sgai, 3, '.', '');
+    }
+    
+    private function lvgi() {
+        $c = $this->cuentaValue;
+        //debug_file("lvgi: ((".$c['deudaslplazo']['t']." + ".$c['pcorriente']['t'].") / ".$c['actvtotales']['t'].") / ((".$c['deudaslplazo']['t-1']." + ".$c['pcorriente']['t-1'].") / ".$c['actvtotales']['t-1'].")");
+        $lvgi = (($c['deudaslplazo']['t'] + $c['pcorriente']['t']) / $c['actvtotales']['t']) / (($c['deudaslplazo']['t-1'] + $c['pcorriente']['t-1']) / $c['actvtotales']['t-1']);
+        return number_format($lvgi, 3, '.', '');
+    }
+    
+    private function tata() {
+        $c = $this->cuentaValue;
+        //debug_file("tata: (".$c['utilidaddimpuesto']['t']." - ".$c['efectivogoperacion']['t'].") / ".$c['actvtotales']['t-1']);
+        $tata = ($c['utilidaddimpuesto']['t'] - $c['efectivogoperacion']['t']) / $c['actvtotales']['t-1'];
+        return number_format($tata, 3, '.', '');
     }
     
     private function m5ind() {
@@ -402,12 +573,40 @@ class Manipulacion {
         return number_format($m5ind,3,'.','');
     }
     
+    private function m8ind() {
+        $c = $this->cuentaValue;
+        $m8ind = -4.84 + $this->DSRI8 * $c['dsri']['resultado'] + $this->GMI8 * $c['gmi']['resultado'] + $this->AQI8 * $c['aqi']['resultado'] + $this->SGI8 * $c['sgi']['resultado'] + $this->DEPI8 * $c['depi']['resultado'] - $this->SGAI8 * $c['sgai']['resultado'] + $this->TATA8 * $c['tata']['resultado'] - $this->LVGI8 * $c['lvgi']['resultado'];
+        return number_format($m8ind,3,'.','');
+    }
+    
     private function getValue($archivo, $cuenta, $column, $data = FALSE) {
         $n = $this->CI->Archivos_model->getManipulacion($archivo, $cuenta, $column, $data);
         return $n;
     }
     
-    private function analisis(array $indicadores) {
+    private function analisis5(array $indicadores) {
+        $data = [];
+        $analisis['dsri'] = ['value' => 1.031, 'min' => 'Neutral', 'max' => 'Evaluar reconocimiento de ingresos'];
+        $analisis['gmi']  = ['value' => 1.014, 'min' => 'Neutral', 'max' => '¿Porque se deterioran los margenes?'];
+        $analisis['aqi']  = ['value' => 1.039, 'min' => 'Neutral', 'max' => 'Evaluar capitalización de gastos'];
+        $analisis['sgi']  = ['value' => 1.134, 'min' => 'Neutral', 'max' => 'Alto crecimiento de ventas'];
+        $analisis['depi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Tasa de depreciación decreciente'];
+        $analisis['sgai'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Gastos crecientes'];
+        $analisis['lvgi'] = ['value' => 1,     'min' => 'Neutral', 'max' => 'Mayor endeudamiento'];
+        $analisis['tata'] = ['value' => 0.018, 'min' => 'Neutral', 'max' => 'Evaluar los cambios en el capital de trabajo'];
+        foreach ($indicadores as $key => $value) {
+            if(array_key_exists($key, $analisis)){
+                $data[$key]['ideal'] = $analisis[$key]['value'];
+                $data[$key]['msg'] = $analisis[$key]['min'];
+                if($value['resultado'] > $analisis[$key]['value']){
+                    $data[$key]['msg'] = $analisis[$key]['max'];
+                }
+            }
+        }
+        return $data;
+    }
+    
+    private function analisis8(array $indicadores) {
         $data = [];
         $analisis['dsri'] = ['value' => 1.031, 'min' => 'Neutral', 'max' => 'Evaluar reconocimiento de ingresos'];
         $analisis['gmi']  = ['value' => 1.014, 'min' => 'Neutral', 'max' => '¿Porque se deterioran los margenes?'];

@@ -199,6 +199,8 @@ class Resultados extends CI_Controller {
                 $pref = 'SPI';
             }elseif ($tipo == 'manipulacion') {
                 $pref = 'MAN';
+            }elseif ($tipo == 'confianza') {
+                $pref = 'CON';
             }elseif ($tipo == 'listascontrol') {
                 $pref = 'LSC';
             }elseif ($tipo == 'condicioncuenta') {
@@ -231,6 +233,7 @@ class Resultados extends CI_Controller {
             $this->form_validation->set_rules('pdfBenford',         'Archivo Benford',           'max_length[50]');
             $this->form_validation->set_rules('pdfSpider',          'Archivo Spider',            'max_length[50]');
             $this->form_validation->set_rules('pdfManipulacion',    'Archivo Manipulacion',      'max_length[50]');
+            $this->form_validation->set_rules('pdfConfianza',       'Archivo Manipulacion',      'max_length[50]');
             $this->form_validation->set_rules('pdflistasControl',   'Archivo Listas de Control', 'max_length[50]');
             $this->form_validation->set_rules('pdfcondicionCuenta', 'Archivo Listas de Control', 'max_length[50]');
             if($this->form_validation->run() === FALSE){
@@ -246,6 +249,9 @@ class Resultados extends CI_Controller {
             } elseif (array_key_exists('pdfManipulacion', $post) && (strlen($post['pdfManipulacion']) > 5)) {
                 $pdf = 'pdfManipulacion';
                 $pref = 'MAN';
+            } elseif (array_key_exists('pdfConfianza', $post) && (strlen($post['pdfConfianza']) > 5)) {
+                $pdf = 'pdfConfianza';
+                $pref = 'CON';
             } elseif (array_key_exists('pdflistasControl', $post) && (strlen($post['pdflistasControl']) > 5)) {
                 $pdf = 'pdflistasControl';
                 $pref = 'LSC';
@@ -269,6 +275,9 @@ class Resultados extends CI_Controller {
                 throw new Exception("Tenemos un problema con los datos La Araña, no corresponden los tipos definidos", 202);
             }
             if (($tipo == 'manipulacion') && (strlen($post['pdfManipulacion']) <= 0)) {
+                throw new Exception("Tenemos un problema con los datos Manipulación, no corresponden los tipos definidos", 202);
+            }
+            if (($tipo == 'confianza') && (strlen($post['pdfConfianza']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos Manipulación, no corresponden los tipos definidos", 202);
             }
             if (($tipo == 'listascontrol') && (strlen($post['pdflistasControl']) <= 0)) {
@@ -369,6 +378,29 @@ class Resultados extends CI_Controller {
             $pdf = unserialize($manipulacion['analisis']);
         }        
         $this->load->library('formatpdf/Manipulacion_pdf', array(
+            'orientation' => 'P',
+            'unit'        => 'mm',
+            'format'      => 'LETTER',
+            'unicode'     => TRUE,
+            'encoding'    => 'UTF-8',
+            'diskcache'   => FALSE,
+            'empresa'     => $this->empresa,
+            'codigo'      => $consecutivo,
+            'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
+        ), 'pdf');
+        $data = [];
+        $dataPdf = [$pdf];
+        return $this->pdf->run($data, $dataPdf);
+    }
+    
+    private function confianzaPdf($analisis, $idPdf, $consecutivo, $cliente) {
+        if (!$this->input->is_ajax_request()) show_404();
+        $e = []; $pdf = [];
+        foreach ($analisis as $confianza) {
+            $pdf = unserialize($confianza['analisis']);
+        }        
+        $this->load->library('formatpdf/Confianza_pdf', array(
             'orientation' => 'P',
             'unit'        => 'mm',
             'format'      => 'LETTER',

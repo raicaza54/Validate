@@ -31,7 +31,7 @@ if (!defined('BASEPATH'))
 
 require_once APPPATH . 'libraries/tcpdf/tcpdf.php';
 
-class Manipulacion_pdf extends TCPDF {
+class Confianza_pdf extends TCPDF {
 
     /**
      * Variable para mostrar el nombre de la empresa
@@ -124,7 +124,7 @@ class Manipulacion_pdf extends TCPDF {
         // Title
         //$this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
         $this->SetFont($this->family, '', 8);
-        $this->MultiCell(NULL, NULL, 'Análisis: Indicadores de Cambio', 0, 'R', FALSE, 1, 50, 5);
+        $this->MultiCell(NULL, NULL, 'Análisis: Indicadores de Confianza', 0, 'R', FALSE, 1, 50, 5);
         $y = 10;
         $style = array(
             'color' => $this->lineColor,
@@ -158,7 +158,7 @@ class Manipulacion_pdf extends TCPDF {
         try{
             $this->SetFont($this->family, '', 7);
             $this->SetProtection(array('modify', 'copy'), '');
-            $this->SetTitle('Indicadores de Cambio');
+            $this->SetTitle('Indicadores de Confianza');
             $this->SetLineStyle(array(
                 'color' => $this->lineBackColor,
                 'width' => $this->lineWidth
@@ -184,11 +184,11 @@ class Manipulacion_pdf extends TCPDF {
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && array_key_exists('mensaje', $dataPdf[0])){
                 $dataPdf = $dataPdf[0];
                 $this->MultiCell(196, NULL, $dataPdf['mensaje'], FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(196, NULL, 'La probabilidad de los Indicadores de Cambio es '.$dataPdf['probabilidad'].'%', FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(196, NULL, 'La probabilidad de los Indicadores de Confiaza es '.$dataPdf['probabilidad'].'%', FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(1);
                 
-                $this->MultiCell(117, NULL, 'SCORE DE INDICADORES DE CAMBIO', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(79, NULL, $dataPdf['m5ind'], TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(117, NULL, 'SCORE DE INDICADORES DE CONFIANZA', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['m8ind'], TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
 
                 $this->MultiCell(60, NULL, 'INDICADORES', TRUE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(23, NULL, 'FACTOR IDEAL', TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
@@ -230,6 +230,27 @@ class Manipulacion_pdf extends TCPDF {
                 //$this->MultiCell(30, NULL, number_format($dataPdf['depi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(34, NULL, number_format($dataPdf['depi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(79, NULL, $dataPdf['analisis']['depi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(30, NULL, 'SGAI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['sgai']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['sgai']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['sgai']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['sgai']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['sgai']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(30, NULL, 'LVGI', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['lvgi']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['lvgi']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['lvgi']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['lvgi']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['lvgi']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(30, NULL, 'TATA', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(30, NULL, number_format($dataPdf['tata']['resultado'],3,',','.'), TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(23, NULL, number_format($dataPdf['tata']['ideal'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                //$this->MultiCell(30, NULL, number_format($dataPdf['tata']['obtenido'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(34, NULL, number_format($dataPdf['tata']['aporte'],3,',','.'), TRUE, 'R', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(79, NULL, $dataPdf['analisis']['tata']['msg'], TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(5);
 
                 $this->MultiCell(109, NULL, 'DSRI', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
@@ -296,7 +317,50 @@ class Manipulacion_pdf extends TCPDF {
                 $this->MultiCell(87, NULL, number_format($dataPdf['inmmaterial']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(109, NULL, 'INMOVILIZADO MATERIAL T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(87, NULL, number_format($dataPdf['inmmaterial']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                        
-
+                
+                $this->MultiCell(109, NULL, 'SGAI', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['sgai']['resultado'],3,',','.'), TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(109, NULL, 'GASTOS DE EXPLOTACIÓN T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['gastosexplotacion']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(109, NULL, 'GASTOS DE EXPLOTACIÓN T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['gastosexplotacion']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                                                    
+                
+                $this->MultiCell(109, NULL, 'VENTAS T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['ventas']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(109, NULL, 'VENTAS T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['ventas']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(109, NULL, 'LVGI', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['lvgi']['resultado'],3,',','.'), TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(109, NULL, 'DEUDAS A LARGO PLAZO T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['deudaslplazo']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(109, NULL, 'DEUDAS A LARGO PLAZO T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['deudaslplazo']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                                                                    
+                
+                $this->MultiCell(109, NULL, 'PASIVO CORRIENTE T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['pcorriente']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(109, NULL, 'PASIVO CORRIENTE T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['pcorriente']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                                                                    
+                
+                $this->MultiCell(109, NULL, 'ACTIVOS TOTALES T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['actvtotales']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(109, NULL, 'ACTIVOS TOTALES T-1', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['actvtotales']['t-1'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(109, NULL, 'TATA', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['tata']['resultado'],3,',','.'), TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);                
+                
+                $this->MultiCell(109, NULL, 'UTILIDAD DESPUÉS DE IMPUESTOS', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['utilidadaimpuestos']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
+                $this->MultiCell(109, NULL, 'EFECTIVO GENERADO EN OPERACIÓN', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['efectivogoperacion']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                
+                
+                $this->MultiCell(109, NULL, 'ACTIVOS TOTALES T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['actvtotales']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                
             }else{
                 $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
             }
@@ -305,7 +369,7 @@ class Manipulacion_pdf extends TCPDF {
             if($path === FALSE){
                 return FALSE;
             }            
-            $filePath = $this->CI->config->item('path_resultados').'MAN'.$this->namePdf.'.pdf';
+            $filePath = $this->CI->config->item('path_resultados').'CON'.$this->namePdf.'.pdf';
             $this->Output($filePath, 'F');
         } catch(Exception $ex){
             return FALSE;

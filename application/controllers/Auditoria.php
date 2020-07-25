@@ -222,6 +222,9 @@ class Auditoria extends CI_Controller {
         $errores = [];
         try {
             $post = $this->input->post();
+            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2) || !array_key_exists('ejecucion', $post)){
+                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }            
             foreach ($post['form'] as $value) {
                 $estructura[$value['name']] = str_replace('.','',$value['value']);
                 $estructura[$value['name']] = str_replace(',','.',$estructura[$value['name']]);
@@ -257,18 +260,15 @@ class Auditoria extends CI_Controller {
                 $errores[] = 'otrospasivosct1';
                 $errores[] = 'pnocorrientest1';
             }
-            $this->manipulacion->run_confianza($post['balances'], $post['form'], $this->session->userdata('empresaId'));
-            throw new Exception("Procesando calculos", 202);
-            
-            if(!is_array($post) || !array_key_exists('balances', $post) || (count($post['balances']) != 2)){
-                throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
-            }
-            $indicadores = $this->manipulacion->indicadores($post['balances']);
-            if(!is_array($indicadores)){
-                throw new Exception("Tenemos un problema, los datos no pueden ser procesados", 202);
-            }            
-            
-            $response["data"] = '';
+            $confianza = $this->manipulacion->run_confianza($post['balances'], $post['form'], $this->session->userdata('empresaId'));
+            $id = uniqint();
+            $response['data'] = $confianza;
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($response["data"]),
+                'ejecucion'     => $post['ejecucion'],
+                'analisis_tipo' => 'confianza'
+            ]);            
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);

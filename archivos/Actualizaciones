@@ -750,3 +750,24 @@ SE ESTA TRABAJANDO
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
 ▪ Envió de correo de cuenta nueva
 ▪ Envió de correo para recuperar contraseña
+
+#*******************************************************************************
+
+FECHA: 25/07/2020 Versión 1.6.0
+NUEVAS FUNCIONALIDADES
+▪ Activa el modulo, He olvidado mi Contraseña (Costo económico)
+▪ Activa el modulo, envió de correo Bienvenida y Activación desde la herramienta (Costo económico)
+▪ Indicadores de Confianza (Manipulación 8 indicadores)
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ No hay cambios
+▪ Títulos de PDF de Indicadores de Cambio
+
+SE ESTA TRABAJANDO
+▪ Envió de correo a comercial de intención de compra
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+▪ Validaciones utilizando las librerías y utilidades nativas del framework

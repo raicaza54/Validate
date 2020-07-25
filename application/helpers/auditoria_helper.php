@@ -1334,7 +1334,11 @@ if (!function_exists('numberFormat')) {
     }
 }
 
-
+if (!function_exists('bcdiv')) {
+    function bcdiv($_ro, $_lo, $_scale = 0) {
+        return round($_ro / $_lo, $_scale);
+    }
+}
 
 function nrand($mean, $sd){
     $x = mt_rand()/mt_getrandmax();
