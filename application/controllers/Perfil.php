@@ -242,11 +242,11 @@ class Perfil extends CI_Controller {
             if(!is_array($form)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
-            if(!is_array($form) || !array_key_exists('id', $form)){
+            if(!is_array($form) || !array_key_exists('idCliente', $form)){
                 throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
             }
-            $id = openCypher('decrypt', $form['id']);
-            if(is_bool($form) && ($if === FALSE)){
+            $id = openCypher('decrypt', $form['idCliente']);
+            if(is_bool($form) && ($id === FALSE)){
                 log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
                 throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
             }
@@ -300,13 +300,16 @@ class Perfil extends CI_Controller {
         try {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
+                log_message('error', 'La clave form no esta definida en el arreglo: '.var_export($post, TRUE));
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
             if(!is_array($form)){
+                log_message('error', 'El formulario no es un arreglo: '.var_export($form, TRUE));
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
-            if(!is_array($form) || !array_key_exists('id', $form)){
+            if(!is_array($form) || !array_key_exists('idCliente', $form)){
+                log_message('error', 'idCliente no esta definido: '.var_export($form, TRUE));
                 throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
             }
             $this->form_validation->set_data($form);
@@ -315,6 +318,7 @@ class Perfil extends CI_Controller {
                 throw new Exception(validation_errors('',''), 202);
             }
             if(in_array($this->session->userdata('clientes_id'), $this->config->item('id_demo'))){
+                log_message('error', 'El cliente intenta desactivar el demo');
                 throw new Exception('Cuenta Demostración, no es posible desactivar los datos, la misma es unicamente para fines demostrativos', 202);
             }
             $data = [
@@ -393,11 +397,11 @@ class Perfil extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
-            if(!is_array($form) || !array_key_exists('id', $form)){
+            if(!is_array($form) || !array_key_exists('idUsuario', $form)){
                 throw new Exception("Tenemos un problema, debe contactar a soporte tecnico", 202);
             }
-            $id = openCypher('decrypt', $form['id']);
-            if(is_bool($form) && ($if === FALSE)){
+            $id = openCypher('decrypt', $form['idUsuario']);
+            if(is_bool($form) && ($id === FALSE)){
                 log_message('error', 'Al intentar hacer decrypt al id de usuario este no corresponde');
                 throw new Exception("Tenemos un problema, los datos son corruptos e ilegibles, debe contactar a soporte tecnico", 202);
             }
@@ -415,9 +419,9 @@ class Perfil extends CI_Controller {
                 throw new Exception(validation_errors('',''), 202);
             }
             $data += [
-                'first_name' => $form['user_nombre'],
-                'last_name'  => $form['user_apellido'],
-                'phone'      => $form['user_telefono']
+                'first_name'        => $form['user_nombre'],
+                'last_name'         => $form['user_apellido'],
+                'phone'             => $form['user_telefono'],
             ];
             $update = $this->ion_auth->update($id, $data);            
             if(is_bool($update) && $update === FALSE){

@@ -18,7 +18,7 @@ class Perfil_model extends CI_Model {
     }
     
     public function getUsuario($users_id) {
-        $this->db->select('cl.nombre AS empr_nombre, cl.identificacion AS empr_identificacion, 
+        $this->db->select('cl.id AS id_empr, cl.nombre AS empr_nombre, cl.identificacion AS empr_identificacion, 
             cl.direccion AS empr_direccion, cl.telefonos AS empr_telefonos, cl.correo AS empr_correo, cl.color AS empr_color, 
             cl.firma AS empr_firma, cl.path_logotipo AS empr_logotipo, cl.usar_logotipo AS empr_usarlogotipo, cl.usar_firma AS empr_usarfirma,
             au.id, au.email AS user_correo, au.first_name AS user_nombre, au.last_name AS user_apellido, cl.usar_demo AS empr_usardemo,
@@ -29,6 +29,7 @@ class Perfil_model extends CI_Model {
         $usuario = $this->db->get()->row_array();
         if(is_array($usuario) && (count($usuario) > 0)){
             $usuario['id'] = openCypher('encrypt', $usuario['id']);
+            $usuario['id_empr'] = openCypher('encrypt', $usuario['id_empr']);
             return $usuario;
         }else{
             return FALSE;
