@@ -753,6 +753,23 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
+FECHA: 07/08/2020 Versión 1.5.2
+NUEVAS FUNCIONALIDADES
+▪ Buscador en los arboles de datos, tanto para explorador de archivos como resultados
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Eliminar archivos no cargados, presionar doble click y se comprueba si el archivo sigue en proceso
+
+SE ESTA TRABAJANDO
+▪ Indicadores de Confianza
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
 FECHA: 25/07/2020 Versión 1.6.0
 NUEVAS FUNCIONALIDADES
 ▪ Activa el modulo, He olvidado mi Contraseña (Costo económico)

@@ -72,6 +72,16 @@ class Explorador_model extends CI_Model {
     
     public function update_data($data, $id) {
         $this->db->update('clie__carpetas', $data, ['archivos_id' => $id, 'created_clie' => $this->session->userdata('clientes_id')]);
+        if($this->db->affected_rows() <= 0){
+            $this->db->select('id, archivos_id');
+            $this->db->where('id', $id);
+            $archivo = $this->db->get('clie__carpetas')->row_array();
+            if(is_array($archivo) && (count($archivo) > 0)){
+                if($archivo['archivos_id'] == 0){
+                    $this->db->update('clie__carpetas', $data, ['id' => $id, 'created_clie' => $this->session->userdata('clientes_id')]);
+                }
+            }
+        }
         return $this->db->affected_rows() == 1;
     }    
 

@@ -774,10 +774,9 @@ class Archivos extends CI_Controller {
             }
             $archivo = $this->Archivos_model->getById($post['id']);
             $update = 0;
-            if(file_exists($archivo['file_name']) && !$this->_processExists($archivo['pid'])){
-                $update = 1;
-                if($this->Explorador_model->update_data(['deleted_at' => 1], $post['id']) !== TRUE){
-                    //throw new Exception("Algo no anda bien", 202);
+            if(($archivo['tiempo'] > 20) && !$this->_processExists($archivo['pid'])){
+                if($this->Explorador_model->update_data(['deleted_at' => 1], $post['id']) == TRUE){
+                    $update = 1;
                 }
             }
             $response['data'] = ['refresh' => $update];
