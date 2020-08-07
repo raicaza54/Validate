@@ -3,11 +3,11 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-principal" role="tabpanel" aria-labelledby="pills-principal-tab">
             <div class="menu-card-icon">
-                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onClick="EMPRESAS.methods.listarEmpresas(this)">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-listar')?>" id="mpe-empresa-listar" onclick="EMPRESAS.methods.listarEmpresas(this)">
                     <i class="fas fa-city"></i>
                     <span><?=nbs(2)?>Listar<?=nbs(2)?></span>
                 </div>                
-                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onClick="EMPRESAS.methods.crearEmpresas(this)">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-empresa-crear')?>" id="mpe-empresa-crear" onclick="EMPRESAS.methods.crearEmpresas(this)">
                     <i class="far fa-hospital"></i>
                     <span><?=nbs(2)?>Crear<?=nbs(2)?></span>
                 </div>
@@ -15,7 +15,7 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono <?=$this->permisos->viewaccess('mpe-importar-archivo')?>" id="mpe-importar-archivo" onClick="ARCHIVOS.methods.cargarArchivo(this)">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-importar-archivo')?>" id="mpe-importar-archivo" onclick="ARCHIVOS.methods.cargarArchivo(this)">
                     <i class="fas fa-file-upload"></i>
                     <span>Archivo</span>
                 </div>
@@ -31,7 +31,7 @@
                     <i class="fas fa-file-csv"></i>
                     <span>CSV</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-excel')?>" id="mpe-exportar-excel" onClick="ARCHIVOS.methods.descargarExcel(this)">
+                <div class="icono <?=$this->permisos->viewaccess('mpe-exportar-excel')?>" id="mpe-exportar-excel" onclick="ARCHIVOS.methods.descargarExcel(this)">
                     <i class="fas fa-file-excel"></i>
                     <span>Excel</span>
                 </div>
@@ -86,15 +86,15 @@
             </div>
             <div class="menu-separador"></div>
             <div class="menu-card-icon">
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-benford')?>" id="mal-analisis-benford" onClick="BENFORD.methods.parametros(this);">
+                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-benford')?>" id="mal-analisis-benford" onclick="BENFORD.methods.parametros(this);">
                     <i class="fas fa-chart-bar"></i> 
                     <span>Ley de Benford</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-spider')?>" id="mal-analisis-spider" onClick="SPIDER.methods.parametros(this);">
+                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-spider')?>" id="mal-analisis-spider" onclick="SPIDER.methods.parametros(this);">
                     <i class="fas fa-spider"></i>
                     <span>Araña</span>
                 </div>
-                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas" onClick="LISTASCONTROL.methods.consulta(this);">
+                <div class="icono <?=$this->permisos->viewaccess('mal-analisis-listas')?>" id="mal-analisis-listas" onclick="LISTASCONTROL.methods.consulta(this);">
                     <i class="fas fa-tasks"></i>
                     <span>Listas de Control</span>
                 </div>
@@ -103,10 +103,10 @@
             <div class="menu-separador"></div>
             <div class="menu-card">
                 <div class="d-flex flex-column">
-                    <span class="<?=$this->permisos->viewaccess('mal-analisis-manipulacion')?>" id="mal-analisis-manipulacion" onClick="MANIPULACION.methods.parametros(this);">
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-manipulacion')?>" id="mal-analisis-manipulacion" onclick="MANIPULACION.methods.parametros(this);">
                         <i class="fas fa-user-secret"></i> Indicadores de Cambio
                     </span>                    
-                    <span class="<?=$this->permisos->viewaccess('mal-analisis-indicadores')?>" id="mal-analisis-indicadores" onClick="MANIPULACION.methods.parametrosConfianza(this);">
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-indicadores')?>" id="mal-analisis-indicadores" onclick="MANIPULACION.methods.parametrosConfianza(this);">
                         <i class="fas fa-book"></i> Indicadores de Confianza
                     </span>                    
                 </div>
@@ -115,7 +115,7 @@
             <div class="menu-separador"></div>            
             <div class="menu-card">
                 <div class="d-flex flex-column">
-                    <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond" onClick="CONDICION.methods.consulta(this)">
+                    <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond" onclick="CONDICION.methods.consulta(this)">
                         <i class="fas fa-calculator"></i> Condiciones de Cuenta
                     </span>                    
                     <span class="<?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
@@ -127,7 +127,7 @@
             <div class="menu-separador"></div>
             <div class="menu-card">
                 <div class="d-flex flex-column">
-                    <span class="<?=$this->permisos->viewaccess('mal-documentos-dictamen')?>" id="mal-documentos-dictamen">
+                    <span class="<?=$this->permisos->viewaccess('mal-documentos-dictamen')?>" id="mal-documentos-dictamen" onclick="DICTAMEN.methods.parametros(this)">
                         <i class="far fa-comment-dots"></i> Dictamen
                     </span>                    
                     <span class="<?=$this->permisos->viewaccess('mal-documentos-papeles')?>" id="mal-documentos-papeles">

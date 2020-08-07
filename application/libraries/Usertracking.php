@@ -166,6 +166,7 @@ class Usertracking {
         $input_data['referer_page'] = $this->CI->agent->referrer();
         $post = $_POST;
         if(is_array($post) && isset($post['password'])) $post['password'] = md5($post['password']);
+        if(is_array($post) && isset($post['password_confirm'])) $post['password_confirm'] = md5($post['password_confirm']);
         $input_data['post'] = serialize($post);
         $input_data['resultado'] = serialize($respuesta);
         $input_data['class'] = $this->CI->router->class;

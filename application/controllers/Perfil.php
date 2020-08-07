@@ -409,6 +409,7 @@ class Perfil extends CI_Controller {
             $this->form_validation->set_rules('user_nombre', 'Nombres', 'required|max_length[50]');
             $this->form_validation->set_rules('user_apellido', 'Apellidos', 'required|max_length[50]');
             $this->form_validation->set_rules('user_telefono', 'Teléfono', 'max_length[20]');
+            $this->form_validation->set_rules('user_professional_card', 'Tarjeta Profesional', 'max_length[20]');
             $this->form_validation->set_rules('email', 'Correo', 'required|valid_email');
             if(strlen($form['user_clave'])){
                 $this->form_validation->set_rules('user_clave', 'Clave', 'required|min_length['. $this->config->item('min_password_length', 'ion_auth').']|max_length[20]|callback_valid_password');
@@ -422,6 +423,7 @@ class Perfil extends CI_Controller {
                 'first_name'        => $form['user_nombre'],
                 'last_name'         => $form['user_apellido'],
                 'phone'             => $form['user_telefono'],
+                'professional_card' => $form['user_professional_card']
             ];
             $update = $this->ion_auth->update($id, $data);            
             if(is_bool($update) && $update === FALSE){

@@ -1649,7 +1649,7 @@ class Ion_auth_model extends CI_Model {
         }
 
         $this->db->trans_commit();
-
+        
         $this->trigger_events(['post_update_user', 'post_update_user_successful']);
         $this->set_message('update_successful');
         return TRUE;

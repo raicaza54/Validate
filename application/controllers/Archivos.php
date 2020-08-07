@@ -951,10 +951,8 @@ class Archivos extends CI_Controller {
             }
             $column = $this->archivo->columnCondicion($post['id']);
             if((count(array_diff(['identificacion','doc','cta','valor','base'], array_keys($column['array']))) > 0) && (count(array_diff(['identificacion','doc','cta','debe','haber','base'], array_keys($column['array']))) > 0)){
-                throw new Exception("Tenemos un problema, las columnas no están definidas del todo para poder aplicar el cálculo Condiciones de Cuenta<br/>
-                                     Tenga en cuenta lo siguiente para archivos <br/>
-                                     <b>Columnas Naturaleza y Valor</b>: Identificación, Documento, Cuentas, Valor y Base.<br/>
-                                     <b>Columnas Debitos y Creditos</b>: Identificación, Documento, Cuentas, Debitos, Creditos y Base.", 202);
+                throw new Exception("El archivo no esta correctamente configurado, tenga en cuenta que el mismo debe corresponder 
+                        con un archivo de <b>\"Movimiento\"</b> y las columnas sean las adecuadas, verifique e intentelo nuevamente", 202);
             }
             $condicion = $this->Condicion_model->get_condicion();
             $response["data"] = json_decode($condicion['condicion'], TRUE);

@@ -14,9 +14,9 @@
         <link rel="stylesheet" href="<?= base_url('assets/library/jexcel/jsuites.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/chosen/css/bootstrap-select.min.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/library/mloading/jquery.mloading.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/library/summernote/summernote-bs4.min.css') ?>">
         <?= asset_css('plantilla/estilo.css') ?>
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-        
+	<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&display=swap" rel="stylesheet"> 
         <?= load_assets('css') ?>
         <?php $assets = $this->config->item('assets'); ?>
         <script type="text/javascript">
@@ -47,6 +47,9 @@
         <script src="<?= base_url('assets/library/imaskjs/moment.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/imaskjs/imask.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/library/mloading/jquery.mloading.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/summernote/summernote-bs4.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('assets/library/summernote/plugin/cleaner/summernote-cleaner.js') ?>" type="text/javascript"></script>
+        
         <?= asset_js('loader.js') ?>
         <?= load_assets('js') ?>
         <script type="text/javascript">

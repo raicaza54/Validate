@@ -155,6 +155,12 @@ $route['terminosCondiciones']['post'] = 'auditoria/terminosCondiciones';
  * ------------------------------------------------------------------------- */
 $route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
 
+/* -------------------------------------------------------------------------
+ * Dictamen
+ * ------------------------------------------------------------------------- */
+$route['dictamen/v1/formatos']['post']  = 'dictamen/formatos';
+$route['dictamen/v1/contenido']['post'] = 'dictamen/contenido';
+$route['dictamen/v1/salvar']['post']    = 'dictamen/salvar';
 
 /* -------------------------------------------------------------------------
  * Administrador Clientes
