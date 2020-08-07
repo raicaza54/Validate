@@ -379,7 +379,7 @@ class Archivos_model extends CI_Model {
     }
     
     public function getById($id) {
-        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name, pid');
+        $this->db->select('id, fk_carpetas, nombre, ext, tipo, file_name, pid, TIMESTAMPDIFF(MINUTE, `created_at`, NOW()) AS tiempo', TRUE);
         if($this->session->has_userdata('demo') && $this->session->userdata('demo') == 'si'){
             $this->db->group_start();
             $this->db->where('created_clie', $this->session->userdata('clientes_id'));
