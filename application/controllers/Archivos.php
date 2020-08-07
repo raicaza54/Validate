@@ -59,6 +59,7 @@ class Archivos extends CI_Controller {
         set_time_limit(0);
         extract($param);
         $reader = ReaderEntityFactory::createReaderFromFile($fullpath);
+        $reader->setShouldFormatDates(true);
         if($type == '.csv') $reader->setFieldDelimiter(';');
         $reader->open($fullpath);
         $outsheet = []; $x = 0; $i = 0; $campo = []; $nl = 20; $a = 0;
