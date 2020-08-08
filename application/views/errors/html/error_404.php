@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link type="text/css" rel="stylesheet" href="https://validate.geoiss.com/assets/css/fontawesome/css/brands.min.css" />
         <link type="text/css" rel="stylesheet" href="https://validate.geoiss.com/assets/css/fontawesome/css/solid.min.css" />
         <link type="text/css" rel="stylesheet" href="https://validate.geoiss.com/assets/css/auth/estilo.css" />
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&display=swap" rel="stylesheet"> 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://validate.geoiss.com/assets/library/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
@@ -30,6 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         ::-moz-selection { background-color: #E13300; color: white; }
         body {
             background-size: 100% 220px;
+            font-family: 'Ubuntu', sans-serif;
         }
         a {
             color: #003399;
@@ -82,7 +83,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <a href="/" >Volver al inicio</a>
                 </span>                
             </h1>
-            <?php echo $message; ?>
+            <div style="text-align: center; font-size: 6rem; font-weight: bold; margin-top: 3rem; line-height: 1;">404</div>
+            <div style="text-align: center; font-size: 3rem;">Página no econtrada</div>
+            <div class="text-center" style="margin-bottom: 1rem; font-size: 1.5rem;">
+                <span class="text-muted">La página consultada no se encuentra puede volver al inicio</span>
+            </div>
+            <div class="text-center" style="margin-bottom: 6rem;">
+                <a class="btn btn-secondary" href="/">Volver al inicio</a>
+            </div>
         </div>        
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
             <span class="navbar-text pull-left">

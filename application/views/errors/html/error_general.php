@@ -82,7 +82,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <a href="/" >Volver al inicio</a>
                 </span>                
             </h1>
-            <?php echo $message; ?>
+            <div style="text-align: center; font-size: 3rem;"><?php echo $message; ?></div>
+            <div class="text-center" style="margin-bottom: 6rem;">
+                <a class="btn btn-secondary" href="/">Volver al inicio</a>
+            </div>            
         </div>        
         <nav id="footer-validate" class="navbar fixed-bottom navbar-validate">
             <span class="navbar-text pull-left">
