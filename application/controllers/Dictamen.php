@@ -38,6 +38,40 @@ class Dictamen extends CI_Controller {
         $this->load->model('Dictamen_model');
     }
     
+    private function formato($form) {
+        $data = [];
+        foreach ($form['form'] as $value) {
+            $data[$value['name']] = $value['value'];
+            if(strpos($value['name'], 'revisor') !== FALSE){
+                $data['revisor'][str_replace('revisor.', '', $value['name'])] = $value['value'];
+                unset($data[$value['name']]);
+            }
+        }
+        $id_formato = openCypher('decrypt', $data['id_formato']);
+        $contenido = [];
+        if(isset($data['contenido']) && is_array($data['contenido'])){
+            foreach ($data['contenido'] as $value) {
+                if(array_key_exists($value['name'], $data)){
+                    $contenido[] = [
+                        'titulo' => $data[$value['name']],
+                        'cuerpo' => $value['value'],
+                    ];
+                    unset($data[$value['name']]);
+                }
+            }
+        }
+        $data['formato']['titulo'] = $data['titulo'];
+        $data['formato']['formato'] = $data['archivo'];
+        unset($data['titulo']);
+        unset($data['archivo']);
+        unset($data['contenido']);
+        $data['formato']['contenido'] = $contenido;
+        return [
+            'data'       => $data,
+            'id_formato' => $id_formato,
+        ];
+    }
+    
     public function salvar() {
         $response = $this->response;
         $data = $row = array();
@@ -46,41 +80,24 @@ class Dictamen extends CI_Controller {
             if(!array_key_exists('form', $form) && !is_array($form['form'])){
                 throw new Exception("Tenemos un problema, el formato no se reconoce", 202);
             }
-            $data = [];
-            foreach ($form['form'] as $value) {
-                $data[$value['name']] = $value['value'];
-                if(strpos($value['name'], 'revisor') !== FALSE){
-                    $data['revisor'][str_replace('revisor.', '', $value['name'])] = $value['value'];
-                    unset($data[$value['name']]);
-                }
+            $id_formato = FALSE; $insert = FALSE;
+            $formato    = $this->formato($form);
+            $id_formato = $formato['id_formato'];
+            $data       = $formato['data'];
+            if($id_formato == FALSE){
+                $insert = TRUE;
+                $id_formato = uniqint();
             }
-            $contenido = [];
-            if(isset($data['contenido']) && is_array($data['contenido'])){
-                foreach ($data['contenido'] as $value) {
-                    if(array_key_exists($value['name'], $data)){
-                        $contenido[] = [
-                            'titulo' => $data[$value['name']],
-                            'cuerpo' => $value['value'],
-                        ];
-                        unset($data[$value['name']]);
-                    }
-                }
-            }
-            $data['formato']['titulo'] = $data['titulo'];
-            unset($data['titulo']);
-            unset($data['contenido']);
-            $data['formato']['contenido'] = $contenido;
-            
-            /*            
-            fk_clientes
-            fk_users
-            fk_empresas
-            data
-            */
-            
-            
-            //$this->Dictamen_model->insertData();
-            $response = ["data" => []];
+            $datos = [
+                'fk_clientes' => $this->session->userdata('clientes_id'),
+                'fk_users'    => $this->session->userdata('users_id'),
+                'fk_empresas' => $this->session->userdata('empresaId'),
+                'etiqueta'    => $data['formato']['formato'],
+                'data'        => serialize($data),
+            ];
+            $this->Dictamen_model->formatoData($datos, $id_formato, $insert);
+            $id_formato = openCypher('encrypt', $id_formato);
+            $response = ["data" => ['id_formato' => $id_formato]];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -95,7 +112,11 @@ class Dictamen extends CI_Controller {
         $response = $this->response;
         $data = $row = array();
         try {
-            $response = ["data" => $this->config->item('dictamen')];
+            $borradores = $this->Dictamen_model->borradores();
+            $response = [
+                "data"       => $this->config->item('dictamen'),
+                "borradores" => $borradores,
+            ];
             throw new Exception("Resultado retornando correctamente", 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
@@ -104,6 +125,112 @@ class Dictamen extends CI_Controller {
             ->set_content_type('application/json')
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
+    }
+    
+    public function descartar() {
+        $response = $this->response;
+        $data = $row = array();
+        try {
+            $this->form_validation->set_rules('id', 'Borrador', 'required|max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $id = openCypher('decrypt', $this->input->post('id'));
+            if($id == FALSE){
+                log_message('error', 'El id del borrador no se desencripto adecuadamente');
+                throw new Exception('Algo no anda bien, el codigo del borrador no corresponde, intentelo nuevamente o contacte con soporte técnico', 202);
+            }
+            if($this->Dictamen_model->descartar($id) <= 0){
+                log_message('error', 'No se pudo descartar el borrador');
+                throw new Exception('Algo no anda bien, el codigo del borrador no puede ser descartado, intentelo nuevamente o contacte con soporte técnico', 202);
+            }
+            $response = [
+                "data" => 1,
+            ];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function procesar() {
+        $response = $this->response;
+        $data = $row = array();
+        try {
+            $form = $this->input->post();
+            if (!is_array($form) || !array_key_exists('form', $form)){
+                log_message('error', 'Campo form no presente en el arreglo');
+                throw new Exception('Algo no anda bien, los datos no son adecuados, intentelo nuevamente o contacte con soporte técnico', 202);
+            }
+            $formato = $this->formato($form);
+            $data       = $formato['data'];
+            $id_formato = $formato['id_formato'];
+            $id = uniqint();
+            $this->Analisis_model->setInsert([
+                'id'            => $id,
+                'analisis'      => serialize($data),
+                'ejecucion'     => $data['ejecucion'],
+                'analisis_tipo' => 'dictamen'
+            ]);
+            $this->Dictamen_model->descartar($id_formato);
+            $response = ["data" => 1];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
+    public function borrador() {
+        $response = $this->response;
+        $data = $row = [];
+        $revisor = [];
+        $formato = [];
+        $empresa = '';
+        $format = '';
+        try {
+            $this->form_validation->set_rules('id', 'Borrador', 'required|max_length[50]');
+            if ($this->form_validation->run() == FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $id = openCypher('decrypt', $this->input->post('id'));
+            if($id == FALSE){
+                log_message('error', 'El id de formato no se desencripto adecuadamente');
+                throw new Exception('Algo no anda bien, el codigo de formato no corresponde, intentelo nuevamente o contacte con soporte técnico', 202);
+            }
+            $formato = $this->Dictamen_model->borrador($id);
+            if(!isset($formato['data'])){
+                log_message('error', 'El id de formato no se encuentra en la base de datos');
+                throw new Exception('Algo no anda bien, el codigo de formato no encontrado, intentelo nuevamente o contacte con soporte técnico', 202);                
+            }
+            $formato['data'] = unserialize($formato['data']);
+            $id = $formato['id'];
+            $empresa = isset($formato['data']['empresa']) ? $formato['data']['empresa'] : '';
+            $revisor = isset($formato['data']['revisor']) ? $formato['data']['revisor'] : [];
+            $format  = isset($formato['data']['format']) ? $formato['data']['format'] : '';
+            $formato = isset($formato['data']['formato']) ? $formato['data']['formato'] : [];
+            $response = ['data' => [
+                'empresa' => $empresa,
+                'revisor' => $revisor,
+                'formato' => $formato,
+                'format'  => $format,
+                'id'      => $id,
+            ]];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));        
     }
     
     public function contenido() {

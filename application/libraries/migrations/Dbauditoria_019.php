@@ -12,47 +12,52 @@ class Dbauditoria_019{
     public function up() {
         $this->CI->dbforge->drop_table('clie__dictamen', TRUE);
         $this->CI->dbforge->add_field([
-            'id'           => [
-                'type'           => 'INT',
-                'constraint'     => '11',
+            'id' => [
+                'type'           => 'BIGINT',
+                'constraint'     => '20',
                 'unsigned'       => TRUE,
-                'auto_increment' => TRUE
-            ],
-            'fk_clientes'  => [
+            ],            
+            'fk_clientes' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => TRUE,
                 'null'       => FALSE
             ],
-            'fk_users'  => [
+            'fk_users' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => TRUE,
                 'null'       => FALSE
             ],
-            'fk_empresas'   => [
+            'fk_empresas' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => TRUE,
             ],
-            'estado'   => [
+            'estado' => [
                 'type'       => 'TINYINT',
                 'constraint' => '3',
                 'unsigned'   => TRUE,
                 'comment'    => '1:activo 0:descartado',
                 'default'    => 1,
+            ],
+            'etiqueta' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '50',
+                'comment'    => 'nombre en pantalla',
+                'null'       => FALSE
             ],            
-            'data'   => [
+            'data' => [
                 'type'       => 'TEXT',
                 'null'       => TRUE
             ],            
-            'fk_users'  => [
+            'fk_users' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => TRUE,
                 'null'       => FALSE
             ],
-            'observacion'  => [
+            'observacion' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '1024',
                 'comment'    => 'observaciones',
@@ -68,12 +73,12 @@ class Dbauditoria_019{
                 'constraint' => '11',
                 'comment'    => 'id cliente creador'
             ],
-            'update_user'  => [
+            'update_user' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'ultimo id usuario actualizo'
             ],
-            'update_clie'  => [
+            'update_clie' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'comment'    => 'ultimo id cliente actualizo'

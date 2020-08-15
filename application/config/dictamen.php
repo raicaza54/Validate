@@ -3,8 +3,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['formato1'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal',
+    'formato'   => 'Independiente del revisor fiscal',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -33,15 +34,16 @@ $config['formato1'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],
     ]
 ];
 
 $config['formato2'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal con abstención',
+    'formato'   => 'Independiente del revisor fiscal con abstención',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -73,15 +75,16 @@ $config['formato2'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]
 ];
 
 $config['formato3'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal con levantamiento de salvedades',
+    'formato'   => 'Independiente del revisor fiscal con levantamiento de salvedades',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -134,15 +137,16 @@ $config['formato3'] = [
                 <p align="justify">Así mismo, la entidad ha efectuado la liquidación y pago oportuno al sistema de seguridad social integral y el informe de gestión guarda la debida concordancia con las cifras incorporadas en los estados financieros separados.</p>',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]
 ];
 
 $config['formato4'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal con salvedades',
+    'formato'   => 'Independiente del revisor fiscal con salvedades',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -181,15 +185,16 @@ $config['formato4'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]
 ];
 
 $config['formato5'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal negativo',
+    'formato'   => 'Independiente del revisor fiscal negativo',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros individuales',
@@ -216,15 +221,16 @@ $config['formato5'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]
 ];
 
 $config['formato6'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal re-emitido',
+    'formato'   => 'Independiente del revisor fiscal re-emitido',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -262,15 +268,16 @@ $config['formato6'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]
 ];
 
 $config['formato7'] = [
-    'formato'   => 'Informe de auditoría independiente del revisor fiscal re-fechado',
+    'formato'   => 'Independiente del revisor fiscal re-fechado',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
+    'comment'   => '',
     'contenido' => [
         [
             'titulo'   => 'Informe sobre los estados financieros separados',
@@ -301,7 +308,7 @@ $config['formato7'] = [
             'cuerpo'   => '',
         ],
         [
-            'titulo'   => 'Dirección',
+            'titulo'   => '<direccion/>',
             'cuerpo'   => '',
         ],        
     ]

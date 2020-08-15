@@ -161,6 +161,9 @@ $route['asistente/v1/salvar']['post'] = 'auditoria/asistente';
 $route['dictamen/v1/formatos']['post']  = 'dictamen/formatos';
 $route['dictamen/v1/contenido']['post'] = 'dictamen/contenido';
 $route['dictamen/v1/salvar']['post']    = 'dictamen/salvar';
+$route['dictamen/v1/borrador']['post']  = 'dictamen/borrador';
+$route['dictamen/v1/descartar']['post'] = 'dictamen/descartar';
+$route['dictamen/v1/procesar']['post']  = 'dictamen/procesar';
 
 /* -------------------------------------------------------------------------
  * Administrador Clientes
