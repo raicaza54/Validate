@@ -527,7 +527,8 @@ class Manipulacion {
     private function aqi() {
         $c = $this->cuentaValue;
         //debug_file("(((1-"."(".$c['acorrientes']['t']."+".$c['inmmaterial']['t']."))/".$c['actvtotales']['t'].")) / ((1-(".$c['acorrientes']['t-1']."+".$c['inmmaterial']['t-1']."))/".$c['actvtotales']['t-1'].")");
-        $aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t']))/$c['actvtotales']['t']) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1']))/$c['actvtotales']['t-1']);
+        //$aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t']))/$c['actvtotales']['t']) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1']))/$c['actvtotales']['t-1']);
+        $aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t'])/$c['actvtotales']['t'])) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1'])/$c['actvtotales']['t-1']));
         return number_format($aqi, 3, '.', '');
     }
     
