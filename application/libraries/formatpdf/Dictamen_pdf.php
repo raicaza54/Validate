@@ -180,7 +180,7 @@ class Dictamen_pdf extends TCPDF {
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
             */
-            if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
+            if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente, 'V', FALSE);
             $css = '<style> p { line-height: 8px !important; } </style> ';
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf)){
                 $this->Ln(2);

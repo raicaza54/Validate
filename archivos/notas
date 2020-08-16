@@ -479,3 +479,15 @@ https://imask.js.org/guide.html#masked-number
 # https://summernote.org/
 # https://github.com/summernote/summernote/blob/develop/lang/summernote-es-ES.js
 #*******************************************************************************
+
+#*******************************************************************************
+# Guía para Cambiar la Base de Datos de Utf8 a Utf8mb4
+#*******************************************************************************
+# Hacer cambios en la base de datos, es ese tipo de cosas  que rehúye la mayoría 
+# de la gente, sobre todo si hablamos de cambiar charset y cotejamiento de Utf8 
+# a Utf8mb4.
+#-------------------------------------------------------------------------------
+# URL's
+#-------------------------------------------------------------------------------
+# https://www.vivablogger.com/convertir-utf8-a-utf8mb4/
+#*******************************************************************************

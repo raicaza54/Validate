@@ -54,7 +54,7 @@ class Dictamen extends CI_Controller {
                 if(array_key_exists($value['name'], $data)){
                     $contenido[] = [
                         'titulo' => $data[$value['name']],
-                        'cuerpo' => $value['value'],
+                        'cuerpo' => str_replace(['%'], ['&#37;'], $value['value']),
                     ];
                     unset($data[$value['name']]);
                 }
