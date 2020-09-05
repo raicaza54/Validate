@@ -296,15 +296,6 @@ class Manipulacion {
         $sgai = $this->sgai();
         $lvgi = $this->lvgi();
         $tata = $this->tata();
-        
-//        debug_file('dsri: '.$dsri);
-//        debug_file('gmi: '.$gmi);
-//        debug_file('aqi: '.$aqi);
-//        debug_file('sgi: '.$sgi);
-//        debug_file('depi: '.$depi);
-//        debug_file('sgai: '.$sgai);
-//        debug_file('lvgi: '.$lvgi);
-//        debug_file('tata: '.$tata);
 
         $c_dsri = $this->DSRI8 * $dsri;
         $c_gmi  = $this->GMI8  * $gmi;
@@ -396,8 +387,6 @@ class Manipulacion {
             $this->cuentaValue[$key]['aporte'] = $value['ideal'] - $this->cuentaValue[$key]['resultado'];
         }
         return $this->cuentaValue;
-        //debug_file('$siCredito = '.$siCredito);
-        //debug_file($this->cuentaValue);
     }
     
     private function efectivogoperacion($param) {
