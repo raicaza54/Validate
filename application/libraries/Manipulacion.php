@@ -569,7 +569,7 @@ class Manipulacion {
     
     private function m8ind() {
         $c = $this->cuentaValue;
-        $m8ind = -4.84 + $this->DSRI8 * $c['dsri']['resultado'] + $this->GMI8 * $c['gmi']['resultado'] + $this->AQI8 * $c['aqi']['resultado'] + $this->SGI8 * $c['sgi']['resultado'] + $this->DEPI8 * $c['depi']['resultado'] - $this->SGAI8 * $c['sgai']['resultado'] + $this->TATA8 * $c['tata']['resultado'] - $this->LVGI8 * $c['lvgi']['resultado'];
+        $m8ind = -4.84 + $this->DSRI8 * $c['dsri']['resultado'] + $this->GMI8 * $c['gmi']['resultado'] + $this->AQI8 * $c['aqi']['resultado'] + $this->SGI8 * $c['sgi']['resultado'] + $this->DEPI8 * $c['depi']['resultado'] + $this->SGAI8 * $c['sgai']['resultado'] + $this->TATA8 * $c['tata']['resultado'] + $this->LVGI8 * $c['lvgi']['resultado'];
         return number_format($m8ind,3,'.','');
     }
     
