@@ -353,7 +353,7 @@ class Confianza_pdf extends TCPDF {
                 $this->MultiCell(87, NULL, number_format($dataPdf['tata']['resultado'],3,',','.'), TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);                
                 
                 $this->MultiCell(109, NULL, 'UTILIDAD DESPUÉS DE IMPUESTOS', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
-                $this->MultiCell(87, NULL, number_format($dataPdf['utilidadaimpuestos']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(87, NULL, number_format($dataPdf['utilidaddimpuesto']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
                 
                 $this->MultiCell(109, NULL, 'EFECTIVO GENERADO EN OPERACIÓN', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(87, NULL, number_format($dataPdf['efectivogoperacion']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);                
