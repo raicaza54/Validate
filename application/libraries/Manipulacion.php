@@ -446,7 +446,7 @@ class Manipulacion {
     
     private function utilidaddimpuestos($siCredito) {
         $r = $this->cuentaValue['utilidadneta']['t'];
-        if($siCredito != 'si'){
+        if($siCredito == 'si'){
             $r = $this->cuentaValue['utilidadneta']['t'] * -1;
         }
         return number_format($r, 2, '.', '');
@@ -557,7 +557,7 @@ class Manipulacion {
     private function tata() {
         $c = $this->cuentaValue;
         //debug_file("tata: (".$c['utilidaddimpuesto']['t']." - ".$c['efectivogoperacion']['t'].") / ".$c['actvtotales']['t-1']);
-        $tata = ($c['utilidaddimpuesto']['t'] - $c['efectivogoperacion']['t']) / $c['actvtotales']['t-1'];
+        $tata = ($c['utilidaddimpuesto']['t'] - $c['efectivogoperacion']['t']) / $c['actvtotales']['t'];
         return number_format($tata, 3, '.', '');
     }
     
