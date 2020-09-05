@@ -446,7 +446,7 @@ class Manipulacion {
     
     private function utilidaddimpuestos($siCredito) {
         $r = $this->cuentaValue['utilidadneta']['t'];
-        if($siCredito == 'si'){
+        if($siCredito != 'si'){
             $r = $this->cuentaValue['utilidadneta']['t'] * -1;
         }
         return number_format($r, 2, '.', '');
