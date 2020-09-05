@@ -284,6 +284,10 @@ class Manipulacion {
         $this->cuentaValue['pnocorrientes']['t']       = $this->getValue($t,      [27,28,29], $this->ct);                  //Pasivos No Corrientes
         $this->cuentaValue['pnocorrientes']['t-1']     = $this->getValue($t1,     [27,28,29], $this->ct1);                 //Pasivos No Corrientes        
         
+        # Se totaliza la suma para obtener el total de activos
+        $this->cuentaValue['actvtotales']['t']   += $this->cuentaValue['acorrientes']['t'] + $this->cuentaValue['inmmaterial']['t'];
+        $this->cuentaValue['actvtotales']['t-1'] += $this->cuentaValue['acorrientes']['t-1'] + $this->cuentaValue['inmmaterial']['t-1'];        
+        
         $dsri = $this->dsri();
         $gmi  = $this->gmi();
         $aqi  = $this->aqi();
@@ -527,8 +531,8 @@ class Manipulacion {
     private function aqi() {
         $c = $this->cuentaValue;
         //debug_file("(((1-"."(".$c['acorrientes']['t']."+".$c['inmmaterial']['t']."))/".$c['actvtotales']['t'].")) / ((1-(".$c['acorrientes']['t-1']."+".$c['inmmaterial']['t-1']."))/".$c['actvtotales']['t-1'].")");
-        //$aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t']))/$c['actvtotales']['t']) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1']))/$c['actvtotales']['t-1']);
-        $aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t'])/$c['actvtotales']['t'])) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1'])/$c['actvtotales']['t-1']));
+        $aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t']))/$c['actvtotales']['t']) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1']))/$c['actvtotales']['t-1']);
+        //$aqi = ((1-($c['acorrientes']['t']+$c['inmmaterial']['t'])/$c['actvtotales']['t'])) / ((1-($c['acorrientes']['t-1']+$c['inmmaterial']['t-1'])/$c['actvtotales']['t-1']));
         return number_format($aqi, 3, '.', '');
     }
     
