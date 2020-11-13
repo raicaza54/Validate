@@ -109,6 +109,9 @@ class Explorador extends CI_Controller {
                     throw new Exception('Empresa Demostración, no es posible crea archivos o carpetas, la misma es unicamente para fines demostrativos', 202);
                 }
             }
+            if(!is_numeric($this->session->userdata('empresaId')) && (int) $this->session->userdata('empresaId') > 0){
+                throw new Exception('Debe seleccionar una empresa donde se puedan crear las carpetas', 202);
+            }
             $insert = $this->Explorador_model->crear([
                 'label'       => $post['label'],
                 'empresaId'   => $this->session->userdata('empresaId'),
