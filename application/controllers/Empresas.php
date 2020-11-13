@@ -206,7 +206,7 @@ class Empresas extends CI_Controller {
                 if($demo == FALSE){
                     throw new Exception('Empresa Demostración, no es posible eliminar la empresa, la misma es unicamente para fines demostrativos', 202);
                 }
-            }            
+            }
             $item = $this->Empresas_model->getId($post['id']);
             if (!is_array($item)) {
                 throw new Exception("No existen datos para actualizar", 202);
@@ -235,6 +235,9 @@ class Empresas extends CI_Controller {
             $post = $this->input->post();
             if(!is_array($post) || !array_key_exists('form', $post) || (count($post['form']) <= 0)){
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
+            }
+            if(mb_strtoupper($this->session->userdata('last_name'), 'UTF-8') == 'DEMOS'){
+                throw new Exception('Cuenta Demostración, no es posible crear empresas, esta cuenta de usuario es únicamente para fines demostrativos', 202);
             }
             $limites = $this->limites(FALSE);
             if(($limites['data']['empresas']['cant'] + 1) > $limites['data']['empresas']['limite']){
