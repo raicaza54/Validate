@@ -131,31 +131,30 @@ $config['argon2_admin_params']   = [
   | The library will fail for empty password or password size above 4096 bytes.
   | This is an arbitrary (long) value to protect against DOS attack.
  */
-$config['site_title']                 = "Validate System";       // Site Title, example.com
-$config['admin_email']                = "noreply@geoiss.com"; // Admin Email, admin@example.com
+$config['site_title']                 = "Validate System";          // Site Title, example.com
+$config['admin_email']                = "no-reply@validate.com.co"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';             /* You can use any unique column in your table as identity column.
-  The values in this column, alongside password, will be used for login purposes
-  IMPORTANT: If you are changing it from the default (email),
-  update the UNIQUE constraint in your DB */
-$config['min_password_length']        = 8;                   // Minimum Required Length of Password (not enforced by lib - see note above)
-$config['email_activation']           = TRUE;               // Email Activation for registration
-$config['manual_activation']          = FALSE;               // Manual Activation for registration
-$config['remember_users']             = TRUE;                // Allow users to be remembered and enable auto-login
+                                                                The values in this column, alongside password, will be used for login purposes
+                                                                IMPORTANT: If you are changing it from the default (email),
+                                                                update the UNIQUE constraint in your DB */
+$config['min_password_length']        = 8;                   // Longitud mínima requerida de la contraseña (no aplicada por lib - vea la nota anterior)
+$config['email_activation']           = TRUE;                // Activación de correo electrónico para el registro
+$config['manual_activation']          = FALSE;               // Activación manual para registro
+$config['remember_users']             = TRUE;                // Permitir que los usuarios sean recordados y habilitar el inicio de sesión automático
 $config['user_expire']                = 86500;               // How long to remember the user (seconds). Set to zero for no expiration - see sess_expiration in CodeIgniter Session Config for session expiration
-$config['user_extend_on_login']       = TRUE;               // Extend the users cookies every time they auto-login
+$config['user_extend_on_login']       = TRUE;                // Extend the users cookies every time they auto-login
 $config['track_login_attempts']       = TRUE;                // Track the number of failed login attempts for each user or ip.
 $config['track_login_ip_address']     = TRUE;                // Track login attempts by IP Address, if FALSE will track based on identity. (Default: TRUE)
-$config['maximum_login_attempts']     = 5;                   // The maximum number of failed login attempts.
-$config['lockout_time']               = 600;                 /* The number of seconds to lockout an account due to exceeded attempts
-  You should not use a value below 60 (1 minute) */
-$config['forgot_password_expiration'] = 1800;                /* The number of seconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
-  30 minutes to 1 hour are good values (enough for a user to receive the email and reset its password)
-  You should not set a value too high, as it would be a security issue! */
-$config['recheck_timer']              = 0;                   /* The number of seconds after which the session is checked again against database to see if the user still exists and is active.
-  Leave 0 if you don't want session recheck. if you really think you need to recheck the session against database, we would
-  recommend a higher value, as this would affect performance */
+$config['maximum_login_attempts']     = 5;                   // El número máximo de intentos fallidos de inicio de sesión.
+$config['lockout_time']               = 600;                 // El número de segundos para bloquear una cuenta debido a intentos excedidos. No debe usar un valor inferior a 60 (1 minuto)
+$config['forgot_password_expiration'] = 1800;                /* El número de segundos después de los cuales caducará una solicitud de contraseña olvidada. Si se establece en 0, las solicitudes de contraseña olvidadas no caducarán.
+                                                                30 minutes to 1 hour are good values (enough for a user to receive the email and reset its password)
+                                                                You should not set a value too high, as it would be a security issue! */
+$config['recheck_timer']              = 0;                   /* El número de segundos después de los cuales la sesión se verifica nuevamente en la base de datos para ver si el usuario aún existe y está activo.
+                                                                Leave 0 if you don't want session recheck. if you really think you need to recheck the session against database, we would
+                                                                recommend a higher value, as this would affect performance */
 
 /*
   | -------------------------------------------------------------------------

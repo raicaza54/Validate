@@ -19,5 +19,5 @@ $config['smtp_port']    = "2587";
 $config['smtp_timeout'] = "20";
 $config['crlf']         = "\r\n";
 $config['newline']      = "\r\n";
-$config['mailsender']   = "notificaciones@geoiss.com";
+$config['mailsender']   = "no-reply@validate.com.co";
 $config['smtp_crypto']  = 'tls';

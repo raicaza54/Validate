@@ -10,19 +10,23 @@ class Formato {
         $this->CI = & get_instance();
     }    
     
-    function datosCliente($pdf, $cliente, $orientacion = 'V') {
-        if($orientacion == 'H'){
-            $h = $this->height($pdf, 'Por: ' . $cliente['empr_nombre'], 217);
-            $pdf->Image($cliente['empr_logotipo'], 235, 26, 15, '', '', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
-            $pdf->MultiCell(217, $h, 'Por: '.$cliente['empr_nombre'], TRUE, 'L', FALSE, 1, '', 29);
-            $pdf->MultiCell(217, '', 'NIT: '.$cliente['empr_identificacion'], TRUE, 'L', FALSE, 1, '', 34);
-            $pdf->Ln(3);            
-        }elseif($orientacion == 'V'){
-            $h = $this->height($pdf, 'Por: ' . $cliente['empr_nombre'], 153);
-            $pdf->Image($cliente['empr_logotipo'], 175, 26, 15, '', '', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
-            $pdf->MultiCell(153, $h, 'Por: '.$cliente['empr_nombre'], TRUE, 'L', FALSE, 1, '', 29);
-            $pdf->MultiCell(153, '', 'NIT: '.$cliente['empr_identificacion'], TRUE, 'L', FALSE, 1, '');
-            $pdf->Ln(3);            
+    function datosCliente($pdf, $cliente, $orientacion = 'V', $encabezado = TRUE) {
+        $y = 26;
+        if(file_exists($cliente['empr_logotipo'])){
+            if($encabezado == FALSE) $y = 15;
+            if($orientacion == 'H'){
+                $h = $this->height($pdf, 'Por: ' . $cliente['empr_nombre'], 217);
+                $pdf->Image($cliente['empr_logotipo'], 240, $y, 15, '', '', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
+                $pdf->MultiCell(217, $h, 'Por: '.$cliente['empr_nombre'], TRUE, 'L', FALSE, 1, '', ($y + 3));
+                $pdf->MultiCell(217, '', 'NIT: '.$cliente['empr_identificacion'], TRUE, 'L', FALSE, 1, '');
+                $pdf->Ln(3);
+            }elseif($orientacion == 'V'){
+                $h = $this->height($pdf, 'Por: ' . $cliente['empr_nombre'], 153);
+                $pdf->Image($cliente['empr_logotipo'], 180, $y, 15, '', '', '', 'T', FALSE, 300, '', FALSE, FALSE, 0, FALSE, FALSE, FALSE);
+                $pdf->MultiCell(153, $h, 'Por: '.$cliente['empr_nombre'], TRUE, 'L', FALSE, 1, '', ($y + 3));
+                $pdf->MultiCell(153, '', 'NIT: '.$cliente['empr_identificacion'], TRUE, 'L', FALSE, 1, '');
+                $pdf->Ln(3);
+            }            
         }
     }
     

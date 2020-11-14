@@ -124,7 +124,7 @@ class Manipulacion_pdf extends TCPDF {
         // Title
         //$this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
         $this->SetFont($this->family, '', 8);
-        $this->MultiCell(NULL, NULL, 'Análisis: Manipulación', 0, 'R', FALSE, 1, 50, 5);
+        $this->MultiCell(NULL, NULL, 'Análisis: Indicadores de Cambio', 0, 'R', FALSE, 1, 50, 5);
         $y = 10;
         $style = array(
             'color' => $this->lineColor,
@@ -158,7 +158,7 @@ class Manipulacion_pdf extends TCPDF {
         try{
             $this->SetFont($this->family, '', 7);
             $this->SetProtection(array('modify', 'copy'), '');
-            $this->SetTitle('Manipulación');
+            $this->SetTitle('Indicadores de Cambio');
             $this->SetLineStyle(array(
                 'color' => $this->lineBackColor,
                 'width' => $this->lineWidth
@@ -187,7 +187,7 @@ class Manipulacion_pdf extends TCPDF {
                 $this->MultiCell(196, NULL, 'La probabilidad de los Indicadores de Cambio es '.$dataPdf['probabilidad'].'%', FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(1);
                 
-                $this->MultiCell(117, NULL, 'MANIPULACIÓN SCORE', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(117, NULL, 'SCORE DE INDICADORES DE CAMBIO', TRUE, 'L', TRUE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(79, NULL, $dataPdf['m5ind'], TRUE, 'R', TRUE, 1, '', '', TRUE, 0, TRUE);
 
                 $this->MultiCell(60, NULL, 'INDICADORES', TRUE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
