@@ -186,8 +186,8 @@ class Dictamen_pdf extends TCPDF {
                 $this->Ln(2);
                 $dataPdf = $dataPdf[0];
                 $this->MultiCell(196, NULL, '<b>'.$dataPdf['formato']['titulo'].'</b>', FALSE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
-                $this->Ln(5);
-                $this->writeHTML('<p align="justify">Señores<br/><b>'.$dataPdf['empresa'].'</b><br/>Asamblea General de Accionistas</p>', FALSE, FALSE, TRUE, FALSE, 'J');
+                //$this->Ln(5);
+                //$this->writeHTML('<p align="justify">Señores<br/><b>'.$dataPdf['empresa'].'</b><br/>Asamblea General de Accionistas</p>', FALSE, FALSE, TRUE, FALSE, 'J');
                 $direccion = FALSE;
                 foreach ($dataPdf['formato']['contenido'] as $resultado) {
                     if(trim(strip_tags($resultado['cuerpo']))){
@@ -197,11 +197,14 @@ class Dictamen_pdf extends TCPDF {
                             $this->Ln(2);
                             $this->writeHTML($css.$resultado['cuerpo'], FALSE, FALSE, TRUE, FALSE, 'J');
                             $direccion = TRUE;
+                        }elseif($resultado['titulo'] == '<destinatario/>' || $resultado['titulo'] == '<destinatario></destinatario>'){
+                            $this->writeHTML('<style> p { line-height: 12px !important; } </style> '.$resultado['cuerpo'], FALSE, FALSE, TRUE, FALSE, 'J');
+                            $this->Ln(5);
                         }else{
                             $this->Ln(3);
                             $this->MultiCell(196, NULL, '<b><i>'.$resultado['titulo'].'</i></b>', FALSE, 'J', FALSE, 1, 9, '', TRUE, 0, TRUE, FALSE);
                             $this->Ln(2);
-                            $this->writeHTML($css.$resultado['cuerpo'], FALSE, FALSE, TRUE, FALSE, 'J');                            
+                            $this->writeHTML($css.$resultado['cuerpo'], FALSE, FALSE, TRUE, FALSE, 'J');
                         }
                     }
                 }

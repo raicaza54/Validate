@@ -95,4 +95,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 | Z Revision: revision del codigo por algun fallo
 |
 */
-defined('VERSION') OR define('VERSION', 'v1.6.2');
+defined('VERSION') OR define('VERSION', 'v1.7.0');
