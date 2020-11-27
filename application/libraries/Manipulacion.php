@@ -269,7 +269,7 @@ class Manipulacion {
         $this->cuentaValue['provisionimpuestos']['t']  = $this->getValue($t,      [54], $this->ct);                        //Mas provision de impuestos
         $this->cuentaValue['depresiacionamortiz']['t'] = $this->getValue($t,      [5160,5165,5260,5265], $this->ct);       //Mas depresiacion y amortizacion
         $this->cuentaValue['variacionactivos']['t']    = $this->variacionactivos($param);                                  //+/- Variacion de activos
-        $this->cuentaValue['variacionpasivos']['t']    = $this->variacionpasivos($param);                                  //+/- Variacion de pasivos
+        $this->cuentaValue['variacionpasivos']['t']    = $this->variacionpasivos($param, $siCredito);                      //+/- Variacion de pasivos
         $this->cuentaValue['gif']['t']                 = $this->gif($param);                                               //Generacion Interna de Fondos
         $this->cuentaValue['efectivogoperacion']['t']  = $this->efectivogoperacion($param);                                //Efectivo Generado en Operacion
         $this->cuentaValue['anocorrientes']['t']       = $this->getValue($t,      [15,16,17,18], $this->ct);               //Activos no corrientes
@@ -396,9 +396,13 @@ class Manipulacion {
         return $cuenta;
     }
     
-    private function variacionpasivos($param) {
+    private function variacionpasivos($param, $siCredito) {
         extract($param);
-        $cuentas = ($this->getValue($t1, [22,23,24,25,26,27,28,29], $this->ct1) - $this->getValue($t, [22,23,24,25,26,27,28,29], $this->ct)) - $this->getValue($t, [54], $this->ct);
+        if($siCredito == 'si'){
+            $cuentas = ($this->getValue($t1, [22,23,24,25,26,27,28,29], $this->ct1) - $this->getValue($t, [22,23,24,25,26,27,28,29], $this->ct)) - $this->getValue($t, [54], $this->ct);
+        }else{
+            $cuentas = ($this->getValue($t, [22,23,24,25,26,27,28,29], $this->ct) - $this->getValue($t1, [22,23,24,25,26,27,28,29], $this->ct1)) - $this->getValue($t, [54], $this->ct);
+        }
         return number_format($cuentas, 2, '.', '');
     }
     
