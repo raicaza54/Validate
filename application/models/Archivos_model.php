@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Archivos_model extends CI_Model {
 
     public $column = [];
-            
+
     function __construct() {
         parent::__construct();
         // Set table name
@@ -230,9 +230,9 @@ class Archivos_model extends CI_Model {
                     $this->db->where('linea', 'f');
                     $this->db->where('fk_archivos', $value['archivos_id']);
                     $cuentas = array_merge_recursive($cuentas, $this->db->get('clie__archivos_detalle')->result_array());
-                    unique_multidim_array($cuentas, 'cta');
+                    //unique_multidim_array($cuentas, 'cta');
                 }
-                break;
+                //break;
             }
         }
         $cuentasn = array_column($cuentas, 'ctan', 'cta');
