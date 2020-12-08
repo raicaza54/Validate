@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['formato1'] = [
-    'formato'   => 'Independiente del revisor fiscal',
+    'formato'   => '01. Independiente del revisor fiscal',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -63,7 +63,7 @@ $config['formato1'] = [
 ];
 
 $config['formato2'] = [
-    'formato'   => 'Independiente del revisor fiscal con abstención',
+    'formato'   => '02. Independiente del revisor fiscal con abstención',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -131,7 +131,7 @@ $config['formato2'] = [
 ];
 
 $config['formato3'] = [
-    'formato'   => 'Independiente del revisor fiscal con levantamiento de salvedades',
+    'formato'   => '03. Independiente del revisor fiscal con levantamiento de salvedades',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -218,7 +218,7 @@ $config['formato3'] = [
 ];
 
 $config['formato4'] = [
-    'formato'   => 'Independiente del revisor fiscal con salvedades',
+    'formato'   => '04. Independiente del revisor fiscal con salvedades',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -289,7 +289,7 @@ $config['formato4'] = [
 ];
 
 $config['formato5'] = [
-    'formato'   => 'Independiente del revisor fiscal negativo',
+    'formato'   => '05. Independiente del revisor fiscal negativo',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -338,7 +338,7 @@ $config['formato5'] = [
 ];
 
 $config['formato6'] = [
-    'formato'   => 'Independiente del revisor fiscal re-emitido',
+    'formato'   => '06. Independiente del revisor fiscal re-emitido',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [
@@ -398,7 +398,7 @@ $config['formato6'] = [
 ];
 
 $config['formato7'] = [
-    'formato'   => 'Independiente del revisor fiscal re-fechado',
+    'formato'   => '07. Independiente del revisor fiscal re-fechado',
     'titulo'    => 'INFORME DE AUDITORÍA INDEPENDIENTE DEL REVISOR FISCAL',
     'comment'   => '',
     'contenido' => [

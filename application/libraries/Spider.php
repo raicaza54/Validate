@@ -244,7 +244,7 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['debito'])){
             foreach ($spider[$cuenta]['debito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-debito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'d\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-debito" '.$this->title($key).'  style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $this->datos['body'] .= '<div class="spd-debito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'d\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-debito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" '.$this->title($key).' data-placement="right" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
                 $lineas              .= '<line class="lin-debito" x1="280" y1="' . $t . '" x2="405" y2="' . $hsvg . '" style="stroke:#000; stroke-width:'.(($debitoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                   += 45;
                 $x++;
@@ -266,7 +266,7 @@ class Spider {
         $total_dinero = 0;
         if(is_array($spider[$cuenta]['credito'])){
             foreach ($spider[$cuenta]['credito'] as $key => $value) {
-                $this->datos['body'] .= '<div class="spd-credito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'c\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-credito" '.$this->title($key).' style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
+                $this->datos['body'] .= '<div class="spd-credito-detalle" onclick="ARCHIVOS.methods.filtroSpider(\''.$key.'\',\''.$cuenta.'\',\'c\')" style="top: ' . ($x * 45) . 'px;"><i class="far fa-list-alt"></i></div><div class="spd-credito" style="top: ' . ($x * 45) . 'px;"><div class="ispd-cuenta" '.$this->title($key).' data-placement="left" onclick="SPIDER.methods.procesarClick(this, \''.$key.'\')">' . $key . '</div><div class="ispd-dinero">$' . number_format($value['valor'], 2, ',', '.') . '</div><div class="ispd-porcentaje">' . number_format($value['porcentaje'], 3, ',', '.') . '%</div></div>';
                 $lineas              .= '<line class="lin-credito" x1="655" y1="' . $hsvg . '" x2="780" y2="' . $t . '" style="stroke:#000; stroke-width:'.(($creditoCount == 1) ? 1.01 : 0.7).'"></line>';
                 $t                   += 45;
                 $x++;
@@ -315,9 +315,9 @@ class Spider {
     private function title($cta) {
         $title = '';
         if(is_array($this->ctasn) && array_key_exists($cta, $this->ctasn)){
-            $title = 'title="'.$this->ctasn[$cta].'"';
+            $title = 'title="'.$this->ctasn[$cta].'" data-toggle="tooltip"';
         }else{
-            $title = 'title="No disponible"';
+            $title = 'title="No disponible" data-toggle="tooltip"';
         }
         return $title;
     }

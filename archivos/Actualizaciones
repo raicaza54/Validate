@@ -791,7 +791,7 @@ SE ESTA TRABAJANDO
 
 #*******************************************************************************
 
-FECHA: 15/08/2020 Versión 1.6.0
+FECHA: 14/11/2020 Versión 1.6.0
 NUEVAS FUNCIONALIDADES
 ▪ Modulo de Dictamen
 
@@ -801,6 +801,23 @@ ACTUALIZACIÓN
 CORRECCIONES
 ▪ Formula AQI en Manipulación de 5 y 8
 ▪ Al eliminar carpetas y directorios en algunas ocasiones podía fallar si no se comprueba que este un ítem seleccionado
+
+SE ESTA TRABAJANDO
+▪ Envió de correo a comercial de intención de compra
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
+FECHA: 27/11/2020 Versión 1.7.0
+NUEVAS FUNCIONALIDADES
+▪ Modulo de Indicadores de Confianza
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ No hay cambios
 
 SE ESTA TRABAJANDO
 ▪ Envió de correo a comercial de intención de compra
