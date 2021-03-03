@@ -239,6 +239,7 @@ class Resultados extends CI_Controller {
             $this->form_validation->set_rules('pdfConfianza',       'Archivo Manipulacion',      'max_length[50]');
             $this->form_validation->set_rules('pdflistasControl',   'Archivo Listas de Control', 'max_length[50]');
             $this->form_validation->set_rules('pdfcondicionCuenta', 'Archivo Listas de Control', 'max_length[50]');
+            $this->form_validation->set_rules('pdfMaterialidad',    'Archivo Materialidad',      'max_length[50]');
             if($this->form_validation->run() === FALSE){
                 throw new Exception(validation_errors('',''), 202);
             }            
@@ -264,6 +265,9 @@ class Resultados extends CI_Controller {
             } elseif (array_key_exists('pdfDictamen', $post) && (strlen($post['pdfDictamen']) > 5)) {
                 $pdf = 'pdfDictamen';
                 $pref = 'DIC';
+            } elseif (array_key_exists('pdfMaterialidad', $post) && (strlen($post['pdfMaterialidad']) > 5)) {
+                $pdf = 'pdfMaterialidad';
+                $pref = 'MAT';
             }
             if(empty($pdf)){
                 throw new Exception("Tenemos un problema con los datos, el archivo para guardar no esta disponible", 202);
@@ -294,6 +298,9 @@ class Resultados extends CI_Controller {
             }
             if (($tipo == 'pdfDictamen') && (strlen($post['pdfDictamen']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos de Dictamen, no corresponden los tipos definidos", 202);
+            }
+            if (($tipo == 'pdfMaterialidad') && (strlen($post['pdfMaterialidad']) <= 0)) {
+                throw new Exception("Tenemos un problema con los datos de Materialidad, no corresponden los tipos definidos", 202);
             }
             $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
             if(is_bool($consecutivo) && $consecutivo === FALSE){
@@ -511,6 +518,29 @@ class Resultados extends CI_Controller {
             $pdf = unserialize($dictamen['analisis']);
         }
         $this->load->library('formatpdf/Dictamen_pdf', array(
+            'orientation' => 'P',
+            'unit'        => 'mm',
+            'format'      => 'LETTER',
+            'unicode'     => TRUE,
+            'encoding'    => 'UTF-8',
+            'diskcache'   => FALSE,
+            'empresa'     => $this->empresa,
+            'codigo'      => $consecutivo,
+            'namePdf'     => $idPdf,
+            'cliente'     => $cliente            
+        ), 'pdf');
+        $data = [];
+        $dataPdf = [$pdf];
+        return $this->pdf->run($data, $dataPdf);
+    }
+    
+    private function materialidadPdf($analisis, $idPdf, $consecutivo, $cliente) {
+        if (!$this->input->is_ajax_request()) show_404();
+        $e = []; $pdf = [];
+        foreach ($analisis as $materialidad) {
+            $pdf = unserialize($materialidad['analisis']);
+        }
+        $this->load->library('formatpdf/Materialidad_pdf', array(
             'orientation' => 'P',
             'unit'        => 'mm',
             'format'      => 'LETTER',

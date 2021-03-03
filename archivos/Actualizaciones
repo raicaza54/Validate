@@ -823,3 +823,20 @@ SE ESTA TRABAJANDO
 ▪ Envió de correo a comercial de intención de compra
 ▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
 ▪ Validaciones utilizando las librerías y utilidades nativas del framework
+
+#*******************************************************************************
+
+FECHA: 02/03/2021 Versión 1.8.0
+NUEVAS FUNCIONALIDADES
+▪ Modulo de Materialidad
+
+ACTUALIZACIÓN
+▪ No hay cambios
+
+CORRECCIONES
+▪ Al actualizar datos de la empresa se mostraba una ventana en blanco
+
+SE ESTA TRABAJANDO
+▪ Envió de correo a comercial de intención de compra
+▪ Interfaz administrativa, creación de nuevas cuentas y envió de correos
+▪ Validaciones utilizando las librerías y utilidades nativas del framework

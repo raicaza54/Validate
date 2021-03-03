@@ -163,7 +163,6 @@ class Dictamen extends CI_Controller {
         try {
             $form = $this->input->post();
             if (!is_array($form) || !array_key_exists('form', $form)){
-                log_message('error', 'Campo form no presente en el arreglo');
                 throw new Exception('Algo no anda bien, los datos no son adecuados, intentelo nuevamente o contacte con soporte técnico', 202);
             }
             $formato = $this->formato($form);

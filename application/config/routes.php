@@ -166,6 +166,14 @@ $route['dictamen/v1/descartar']['post'] = 'dictamen/descartar';
 $route['dictamen/v1/procesar']['post']  = 'dictamen/procesar';
 
 /* -------------------------------------------------------------------------
+ * Materialidad
+ * ------------------------------------------------------------------------- */
+$route['materialidad/v1/parametros']['post'] = 'auditoria/materialidad';
+$route['materialidad/v1/recalcular']['post'] = 'auditoria/materialidad/1';
+$route['materialidad/v1/save']['post']       = 'materialidad/guardar';
+$route['materialidad/v1/procesar']['post']   = 'materialidad/procesar';
+
+/* -------------------------------------------------------------------------
  * Administrador Clientes
  * ------------------------------------------------------------------------- */
 $route['admin/v1/clientes/listar']['post'] = 'admin/clientes/listar';

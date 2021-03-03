@@ -279,6 +279,60 @@ class Auditoria extends CI_Controller {
             ->set_output(json_encode($response));        
     }
     
+    public function materialidad($recalcular = 0) {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $this->response;
+        $this->load->library('Materialidad');
+        try {
+            $post = $this->input->post();
+            $this->form_validation->set_data($post);
+            $this->form_validation->set_rules('id', 'Archivo', 'required|max_length[20]|numeric');
+            if($this->form_validation->run() === FALSE){
+                throw new Exception(validation_errors('',''), 202);
+            }
+            $tipo = $this->Archivos_model->getTipoArchivo($post['id']);
+            if((!is_array($tipo) && !array_key_exists('tipo', $tipo)) || $tipo['tipo'] != 'blp'){
+                throw new Exception('El archivo seleccionado no corresponde con el tipo de archivo, el mismo debe ser un Balance de Pruebas', 202);
+            }
+            $archivo = $this->Archivos_model->getById($post['id']);
+            $data = $this->materialidad->getConfig();
+            if(($data == FALSE) || ($recalcular == 1)){
+                $col = $this->archivo->columnMaterialidad($post['id']);
+                if(!is_array($col)){
+                    throw new Exception("Tenemos un problema, no encontramos el detalle del archivo seleccionado", 202);
+                }
+                $ctas = $this->materialidad->run($col, $this->session->userdata('empresaId'), $post['id']);
+                $data = [
+                    'utladi_val' => $ctas['utladi'],
+                    'utlope_val' => $ctas['utlope'],
+                    'utlbru_val' => $ctas['utlbru'],
+                    'ingope_val' => $ctas['ingope'],
+                    'activo_val' => $ctas['activo'],
+                    'patrim_val' => $ctas['patrim'],                    
+                ];
+                $data['archivo'] = [
+                    'id'     => $archivo['id'],
+                    'nombre' => $archivo['nombre'],
+                ];                
+            }else{
+                $data['archivoeq'] = 1;
+                if($data['archivoId'] != $post['id']){
+                    $data['archivoeq'] = 0;
+                }
+            }
+            $response = ["data" => $data];
+            throw new Exception("Resultado retornando correctamente", 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+    
     public function manipulacion() {
         if (!$this->input->is_ajax_request()) {
             show_404();

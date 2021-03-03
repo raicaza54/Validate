@@ -118,7 +118,7 @@
                     <span class="<?=$this->permisos->viewaccess('mal-calculos-cond')?>" id="mal-calculos-cond" onclick="CONDICION.methods.consulta(this)">
                         <i class="fas fa-calculator"></i> Condiciones de Cuenta
                     </span>                    
-                    <span class="<?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad">
+                    <span class="<?=$this->permisos->viewaccess('mal-analisis-materialidad')?>" id="mal-analisis-materialidad" onclick="MATERIALIDAD.methods.parametros(this);">
                         <i class="fas fa-vote-yea"></i> Materialidad
                     </span>                    
                 </div>

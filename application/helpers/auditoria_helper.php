@@ -251,6 +251,13 @@ if (!function_exists('unique_multidim_array')) {
 
 }
 
+if (!function_exists('number_mysql')) {
+    function number_mysql($e) {
+        $e = str_replace('.','',$e);
+        return str_replace(',','.',$e);
+    }
+}
+
 if (!function_exists('distr_norm_estand')) {
 
     function distr_norm_estand($score) {

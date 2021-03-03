@@ -214,14 +214,14 @@ class Empresas_model extends CI_Model {
         return $id;
     }    
     
-    public function configColumDefault($columnas, $empresaId) {
+    public function configEmpresa($columnas, $empresaId) {
         $auditoria = [
             'fk_empresas'  => $empresaId,
             'created_user' => $this->session->userdata('users_id'),
             'created_clie' => $this->session->userdata('clientes_id'),
             'update_user'  => $this->session->userdata('users_id'),
             'update_clie'  => $this->session->userdata('clientes_id'),
-        ];        
+        ];
         $this->db->select('id');
         $this->db->where('fk_empresas', $empresaId);
         $config = $this->db->get('clie__empresas_config')->row_array();
@@ -239,11 +239,12 @@ class Empresas_model extends CI_Model {
             'columnas_movdhb' => [],
             'columnas_blp'    => [],
             'columnas_cxc'    => [],
-            'columnas_cxp'    => []
+            'columnas_cxp'    => [],
+            'materialidad'    => [],
         ];
         if(is_numeric($empresa_id) && $empresa_id > 0){
             $config = $this->db->query('
-                SELECT ec.id, e.nombre ,columnas_movnat, columnas_movdhb, columnas_blp, columnas_cxc, columnas_cxp, ec.update_at 
+                SELECT ec.id, e.nombre ,columnas_movnat, columnas_movdhb, columnas_blp, columnas_cxc, columnas_cxp, materialidad, ec.update_at 
                 FROM clie__empresas_config ec INNER JOIN clie__empresas e ON ec.fk_empresas = e.id 
                 WHERE e.id IN(
                     SELECT se.id 
@@ -269,6 +270,9 @@ class Empresas_model extends CI_Model {
                 }
                 if(array_key_exists('columnas_cxp', $config) && strlen(trim($config['columnas_cxp']))){
                     $columnas['columnas_cxp'] = unserialize($config['columnas_cxp']);
+                }
+                if(array_key_exists('materialidad', $config) && strlen(trim($config['materialidad']))){
+                    $columnas['materialidad'] = unserialize($config['materialidad']);
                 }
             }            
         }
@@ -308,5 +312,5 @@ class Empresas_model extends CI_Model {
         $r = $this->db->get()->row_array();
         return $r['naturaleza_credito'];
     }
-    
+ 
 }
