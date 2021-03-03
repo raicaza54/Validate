@@ -897,7 +897,7 @@ class Archivos extends CI_Controller {
                         $colum['columnas_cxp'] = $items;
                     }
                 }
-                $this->Empresas_model->configColumDefault($colum, $this->session->userdata('empresaId'));
+                $this->Empresas_model->configEmpresa($colum, $this->session->userdata('empresaId'));
             }
             $response["data"] = [];
             throw new Exception("Resultado retornando correctamente", 200);
@@ -1131,7 +1131,7 @@ class Archivos extends CI_Controller {
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
     }
-
+    
     private function tryCatch($exc, $response) {
         $response["status"] = $exc->getCode();
         $exception          = array(

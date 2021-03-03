@@ -498,6 +498,15 @@ class Archivos_model extends CI_Model {
         return $query->result_array();
     }
     
+    public function getTipoArchivo($id) {
+        $r = $this->db->select('id, tipo')
+                 ->where('id', $id)
+                 ->where('created_user', $this->session->userdata('users_id'))
+                 ->where('created_clie', $this->session->userdata('clientes_id'))
+                 ->get('clie__archivos')->row_array();
+        return $r;
+    }
+    
     public function dataTemp($tabla, $batch) {
         $this->db->insert_batch($tabla, $batch);
     }
