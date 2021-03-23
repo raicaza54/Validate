@@ -5,7 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @Copyright   GEO INFORMATIC SOLUTIONS SAS
  * @Author      Kevin Giovanni Enriquez Cordovez - kevin.g.enriquez.c@gmail.com
- * @Description Controlador Explorador de Resultados
+ * @Description Controlador Explorador de Resultados 
+ * Para lograr obtener un PDF se debe acceder a la siguiente ruta
+ * https://validate.local/resultados/{funcion PDF}
  * @LastUpdate  2019-05-01
  * http://validate.local/resultados/manipulacionPdf
  */
@@ -302,6 +304,16 @@ class Resultados extends CI_Controller {
             if (($tipo == 'pdfMaterialidad') && (strlen($post['pdfMaterialidad']) <= 0)) {
                 throw new Exception("Tenemos un problema con los datos de Materialidad, no corresponden los tipos definidos", 202);
             }
+            $analisis = [];
+            if(array_key_exists('summernote', $post)){
+                foreach ($pdfAnalisis as $key => $value) {
+                    $analisis = unserialize($value['analisis']);
+                    $analisis['summernote'] = $post['summernote'];
+                    $pdfAnalisis[$key]['analisis'] = serialize($analisis);
+                    $this->Analisis_model->setComentarios($pdfAnalisis[$key]['analisis'], $idAnalisis, $pdfAnalisis[$key]['observacion']);
+                    break;
+                }
+            }
             $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
             if(is_bool($consecutivo) && $consecutivo === FALSE){
                 $consecutivo = $this->Resultados_model->get_consecutivo($this->session->userdata('clientes_id'), $idAnalisis);
@@ -373,7 +385,7 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
-            'cliente'     => $cliente            
+            'cliente'     => $cliente
         ), 'pdf');
         $data = [];
         if (!(is_array($d1) && (count($d1) > 0)) || !(is_array($d2) && (count($d2) > 0)) || !(is_array($d12) && (count($d12) > 0))) {
@@ -504,6 +516,7 @@ class Resultados extends CI_Controller {
             'empresa'     => $this->empresa,
             'codigo'      => $consecutivo,
             'namePdf'     => $idPdf,
+            'alto'        => $alto,
             'cliente'     => $cliente            
         ), 'pdf');
         $data = [];

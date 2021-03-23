@@ -43,9 +43,9 @@ class DBPermisos {
             'update_clie'  => '1',
         ];
         $data = [
-            #[roo - 100] - Root
+            //[roo - 100] - Root
             ['id' => 100, 'permiso' => 'root-all', 'observacion' => 'Usuario principal todos los permisos'] + $userDate,
-            #[mpe - 200] - Menu Principal
+            //[mpe - 200] - Menu Principal
             ['id' => 200, 'permiso' => 'mpe-empresa-listar', 'observacion' => ''] + $userDate,
             ['id' => 201, 'permiso' => 'mpe-empresa-crear', 'observacion' => ''] + $userDate,
             ['id' => 202, 'permiso' => 'mpe-empresa-propiedades', 'observacion' => ''] + $userDate,
@@ -53,14 +53,14 @@ class DBPermisos {
             ['id' => 204, 'permiso' => 'mpe-importar-conexion', 'observacion' => ''] + $userDate,
             ['id' => 205, 'permiso' => 'mpe-exportar-csv', 'observacion' => ''] + $userDate,
             ['id' => 206, 'permiso' => 'mpe-exportar-excel', 'observacion' => ''] + $userDate,
-            #[mda - 300] - Menu Datos
+            //[mda - 300] - Menu Datos
             ['id' => 300, 'permiso' => 'mda-datos-duplicar', 'observacion' => ''] + $userDate,
             ['id' => 301, 'permiso' => 'mda-orden-indice', 'observacion' => ''] + $userDate,
             ['id' => 302, 'permiso' => 'mda-orden-columna', 'observacion' => ''] + $userDate,
             ['id' => 303, 'permiso' => 'mda-busqueda-filtrar', 'observacion' => ''] + $userDate,
             ['id' => 304, 'permiso' => 'mda-busqueda-siguiente', 'observacion' => ''] + $userDate,
             ['id' => 305, 'permiso' => 'mda-busqueda-ir', 'observacion' => ''] + $userDate,
-            #[mal - 400] - Menu Analizar
+            //[mal - 400] - Menu Analizar
             ['id' => 400, 'permiso' => 'mal-ejecutar-recargar', 'observacion' => ''] + $userDate,
             ['id' => 401, 'permiso' => 'mal-analisis-benford', 'observacion' => ''] + $userDate,
             ['id' => 402, 'permiso' => 'mal-analisis-spider', 'observacion' => ''] + $userDate,
@@ -73,15 +73,15 @@ class DBPermisos {
             ['id' => 408, 'permiso' => 'mal-documentos-marcas', 'observacion' => ''] + $userDate,
             ['id' => 409, 'permiso' => 'mal-documentos-cxpc', 'observacion' => ''] + $userDate,
             ['id' => 410, 'permiso' => 'mal-calculos-cond', 'observacion' => ''] + $userDate,
-            #[mad - 500] - Menu Administrar
-            #[exp - 600] - Explorador Archivos
+            //[mad - 500] - Menu Administrar
+            //[exp - 600] - Explorador Archivos
             ['id' => 600, 'permiso' => 'exp-archivos-actualizar', 'observacion' => ''] + $userDate,
             ['id' => 601, 'permiso' => 'exp-archivos-crear', 'observacion' => ''] + $userDate,
             ['id' => 602, 'permiso' => 'exp-archivos-editar', 'observacion' => ''] + $userDate,
             ['id' => 603, 'permiso' => 'exp-archivos-borrar', 'observacion' => ''] + $userDate,
-            #[mac - 700] - Modulo Archivos
+            //[mac - 700] - Modulo Archivos
             ['id' => 700, 'permiso' => 'mac-archivo-configurar', 'observacion' => ''] + $userDate,
-            #[exp - 800] - Explorador Resultados
+            //[exp - 800] - Explorador Resultados
             ['id' => 800, 'permiso' => 'exp-resultados-actualizar', 'observacion' => ''] + $userDate,
             ['id' => 801, 'permiso' => 'exp-resultados-crear', 'observacion' => ''] + $userDate,
             ['id' => 802, 'permiso' => 'exp-resultados-editar', 'observacion' => ''] + $userDate,

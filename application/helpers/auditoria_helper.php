@@ -1380,3 +1380,28 @@ if (!function_exists('mb_basename')) {
     }
 
 }
+
+if (!function_exists('minify_output')) {
+
+    function minify_output($buffer){
+        $search = array('/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s');
+        $replace = array('>','<','\\1');
+        if (preg_match("/\<html/i",$buffer) == 1 && preg_match("/\<\/html\>/i",$buffer) == 1) {
+            $buffer = preg_replace($search, $replace, $buffer);
+        }
+        return $buffer;
+    }
+
+}
+
+if (!function_exists('remove_brp')) {
+
+    function remove_brp($buffer){
+        $search = array('<br></p>');
+        $replace = array('</p>');
+        $buffer = str_replace($search, $replace, $buffer);
+        return $buffer;
+    }
+
+}
+

@@ -179,9 +179,21 @@ class Materialidad_pdf extends TCPDF {
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
+            $css = '<style> p { line-height: 8px !important; } br { margin-bttom: 0px !important; } </style> ';
             if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && (array_key_exists('utladi', $dataPdf[0]))){
                 $dataPdf = $dataPdf[0];
+                if(array_key_exists('summernote', $dataPdf)){
+                    $summernote = array_column($dataPdf['summernote'],'value','name');
+                    extract($summernote);
+                }                
+                if(isset($summer1)){
+                    if(strlen($summer1)) {
+                        $this->writeHTML($css.minify_output(remove_brp($summer1)), FALSE, FALSE, TRUE, FALSE, 'J');
+                        $this->Ln(5);
+                    } 
+                }
+                
                 $this->MultiCell(40, '', 'Cuenta', TRUE, 'L', FALSE, 0);
                 $this->MultiCell(20, '', 'Rango', TRUE, 'L', FALSE, 0);
                 $this->MultiCell(20, '', 'Porcentaje', TRUE, 'L', FALSE, 0);
@@ -236,7 +248,12 @@ class Materialidad_pdf extends TCPDF {
                 $this->MultiCell(29, '', number_format($dataPdf['patrim_val'],2,',','.'), TRUE, 'R', FALSE, 0);
                 $this->MultiCell(29, '', number_format($dataPdf['patrim_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
                 $this->MultiCell(29, '', number_format($dataPdf['patrim_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
-                $this->MultiCell(29, '', number_format($dataPdf['patrim_imno'],2,',','.'), TRUE, 'R', FALSE, 1);                
+                $this->MultiCell(29, '', number_format($dataPdf['patrim_imno'],2,',','.'), TRUE, 'R', FALSE, 1);
+                
+                if(isset($summer2)){
+                    $this->Ln(5);
+                    if(strlen($summer2)) $this->writeHTML($css.minify_output(remove_brp($summer2)), FALSE, FALSE, TRUE, FALSE, 'J');
+                }                
             }
 
             //$this->Output('archivo.pdf', 'I');

@@ -179,6 +179,7 @@ class Condicioncuenta_pdf extends TCPDF {
             $this->MultiCell(118, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(59, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
+            $css = '<style> p { line-height: 8px !important; } br { margin-bttom: 0px !important; } </style> ';
             if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente, 'H');
             if(is_array($dataPdf) && array_key_exists('filas', $dataPdf) && (array_key_exists('identificacion', $dataPdf['filas'][0]) || array_key_exists('base', $dataPdf['filas'][0]))){
                 $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes', TRUE, 'C', FALSE, 1, '', '', TRUE, 0, TRUE);
@@ -188,6 +189,14 @@ class Condicioncuenta_pdf extends TCPDF {
                 }
                 $this->Ln(5);
                 $dataPdf = $dataPdf;
+                if(array_key_exists('summernote', $dataPdf)){
+                    $summernote = array_column($dataPdf['summernote'],'value','name');
+                    extract($summernote);
+                }                
+                if(isset($summer1)){
+                    if(strlen($summer1)) $this->writeHTML($css.minify_output(remove_brp($summer1)), FALSE, FALSE, TRUE, FALSE, 'J');
+                }
+                
                 $btm = 1; $fbtm = 0; $i = 0;
                 $this->drawHeader();
                 foreach ($dataPdf['filas'] as $resultado) {
@@ -211,8 +220,12 @@ class Condicioncuenta_pdf extends TCPDF {
                     }                    
                     $this->MultiCell(260, '', 'Este archivo contiene más de '.$this->CI->config->item('max_condicion').' registros', TRUE, 'L', FALSE, 1);
                 }
+                if(isset($summer2)){
+                    $this->Ln(5);
+                    if(strlen($summer2)) $this->writeHTML($css.minify_output(remove_brp($summer2)), FALSE, FALSE, TRUE, FALSE, 'J');
+                }
             }else{
-                $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes', TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                $this->MultiCell(260, NULL, 'Los registros que se muestran a continuacion no cumplen con las condiciones de las cuentas parametrizadas con los porcentajes.', TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
             }
             //$this->Output('archivo.pdf', 'I');
             $path = mkdir_validate($this->CI->config->item('path_resultados'));

@@ -49,6 +49,7 @@ class Materialidad extends CI_Controller {
                 throw new Exception("Tenemos un problema, los datos estan incompletos o corruptos", 202);
             }
             $form = unSerializeArray($post['form']);
+            debug_file($form);
             $form['utladi'] = number_mysql($form['utladi']);
             $form['utlope'] = number_mysql($form['utlope']);
             $form['utlbru'] = number_mysql($form['utlbru']);

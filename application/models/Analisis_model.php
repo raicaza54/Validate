@@ -47,4 +47,16 @@ class Analisis_model extends CI_Model {
         return $this->db->affected_rows() == 1;
     }
     
+    public function setComentarios($analisis, $ejecucion, $observacion) {
+        $this->db->update('clie__analisis', [
+            'analisis' => $analisis
+        ], [
+            'ejecucion'   => $ejecucion,
+            'observacion' => $observacion,
+            'fk_empresas' => $this->session->userdata('empresaId')
+        ]);
+        return $this->db->affected_rows() == 1;
+    }
+    
+    
 }

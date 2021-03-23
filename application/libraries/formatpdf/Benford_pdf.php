@@ -54,6 +54,7 @@ class Benford_pdf extends TCPDF {
      */
     private $cliente;
     private $cliente_on = false;
+    private $GY = 0;
     
     /**
      * Variable para nombrar el archivo
@@ -287,7 +288,7 @@ class Benford_pdf extends TCPDF {
         }
         $filePath = $this->CI->config->item('path_graficas').$fileName.'.png';
         $graph->Stroke($filePath);
-        $this->Image($filePath, (($dn == '1') ? 76 : 10), (($dn == '1') ? $this->cliente_on ? 50 : 33 : ''), (($dn == '1') ? 130 : 196), 60, 'PNG', '', 'N', FALSE, 300);
+        $this->Image($filePath, (($dn == '1') ? 76 : 10), (($dn == '1') ? $this->GY + 5 : ''), (($dn == '1') ? 130 : 196), 60, 'PNG', '', 'N', FALSE, 300);
     }
     
     public function run($data, $dataPdf) {
@@ -322,16 +323,26 @@ class Benford_pdf extends TCPDF {
             if($this->cliente['empr_usarlogotipo'] == 'si'){
                 $this->cliente_on = true;
                 $this->CI->Formato->datosCliente($this, $this->cliente);
-            } 
-            $this->MultiCell(15, NULL, 'Número', 1, 'C', TRUE, 0, 10, $this->cliente_on ? 48 : 33);
-            $this->MultiCell(22, NULL, 'Observado', 1, 'C', TRUE, 0, 25, $this->cliente_on ? 48 : 33);
-            $this->MultiCell(22, NULL, 'Ley de Benford', 1, 'C', TRUE, 1, 47, $this->cliente_on ? 48 : 33);
+            }
+            $css = '<style> p { line-height: 8px !important; } </style> ';
+            
+            if(array_key_exists('summernote', $d1)){
+                $summernote = array_column($d1['summernote'],'value','name');
+                extract($summernote);
+            }
+            if(isset($summer1)){
+                if(strlen($summer1)) $this->writeHTML($css.minify_output(remove_brp($summer1)).'<br/>', FALSE, FALSE, TRUE, FALSE, 'J');
+            }
+            $this->GY = $this->GetY();
+            $this->MultiCell(15, NULL, 'Número', 1, 'C', TRUE, 0, 10);
+            $this->MultiCell(22, NULL, 'Observado', 1, 'C', TRUE, 0, 25);
+            $this->MultiCell(22, NULL, 'Ley de Benford', 1, 'C', TRUE, 1, 47);
             foreach ($d1['d1']['tabla'] as $key => $value) {
                 $this->MultiCell(15, NULL, $value['numero'], 1, 'R', FALSE, 0, 10);
                 $this->MultiCell(22, NULL, $value['observado'], 1, 'R', FALSE, 0, 25);
                 $this->MultiCell(22, NULL, $value['benford'], 1, 'R', FALSE, 1, 47);                
             } 
-            $this->MultiCell(130, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1, 76, $this->cliente_on ? 45 : 28);
+            $this->MultiCell(130, NULL, 'PRIMER DÍGITO', FALSE, 'C', FALSE, 1, 76, $this->GY);
             $this->grafica($d1, '1');
             $this->digito($d1, '1');
             if(isset($d1['d1']['madDescribe']) && strpos($d1['d1']['madDescribe'],'Conformidad Aceptable') === FALSE)
@@ -348,7 +359,11 @@ class Benford_pdf extends TCPDF {
             $this->digito($d12, '12');
             if(isset($d12['d12']['madDescribe']) && strpos($d12['d12']['madDescribe'],'Conformidad Aceptable') === FALSE)
             if(isset($d12['d12']['tblBad'])) $this->tblBad($d12, '12'); 
-            //$this->Output('archivo.pdf', 'I');
+            if(isset($summer2)){
+                $this->Ln(2);
+                if(strlen($summer2)) $this->writeHTML($css.minify_output(remove_brp($summer2)), FALSE, FALSE, TRUE, FALSE, 'J');
+            }            
+            //$this->Output('archivo.pdf', 'I'); exit();
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;
