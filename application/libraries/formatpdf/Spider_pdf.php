@@ -88,6 +88,20 @@ class Spider_pdf extends TCPDF {
      * @var Double 
      */
     private $lineWidth = 0.1;
+    
+    /**
+     * Alto de la hoja
+     *
+     * @var Double 
+     */
+    private $alto;
+
+    /**
+     * Parte baja de spider corrdenada Y
+     *
+     * @var Double 
+     */    
+    private $by = 0;
 
     /**
      * Fuente del reporte
@@ -107,6 +121,7 @@ class Spider_pdf extends TCPDF {
         $this->codigo  = $codigo;
         $this->cliente = $cliente;
         $this->namePdf = $namePdf;
+        $this->alto    = $alto;
         $this->setCellPaddings(1, 1, 1, 1);
         $this->SetFont($this->family, '', 7);
     }
@@ -153,16 +168,18 @@ class Spider_pdf extends TCPDF {
     }
 
     private function spiderCentral($html, $class, $h) {
-        $left = 10;
+        $left = 10; $hy = 0;
         foreach($html->find('div.'.$class) as $div){
             preg_match_all('!\d+\.*\d*!', $div->style, $top);
             $top = $this->px_to_mm($top[0][0]);
-            $this->MultiCell(20, 4, $div->plaintext, TRUE, 'C', FALSE, 1, 98, ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
+            $hy = ($top + round(($h-7),2));
+            $this->MultiCell(20, 4, $div->plaintext, TRUE, 'C', FALSE, 1, 98, $hy, TRUE, 0, TRUE, TRUE, 0, 'M');
+            if($hy > $this->by) $this->by = $hy;
         }
     }
     
     private function spiderBox($html, $class, $h) {
-        $left = 10;
+        $left = 10; $hy = 0;
         if($class == 'spd-credito'){
             $left = 146;
         }
@@ -172,10 +189,12 @@ class Spider_pdf extends TCPDF {
             foreach ($div->find('div') as $divChild) {
                 $txtCell[$divChild->class] = $divChild->plaintext;
             }
-            $this->MultiCell(20, 4, $txtCell['ispd-cuenta'], TRUE, 'R', FALSE, 0, ($left), ($top + round(($h-7),2)), TRUE, 0, TRUE, TRUE, 0, 'M');
+            $hy = ($top + round(($h-7),2));
+            $this->MultiCell(20, 4, $txtCell['ispd-cuenta'], TRUE, 'R', FALSE, 0, ($left), $hy, TRUE, 0, TRUE, TRUE, 0, 'M');
             $this->MultiCell(20, 4, $txtCell['ispd-dinero'], TRUE, 'R', FALSE, 0, ($left+20), '', TRUE, 0, TRUE, TRUE, 0, 'M');
             $this->MultiCell(20, 4, $txtCell['ispd-porcentaje'], TRUE, 'R', FALSE, 1, ($left+40), '', TRUE, 0, TRUE, TRUE, 0, 'M');
-        }        
+            if($hy > $this->by) $this->by = $hy;
+        }
     }
     
     private function spiderLine($html, $h) {
@@ -227,12 +246,27 @@ class Spider_pdf extends TCPDF {
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
+            $css = '<style> p{ line-height: 8px !important; margin-bottom: 0px !important; } br{ margin: 0px !important; } </style> ';
             if($this->cliente['empr_usarlogotipo'] == 'si'){
                 $this->CI->Formato->datosCliente($this, $this->cliente);
                 $h = 20;
             } 
             if(is_array($dataPdf)){
+                if(array_key_exists('summernote', $dataPdf[0])){
+                    $summernote = array_column($dataPdf[0]['summernote'],'value','name');
+                    extract($summernote);
+                }
+                if(isset($summer1)){
+                    if(strlen($summer1)){
+                        $this->writeHTML($css.minify_output(remove_brp($summer1)), FALSE, FALSE, TRUE, FALSE, 'J');
+                        $h = $this->GetY() - 20;
+                    }
+                }
                 if(array_key_exists(0, $dataPdf) && array_key_exists('body', $dataPdf[0])){
+                    if($this->GetY() > ($this->alto - ($this->alto * 0.5))){
+                        $this->lastPage();
+                        $this->AddPage(); $h = 0;
+                    }
                     $this->SetFont($this->family, '', 5);
                     $this->setCellMargins(0, 0, 0, 0);
                     $this->setCellPaddings(0.3, 1, 0.3, 1);
@@ -243,6 +277,12 @@ class Spider_pdf extends TCPDF {
                     $this->spiderBox($html, 'spd-credito', $h);
                     $this->spiderCentral($html, 'spd-spider', $h);
                     $this->spiderLine($html, $h);
+                    
+                    if(isset($summer2)){
+                        $this->SetFontSize(7);
+                        $css = '<style> p{ line-height: 12px !important; margin-bottom: 0px !important; } br{ margin: 0px !important; } </style> ';
+                        if (strlen($summer2)) $this->writeHTMLCell(NULL, NULL, NULL, $this->by + 10, $css . minify_output(remove_brp($summer2)), FALSE, FALSE, FALSE, TRUE, 'J');
+                    }                    
                 }else{
                     $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
                 }                

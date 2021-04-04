@@ -290,7 +290,8 @@ class Spider {
                 $u += 29;
             }
         }
-        $this->datos['body'] .= '<svg width="1060" height="' . (($c * 45) - 30) . '" viewBox="0 0 1060 ' . (($c * 45) - 30) . '">';
+        $nctas = count($this->ctas);
+        $this->datos['body'] .= '<svg width="1060" height="' . (((($nctas > $c) ? $nctas : $c) * 45) + 50) . '" viewBox="0 0 1060 ' . (((($nctas > $c) ? $nctas : $c) * 45) + 50) . '">';
         $this->datos['body'] .= $lineas;
         $this->datos['body'] .= '</svg>';
         } catch (Exception $exc){

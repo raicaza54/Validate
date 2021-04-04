@@ -51,6 +51,13 @@ class Perfil extends CI_Controller {
             $contrato = $this->Cliente_model->getContrato($cliente_id);
             $disco = $this->Cliente_model->disco();
             $columnas = $this->Empresas_model->configGetColumDefault($users_id, $empresaId, $cliente_id);
+            if(array_key_exists('archivoId', $columnas['materialidad'])){
+                $archivo = $this->Archivos_model->getById($columnas['materialidad']['archivoId']);
+                $columnas['materialidad']['archivo'] = [
+                    'id'     => $archivo['id'],
+                    'nombre' => $archivo['nombre'],
+                ];                
+            }
             if(!is_array($contrato) || (count($contrato) <= 0)){
                 throw new Exception("Tenemos un problema con el contrato, por favor contactar con soporte", 202);
             }
@@ -217,7 +224,7 @@ class Perfil extends CI_Controller {
                 $data['columnas_' . $form['tipo']] = unserialize($config['columnas_' . $form['tipo']]);
                 $data['columnas_' . $form['tipo']]['columnDef'] = $columnas;
                 $data['columnas_' . $form['tipo']] = serialize($data['columnas_' . $form['tipo']]);
-                $this->Empresas_model->configColumDefault($data, $config['fk_empresas']);
+                $this->Empresas_model->configEmpresa($data, $config['fk_empresas']);
             }else{
                 throw new Exception("Tenemos un problema, los datos de tipo de archivo estan incompletos o corruptos", 202);
             }

@@ -251,6 +251,13 @@ if (!function_exists('unique_multidim_array')) {
 
 }
 
+if (!function_exists('number_mysql')) {
+    function number_mysql($e) {
+        $e = str_replace('.','',$e);
+        return str_replace(',','.',$e);
+    }
+}
+
 if (!function_exists('distr_norm_estand')) {
 
     function distr_norm_estand($score) {
@@ -1373,3 +1380,28 @@ if (!function_exists('mb_basename')) {
     }
 
 }
+
+if (!function_exists('minify_output')) {
+
+    function minify_output($buffer){
+        $search = array('/\>[^\S ]+/s','/[^\S ]+\</s','/(\s)+/s');
+        $replace = array('>','<','\\1');
+        if (preg_match("/\<html/i",$buffer) == 1 && preg_match("/\<\/html\>/i",$buffer) == 1) {
+            $buffer = preg_replace($search, $replace, $buffer);
+        }
+        return $buffer;
+    }
+
+}
+
+if (!function_exists('remove_brp')) {
+
+    function remove_brp($buffer){
+        $search = array('<br></p>');
+        $replace = array('</p>');
+        $buffer = str_replace($search, $replace, $buffer);
+        return $buffer;
+    }
+
+}
+

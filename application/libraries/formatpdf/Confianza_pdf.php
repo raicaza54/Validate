@@ -180,9 +180,20 @@ class Confianza_pdf extends TCPDF {
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(5);
             if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
-            
+            $css = '<style> p { line-height: 8px !important; } br { margin-bttom: 0px !important; } </style> ';
             if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && array_key_exists('mensaje', $dataPdf[0])){
                 $dataPdf = $dataPdf[0];
+                if(array_key_exists('summernote', $dataPdf)){
+                    $summernote = array_column($dataPdf['summernote'],'value','name');
+                    extract($summernote);
+                }                
+                if(isset($summer1)){
+                    if(strlen($summer1)){
+                        $this->writeHTML($css.minify_output(remove_brp($summer1)), FALSE, FALSE, TRUE, FALSE, 'J');
+                        $this->Ln(5);
+                    } 
+                }
+                
                 $this->MultiCell(196, NULL, $dataPdf['mensaje'], FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(196, NULL, 'La probabilidad de los Indicadores de Confiaza es '.$dataPdf['probabilidad'].'%', FALSE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
                 $this->Ln(1);
@@ -361,6 +372,10 @@ class Confianza_pdf extends TCPDF {
                 $this->MultiCell(109, NULL, 'ACTIVOS TOTALES T', TRUE, 'L', FALSE, 0, '', '', TRUE, 0, TRUE);
                 $this->MultiCell(87, NULL, number_format($dataPdf['actvtotales']['t'],3,',','.'), TRUE, 'R', FALSE, 1, '', '', TRUE, 0, TRUE);
                 
+                if(isset($summer2)){
+                    $this->Ln(5);
+                    if(strlen($summer2)) $this->writeHTML($css.minify_output(remove_brp($summer2)), FALSE, FALSE, TRUE, FALSE, 'J');
+                }                
             }else{
                 $this->MultiCell(196, NULL, '---TENEMOS UN PROBLEMA CON EL REPORTE ---', FALSE, 'C', FALSE, 0, '', '', TRUE, 0, TRUE);
             }

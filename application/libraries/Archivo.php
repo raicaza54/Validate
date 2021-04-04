@@ -213,6 +213,27 @@ class Archivo {
         ];
     }
     
+    public function columnMaterialidad($archivo_id) {
+        $columnDef = [];
+        $columnas = $this->CI->Archivos_model->getColumn($archivo_id);
+        if(is_array($columnas) && count($columnas)){
+            foreach ($columnas as $key => $value) {
+                foreach ($this->columnManipulacion as $col) {
+                    if($col == $value[0]){
+                        $columnDef[$col] = $key;
+                    }
+                }
+            }
+        }else{
+            return FALSE;
+        }
+        $columnString = $this->columnString($columnDef);
+        return [
+            'string' => $columnString,
+            'array'  => $columnDef
+        ];
+    }
+    
     public function columnSpider($archivo_id) {
         $columnDef = [];
         $encabezado = $this->CI->Archivos_model->getEncabezado($archivo_id);

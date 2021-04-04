@@ -31,7 +31,7 @@ if (!defined('BASEPATH'))
 
 require_once APPPATH . 'libraries/tcpdf/tcpdf.php';
 
-class Listascontrol_pdf extends TCPDF {
+class Materialidad_pdf extends TCPDF {
 
     /**
      * Variable para mostrar el nombre de la empresa
@@ -124,7 +124,7 @@ class Listascontrol_pdf extends TCPDF {
         // Title
         //$this->MultiCell(NULL, NULL, '    ALIDATE', 0, 'L', FALSE, 0, 10, 5.5);
         $this->SetFont($this->family, '', 8);
-        $this->MultiCell(NULL, NULL, 'Análisis: Listas de Control', 0, 'R', FALSE, 1, 50, 5);
+        $this->MultiCell(NULL, NULL, 'Análisis: Materialidad', 0, 'R', FALSE, 1, 50, 5);
         $y = 10;
         $style = array(
             'color' => $this->lineColor,
@@ -158,7 +158,7 @@ class Listascontrol_pdf extends TCPDF {
         try{
             $this->SetFont($this->family, '', 7);
             $this->SetProtection(array('modify', 'copy'), '');
-            $this->SetTitle('Listas de Control');
+            $this->SetTitle('Materialidad');
             $this->SetLineStyle(array(
                 'color' => $this->lineBackColor,
                 'width' => $this->lineWidth
@@ -179,69 +179,90 @@ class Listascontrol_pdf extends TCPDF {
             $this->MultiCell(86, $h, 'Empresa: '.$this->empresa['nombre'], TRUE, 'L', FALSE, 0);
             $this->MultiCell(43, $h, 'NIT: '.$this->empresa['identificacion'], TRUE, 'L', FALSE, 1);
             $this->Ln(3);
-            $css = '<style> p { line-height: 8px !important; } </style> ';
+            $css = '<style> p { line-height: 8px !important; } br { margin-bttom: 0px !important; } </style> ';
             if($this->cliente['empr_usarlogotipo'] == 'si') $this->CI->Formato->datosCliente($this, $this->cliente);
-            if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && (array_key_exists('identificacion', $dataPdf[0]) || array_key_exists('nombre', $dataPdf[0]))){
-                $this->MultiCell(196, NULL, 'Advertencia, en este archivo se generaron coincidencias con la lista de control por lo cual debería proceder a una verificación del mismo y tomar las medidas pertinentes para este caso, el siguiente es el dato de la lista de control correspondiente al tercero o terceros que generaron coincidencias', TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
-                $this->Ln(5);
+            if(is_array($dataPdf) && array_key_exists(0, $dataPdf) && (array_key_exists('utladi', $dataPdf[0]))){
                 $dataPdf = $dataPdf[0];
-                $btm = 1; $fbtm = 0; $i = 0;
                 if(array_key_exists('summernote', $dataPdf)){
                     $summernote = array_column($dataPdf['summernote'],'value','name');
                     extract($summernote);
-                }
+                }                
                 if(isset($summer1)){
                     if(strlen($summer1)) {
                         $this->writeHTML($css.minify_output(remove_brp($summer1)), FALSE, FALSE, TRUE, FALSE, 'J');
-                        $this->Ln(3);
-                    }
+                        $this->Ln(5);
+                    } 
                 }
-                foreach ($dataPdf as $resultado) {
-                    foreach ($resultado as $value) {
-                        foreach ($value['resultados'] as $items) {
-                            $i = 0;
-                            $h = $this->_height(array(
-                                'txt' => 'Nombre: '.$items['nombre'],
-                                'w' => 166
-                            ));                            
-                            $this->MultiCell(196, '', 'Buscado: '.$value['buscado'], TRUE, 'L', FALSE, 1);
-                            $this->MultiCell(50, '', 'Lista: ', 'L', 'L', '', 0);
-                            $this->MultiCell(146, '', $items['lista'], 'R', 'L', FALSE, 1);
-                            $this->MultiCell(50, $h, 'Nombre: ', 'L', 'L', FALSE, 0);
-                            $this->MultiCell(146, $h, $items['nombre'], 'R', 'L', FALSE, 1);
-                            $otros = unserialize($items['otros']);
-                            if(count($otros)){
-                                $btm = 0;
-                            }
-                            $this->MultiCell(50, '', 'Identificación: ', 'L' . (($btm == 1) ? 'B' : ''), 'L', FALSE, 0);
-                            $this->MultiCell(146, '', $items['identificacion'], 'R' . (($btm == 1) ? 'B' : ''), 'L', FALSE, 1);
-                            if($btm == 0){
-                                $fbtm = count($otros);
-                                foreach ($otros as $key => $otroItems) {
-                                    $i++;
-                                    if($i == $fbtm){
-                                        $btm = 1;
-                                    }
-                                    $this->MultiCell(50, '', $key . ': ', 'L' . (($btm == 1) ? 'B' : ''), 'L', FALSE, 0);
-                                    $this->MultiCell(146, '', $otroItems, 'R' . (($btm == 1) ? 'B' : ''), 'L', FALSE, 1);
-                                }
-                            }
-                            $this->Ln(3);
-                        }
-                    }
-                }
+                
+                $this->MultiCell(40, '', 'Cuenta', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', 'Rango', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', 'Porcentaje', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(29, '', 'Valor', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(29, '', 'Materialidad', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(29, '', 'Error Tolerable', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(29, '', 'Importe Nominal', TRUE, 'L', FALSE, 1);
+                
+                $this->MultiCell(40, '', 'Utilidad Antes de Impuesto', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '5,0% a 10,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['utladi'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utladi_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utladi_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utladi_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utladi_imno'],2,',','.'), TRUE, 'R', FALSE, 1);
+                
+                $this->MultiCell(40, '', 'Utilidad Operacional', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '7,0% a 10,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['utlope'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlope_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlope_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlope_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlope_imno'],2,',','.'), TRUE, 'R', FALSE, 1);                
+                
+                $this->MultiCell(40, '', 'Utilidad Bruta', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '3,0% a 5,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['utlbru'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlbru_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlbru_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlbru_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['utlbru_imno'],2,',','.'), TRUE, 'R', FALSE, 1);                
+                
+                $this->MultiCell(40, '', 'Ingresos Operacionales', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '0,5% a 1,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['ingope'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['ingope_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['ingope_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['ingope_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['ingope_imno'],2,',','.'), TRUE, 'R', FALSE, 1);                
+                
+                $this->MultiCell(40, '', 'Activos', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '0,5% a 1,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['activo'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['activo_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['activo_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['activo_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['activo_imno'],2,',','.'), TRUE, 'R', FALSE, 1);                
+                
+                $this->MultiCell(40, '', 'Patrimonio', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', '5,0% a 7,0%', TRUE, 'L', FALSE, 0);
+                $this->MultiCell(20, '', number_format($dataPdf['patrim'],2,',','.').'%', TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['patrim_val'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['patrim_mate'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['patrim_erto'],2,',','.'), TRUE, 'R', FALSE, 0);
+                $this->MultiCell(29, '', number_format($dataPdf['patrim_imno'],2,',','.'), TRUE, 'R', FALSE, 1);
+                
                 if(isset($summer2)){
+                    $this->Ln(5);
                     if(strlen($summer2)) $this->writeHTML($css.minify_output(remove_brp($summer2)), FALSE, FALSE, TRUE, FALSE, 'J');
-                }
-            }else{
-                $this->MultiCell(196, NULL, 'Enhorabuena, no existe ninguna coincidencia con los terceros reportados en la lista de proveedores ficticios de la DIAN, por lo cual se le recomienda extraer un archivo PDF que certifique que a la fecha del archivo suministrado no se encuentran relaciones con este tipo de terceros.', TRUE, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+                }                
             }
-            //$this->Output('archivo.pdf', 'I'); exit();
+
+            //$this->Output('archivo.pdf', 'I');
+
             $path = mkdir_validate($this->CI->config->item('path_resultados'));
             if($path === FALSE){
                 return FALSE;
             }            
-            $filePath = $this->CI->config->item('path_resultados').'LSC'.$this->namePdf.'.pdf';
+            $filePath = $this->CI->config->item('path_resultados').'MAT'.$this->namePdf.'.pdf';
             $this->Output($filePath, 'F');
         } catch(Exception $ex){
             return FALSE;
