@@ -18,7 +18,7 @@
         Informatic Solutions S.A.S en su sitio web www.</font><font size="3" style="font-size: 11pt"><span lang="es">v</span></font><font size="3" style="font-size: 11pt">alidate.com.co
         y su</font><font size="3" style="font-size: 11pt"><span lang="es">
         </span></font><font size="3" style="font-size: 11pt">aplicación</font><font size="3" style="font-size: 11pt"><span lang="es">
-            web v</span></font><font size="3" style="font-size: 11pt">alidate.geoiss.com.
+            web v</span></font><font size="3" style="font-size: 11pt">alidate.geoinfosolt.com.
         El usuario acepta, al momento de empezar a utilizar el servicio,
         respetar todas las condiciones impuestas por este contrato.</font></p>
     <p class="western" style="margin-right: 12.51cm; margin-top: 0.58cm; margin-bottom: 0cm; orphans: 0; widows: 0">
@@ -59,7 +59,7 @@
             término “servicio” o “servicios” hace referencia a la
             aplicación que ofrece G</font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">EO</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">
             Informatic Solutions S.A.S en su sitio web y que opera desde el
-            dominio </font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">v</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">alidate.geoiss.com.
+            dominio </font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">v</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">alidate.geoinfosolt.com.
             </font></font>
         </p>
         <li/>
@@ -84,7 +84,7 @@
             término “Aplicación” hace referencia al software que ofrece
             G</font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">EO</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">
             Informatic Solutions S.A.S como servicio en su sitio
-            </font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">v</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">alidate.geoiss.com</font></font></p>
+            </font></font><font color="#222222"><font size="3" style="font-size: 11pt"><span lang="es">v</span></font></font><font color="#222222"><font size="3" style="font-size: 11pt">alidate.geoinfosolt.com</font></font></p>
         <li/>
         <p class="western" align="justify" style="margin-top: 0.19cm; margin-bottom: 0cm; orphans: 0; widows: 0">
             <font color="#222222"><font size="3" style="font-size: 11pt">El
@@ -165,7 +165,7 @@
     <p class="western" align="justify" style="margin-left: 0.46cm; margin-right: 0.47cm; margin-top: 0.58cm; margin-bottom: 0cm; orphans: 0; widows: 0">
         <font color="#222222"><font size="3" style="font-size: 11pt">Validate
         presta un servicio de software que se accede a través de su sitio
-        web <?= anchor('https://validate.geoiss.com', '', 'target="_blank"') ?> Los usuarios que accedan a este servicio
+        web <?= anchor('https://validate.geoinfosolt.com', '', 'target="_blank"') ?> Los usuarios que accedan a este servicio
         deberán registrar una cuenta y brindar la información solicitada en
         los formularios que se habilitan a la hora de registrar una cuenta.
         Validate da por entendido que cualquier información ingresada en
@@ -218,7 +218,7 @@
         servicio de Validate se inicia al momento de registrar una cuenta en
         el sitio web de Validate, tras haber aceptado las condiciones
         expresadas en este contrato. El servicio consiste en el uso del
-        software Validate disponible en <?= anchor('https://validate.geoiss.com', '', 'target="_blank"') ?> y todos los
+        software Validate disponible en <?= anchor('https://validate.geoinfosolt.com', '', 'target="_blank"') ?> y todos los
         servicios disponibles en el sitio web <?= anchor('https://validate.com.co', '', 'target="_blank"') ?>. </font></font>
     </p>
     <p class="western" align="justify" style="margin-left: 0.46cm; margin-right: 0.47cm; margin-top: 0.58cm; margin-bottom: 0cm; orphans: 0; widows: 0">
@@ -234,7 +234,7 @@
     </p>
     <p class="western" align="justify" style="margin-top: 0.58cm; margin-bottom: 0cm; orphans: 0; widows: 0">
         <font color="#222222"><font size="3" style="font-size: 11pt">Validate
-        garantiza al Usuario el acceso al sitio web <?= anchor('https://validate.geoiss.com', '', 'target="_blank"') ?>,
+        garantiza al Usuario el acceso al sitio web <?= anchor('https://validate.geoinfosolt.com', '', 'target="_blank"') ?>,
         <?= anchor('https://validate.com.co', '', 'target="_blank"') ?>  para ver la información allí disponible mientras
         tenga conexión a Internet bajo condiciones normales, sin embargo el
         usuario acepta que existan circunstancias técnicas por las que ésta
@@ -657,7 +657,7 @@
         reestructuración de los sitios u otro tipo de actos que se escapen
         del alcance y responsabilidad directa de Validate. No obstante lo
         anterior, Validate garantiza a los usuarios que pagan por el
-        servicio, que el software estará disponible en <?= anchor('https://validate.geoiss.com', '', 'target="_blank"') ?>
+        servicio, que el software estará disponible en <?= anchor('https://validate.geoinfosolt.com', '', 'target="_blank"') ?>
         desde cualquier lugar del mundo que permita una conexión a internet,
         siempre y cuando el usuario recuerde las credenciales de su cuenta y
         las condiciones de prestación del servicio de conexión a Internet
