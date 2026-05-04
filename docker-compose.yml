@@ -9,6 +9,7 @@ services:
     depends_on:
       - mysql
       - memcached
+      - gearman
     restart: unless-stopped
 
   mysql:
@@ -25,4 +26,11 @@ services:
   memcached:
     image: memcached:1.6-alpine
     container_name: geois-memcached
+    restart: unless-stopped
+
+  gearman:
+    image: artefactual/gearmand
+    container_name: geois-gearman
+    ports:
+      - "4730:4730"
     restart: unless-stopped
