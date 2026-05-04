@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    container_name: geois-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+      - memcached
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: geois-mysql
+    volumes:
+      - ../mysql-data/mysql:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    command: --skip-grant-tables --skip-networking=0
+    restart: unless-stopped
+
+  memcached:
+    image: memcached:1.6-alpine
+    container_name: geois-memcached
+    restart: unless-stopped

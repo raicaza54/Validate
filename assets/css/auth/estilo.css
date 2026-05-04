@@ -1,0 +1,32 @@
+/* 
+Created on : 17/01/2019, 11:07:25 PM
+Author     : kevin
+*/
+html{
+    background-image: url('/assets/images/auth/footer_login.jpg');   
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+body{
+    background-color: transparent !important;
+    background-image: url('/assets/images/auth/head_login.png');
+    background-position: center -2em;
+    background-repeat: no-repeat;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 14px;
+}
+.card{
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0 5px 20px 0 rgba(170,180,198,.44);
+}
+#footer-validate.navbar-validate span{
+    color: #e0e2e7;
+    font-size: 14px;
+}
+#footer-validate.navbar-validate{
+    background-color: #16457a !important;
+}
+#footer-validate.navbar{
+    padding: 0rem 1rem;
+    line-height: 1;
+}

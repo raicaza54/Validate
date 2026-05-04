@@ -1,6 +1,8 @@
+# macOS
+.DS_Store
+
+# IDE
 /nbproject/private/
-# Created by https://www.gitignore.io/api/codeigniter
-# Edit at https://www.gitignore.io/?templates=codeigniter
 
 ### CodeIgniter ###
 */config/development
@@ -15,27 +17,36 @@ user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 
-#codeigniter 3
+# CodeIgniter 3 logs
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+
+# Vendor / Composer
 /vendor/
+vendor/
+composer.phar
+composer.lock
+application/libraries/out
+application/views/cache
+application/views/compile
 
-### CodeIgniter Patch ###
-#codeigniter 3
+# Bibliotecas de terceros descargadas (recuperables, públicas)
+/archivos/librerias/
+/archivos/pike-admin-free-2.3.1/
 
-archivos/pike-admin-free-2.3.1/*
+# Archivos pesados / sensibles de clientes
+/archivos/credentials.csv
+/archivos/MOVTO*
+/archivos/Actualicese.pdf
+/archivos/Declaratoria_Proveedores_Ficticios_2017.xlsx
+/archivos/Contrato de Términos y Condiciones Validate*.docx
 
-# End of https://www.gitignore.io/api/codeigniter
+# Configs locales con secretos (usar los .example como plantilla)
 /public_html/index.php
 /application/config/config.php
 /application/config/validate.php
-
-### Composer template
-composer.phar
-vendor/
-application/libraries/out
-composer.lock
-application/views/cache
-application/views/compile
 /application/config/database.php
+
+# Docker — overrides locales no se versionan
+docker-compose.override.yml

@@ -1,2 +1,4 @@
 RewriteEngine on
+RewriteCond $1 !^(index\.php|images|assets|adminer|robots\.txt\.csv)
+RewriteRule ^(.*)$ /index.php/$1 [L]
 Options -Indexes
