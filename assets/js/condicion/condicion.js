@@ -75,6 +75,22 @@ CONDICION.methods = {
                 GLOBAL.computed.initializePdf('condicioncuenta');
                 var datos = CONDICION.computed.consultar(x.ejecucion);
                 datos.then(function (data) {
+                    // Async: el servidor encoló el análisis, hay que hacer polling.
+                    if (data && data.data && data.data.async) {
+                        CONDICION.computed.pollEstado(data.data.analisis_id, ventana)
+                            .then(function (resultado) {
+                                CONDICION.componets.tabs(resultado).then(function () {
+                                    GLOBAL.computed.maximizar();
+                                });
+                                ventana.modal('hide');
+                            })
+                            .catch(function (err) {
+                                ventana.modal('hide');
+                                alert('El análisis falló: ' + (err && err.message ? err.message : 'error desconocido'));
+                            });
+                        return;
+                    }
+                    // Compat: respuesta sincrónica vieja.
                     CONDICION.componets.tabs(data.data).then(function () {
                         GLOBAL.computed.maximizar();
                     });
@@ -186,6 +202,55 @@ CONDICION.computed = {
                 GLOBAL.computed.secure();
                 return data;
             }
+        });
+    },
+    /**
+     * Polling al endpoint de estado para análisis async (Gearman).
+     * Resuelve con el resultado cuando el worker marca estado='completed'.
+     * Reject si estado='failed' o si excede el timeout.
+     */
+    pollEstado: function (analisisId, ventana) {
+        var INTERVAL_MS = 2000;
+        var MAX_ATTEMPTS = 600; // ~20 min
+        return new Promise(function (resolve, reject) {
+            var attempts = 0;
+            function tick() {
+                attempts++;
+                $.ajax({
+                    url: '/condicion/v1/estado/' + analisisId,
+                    type: 'GET',
+                    dataType: 'json'
+                }).done(function (resp) {
+                    var d = resp && resp.data;
+                    if (!d) {
+                        return reject(new Error('respuesta inválida del servidor'));
+                    }
+                    if (d.estado === 'completed') {
+                        return resolve(d.resultado);
+                    }
+                    if (d.estado === 'failed') {
+                        return reject(new Error(d.error_msg || 'falló sin mensaje'));
+                    }
+                    // pending o processing: actualizar UI y volver a intentar
+                    if (ventana && ventana.length) {
+                        var p = parseInt(d.progreso, 10) || 0;
+                        var label = d.estado === 'pending' ? 'En cola' : ('Procesando ' + p + '%');
+                        ventana.find('.btn-primary').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + label
+                        );
+                    }
+                    if (attempts >= MAX_ATTEMPTS) {
+                        return reject(new Error('timeout esperando resultado'));
+                    }
+                    setTimeout(tick, INTERVAL_MS);
+                }).fail(function (xhr) {
+                    if (attempts >= MAX_ATTEMPTS) {
+                        return reject(new Error('error de red en polling'));
+                    }
+                    setTimeout(tick, INTERVAL_MS);
+                });
+            }
+            tick();
         });
     }
 }

@@ -494,31 +494,43 @@ class Auditoria extends CI_Controller {
                     'tolerancia' => $value[2],
                 ];
             }
-            $insert = $this->Condicion_model->set_condicion($condicion);
-            $column = $this->archivo->columnCondicion($post['id']);
-            $items = $this->Archivos_model->getBases($post['id'], $column);
-            if(!is_array($items) || count($items) <= 0){
-                throw new Exception('Algo no anda bien, el archivo no es legible, intentelo nuevamente o contacte con soporte', 202);   
-            }
-            $condiciones = [];
-            foreach ($condicion as $value) {
-                $condiciones[$value['cuenta']] = [
-                    'porcentaje' => $value['porcentaje'],
-                    'tolerancia' => $value['tolerancia'],
-                ];
-            }
-            $this->condicion->condiciones = $condiciones;
-            $this->condicion->datos = $items;            
-            $condicionesExc = $this->condicion->run();
+            $this->Condicion_model->set_condicion($condicion);
+
+            // Async: insertar fila pending y encolar el job en Gearman.
+            // El Worker (application/controllers/Worker.php) lo procesa en background
+            // y va actualizando estado/progreso en clie__analisis.
             $id = uniqint();
-            $response["data"] = $condicionesExc;
             $this->Analisis_model->setInsert([
                 'id'            => $id,
-                'analisis'      => json_encode($response["data"]),
+                'analisis'      => '',
                 'ejecucion'     => $post['ejecucion'],
-                'analisis_tipo' => 'condicioncuenta'
+                'analisis_tipo' => 'condicioncuenta',
+                'estado'        => 'pending',
+                'progreso'      => 0,
             ]);
-            throw new Exception("Resultado retornando correctamente", 200);
+
+            $client = new GearmanClient();
+            $client->addServer('gearman', 4730);
+            $payload = json_encode([
+                'analisis_id' => $id,
+                'archivo_id'  => $post['id'],
+                'condicion'   => $condicion,
+            ]);
+            $handle = $client->doBackground('condicion_cuenta', $payload);
+            if ($client->returnCode() !== GEARMAN_SUCCESS) {
+                $this->db->where('id', $id)->update('clie__analisis', [
+                    'estado'    => 'failed',
+                    'error_msg' => 'No se pudo encolar: ' . $client->error(),
+                ]);
+                throw new Exception('No se pudo encolar el análisis: ' . $client->error(), 500);
+            }
+
+            $response['data'] = [
+                'async'       => TRUE,
+                'analisis_id' => $id,
+                'ejecucion'   => $post['ejecucion'],
+            ];
+            throw new Exception('Análisis encolado, esperando worker', 200);
         } catch (Exception $exc) {
             $response = $this->tryCatch($exc, $response);
         }
@@ -527,7 +539,44 @@ class Auditoria extends CI_Controller {
             ->set_status_header($response['status'])
             ->set_output(json_encode($response));
     }
-    
+
+    /**
+     * Endpoint de polling para análisis async.
+     * Retorna el estado actual del análisis y, si está completado, su resultado.
+     */
+    public function estadoAnalisis($id = NULL) {
+        $response = $this->response;
+        try {
+            if (!$id || !ctype_digit((string)$id)) {
+                throw new Exception('Identificador inválido', 202);
+            }
+            $row = $this->db->select('estado, progreso, error_msg, analisis, analisis_tipo')
+                ->from('clie__analisis')
+                ->where('id', $id)
+                ->get()->row_array();
+            if (!$row) {
+                throw new Exception('Análisis no encontrado', 404);
+            }
+            $data = [
+                'estado'    => $row['estado'],
+                'progreso'  => (int)$row['progreso'],
+                'error_msg' => $row['error_msg'],
+            ];
+            if ($row['estado'] === 'completed' && $row['analisis']) {
+                $data['resultado'] = json_decode($row['analisis'], TRUE);
+            }
+            $response['data'] = $data;
+            throw new Exception('OK', 200);
+        } catch (Exception $exc) {
+            $response = $this->tryCatch($exc, $response);
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_status_header($response['status'])
+            ->set_output(json_encode($response));
+    }
+
+
     public function asistente() {
         if (!$this->input->is_ajax_request()) {
             show_404();

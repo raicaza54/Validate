@@ -144,6 +144,7 @@ $route['listascontrol/v1/consultar']['post'] = 'auditoria/listascontrol';
 $route['condicion/v1/datos']['post']     = 'archivos/columcondicion';
 $route['condicion/v1/extraer']['post']   = 'archivos/extraerBase';
 $route['condicion/v1/consultar']['post'] = 'auditoria/condicionCuenta';
+$route['condicion/v1/estado/(:num)']     = 'auditoria/estadoAnalisis/$1';
 
 /* -------------------------------------------------------------------------
  * Terminos y Condiciones

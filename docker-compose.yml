@@ -34,3 +34,15 @@ services:
     ports:
       - "4730:4730"
     restart: unless-stopped
+
+  worker:
+    build: .
+    container_name: geois-worker
+    command: php /var/www/html/index.php worker listen
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+      - gearman
+      - memcached
+    restart: unless-stopped
