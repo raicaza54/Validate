@@ -58,4 +58,4 @@ docker exec -it geois-mysql mysql develop   # consola MySQL
 ## Notas
 
 - El password MySQL "real" del entorno productivo no debe usarse en local. Usar uno arbitrario; el contenedor MySQL local corre con `--skip-grant-tables`.
-- El servicio `gearmand` aún no está en el docker-compose. Funciones que disparen jobs async (análisis pesados) van a fallar hasta agregarlo.
+- El daemon Gearman corre en `gearman:4730` dentro de la red Docker. La librería `Lib_gearman` está conectada pero ningún controlador la usa actualmente — los análisis corren sincrónicos dentro del request PHP. El daemon queda listo para cuando se quiera convertir un análisis pesado en worker async.
